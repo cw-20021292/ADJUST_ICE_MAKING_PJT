@@ -1,0 +1,14 @@
+# EditorConfig 설정: ICON-ICE-2KG 제빙기 프로젝트
+# 모든 파일의 인코딩을 Korean (EUC-KR)로 고정
+
+root = true
+
+[*]
+charset = euc-kr
+end_of_line = crlf
+insert_final_newline = true
+trim_trailing_whitespace = false
+
+[*.{c,h}]
+charset = euc-kr
+
