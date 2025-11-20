@@ -116,11 +116,10 @@ extern TYPE_WORD          U16CompOffW;
 
 #define            ICE_FINGER_NUM        6
 #define            ICE_IDEAL_GRAM       10.0F
-#define            ICE_V_TARGET         (280)
+#define            ICE_V_TARGET         (U16)(ICE_FINGER_NUM * ICE_IDEAL_GRAM)    // 60ml
 
 #define            ICE_MAKE_TIME_MIN        200
-#define            ICE_MAKE_TIME_MAX        1000
-#define            ICE_MAKE_TIME_LIMIT      600
+#define            ICE_MAKE_TIME_MAX        21000
 
 extern bit F_ErrTrayMotor_DualInital;
 extern U8 gu8_Room_Water_Level;

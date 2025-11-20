@@ -208,9 +208,9 @@ U16 GetThisTimeIceMakeTime(void)
     return IceAdjust.u16ThisTimeIceMakeTime;
 }
 
-void SetTheoryRatio(U16 Avg)
+static void SetTheoryRatio(U16 Avg)
 {
-    F32 mf32_target = (F32)ICE_V_TARGET;
+    F32 mf32_target = (F32)GetCCToHz(ICE_V_TARGET);
     F32 mf32_ratio = (F32)(mf32_target / Avg);
    
     mf32_ratio = 1 + (GetGain() * (mf32_ratio - 1));
@@ -359,6 +359,7 @@ void ice_make_operation(void)
 {
     U8 mu8_return_value = 0;
     U8 mu8_comp_rps = 0;
+    U16 mu16DeltaTimeLimit = 600;
 
     //=======================================================// ???? ??????
     switch(gu8IceStep)
@@ -727,7 +728,8 @@ void ice_make_operation(void)
 
         /* 다음 물량 계산 (보정) */
         case STATE_42_NEXT_ICE_AMOUNT_CAL:
-            /*..hui [25-1-XX] 제빙 시간 평균 계산 로직..*/
+            
+            // 제빙수에 사용된 물량 저장
             if(IceAdjust.u8Cycle < 3)
             {
                 // 3 미만일 때만 증가
@@ -748,23 +750,23 @@ void ice_make_operation(void)
                                                         IceAdjust.u16IceMakeFlowHistory[2]) / 3);
             }
 
-
-            if(IceAdjust.u16IceMakeAvgFlow >= 100)
+            // 보정 Gain 설정
+            if(IceAdjust.u16IceMakeAvgFlow >= GetCCToHz(100))              // 100ml 이상 과제빙
             {
                 // zone 1 (심각 과제빙) : 강하게 줄이기
                 SetGain(0.9F);
             }
-            else if(IceAdjust.u16IceMakeAvgFlow >= 70)
+            else if(IceAdjust.u16IceMakeAvgFlow >= GetCCToHz(70))         // 70ml 이상 과제빙
             {
                 // zone 2 (살짝 과제빙) : 부드럽게 줄이기
                 SetGain(0.5F);
             }
-            else if(IceAdjust.u16IceMakeAvgFlow <= 30)
+            else if(IceAdjust.u16IceMakeAvgFlow <= GetCCToHz(30))         // 30ml 이하 미제빙
             {
                 // zone 4 (심각 부족) : 강하게 늘리기
                 SetGain(0.9F);
             }
-            else if(IceAdjust.u16IceMakeAvgFlow <= 50)
+            else if(IceAdjust.u16IceMakeAvgFlow <= GetCCToHz(50))         // 50ml 이하 미제빙
             {
                 // zone 3 (살짝 부족) : 부드럽게 늘리기
                 SetGain(0.5F);
@@ -778,20 +780,30 @@ void ice_make_operation(void)
             SetTheoryRatio(IceAdjust.u16IceMakeAvgFlow);
             SetNextIceMakeTime((U16)(GetThisTimeIceMakeTime() * GetRatio()));
             
-            // 상한치(X) 하한치(O) 제한
+            // 상한치 하한치 제한
             if(GetNextIceMakeTime() < ICE_MAKE_TIME_MIN )
             {
                 SetNextIceMakeTime(ICE_MAKE_TIME_MIN);
             }
-            // else if(GetNextIceMakeTime() > ICE_MAKE_TIME_MAX)
-            // {
-            //     SetNextIceMakeTime(ICE_MAKE_TIME_MAX);
-            // }
-            else
+            else if(GetNextIceMakeTime() > ICE_MAKE_TIME_MAX)
             {
-
+                SetNextIceMakeTime(ICE_MAKE_TIME_MAX);
             }
 
+            // 너무 과격하게 변하지 않게 1회 변화량 1분으로 제한 (안정화)
+            if((GetNextIceMakeTime() > mu16DeltaTimeLimit + GetThisTimeIceMakeTime()))
+            {
+                SetNextIceMakeTime((GetThisTimeIceMakeTime() + mu16DeltaTimeLimit));
+            }
+            else if((GetNextIceMakeTime() < GetThisTimeIceMakeTime() - mu16DeltaTimeLimit))
+            {
+                SetNextIceMakeTime((GetThisTimeIceMakeTime() - mu16DeltaTimeLimit));
+            }
+            else
+            {
+                SetNextIceMakeTime(GetNextIceMakeTime());
+            }
+            
             
             gu8IceStep = STATE_43_GAS_SWITCH_HOT_GAS;
             break;

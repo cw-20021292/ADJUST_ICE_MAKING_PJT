@@ -124,8 +124,17 @@ U16 GetDrainAfterFlowHz(void)
 // 총 제빙에 사용된 물량 계산 (Hz단위를 cc단위로 변환해야됨)
 U16 GetDrainFlow(void)
 {
-    return (DrainFlow.gu16IceMakeBeforeFlowHz - DrainFlow.gu16IceMakeAfterFlowHz);
+    // 트레이에 남는 물, 드레인탱크에 남는 물, 오차 등을 생각해서 +10cc 보정
+    return ((DrainFlow.gu16IceMakeBeforeFlowHz - DrainFlow.gu16IceMakeAfterFlowHz) + GetCCToHz(10));
 }
+
+// CC단위를 Hz단위로 변환
+U16 GetCCToHz(U16 u16CC)
+{
+    F32 OneCC = 4.66F;
+    return (U16)(u16CC * OneCC);
+}
+
 /***********************************************************************************************************************
 * Function Name: System_ini
 * Description  : 제빙수 드레인 유량센서 시작
