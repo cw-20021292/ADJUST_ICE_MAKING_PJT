@@ -574,9 +574,26 @@ void error_management(void)
 
         if( gu8_Err_Code_Old != gu8_Error_Code )
         {
+            #if 0
+            /*..hui [20-1-20오후 8:15:50] 우선순위 높은 에러로 변경됐을때만 팝업 표시..*/
+            /*..hui [20-1-20오후 8:20:52] 에러 걸린 상태에서 우선순위 낮은 에러 걸릴경우 추가 표시 안한다..*/
+            gu8_error_popup_enable = SET;
+
+            gu8_now_error_occur_year = gu8_rtc_time_Year;
+            gu8_now_error_occur_month = gu8_rtc_time_Month;
+            gu8_now_error_occur_day = gu8_rtc_time_Date;
+            #endif
 
             /*..hui [23-9-1오전 9:36:48] 추출할때만 표시하는걸로 변경.. 최초 발생시 표시안함 = 최인식..*/
             /*..hui [23-11-28오후 4:41:59] 다시 표시하는걸로..*/
+            #if 0
+            if( gu8_Error_Code != gu8_Last_Error_Code )
+            {
+                gu8_Last_Error_Code = gu8_Error_Code;
+                gu8_error_popup_enable = SET;
+            }
+            else{}
+            #endif
 
 
             if( gu8_Error_Code == 75
@@ -612,7 +629,5 @@ void error_management(void)
 * Function Name: System_ini
 * Description  :
 ***********************************************************************************************************************/
-
-
 
 

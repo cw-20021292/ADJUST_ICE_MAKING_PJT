@@ -444,6 +444,19 @@ void load_function_setting(void)
         EepromByteWrite(EEPROM_ADDR3_SMART_UNUSED_TIME, gu8_wifi_smart_unused_setting_time);
     }
     //=========================================================================================//
+    #if 0
+    gu16_my_cup_level = (U16)((gu8_eeprom_rbuf[5] * 256) + gu8_eeprom_rbuf[6]);
+
+    /*..hui [23-2-8���� 4:28:55] ���߿� �ٽ�..*/
+    if( gu16_my_cup_level <= 10 || gu16_my_cup_level >= 1000 )
+    {
+        gu16_my_cup_level = 100;
+        gu8_eeprom_wbuf[0] = (U8)(gu16_my_cup_level / (U16)256);
+        gu8_eeprom_wbuf[1] = (U8)(gu16_my_cup_level % (U16)256);
+        EepromPageWrite(EEPROM_ADDR3_MY_CUP_LEVEL, gu8_eeprom_wbuf, 2);
+    }
+    else{}
+    #endif
     //=========================================================================================//
     if(gu8_eeprom_rbuf[7] <= 1)
     {
@@ -734,6 +747,156 @@ void load_iot_function(void)
         EepromByteWrite(EEPROM_ADDR6_DRAIN_TANK_STER_COUNT, gu8_drain_tank_ster_count);
     }
 
+#if 0
+    //=========================================================================================//
+    u16CupLevelSelect = (U16)((gu8_eeprom_rbuf[0] * 256) + gu8_eeprom_rbuf[1]);
+
+    /*if( u16CupLevelSelect < 1 || u16CupLevelSelect > 496 )*/
+    /*if( u16CupLevelSelect < 1 || u16CupLevelSelect > 992 )*/
+    /*..hui [23-10-4���� 3:52:46] �ִ밪���� ����.. ���߿� ���� ���������? ���� ����..*/
+    /*if( u16CupLevelSelect < 1 || u16CupLevelSelect > 1023 )*/
+    /*..hui [23-11-23���� 10:20:13] ������ ����Ʈ �������� �����?..*/
+    if( u16CupLevelSelect < 512 || u16CupLevelSelect > 1023 )
+    {
+        u16CupLevelSelect = CUP_LEVEL_SELECT_DEFAULT_4_8_12_20_CONTINUE;
+        gu8_eeprom_wbuf[0] = (U8)(u16CupLevelSelect / (U16)256);
+        gu8_eeprom_wbuf[1] = (U8)(u16CupLevelSelect % (U16)256);
+        EepromPageWrite(EEPROM_ADDR6_CUP_LEVEL_SELECT, gu8_eeprom_wbuf, 2);
+    }
+    else{}
+
+
+    //=========================================================================================//
+    if(gu8_eeprom_rbuf[2] <= CUP_LEVEL_ORDER__DOWN)
+    {
+        gu8_cup_level_order = gu8_eeprom_rbuf[2];
+    }
+    else
+    {
+        gu8_cup_level_order = CUP_LEVEL_ORDER__UP;
+        EepromByteWrite(EEPROM_ADDR6_CUP_LEVEL_ORDER, gu8_cup_level_order);
+    }
+    //=========================================================================================//
+    #if 0
+    if(gu8_eeprom_rbuf[3] <= Celsius_oC_SELECT)
+    {
+        gu8_oF__oC_select = gu8_eeprom_rbuf[3];
+    }
+    else
+    {
+        gu8_oF__oC_select = Fahrenheit_oF_SELECT;
+        EepromByteWrite(EEPROM_ADDR6_OC_OF_SELECT, gu8_oF__oC_select);
+    }
+    //=========================================================================================//
+    if(gu8_eeprom_rbuf[4] <= mL_SELECT)
+    {
+        gu8_ml__oz_select = gu8_eeprom_rbuf[4];
+    }
+    else
+    {
+        gu8_ml__oz_select = Oz_SELECT;
+        EepromByteWrite(EEPROM_ADDR6_OZ_ML_SELECT, gu8_ml__oz_select);
+    }
+    #endif
+    //=========================================================================================//
+    if(gu8_eeprom_rbuf[5] <= HOT_TEMP_LEVEL_ORDER__DOWN)
+    {
+        gu8_hot_level_order = gu8_eeprom_rbuf[5];
+    }
+    else
+    {
+        /*gu8_hot_level_order = HOT_TEMP_LEVEL_ORDER__UP;*/
+        /*..hui [24-1-9���� 3:43:03] �¼��µ� ����Ʈ�� ������������.. ������..*/
+        gu8_hot_level_order = HOT_TEMP_LEVEL_ORDER__DOWN;
+        EepromByteWrite(EEPROM_ADDR6_HOT_TEMP_LEVEL_ORDER, gu8_hot_level_order);
+    }
+    //=========================================================================================//
+    if(gu8_eeprom_rbuf[6] <= HOT_SET_TEMP____45oC)
+    {
+        gu8_hot_default_temp = gu8_eeprom_rbuf[6];
+    }
+    else
+    {
+        /*gu8_hot_default_temp = HOT_SET_TEMP_3__COFFEE__85_oC;*/
+        /*..hui [23-6-28���� 10:44:24] 95�� ����Ʈ�� ����..*/
+        gu8_hot_default_temp = HOT_SET_TEMP____100oC;
+        EepromByteWrite(EEPROM_ADDR6_HOT_TEMP_DEFAULT, gu8_hot_default_temp);
+    }
+    //=========================================================================================//
+    #if 0
+    gu16_total_usage_water_gal_save = (U16)((gu8_eeprom_rbuf[7] * 256) + gu8_eeprom_rbuf[8]);
+    u16_display_usage_water_gal = gu16_total_usage_water_gal_save;
+    gu32_total_usage_water_ml = (U32)((U32)gu16_total_usage_water_gal_save * (U32)ML_PER_GAL);
+
+    if( gu16_total_usage_water_gal_save > MAX_GAL )
+    {
+        gu16_total_usage_water_gal_save = 0;
+        u16_display_usage_water_gal = 0;
+        gu32_total_usage_water_ml = 0;
+        gu8_eeprom_wbuf[0] = (U8)(gu16_total_usage_water_gal_save / (U16)256);
+        gu8_eeprom_wbuf[1] = (U8)(gu16_total_usage_water_gal_save % (U16)256);
+        EepromPageWrite(EEPROM_ADDR6_WATER_USAGE_GAL, gu8_eeprom_wbuf, 2);
+    }
+    else{}
+    #endif
+
+    //=========================================================================================//
+    #if 0
+    gu16_filter_reset_day_neo = (U16)((gu8_eeprom_rbuf[9] * 256) + gu8_eeprom_rbuf[10]);
+
+    if( gu16_filter_reset_day_neo > FILTER_RESET_DAY__NEO_INO )
+    {
+        gu16_filter_reset_day_neo = 0;
+        gu8_eeprom_wbuf[0] = 0;
+        gu8_eeprom_wbuf[1] = 0;
+        EepromPageWrite(EEPROM_ADDR6_FILTER_RESET_DAY_NEO, gu8_eeprom_wbuf, 2);
+    }
+    else{}
+    #endif
+    //=========================================================================================//
+    #if 0
+    gu16_filter_reset_day_ro = (U16)((gu8_eeprom_rbuf[11] * 256) + gu8_eeprom_rbuf[12]);
+
+    if( gu16_filter_reset_day_ro > FILTER_RESET_DEFAULT_24_MONTH_912_DAY_HOUR__RO )
+    {
+        gu16_filter_reset_day_ro = 0;
+        gu8_eeprom_wbuf[0] = 0;
+        gu8_eeprom_wbuf[1] = 0;
+        EepromPageWrite(EEPROM_ADDR6_FILTER_RESET_DAY_RO, gu8_eeprom_wbuf, 2);
+    }
+    else{}
+    #endif
+    //=========================================================================================//
+    if(gu8_eeprom_rbuf[13] <= 1)
+    {
+        bit_child_lock_enable = gu8_eeprom_rbuf[13];
+    }
+    else
+    {
+        bit_child_lock_enable = CLEAR;
+        EepromByteWrite(EEPROM_ADDR6_CHILD_LOCK_ENABLE, (U8)bit_child_lock_enable);
+    }
+    //=========================================================================================//
+    if(gu8_eeprom_rbuf[14] <= 1)
+    {
+        gu8_fota_start = gu8_eeprom_rbuf[14];
+    }
+    else
+    {
+        gu8_fota_start = CLEAR;
+        EepromByteWrite(EEPROM_ADDR6_FOTA_START, gu8_fota_start);
+    }
+    //=========================================================================================//
+    if( gu8_eeprom_rbuf[15] >= WIFI_FILTER_CHANGE_CYCLE_MIN && gu8_eeprom_rbuf[15] <= WIFI_FILTER_CHANGE_CYCLE_MAX )
+    {
+        gu8_wifi_filter_cycle_percent = gu8_eeprom_rbuf[15];
+    }
+    else
+    {
+        gu8_wifi_filter_cycle_percent = WIFI_FILTER_CHANGE_CYCLE_DEFAULT;
+        EepromByteWrite(EEPROM_ADDR6_FILTER_CHANGE_CYCLE, gu8_wifi_filter_cycle_percent);
+    }
+#endif
 }
 
 /***********************************************************************************************************************
@@ -1126,6 +1289,24 @@ void load_water_usage(void)
     }
 
     //=========================================================================================//
+    #if 0
+    mu32_a = (U32)(((U32)gu8_eeprom_rbuf[0] * 256) + gu8_eeprom_rbuf[1]);
+    mu32_b = (U32)(((U32)gu8_eeprom_rbuf[2] * 256) + gu8_eeprom_rbuf[3]);
+
+    gu32_total_usage_water_ml_save = (U32)((mu32_a * 65536) + mu32_b);
+
+    gu32_total_usage_water_ml = gu32_total_usage_water_ml_save;
+    gu16_wifi_total_usage_water = (U16)(gu32_total_usage_water_ml / 1000);
+
+    /*..hui [23-6-7���� 5:32:58] 1�̸� 0.1gal..*/
+    u16_display_usage_water_gal = (U16)(gu32_total_usage_water_ml / ML_PER_GAL);
+
+    if( u16_display_usage_water_gal >= MAX_GAL )
+    {
+        u16_display_usage_water_gal = MAX_GAL;
+    }
+    else{}
+    #endif
     //=========================================================================================//
 }
 
@@ -1399,6 +1580,58 @@ void initial_iot_function(void)
     gu8_hot_default_temp = HOT_SET_TEMP____100oC;
 
     EepromPageWrite(IOT_FUNCTION_ADDR, gu8_eeprom_wbuf, IOT_FUNCTION_LENGTH);
+#if 0
+    U16HotTemplSelect = (U16)HOT_TEMP_SELECT_DEFAULT_45_70_85_100;
+
+    /*..hui [23-6-28���� 10:44:24] 95�� ����Ʈ�� ����..*/
+	/*sean [25-05-12] 12�������� �����ϸ鼭 default ����*/
+    gu8_hot_default_temp = HOT_SET_TEMP____100oC;
+
+    u16CupLevelSelect = CUP_LEVEL_SELECT_DEFAULT_4_8_12_20_CONTINUE;
+    gu8_cup_level_order = CUP_LEVEL_ORDER__UP;
+
+    ///gu8_oF__oC_select = Fahrenheit_oF_SELECT;
+    ///gu8_ml__oz_select = Oz_SELECT;
+    /*gu8_hot_level_order = HOT_TEMP_LEVEL_ORDER__UP;*/
+    /*..hui [24-1-9���� 3:43:03] �¼��µ� ����Ʈ�� ������������.. ������..*/
+    gu8_hot_level_order = HOT_TEMP_LEVEL_ORDER__DOWN;
+
+    /*gu8_hot_default_temp = HOT_SET_TEMP_3__COFFEE__85_oC;*/
+    /*..hui [23-6-28���� 10:44:24] 95�� ����Ʈ�� ����..*/
+    gu8_hot_default_temp = HOT_SET_TEMP_4__MAX__100_oC;
+    /*gu16_total_usage_water_gal_save  = 0;*/
+    /*gu16_filter_reset_day_neo = 0;*/
+    /*gu16_filter_reset_day_ro = 0;*/
+
+    bit_child_lock_enable = CLEAR;
+    gu8_fota_start = CLEAR;
+    gu8_wifi_filter_cycle_percent = WIFI_FILTER_CHANGE_CYCLE_DEFAULT;
+
+    gu8_eeprom_wbuf[0] = (U8)(u16CupLevelSelect/(U16)256);
+    gu8_eeprom_wbuf[1] = (U8)(u16CupLevelSelect%(U16)256);
+    gu8_eeprom_wbuf[2] = (U8)gu8_cup_level_order;
+    ///gu8_eeprom_wbuf[3] = (U8)gu8_oF__oC_select;
+    ///gu8_eeprom_wbuf[4] = (U8)gu8_ml__oz_select;
+    gu8_eeprom_wbuf[5] = (U8)gu8_hot_level_order;
+    gu8_eeprom_wbuf[6] = (U8)gu8_hot_default_temp;
+    /*gu8_eeprom_wbuf[7] = (U8)(gu16_total_usage_water_gal_save/(U16)256);*/
+    /*gu8_eeprom_wbuf[8] = (U8)(gu16_total_usage_water_gal_save%(U16)256);*/
+    gu8_eeprom_wbuf[7] = (U8)0;
+    gu8_eeprom_wbuf[8] = (U8)0;
+    /*gu8_eeprom_wbuf[9] = (U8)(gu16_filter_reset_day_neo/(U16)256);*/
+    /*gu8_eeprom_wbuf[10] = (U8)(gu16_filter_reset_day_neo%(U16)256);*/
+    /*gu8_eeprom_wbuf[11] = (U8)(gu16_filter_reset_day_ro/(U16)256);*/
+    /*gu8_eeprom_wbuf[12] = (U8)(gu16_filter_reset_day_ro%(U16)256);*/
+    gu8_eeprom_wbuf[9] = (U8)0;
+    gu8_eeprom_wbuf[10] = (U8)0;
+    gu8_eeprom_wbuf[11] = (U8)0;
+    gu8_eeprom_wbuf[12] = (U8)0;
+    gu8_eeprom_wbuf[13] = (U8)bit_child_lock_enable;
+    gu8_eeprom_wbuf[14] = gu8_fota_start;
+    gu8_eeprom_wbuf[15] = gu8_wifi_filter_cycle_percent;
+
+    EepromPageWrite(IOT_FUNCTION_ADDR, gu8_eeprom_wbuf, IOT_FUNCTION_LENGTH);
+#endif
 }
 
 /***********************************************************************************************************************
@@ -1480,6 +1713,12 @@ void initial_hot_temp_setting(void)
 ***********************************************************************************************************************/
 void initial_water_usage(void)
 {
+    #if 0
+    gu32_total_usage_water_ml_save = 0;
+    gu32_total_usage_water_ml = 0;
+    gu16_wifi_total_usage_water = 0;
+    u16_display_usage_water_gal = 0;
+    #endif
 
     gu16_water_usage_neo_filter = 0;
     gu16_water_usage_ro_filter = 0;
@@ -1609,6 +1848,15 @@ void EepromByteWrite( U16 mu16Addr, U8 mu8Data )
 {
     U8 mu8_temp = 0;
 
+    #if 0
+    mu8_temp = IsRtcBatBackUpMode();
+
+    if( mu8_temp == TRUE )
+    {
+        return;
+    }
+    else{}
+    #endif
 
     HAL_RTC_ByteWrite( DEV_ADDR_EEP, mu16Addr, mu8Data);
 
@@ -1637,6 +1885,15 @@ void EepromPageWriteSub( U16 mu16Addr, U8 *pData, U8 mu8len )
 {
     U8 mu8_temp = 0;
 
+    #if 0
+    mu8_temp = IsRtcBatBackUpMode();
+
+    if( mu8_temp == TRUE )
+    {
+        return;
+    }
+    else{}
+    #endif
 
     HAL_RTC_PageWrite( DEV_ADDR_EEP, mu16Addr, pData, mu8len);
 }
@@ -1649,6 +1906,15 @@ void EepromSeqRead( U16 mu16Addr, U8 *pData, U8 mu16Length )
 {
     U8 mu8_temp = 0;
 
+    #if 0
+    mu8_temp = IsRtcBatBackUpMode();
+
+    if( mu8_temp == TRUE )
+    {
+        return;
+    }
+    else{}
+    #endif
 
     HAL_RTC_SeqRead( DEV_ADDR_EEP, mu16Addr, pData, mu16Length );
 }
@@ -1657,8 +1923,6 @@ void EepromSeqRead( U16 mu16Addr, U8 *pData, U8 mu16Length )
 * Function Name: System_ini
 * Description  :
 ***********************************************************************************************************************/
-
-
 
 
 

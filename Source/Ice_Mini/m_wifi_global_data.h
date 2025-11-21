@@ -159,7 +159,11 @@ extern TYPE_LONG       U32ControlErrorsD;
 
 
 
-
+extern TYPE_BYTE          U8FactoryTestModeB;
+#define            u8FactoryTestMode                 U8FactoryTestModeB.byte
+#define            Bit0_Pcb_Test_Mode                U8FactoryTestModeB.Bit.b0
+#define            Bit1_Uart_Test_Mode               U8FactoryTestModeB.Bit.b1
+#define            Bit2_Display_Test_Mode            U8FactoryTestModeB.Bit.b2
 
 extern TYPE_BYTE          U8WaterOutStateB;
 #define            u8WaterOutState                           U8WaterOutStateB.byte

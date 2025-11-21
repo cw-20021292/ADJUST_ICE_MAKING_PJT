@@ -148,6 +148,20 @@ void auto_drain_output(void)
         /* 2KG MAX는 순환배수 시 수배관 특성상 1KG, MINI와 다르게 
         배수탱크를 반드시 지나가야 하기 때문에 펌프제어 필요 250623 CH.PARK */
         auto_mode_drain_pump_out();
+#if 0
+        gu16ColdDrainTime++;
+        if(gu16ColdDrainTime >= COLD_DRAIN_TIME)
+        {
+            gu16ColdDrainTime = 0;
+            F_DrainStatus = CLEAR;
+            F_auto_drain_mode_cold_water_valve_out = CLEAR;
+        }
+        else
+        {
+            auto_mode_drain_pump_out();
+            F_auto_drain_mode_cold_water_valve_out = SET;
+        }
+#endif
     }
 }
 
@@ -293,6 +307,26 @@ void auto_drain_operate_check(void)
                 F_DrainStatus = CLEAR;
             }
         }
+#if 0        
+        if( 1 )
+        {
+            F_AutoDrainCheckOK = SET;
+
+            /*..hui [23-7-31오후 3:11:01] 냉온정 통합으로 확인.. 제어사양서에 냉수 1.5L로 나와있음..*/
+            /*..hui [23-7-31오후 3:11:21] 120cc 기준 12잔..*/
+            /*..sean [25-06-13] 2KG는 용량 1L 기준..*/
+            if (gu16ColdEffluentTotal < AUTO_DRAIN_OPERATION_WATER)
+            {
+                F_DrainStatus = SET;
+            }
+            else{}
+
+            gu16NormalEffluentTotal = 0;
+            gu16ColdEffluentTotal = 0;
+            F_Auto_drain_time_expired = CLEAR;
+        }
+        else {  }
+#endif
     }
     else
     {
@@ -334,6 +368,16 @@ void auto_drain_key_off_check(void)
 ***********************************************************************************************************************/
 void auto_drain_check_timer(void)
 {
+    #if 0
+    if(F_LineTest == SET)
+    {
+        test_mode_auto_drain_check_timer();
+    }
+    else
+    {
+        normal_mode_auto_drain_check_timer();
+    }
+    #endif
 
     normal_mode_auto_drain_check_timer();
 }
@@ -464,6 +508,114 @@ void normal_mode_auto_drain_check_timer(void)
 * Function Name: System_ini
 * Description  :
 ***********************************************************************************************************************/
+#if 0
+void test_mode_auto_drain_check_timer(void)
+{
+    /*if(F_Auto_drain_time_expired == SET || F_Circul_Drain != SET)*/
+    if(F_Circul_Drain != SET)
+    {
+        /*gu16_auto_drain_start_timer_sec = 0;
+               gu16_auto_drain_start_timer_min = 0;
+               gu16_auto_drain_start_timer_hour = 0;
+              F_auto_drain_drinking_check_before_1hour = CLEAR;*/
+        /*..hui [18-1-14???? 8:43:52] ?????? ???? ?? ??? OFF ?? ????..*/
+        F_Auto_drain_time_expired = CLEAR;
+    }
+    else
+    {
+        /*gu16_auto_drain_start_timer_sec++;*/
+    }
+
+    /*..hui [18-1-14???? 8:53:23] ?????? ????? OFF???? ?ð? ???? ?? ???? ????? ??? ????? ????....*/
+    /*..hui [18-1-14???? 8:53:41] ????? ????? ??? ON??? ????ð????? ????? ???????..*/
+    gu16_auto_drain_start_timer_sec++;
+
+    if(gu16_auto_drain_start_timer_sec >= 600)
+    {
+        gu16_auto_drain_start_timer_sec = 0;
+        gu16_auto_drain_start_timer_hour++;
+
+    }
+    else{}
+
+
+    /*..hui [18-1-29???? 9:23:04] 24?ð? ??? 2?ð? ???? ?? ??????? ???..*/
+    if(gu16_auto_drain_start_timer_hour >= 8)
+    {
+        if(F_WaterOut == SET)
+        {
+            F_auto_drain_drinking_check_before_2hour = SET;
+        }
+        else{}
+    }
+    else{}
+
+
+    /*..hui [18-1-14???? 7:02:24] 24?ð???? 1?ð? ???? ?? ??????? ???..*/
+    if(gu16_auto_drain_start_timer_hour >= 9)
+    {
+        if(F_WaterOut == SET)
+        {
+            F_auto_drain_drinking_check_before_1hour = SET;
+        }
+        else{}
+    }
+    else{}
+
+    if(gu16_auto_drain_start_timer_hour >= 10)
+    {
+        /*..hui [18-1-14???? 7:19:19] 24?ð???? ??ð? ???? ???? ???????..*/
+        /*..hui [18-1-14???? 7:19:30] ??ð? ?? ?Ŀ? ???? u?..*/
+        if(F_auto_drain_drinking_check_before_1hour == SET)
+        {
+            gu8_before_2hour_drinking_count = 0;
+        }
+        else
+        {
+            gu16_auto_drain_start_timer_hour = 0;
+            F_Auto_drain_time_expired = SET;
+
+            gu16_auto_drain_start_timer_sec = 0;
+            gu16_auto_drain_start_timer_min = 0;
+            gu16_auto_drain_start_timer_hour = 0;
+            F_auto_drain_drinking_check_before_1hour = CLEAR;
+
+            /*..hui [18-1-29???? 9:47:42] 2?ð? ???? ?? ?????? ??????..*/
+            if(F_auto_drain_drinking_check_before_2hour == CLEAR)
+            {
+                gu8_before_2hour_drinking_count++;
+
+                /*..hui [18-1-29???? 9:53:21] 3?? ???? 2?ð? ?????? ?? ?????? ?????? ??u ?ð?  1?ð? ????..*/
+                if(gu8_before_2hour_drinking_count >= 3)
+                {
+                    gu8_before_2hour_drinking_count = 0;
+                    gu16_auto_drain_start_timer_hour = 1;
+                }
+                else{}
+            }
+            else
+            {
+                gu8_before_2hour_drinking_count = 0;
+                F_auto_drain_drinking_check_before_2hour = CLEAR;
+            }
+        }
+    }
+    else{}
+
+    if(gu16_auto_drain_start_timer_hour >= 11)
+    {
+        gu16_auto_drain_start_timer_hour = 0;
+        F_Auto_drain_time_expired = SET;
+
+        gu16_auto_drain_start_timer_sec = 0;
+        gu16_auto_drain_start_timer_min = 0;
+        gu16_auto_drain_start_timer_hour = 0;
+        F_auto_drain_drinking_check_before_1hour = CLEAR;
+        F_auto_drain_drinking_check_before_2hour = CLEAR;
+    }
+    else{}
+}
+#endif
 /***********************************************************************************************************************
 * Function Name: System_ini
 * Description  :
@@ -477,6 +629,21 @@ void integrate_water_quantity(void)
     mu16_amount = (U16)((U16)gu16_extract_display_cnt * 10);
 
 
+#if 0
+    if(u8WaterOutState == PURE_WATER_SELECT)
+    {
+        /*mu8_minimum_time = EXTRACT_TIME_AMBIENT_WATER_4_OZ;*/
+        mu8_minimum_time = EXTRACT_TIME_COLD_WATER_4_OZ_120_ML;
+    }
+    else if(u8WaterOutState == COLD_WATER_SELECT)
+    {
+        mu8_minimum_time = EXTRACT_TIME_COLD_WATER_4_OZ_120_ML;
+    }
+    else
+    {
+        mu8_minimum_time = EXTRACT_TIME_HOT_WATER_4_OZ_120_ML;
+    }
+#endif
 
     if(F_WaterOut == SET)
     {
@@ -556,6 +723,35 @@ void UseWater48HoursTotalCount(U8 mu8Type, U8 mu8Data)
         }
         else
         {
+            #if 0
+            switch(gu8Cup_level)
+            {
+                case CUP_LEVEL_HALF__120_240_ML:
+
+                    mu16_w = 120;
+
+                    break;
+
+                case CUP_LEVEL_ONE__250_480_ML:
+
+                    mu16_w = 175;
+
+                    break;
+
+                case CUP_LEVEL_TWO__490_1000_ML:
+
+                    mu16_w = 235;
+
+                    break;
+
+
+                default:
+
+                    mu16_w = 0;
+
+                    break;
+            }
+            #endif
         }
 
         gu16NormalEffluentTotal = gu16NormalEffluentTotal + mu16_w;
@@ -563,9 +759,32 @@ void UseWater48HoursTotalCount(U8 mu8Type, U8 mu8Data)
 
 
 
+    #if 0
+    if ((mu8Type == PURE_WATER_SELECT))
+    {
+        if (gu16NormalEffluentTotal >= 200)
+        {
+            gu16NormalEffluentTotal = 200;
+        }
+        else
+        {
+            gu16NormalEffluentTotal = gu16NormalEffluentTotal + mu8Data;    // 120cc?? ???????? ??? ????
+        }
+    }
+    else if (mu8Type == COLD_WATER_SELECT)
+    {
+        if (gu8ColdEffluentTotal >= 200)
+        {
+            gu8ColdEffluentTotal = 200;
+        }
+        else
+        {
+            gu8ColdEffluentTotal = gu8ColdEffluentTotal + mu8Data;    // 120cc?? ???????? ??? ????
+        }
+    }
+    else{}
+    #endif
 }
-
-
 
 
 

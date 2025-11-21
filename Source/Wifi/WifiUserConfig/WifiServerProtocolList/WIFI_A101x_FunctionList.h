@@ -232,7 +232,7 @@ typedef enum
 
     WIFI_FUNC_00CE_HOTTEMP_USE_SEL10,           //  온수온도 사용 설정 10
     WIFI_FUNC_00CF_HOTTEMP_USE_SEL11,           //  온수온도 사용 설정 11
-    
+
     WIFI_FUNC_00D0_UV_ICE_TANK_STATUS2,			//	얼음 탱크 살균 동작 상태2
     WIFI_FUNC_00D1_ALTITUDE_AUTO,               //  고도모드 자동 설정
     WIFI_FUNC_00D2_ALARM_1_SET,                  //  알람시계 1 설정
@@ -289,8 +289,8 @@ typedef enum
 
 typedef enum
 {
-    WIFI_FUNC_00FF_CLEANING_STATUS = WIFI_FUNC_NUM_1,              //  구연산 세정상태 
-    
+    WIFI_FUNC_00FF_CLEANING_STATUS = WIFI_FUNC_NUM_1,              //  구연산 세정상태
+
     WIFI_FUNC_0100_CLEANING_SW_STATUS,              //  구연산 리드 스위치 장착 상태
     WIFI_FUNC_0101_STERILIZE_REMAINING_DAY,         //  살균시작 잔여일
     WIFI_FUNC_0102_SCREEN_SAVER,                    //  스크린세이버 설정 ON/OFF
@@ -328,6 +328,8 @@ typedef enum
     WIFI_FUNC_0121_ICE_TRAY_UV_STATUS,
     WIFI_FUNC_0122_QUANTITY_FOURCUPS,               // 네컵 용량
     WIFI_FUNC_0123_ICE_TYPE,                        // 얼음 타입 : 일반(0) /조각(1)
+
+    WIFI_FUNC_0143_ICE_DOOR_REED = 0x0143,
 
     WIFI_FUNC_NUM_2
 

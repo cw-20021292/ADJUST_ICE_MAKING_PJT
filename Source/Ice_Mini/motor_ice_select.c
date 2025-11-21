@@ -10,6 +10,7 @@
 #include    "Global_Variable.h"
 #include    "Port_Define.h"
 #include    "motor_ice_select.h"
+#include    "model_select.h"
 
 void motor_ice_select_output(void);
 void iceSelectMotor_Control(U16 gu16_p_step);
@@ -32,7 +33,17 @@ extern bit bit_ice_stuck_back_state;
 extern bit bit_ice_out_back_1s_state;
 extern bit bit_ice_out_back_state;
 extern U16 gu16_Ice_Door_StepMotor;
+extern void Play_Voice(U16 mu16MemoryAddress);
+
+extern TYPE_BYTE          U8FactoryTestModeB;
+#define            u8FactoryTestMode                 U8FactoryTestModeB.byte
+#define            Bit0_Pcb_Test_Mode                U8FactoryTestModeB.Bit.b0
+#define            Bit1_Uart_Test_Mode               U8FactoryTestModeB.Bit.b1
+#define            Bit2_Display_Test_Mode            U8FactoryTestModeB.Bit.b2
+
+// [2025-11-17] CH.PARK 얼음걸림 제어를 위한 구조체 추가
 ICE_STUCK_1 IceStuck;
+ICE_DOOR_REED IceDoorReed;
 /***********************************************************************************************************************
 * Function Name: System_ini
 * Description  :
@@ -314,6 +325,7 @@ void ice_select_door_close_24_hour(void)
     else{}
 }
 
+/***********************************************************************************************************************/
 /**
  * @brief 얼음 걸림 제어 관련 변수 초기화
  *
@@ -326,12 +338,31 @@ void IceStuckInit(void)
     IceStuck.u8IceJamProcessCount = 0;
 }
 
+/***********************************************************************************************************************/
+/**
+ * @brief 얼음걸림 동작 시퀀스 모드 설정
+ *
+ * @param mu8_ice_jam_resolve_step
+ */
+void SetIceStuckStatus(ICE_JAM_RESV_STEP mu8_ice_jam_resolve_step)
+{
+    IceStuck.u8IceJamResolveStep = mu8_ice_jam_resolve_step;
+}
+
+/***********************************************************************************************************************/
 /**
  * @brief 리드 스위치 추가된 모델의 얼음 걸림 동작
  *
  */
 void IceStuckProcess(void)
 {
+    // [2025-11-17] CH.PARK 검사모드 시 얼음걸림 제어 미가동
+    if( u8FactoryTestMode != NONE_TEST_MODE)
+    {
+        IceStuckInit();
+        return;
+    }
+
     /* 2025-10-28 CH.PARK 모델 판단 미완료 시 */
     if(model.u8IsModelChecked == CLEAR)
     {
@@ -353,18 +384,19 @@ void IceStuckProcess(void)
         return;
     }
 
+    // 얼음걸림 상황 발생
     if(IceStuck.u8IceJamCheck == SET)
     {
         if(gu16_IceSelect_StepMotor == 0)
         {
             /* 2025-10-28 CH.PARK 닫았지만 감지 안됐으면 즉시 얼음 걸림 해제동작 수행 */
-            if(GET_INNER_DOOR_REED_SW() == SET)
+            if(GET_INNER_DOOR_REED_SW() == ACTIVE_LOW_NO_DETECTED)
             {
-                IceStuck.u8IceJamResolveStep = PROCESS_ICE_JAM_DOOR_OPEN;
+                SetIceStuckStatus(PROCESS_ICE_JAM_DOOR_OPEN);
             }
             else
             {
-                IceStuck.u8IceJamResolveStep = PROCESS_ICE_JAM_INIT;
+                SetIceStuckStatus(PROCESS_ICE_JAM_INIT);
             }
 
             IceStuck.u8IceJamCheck = CLEAR;
@@ -373,7 +405,7 @@ void IceStuckProcess(void)
     }
 
     IceStuck.u8IceJamProcessTimer++;
-    if(IceStuck.u8IceJamProcessTimer >= 10)      // 1초 마다
+    if(IceStuck.u8IceJamProcessTimer >= ICE_JAM_PROCESS_TIME_MAX)      // 1초 마다
     {
         IceStuck.u8IceJamProcessTimer = 0;
         switch (IceStuck.u8IceJamResolveStep)
@@ -383,7 +415,11 @@ void IceStuckProcess(void)
                 break;
 
             case PROCESS_ICE_JAM_DOOR_OPEN:
-                IceStuck.u8IceJamProcessCount++;
+                if(IceStuck.u8IceJamProcessCount < ICE_JAM_RESV_COUNT_MAX)
+                {
+                    IceStuck.u8IceJamProcessCount++;
+                }
+
                 // 이너도어 OPEN
                 F_IceSelect = SET;
                 F_IceOpen = SET;
@@ -393,7 +429,7 @@ void IceStuckProcess(void)
                 && (gu16_Ice_Door_StepMotor == STEP_ANGLE_DOOR)
                 )
                 {
-                    IceStuck.u8IceJamResolveStep++;
+                    SetIceStuckStatus(PROCESS_ICE_JAM_FEEDER_BACK);
                 }
                 break;
 
@@ -407,7 +443,7 @@ void IceStuckProcess(void)
                 bit_ice_out_back_1s_state = CLEAR;
                 bit_ice_out_back_state = CLEAR;
 
-                IceStuck.u8IceJamResolveStep++;
+                SetIceStuckStatus(PROCESS_ICE_JAM_FEEDER_CHECK);
                 break;
 
             case PROCESS_ICE_JAM_FEEDER_CHECK:
@@ -418,7 +454,7 @@ void IceStuckProcess(void)
                 /* 역회전제어 완료 시 */
                 if(bit_ice_stuck_back_state == CLEAR)
                 {
-                    IceStuck.u8IceJamResolveStep++;
+                    SetIceStuckStatus(PROCESS_ICE_JAM_DOOR_CLOSE);
                 }
                 break;
 
@@ -426,7 +462,7 @@ void IceStuckProcess(void)
                 F_IceSelect = CLEAR;
                 F_IceOpen = SET;
 
-                IceStuck.u8IceJamResolveStep++;
+                SetIceStuckStatus(PROCESS_ICE_JAM_DOOR_CLOSE_CHECK);
 
                 break;
 
@@ -437,45 +473,145 @@ void IceStuckProcess(void)
                     /* 2025-10-29 CH.PARK 확장성을 생각해서 그냥 횟수만 단발성 1회로 수정 */
                     if(IceStuck.u8IceJamProcessCount >= ICE_JAM_RESV_COUNT_MAX)
                     {
-                        IceStuck.u8IceJamResolveStep = PROCESS_ICE_JAM_DONE;
+                        /* LOW : 감지 */
+                        if(GET_INNER_DOOR_REED_SW() == ACTIVE_LOW_DETECTED)
+                        {
+                            // IceDoor ClOSE
+                            SetIceStuckStatus(PROCESS_ICE_JAM_DONE);
+                        }
+                        else
+                        {
+                            // 미감지 시 음성안내 후 해제 제어 종료
+                            SetIceStuckStatus(PROCESS_ICE_JAM_ERROR);
+                        }
                     }
                     else
                     {
                         /* LOW : 감지 */
-                        if(GET_INNER_DOOR_REED_SW() == CLEAR)
+                        if(GET_INNER_DOOR_REED_SW() == ACTIVE_LOW_DETECTED)
                         {
                             // IceDoor ClOSE
-                            IceStuck.u8IceJamResolveStep++;
+                            SetIceStuckStatus(PROCESS_ICE_JAM_DONE);
                         }
                         else
                         {
                             // 미감지 시 처음부터 다시
-                            IceStuck.u8IceJamResolveStep = PROCESS_ICE_JAM_DOOR_OPEN;
+                            SetIceStuckStatus(PROCESS_ICE_JAM_DOOR_OPEN);
                         }
                     }
                 }
                 break;
 
             case PROCESS_ICE_JAM_DONE:
-                IceStuck.u8IceJamResolveStep = PROCESS_ICE_JAM_INIT;
+                SetIceStuckStatus(PROCESS_ICE_JAM_INIT);
 
                 /* 2025-10-28 CH.PARK 걸림 해제 완료 시 아이스도어 닫음 */
                 F_IceOpen = CLEAR;
                 break;
 
+            case PROCESS_ICE_JAM_ERROR:
+                SetIceStuckStatus(PROCESS_ICE_JAM_VOICE_INFO_PLAY);
+
+                /* 2025-10-28 CH.PARK 걸림 해제 완료 시 아이스도어 닫음 */
+                F_IceOpen = CLEAR;
+                break;
+
+            case PROCESS_ICE_JAM_VOICE_INFO_PLAY:       // [2025-11-17] CH.PARK 얼음걸림 해제 안내음성 안내
+                /* [2025-11-17] CH.PARK 아이스도어 닫힘 시 음성안내 송출 */
+                if(gu16_Ice_Door_StepMotor == CLEAR)
+                {
+                    // 얼음걸림 해제 안내음성 안내
+                    SetIceStuckStatus(PROCESS_ICE_JAM_INIT);
+
+                    // 부팅 후 최대 2회까지만 음성안내 송출
+                    if(IceStuck.u8IceJamVoicePlayCount < ICE_JAM_VOICE_INFO_PLAY_COUNT_MAX)
+                    {
+                        // 메모리주소 변경필요
+                        Play_Voice(VOICE_151_SPECIAL_FUNCTION);
+                        IceStuck.u8IceJamVoicePlayCount++;
+                    }
+                }
+                break;
+
+
             default:
-                IceStuck.u8IceJamResolveStep = PROCESS_ICE_JAM_INIT;
+                SetIceStuckStatus(PROCESS_ICE_JAM_INIT);
                 break;
         }
     }
 }
 
-
+/***********************************************************************************************************************/
+/**
+ * @brief 아이스도어 리드 상태 초기화
+ *
+ */
+ void IceDoorReedInit(void)
+ {
+    IceDoorReed.u8IceDoorPreStatus = ACTIVE_LOW_NO_DETECTED;
+    IceDoorReed.u8IceDoorCurStatus = ACTIVE_LOW_NO_DETECTED;
+    IceDoorReed.u8IceDoorInputTimer = 0;
+    IceDoorReed.u8IceDoorStatus = CLEAR;
+ }
 
 /***********************************************************************************************************************/
+/**
+ * @brief 얼음문 리드 상태 조회 (1초이상 미감지/감지 시 확정)
+ *
+ * @return U8
+ */
+void CheckIceDoorReedStatus(void)
+{
+    /* 2025-10-28 CH.PARK 리드스위치 사용안하는 모델(기존모델)일 시 */
+    if(GetModel() != MODEL_REED_USE)
+    {
+        return;
+    }
+
+    IceDoorReed.u8IceDoorCurStatus = GET_INNER_DOOR_REED_SW();
+
+    if(IceDoorReed.u8IceDoorPreStatus != IceDoorReed.u8IceDoorCurStatus)
+    {
+        IceDoorReed.u8IceDoorPreStatus = IceDoorReed.u8IceDoorCurStatus;
+        IceDoorReed.u8IceDoorInputTimer = 0;
+    }
+    else
+    {
+        IceDoorReed.u8IceDoorInputTimer++;
+        if(IceDoorReed.u8IceDoorInputTimer >= ICE_DOOR_REED_INPUT_TIME_MAX)
+        {
+            IceDoorReed.u8IceDoorInputTimer = ICE_DOOR_REED_INPUT_TIME_MAX;
+
+            if(IceDoorReed.u8IceDoorCurStatus == ACTIVE_LOW_DETECTED)
+            {
+                SetIceDoorReedStatus(REED_DETECTED);
+            }
+            else
+            {
+                SetIceDoorReedStatus(REED_NO_DETECTED);
+            }
+        }
+    }
+}
 
 /***********************************************************************************************************************/
+/**
+ * @brief 아이스도어 리드 상태 설정
+ *
+ * @param mu8_reed_status
+ */
+void SetIceDoorReedStatus(REED_INFO mu8_reed_status)
+{
+    IceDoorReed.u8IceDoorStatus = mu8_reed_status;
+}
 
 /***********************************************************************************************************************/
-
-/***********************************************************************************************************************/
+/**
+ * @brief 아이스도어 리드 상태 리턴
+ *
+ * @return REED_INFO
+ */
+REED_INFO GetIceDoorReedStatus(void)
+{
+    return IceDoorReed.u8IceDoorStatus;
+}

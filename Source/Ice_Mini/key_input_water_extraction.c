@@ -30,7 +30,7 @@ void Extract_Key_Very_Long_Input(void);
 void Extract_No_Key(void);
 void Uart_Test_Mode_Extract_Key_Short_Input(void);
 /*************************************************************************************************************************/
-/* ï¿½Ã¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ãµï¿½ Å° ï¿½ï¿½ï¿½ï¿½ */
+/* ³Ã¿ÂÁ¤ ÃßÃâ °ü·ÃµÈ Å° º¯¼ö */
 U8  gu8_Key_Water_Extract;
 U8  u8Extract_Key_Buffer;
 U8  u8Extract_Key_Input_Value;
@@ -66,7 +66,7 @@ extern U8 gu8_cup_led_off_time;
 extern U8 gu8_dripcoffee_percent;
 extern U8 gu8_Icewater_level;
 /*************************************************************************************************************************/
-// [25-02-18 19:30:33] yspark, ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ã·Î¿ï¿½ ï¿½ï¿½ï¿½ OPEN ï¿½Ã°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+// [25-02-18 19:30:33] yspark, ÃßÃâ Áß ¿À¹öÇÃ·Î¿ì ¹ëºê OPEN ½Ã°£ Á¦¾î º¯¼ö
 extern U16 gu16Extracted_Hz;
 extern bit bit_instruction_mode_start;
 /***********************************************************************************************************************
@@ -122,7 +122,7 @@ void input_water_extract_key(void)
             u16Extract_Key_Short_Counter = u16Extract_Key_Sampling_Counter;
             u16Extract_Key_Long_Counter++;
 
-            /*..hui [19-11-19ï¿½ï¿½ï¿½ï¿½ 4:26:26] Å° ï¿½ï¿½ï¿½ï¿½ï¿½Ö´Âµï¿½ï¿½ï¿½ ï¿½Â¼ï¿½ ï¿½ï¿½ï¿½ï¿½ Ä«ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­..*/
+            /*..hui [19-11-19¿ÀÈÄ 4:26:26] Å° ´­·ÁÀÖ´Âµ¿¾È ¿Â¼ö º¹±Í Ä«¿îÅÍ ÃÊ±âÈ­..*/
             /*gu16_water_select_return_time = 0;*/
         }
         else{}
@@ -146,17 +146,32 @@ void extract_key_management(void)
 {
     if(F_Extract_Key_Short_Push_State == CLEAR)
     {
-        if((u16Extract_Key_Short_Counter >= 1)    /* ï¿½Ö¼ï¿½ 100ms ï¿½Ì»ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ */
+        if((u16Extract_Key_Short_Counter >= 1)    /* ÃÖ¼Ò 100ms ÀÌ»ó ´­·¯¾ß ÇÔ */
         && (u16Extract_Key_Short_Counter < 2000)
         )
         {
-            Extract_Key_Short_Input();
+            if(u8FactoryTestMode == NONE_TEST_MODE)
+            {
+                Extract_Key_Short_Input();
+            }
+            else if (u8FactoryTestMode == DISPLAY_TEST_MODE)
+            {
+                Display_Test_Mode_Extract_Key_Short_Input();
+            }
+            else if (u8FactoryTestMode == UART_TEST_MODE)
+            {
+                Uart_Test_Mode_Extract_Key_Short_Input();
+            }
+            else if(u8FactoryTestMode == PCB_TEST_MODE)
+			{
+				PCB_Test_Mode_Extract_Key_Short_Input();
+			}
             F_Extract_Key_Short_Push_State = SET;
             u16Extract_Key_Short_Counter = 0;
         }
         else
         {
-            /* ï¿½ï¿½ï¿½â¶§ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Èµï¿½ */
+            /* ¿©±â¶§¸Å ¿¬¼ÓÃßÃâ ¾ÈµÊ */
             // if( F_IceOut == SET
             // && gu8_ice_out_continue == SET )
             // {
@@ -173,7 +188,11 @@ void extract_key_management(void)
             {
                 F_Extract_Key_Long_Push_State = SET;
 
-                Extract_Key_Long_Input();
+                if(u8FactoryTestMode == NONE_TEST_MODE)
+                {
+                    Extract_Key_Long_Input();
+                }
+                else{}
             }
             else{}
         }
@@ -186,7 +205,11 @@ void extract_key_management(void)
                     F_Extract_Key_Very_Long_Push_State = SET;
                     u16Extract_Key_Long_Counter = 0;
 
-                    Extract_Key_Very_Long_Input();
+                    if(u8FactoryTestMode == NONE_TEST_MODE)
+                    {
+                        Extract_Key_Very_Long_Input();
+                    }
+                    else{}
                 }
                 else{}
             }
@@ -221,9 +244,9 @@ void Extract_Key_Short_Input(void)
     }
     else {  }
 
-    /*..hui [23-5-12ï¿½ï¿½ï¿½ï¿½ 3:27:25] ï¿½ï¿½Æ° ï¿½ï¿½ï¿½ï¿½ ON, OFF Ç¥ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ° ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ç¥ï¿½ï¿½ ï¿½Ù·ï¿½ ï¿½ï¿½ï¿½ï¿½..*/
+    /*..hui [23-5-12¿ÀÈÄ 3:27:25] ¹öÆ° ¼³Á¤ ON, OFF Ç¥½ÃÁß ¹öÆ° ´©¸£¸é Ç¥½Ã ¹Ù·Î Á¾·á..*/
     stop_button_set_display();
-    /*..hui [24-4-25ï¿½ï¿½ï¿½ï¿½ 7:12:26] LED ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì´ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½..*/
+    /*..hui [24-4-25¿ÀÈÄ 7:12:26] LED Á¡¸êÁßÀÌ´ø°Å ÁßÁö..*/
     /////off_all_flick();
 
     if(F_FW_Version_Display_Mode != SET)
@@ -243,7 +266,7 @@ void Extract_Key_Short_Input(void)
         return;
     }
 
-    /* ï¿½ï¿½ï¿½Â»ï¿½ï¿½ ï¿½ß¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
+    /* °í¿Â»ì±Õ Áß¿¡´Â ÃßÃâ¾ÈÇÔ */
     if(bit_ice_tank_ster_start == SET)
     {
         play_voice_ice_tray_hot_ster_is_going_86();
@@ -275,7 +298,7 @@ void Extract_Key_Short_Input(void)
         return;
     }
 
-    /* ï¿½ï¿½ï¿½Î»ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ° ï¿½Ô·ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ß´ï¿½
+    /* À¯·Î»ì±Õ Áß ÃßÃâ ¹öÆ° ÀÔ·Â ½Ã Áï½Ã Áß´Ü
     Cody Water Line Clean Service */
     if(cody_water_line.gu8_start == SET)
     {
@@ -284,7 +307,7 @@ void Extract_Key_Short_Input(void)
     }
     else {  }
 
-    /* ï¿½ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ò°ï¿½ */
+    /* ÇÊÅÍÄ¿¹ö °¨Áö ½Ã ÃßÃâºÒ°¡ */
     if(bit_filter_cover == CLEAR)
     {
         play_voice_filter_cover_opened_44();
@@ -297,7 +320,7 @@ void Extract_Key_Short_Input(void)
         return;
     }
 
-    /*..hui [25-6-2ï¿½ï¿½ï¿½ï¿½ 1:16:55] ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ç° ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Æ° ï¿½ï¿½ï¿½ï¿½..*/
+    /*..hui [25-6-2¿ÀÈÄ 1:16:55] ´ÚÅÍ Á¦Ç° ¼³¸í ¸ðµå½Ã ÃßÃâ¹öÆ° ¸·À½..*/
     if( gu8_flushing_mode > FLUSHING_NONE_STATE && bit_instruction_mode_start == SET )
     {
         play_melody_warning_197();
@@ -339,6 +362,54 @@ void Extract_Key_Short_Input(void)
     water_extract_key();
 }
 
+#ifdef _DISPLAY_FCT_SUB_LINE_
+void Display_Test_Mode_Extract_Key_Short_Input(void)
+{
+	if(Disp_test_step == DISPLAY_TEST_BTN_ICE_EXTRACT)
+	{
+        if(display_test_flick_timer_100ms >= 24)
+        {
+            Disp_test_step++;
+            display_test_flick_timer_100ms = 0;
+            play_voice_test_mode_151();
+        }
+    }
+}
+#else
+void Display_Test_Mode_Extract_Key_Short_Input(void)
+{
+    if(gu8_water_ext_test_input < 1)
+    {
+        gu8_water_ext_test_input++;
+    }
+    else {  }
+
+    // if(gu8_water_ext_test_input >= 2)
+    // {
+    //     gu8_water_ext_test_input = 0;
+    // }
+    // else{}
+
+    // play_melody_select_196();
+    play_voice_test_mode_151();
+}
+#endif
+
+/***********************************************************************************************************************
+* Function Name: System_ini
+* Description  :
+***********************************************************************************************************************/
+void Uart_Test_Mode_Extract_Key_Short_Input(void)
+{
+    gu8_water_ext_test_input++;
+
+    if(gu8_water_ext_test_input >= 2)
+    {
+        gu8_water_ext_test_input = 0;
+    }
+    else{}
+}
+
 /***********************************************************************************************************************
 * Function Name: System_ini
 * Description  :
@@ -356,37 +427,37 @@ void water_extract_key(void)
     bit_30_min_no_use_start = CLEAR;
     gu32_no_use_30_min_timer = CLEAR;
 
-	/*..sean [25-02-03] E08 ï¿½ï¿½ï¿½ï¿½ ï¿½ÈµÇ¾ï¿½ï¿½Ö¾î¼­ ï¿½ß°ï¿½..*/
+	/*..sean [25-02-03] E08 ¿¡·¯ ¾ÈµÇ¾îÀÖ¾î¼­ Ãß°¡..*/
 	if( Bit3_Leakage_Sensor_Error__E01 == SET
     // || Bit1_Main_Water_Flow_Leaked_Error__E02 == SET
     // || Bit6_Main_Water_Flow_Block_Error__E09 == SET
     || (Bit0_Hot_Water_Flow_Block_Error__E08 == SET && u8WaterOutState == HOT_WATER_SELECT)
     )
     {
-        /*..hui [21-7-23ï¿½ï¿½ï¿½ï¿½ 7:12:37] ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ß»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ì¸µï¿½ì¸µ..*/
+        /*..hui [21-7-23¿ÀÈÄ 7:12:37] ÃÖÃÊ ¿¡·¯ ¹ß»ýÇßÀ»¶§ Á¦¿ÜÇÏ°í ¹«Á¶°Ç ¶ì¸µ¶ì¸µ..*/
         play_melody_warning_197();
         gu8_error_popup_enable = SET;
         return;
     }
     else{}
 
-    /*..sean [25-06-11] ï¿½Ü¼ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½É·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Clearï¿½ï¿½ ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½ ..*/
+    /*..sean [25-06-11] ´Ü¼ö ¿¡·¯ °É·ÁÀÖÀ¸¸é Clear¸¸ ÇØÁÖµµ·Ï ..*/
 	if( Bit6_Main_Water_Flow_Block_Error__E09 == SET )
 	{
 		gu8_clear_block_error = SET;
-		/*..sean [25-07-08] ï¿½Â¼ï¿½ ï¿½Ü¼ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½É·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 30ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Çµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½..*/
+		/*..sean [25-07-08] ¿Â¼ö ´Ü¼ö ¿¡·¯ °É·ÁÀÖÀ¸¸é 30ÃÊ µ¿¾È À¯ÁöµÇµµ·Ï º¯°æ..*/
     	//gu8_clear_hot_block_error = SET;
-    	// ï¿½Ã¼ï¿½,ï¿½ï¿½ï¿½ï¿½ / ï¿½Â¼ï¿½ ï¿½Ð¸ï¿½
+    	// ³Ã¼ö,Á¤¼ö / ¿Â¼ö ºÐ¸®
 		play_melody_select_196();
 		return;
 	}
 	else {}
 
-    /*..sean [25-07-08] E08 ï¿½Ð¸ï¿½ ..*/
+    /*..sean [25-07-08] E08 ºÐ¸® ..*/
 	if( Bit0_Hot_Water_Flow_Block_Error__E08 == SET )
 	{
 		gu8_clear_block_error = SET;
-		/*..sean [25-07-08] ï¿½Â¼ï¿½ ï¿½Ü¼ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½É·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 30ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Çµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½..*/
+		/*..sean [25-07-08] ¿Â¼ö ´Ü¼ö ¿¡·¯ °É·ÁÀÖÀ¸¸é 30ÃÊ µ¿¾È À¯ÁöµÇµµ·Ï º¯°æ..*/
     	//gu8_clear_hot_block_error = SET;
 		//play_melody_select_196();
 		//return;
@@ -397,7 +468,7 @@ void water_extract_key(void)
         }
 		else
 		{
-			//È¤ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½É¼ï¿½ ï¿½Ö±ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½
+			//È¤½Ã ¼±ÅÃÀÌ µÉ¼ö ÀÖ±â ¶§¹®¿¡ Ãß°¡
 			play_melody_select_196();
 			//return;
 		}
@@ -415,7 +486,7 @@ void water_extract_key(void)
         }
     }
 
-    /* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å° ï¿½È´ï¿½ï¿½ï¿½ 250625 CH.PARK */
+    /* ¾óÀ½¹° ÃßÃâÁßÀÌ¸é ¹°ÃßÃâÅ° ¾È´­¸² 250625 CH.PARK */
     if((u8IceOutState == ICE_SELECT__ICE_WATER)
     && ((F_WaterOut == SET) || (F_IceOut == SET))
     )
@@ -425,7 +496,7 @@ void water_extract_key(void)
     }
     else {  }
 
-    /* ï¿½ï¿½î¸µ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ú°ï¿½ ï¿½î¶² ï¿½ï¿½Æ°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù·ï¿½ ï¿½ï¿½î¸µÇ¥ï¿½Ã´ï¿½ Ç®ï¿½ï¿½ï¿½ï¿½. 250714 CH.PARK */
+    /* Æä¾î¸µ Áß »ç¿ëÀÚ°¡ ¾î¶² ¹öÆ°À» ´©¸£¸é ¹Ù·Î Æä¾î¸µÇ¥½Ã´Â Ç®¸°´Ù. 250714 CH.PARK */
     if(( gu8_Led_Display_Step == LED_Display__WIFI_PAIRING )
     // && (gu8_Wifi_Pairing_State == )
     )
@@ -435,7 +506,7 @@ void water_extract_key(void)
     }
     else {  }
 
-    /* ï¿½Ã·ï¿½ï¿½ï¿½ ï¿½ï¿½Åµ ï¿½ï¿½ ï¿½Â¼ï¿½ ï¿½ï¿½ï¿½ï¿½Ò°ï¿½ 250611 CH.PARK */
+    /* ÇÃ·¯½Ì ½ºÅµ ½Ã ¿Â¼ö ÃßÃâºÒ°¡ 250611 CH.PARK */
     if(F_WaterOut == CLEAR)
     {
         if( F_First_Hot_Effluent == SET )
@@ -468,10 +539,10 @@ void water_extract_key(void)
         stop_cold_off_flick();
         init_water_extract_display();
 
-        /* ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â·ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Å°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½, ï¿½ï¿½/ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 250625 CH.PARK */
+        /* ¾óÀ½ ¼±ÅÃÁßÀÎ »óÅÂ·Î ¹° ÃßÃâÅ°¸¦ ´­·¶À» ½Ã, ³Ã/Á¤Áß ÀÌÀü¿¡ ¼±ÅÃÇÑ ¹° Á¾·ù·Î ¼±ÅÃ 250625 CH.PARK */
         if(u8IceOutState != ICE_SELECT__NONE)
         {
-            // ï¿½Â¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¸ï¿½ ï¿½Ë¾Æ¼ï¿½ ï¿½ï¿½ï¿½Æ¿ï¿½ï¿½ï¿½ ï¿½ï¿½. ï¿½Çµï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½×¶ï¿½ ï¿½ï¿½ ï¿½ï¿½
+            // ¿Â¼ö ¼±ÅÃÁßÀÌ¸é ¾Ë¾Æ¼­ µ¹¾Æ¿À±ä ÇÔ. ÇÇµå¹é¿À¸é ±×¶§ ÇÒ °Í
             u8IceOutState = ICE_SELECT__NONE;
             play_melody_select_196();
 
@@ -490,7 +561,7 @@ void water_extract_key(void)
         F_WaterOut = SET;
         F_Effluent_OK = CLEAR;
 
-        /*..hui [19-9-5ï¿½ï¿½ï¿½ï¿½ 4:49:47] ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Þ´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½..*/
+        /*..hui [19-9-5¿ÀÈÄ 4:49:47] ¿¬¼ÓÃßÃâÀÌ ¸Þ´º¼ÓÀ¸·Î..*/
         if( (gu8Cup_level == CUP_LEVEL_CONTINUE)
         && (bit_myWater_setting_start == CLEAR)
         )
@@ -521,7 +592,7 @@ void water_extract_key(void)
         {
             if(my_recipe_select == MY_INDEX_DRIPCOFFEE)
             {
-                /* ï¿½å¸³Ä¿ï¿½ï¿½ ï¿½Ù½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ Ã³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ç´ï¿½ï¿½Ï°ï¿½ (ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½) 250722 CH.PARK */
+                /* µå¸³Ä¿ÇÇ ´Ù½Ã ÃßÃâ ½ÃÄ×À» ¶§ Ã³À½ºÎÅÍ ÆÇ´ÜÇÏ°Ô (¹ö±× °³¼±) 250722 CH.PARK */
                 gu16Extracted_Hz = 0;
                 drip_timer = 0;
                 gu8_dripcoffee_percent = 0;
@@ -534,7 +605,7 @@ void water_extract_key(void)
         }
         else
         {
-            /* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ã¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ç¥ï¿½Ã·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½È¸Â´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 250718 CH.PARK */
+            /* ¿¬¼ÓÃßÃâ ½Ã¿¡´Â ÃßÃâÇ¥½Ã·®°ú ½ÇÁ¦ Á¤·® ¾È¸Â´Â Çö»ó °³¼± 250718 CH.PARK */
             u16Efluent_Time = EXTRACT_TIME_CONTINUE;    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ MAX ï¿½Ã°ï¿½ ï¿½ï¿½ï¿½ï¿½
             effluent_hz_decision();
             gu16_total_extract_amount = 1990;
@@ -620,7 +691,7 @@ void effluent_hz_decision(void)
     }
     else
     {
-        /* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
+        /* ¾óÀ½¹° */
         if(u8IceOutState == ICE_SELECT__ICE_WATER)
         {
             ice_water_effluent_hz();
@@ -814,7 +885,7 @@ void ice_water_effluent_hz(void)
 ***********************************************************************************************************************/
 void hot_effluent_hz(void)
 {
-	// ï¿½×½ï¿½Æ® ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½****
+	// Å×½ºÆ® ÈÄ ¼öÁ¤ ¿¹Á¤****
     #if 1
     switch(gu8Cup_level)
     {
@@ -886,7 +957,7 @@ void Extract_Key_Long_Input(void)
 ***********************************************************************************************************************/
 void ice_extract_long_key(void)
 {
-    /* ï¿½ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ò°ï¿½ */
+    /* ÇÊÅÍÄ¿¹ö °¨Áö ½Ã ÃßÃâºÒ°¡ */
     if(bit_filter_cover == CLEAR)
     {
         return;
@@ -903,7 +974,7 @@ void ice_extract_long_key(void)
         return;
     }
 
-    /* ï¿½ï¿½ï¿½Â»ï¿½ï¿½ ï¿½ß¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
+    /* °í¿Â»ì±Õ Áß¿¡´Â ÃßÃâ¾ÈÇÔ */
     if(bit_ice_tank_ster_start == SET)
     {
         // play_voice_ice_tray_hot_ster_is_going_86();
@@ -934,7 +1005,7 @@ void ice_extract_long_key(void)
         return;
     }
 
-    /*..hui [25-1-9ï¿½ï¿½ï¿½ï¿½ 7:56:24] ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¶ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½?..*/
+    /*..hui [25-1-9¿ÀÈÄ 7:56:24] ¾óÀ½¼±ÅÃÀÏ¶§¸¸ ¿¬¼ÓÃßÃâ °¡´É?..*/
     if( u8IceOutState == ICE_SELECT__ICE )
     {
         if( F_IceOut == SET )
@@ -963,14 +1034,14 @@ void water_extract_long_key(void)
 {
     gu16_water_select_return_time = 0;
 
-    /*..hui [19-11-18ï¿½ï¿½ï¿½ï¿½ 2:48:30] ï¿½ï¿½ï¿½ï¿½ ï¿½Þ´ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½..*/
+    /*..hui [19-11-18¿ÀÈÄ 2:48:30] ¿¬¼Ó ¸Þ´º·Î ½ÃÀÛ ½Ã..*/
     if(u8Extract_Continue == SET || bit_myWater_setting_start == SET)
     {
         return;
     }
     else{}
 
-    /* ï¿½ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ò°ï¿½ */
+    /* ÇÊÅÍÄ¿¹ö °¨Áö ½Ã ÃßÃâºÒ°¡ */
     if(bit_filter_cover == CLEAR)
     {
         return;
@@ -994,7 +1065,7 @@ void water_extract_long_key(void)
         return;
     }
 
-    /* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Æ° ï¿½Ô·ï¿½ ï¿½Èµï¿½ 250625 CH.PARK */
+    /* ¾óÀ½¹° ¼±ÅÃÁßÀÌ¸é ¿À¸¥ÂÊ ÃßÃâ¹öÆ° ÀÔ·Â ¾ÈµÊ 250625 CH.PARK */
     if(u8IceOutState == ICE_SELECT__ICE_WATER)
     {
         return;
@@ -1006,14 +1077,14 @@ void water_extract_long_key(void)
         u16Efluent_Time = EXTRACT_TIME_CONTINUE;
         u8Extract_Continue = SET;
 
-        /*..hui [19-12-5ï¿½ï¿½ï¿½ï¿½ 4:48:26] ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ°ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï´Â°É·ï¿½..*/
+        /*..hui [19-12-5¿ÀÈÄ 4:48:26] ÃßÃâ ¹öÆ°À¸·Î ÀÎÇÑ ¿¬¼ÓÃßÃâÀº ¹°·®Àº º¯°æ ¾ÈÇÏ´Â°É·Î..*/
         gu8Cup_level = CUP_LEVEL_CONTINUE;
 
-        /* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ã¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ç¥ï¿½Ã·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½È¸Â´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 250718 CH.PARK */
+        /* ¿¬¼ÓÃßÃâ ½Ã¿¡´Â ÃßÃâÇ¥½Ã·®°ú ½ÇÁ¦ Á¤·® ¾È¸Â´Â Çö»ó °³¼± 250718 CH.PARK */
         effluent_hz_decision();
         gu16_total_extract_amount = 1990;
         // play_melody_continue_extract_start_192();
-        /* ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ø´ï¿½ ï¿½Èµï¿½ï¿½ï¿½ï¿½ï¿½ mini, 1kgï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 250718 CH.PARK */
+        /* Á¶±Ý ÀÌÇØ´Â ¾ÈµÇÁö¸¸ mini, 1kg¿¡ ¸ÂÃã 250718 CH.PARK */
         Play_Voice(VOICE_192_MELODY_DISPENSE_CONTINUOUS);
     }
     else
@@ -1038,7 +1109,7 @@ void Extract_Key_Very_Long_Input(void)
 
     gu16_water_select_return_time = 0;
 
-    /* ï¿½ï¿½ï¿½ï¿½Å° 8ï¿½ï¿½ ï¿½Ì»ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ */
+    /* ÃßÃâÅ° 8ÃÊ ÀÌ»ó ´­·ÈÀ» ½Ã ÃßÃâ Á¾·á */
     if( F_WaterOut == SET )
     {
         F_WaterOut = CLEAR;

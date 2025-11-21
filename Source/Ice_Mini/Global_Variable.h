@@ -150,10 +150,10 @@ typedef enum
     STATE_32_DRAIN_EMPTY = 32,         /* [±â¼ú°úÁ¦] Á¦ºù¼ö ÅõÀÔ Àü µå·¹ÀÎÅÊÅ© ºñ¿ì±â */
 
     STATE_40_ICE_TRAY_MOVE_DOWN = 40,
-    
+
     STATE_41_DRAIN_FLOW_CALCUATE = 41,  /* [±â¼ú°úÁ¦] Á¦ºù¼ö µå·¹ÀÎ À¯·®¼¾¼­ °è»ê */
     STATE_42_NEXT_ICE_AMOUNT_CAL = 42,  /* [±â¼ú°úÁ¦] ´ÙÀ½ Á¦ºù½Ã°£ °è»ê */
-    
+
     STATE_43_GAS_SWITCH_HOT_GAS = 43,
     STATE_44_CALC_HOT_GAS_TIME = 44,
     STATE_45_ICE_TAKE_OFF = 45,
@@ -2756,6 +2756,13 @@ typedef enum
 
     MODEL_NUM_MAX,
 } MODEL_DATA;
+typedef enum
+{
+    REED_NO_DETECTED,
+    REED_DETECTED,
+
+    REED_NUM_MAX,
+} REED_INFO;
 
 typedef enum
 {
@@ -2765,23 +2772,38 @@ typedef enum
     PROCESS_ICE_JAM_FEEDER_CHECK,
     PROCESS_ICE_JAM_DOOR_CLOSE,
     PROCESS_ICE_JAM_DOOR_CLOSE_CHECK,
-    PROCESS_ICE_JAM_DONE,
+    PROCESS_ICE_JAM_DONE,                   // Á¤»óÀûÀ¸·Î ´ÝÇûÀ» ¶§
+    PROCESS_ICE_JAM_ERROR,                  // ´ÝÈ÷Áö ¾Ê¾ÒÀ» ¶§
+    PROCESS_ICE_JAM_VOICE_INFO_PLAY,        // ´ÝÈ÷Áö ¾ÊÀ½À» ¾Ë¸²
 } ICE_JAM_RESV_STEP;
 
 typedef struct _modeling_
 {
-    MODEL_DATA u8model;             // ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½ ï¿½Ì»ï¿½ï¿?? / ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿??)
-    U8    u8IsModelChecked;         // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ (True : ï¿½Ï·ï¿½, False : ï¿½Ì¿Ï·ï¿½)
-    U8    u8ModelCheckTimer;        // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ã°ï¿½
+    MODEL_DATA u8model;             // ¸ðµ¨ (¸®µå ¹Ì»ç¿ë / ¸®µå »ç¿ë)
+    U8    u8IsModelChecked;         // ¸ðµ¨ ÆÇÁ¤¿©ºÎ (True : ¿Ï·á, False : ¹Ì¿Ï·á)
+    U8    u8ModelCheckTimer;        // ¸ðµ¨ ÆÇÁ¤½Ã°£
 } MODEL;
 
 typedef struct _icestuck_
 {
-    U8  u8IceJamCheck;                      // ï¿½ï¿½ï¿½ï¿½ï¿½É¸ï¿½ È®ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½ï¿½
-    U8  u8IceJamProcessTimer;               // ï¿½ï¿½ï¿½ï¿½ï¿½É¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½
-    U8  u8IceJamProcessCount;               // ï¿½ï¿½ï¿½ï¿½ï¿½É¸ï¿½ ï¿½ï¿½ï¿½ï¿½ È½ï¿½ï¿½
-    ICE_JAM_RESV_STEP  u8IceJamResolveStep; // ï¿½ï¿½ï¿½ï¿½ï¿½É¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    U8  u8IceJamCheck;                      // ¾óÀ½°É¸² È®ÀÎ ÇÃ·¡±×
+    U8  u8IceJamProcessTimer;               // ¾óÀ½°É¸² µ¿ÀÛ ½Ã°£
+    U8  u8IceJamProcessCount;               // ¾óÀ½°É¸² µ¿ÀÛ È½¼ö
+    ICE_JAM_RESV_STEP  u8IceJamResolveStep; // ¾óÀ½°É¸² µ¿ÀÛ ½ÃÄö½º
+    U8  u8IceJamVoicePlayCount;              // ¾óÀ½°É¸² ÇØÁ¦ ¾È³»À½¼º ¾È³» È½¼ö (ÃÖ´ë 2È¸)
 } ICE_STUCK_1;
+
+typedef struct _ice_door_reed_
+{
+    U8  u8IceDoorInputTimer;       // ¾ÆÀÌ½ºµµ¾î ¸®µå ÆÇ´Ü¿Ï·á ½Ã°£
+    U8  u8IceDoorPreStatus;       // ¾ÆÀÌ½ºµµ¾î ¸®µå ÀÌÀü »óÅÂ
+    U8  u8IceDoorCurStatus;       // ¾ÆÀÌ½ºµµ¾î ¸®µå ÇöÀç »óÅÂ
+    REED_INFO  u8IceDoorStatus;          // ¾ÆÀÌ½ºµµ¾î ¸®µå ÃÖÁ¾ »óÅÂ
+} ICE_DOOR_REED;
+
+#define ICE_JAM_PROCESS_TIME_MAX                10     // 1ÃÊ
+#define ICE_DOOR_REED_INPUT_TIME_MAX            10     // 1ÃÊ
+#define ICE_JAM_VOICE_INFO_PLAY_COUNT_MAX       2      // ¾óÀ½°É¸² ÇØÁ¦ ¾È³»À½¼º ¾È³» ÃÖ´ë È½¼ö (ÃÖ´ë 2È¸)
 
 #define ICE_JAM_RESV_COUNT_MAX              1
 
@@ -2789,6 +2811,16 @@ typedef struct _icestuck_
 #define ICE_OUT_2_STEP_TIME      50
 #define ICE_OUT_3_STEP_TIME      60
 #define ICE_OUT_4_STEP_TIME      70
+
+#define ACTIVE_LOW_DETECTED       0
+#define ACTIVE_LOW_NO_DETECTED    1
+
+#define ACTIVE_HIGH_DETECTED      1
+#define ACTIVE_HIGH_NO_DETECTED   0
+
+#define INVALID         0
+#define SUSPECT         0.3F
+#define VALID           1.0F
 
 /***********************************************************************************************************************
 Global functions

@@ -93,6 +93,17 @@ void time_setting(void)
         Bit0_Ice_Water_Minus_Indicator = CLEAR;
         /*time_setting_up();*/
 		time_setting_down();
+#if 0
+        /*..hui [23-8-1오후 3:05:27] 온수가 감소임.. 반대로 돼있었음..*/
+        if( gu8_time_setting_mode == CLEAN_RESERVE_TIME_SETTING_MODE )
+        {
+            reserve_time_setting_down();
+        }
+        else
+        {
+            time_setting_down();
+        }
+#endif
     }
     else if(Bit0_Ice_Water_Continue == SET)
     {
@@ -104,6 +115,18 @@ void time_setting(void)
     {
         Bit1_Ice_Plus_Indicator = CLEAR;
         time_setting_up();
+#if 0
+        /*time_setting_down();*/
+        /*..hui [23-8-1오후 3:05:39] 냉수가 증가..*/
+        if( gu8_time_setting_mode == CLEAN_RESERVE_TIME_SETTING_MODE )
+        {
+            reserve_time_setting_up();
+        }
+        else
+        {
+            time_setting_up();
+        }
+#endif
     }
     else if(Bit1_Ice_Continue == SET)
     {
@@ -118,6 +141,14 @@ void time_setting(void)
     }
     else{}
 
+    #if 0
+    if( Bit3_Settings_3S_Finish_Indicator == SET )
+    {
+        Bit3_Settings_3S_Finish_Indicator = CLEAR;
+        finish_time_setting_mode();
+    }
+    else{}
+    #endif
 
     if( gu8_time_setting_step == SETTING_TIME_FINISH )
     {
@@ -180,6 +211,14 @@ void time_setting_up(void)
         break;
     }
 
+#if 0
+		/*..hui [23-8-1오후 3:47:56] 연속으로 누를때는 부저음 안나게..*/
+		if( Bit0_Ice_Water_Continue == CLEAR )
+		{
+			play_melody_select_196();
+		}
+		else{}
+#endif
 }
 
 
@@ -228,6 +267,14 @@ void time_setting_down(void)
         break;
     }
 
+#if 0
+    /*..hui [23-8-1오후 3:47:56] 연속으로 누를때는 부저음 안나게..*/
+    if( Bit0_Ice_Water_Continue == CLEAR )
+    {
+        play_melody_select_196();
+    }
+    else{}
+#endif
 }
 
 /***********************************************************************************************************************
@@ -268,6 +315,14 @@ void time_setting_keep_up(void)
     }
     else {  }
     
+#if 0
+		/*..hui [23-8-1오후 3:47:56] 연속으로 누를때는 부저음 안나게..*/
+		if( Bit0_Ice_Water_Continue == CLEAR )
+		{
+			play_melody_select_196();
+		}
+		else{}
+#endif
 }
 
 /***********************************************************************************************************************
@@ -635,6 +690,14 @@ void reserve_time_setting_up(void)
 
         break;
     }
+#if 0
+    /*..hui [23-8-1오후 3:47:56] 연속으로 누를때는 부저음 안나게..*/
+    if( Bit1_Ice_Continue == CLEAR )
+    {
+        play_melody_select_196();
+    }
+    else{}
+#endif
 }
 
 
@@ -663,6 +726,21 @@ void reserve_time_setting_down(void)
 
         case SETTING_TIME_MIN :
 
+            #if 0
+            /*..hui [23-9-14오후 3:29:15] 살균시간은 30분 단위로 선택 가능..*/
+            if( gu8_temporary_Min == 0 )
+            {
+                gu8_temporary_Min = 30;
+            }
+            else if( gu8_temporary_Min == 30 )
+            {
+                gu8_temporary_Min = 0;
+            }
+            else
+            {
+                gu8_temporary_Min = 0;
+            }
+            #endif
 
             /*..hui [24-3-25오후 12:57:49] 세척 예약 시간도 1분단위로 설정 가능하도록..*/
             /*..hui [24-3-25오후 12:57:55] 상품기획팀, PM 요청..*/
@@ -686,14 +764,20 @@ void reserve_time_setting_down(void)
         break;
     }
 
+#if 0
+    /*..hui [23-8-1오후 3:47:56] 연속으로 누를때는 부저음 안나게..*/
+    if( Bit0_Ice_Water_Continue == CLEAR )
+    {
+        play_melody_select_196();
+    }
+    else{}
+#endif
 }
 
 /***********************************************************************************************************************
 * Function Name: System_ini
 * Description  :
 ***********************************************************************************************************************/
-
-
 
 
 

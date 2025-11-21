@@ -25,6 +25,64 @@ void breath_control(void);
 ***********************************************************************************************************************/
 void breath_control(void)
 {
+    #if 0
+    if( gu8_Led_Display_Step == LED_Display__VERSION )
+    {
+        Bit1_Animation_Dimming_Water_Extract_State = CLEAR;
+        Bit0_Animation_Dimming_Ice_Extract_Outer_State = CLEAR;
+        Bit7_Animation_Dimming_Ice_Extract_Inner_State = CLEAR;
+        Bit2_Front_Under_Ice_Outer_Blue_Extract = CLEAR;
+        Bit1_Front_Under_Ice_Inner_Blue_Extract = CLEAR;
+    }
+    else if( gu8_Led_Display_Step == LE_DDisplay__FLUSHING )
+    {
+        Bit1_Animation_Dimming_Water_Extract_State = CLEAR;
+        Bit0_Animation_Dimming_Ice_Extract_Outer_State = CLEAR;
+        Bit7_Animation_Dimming_Ice_Extract_Inner_State = CLEAR;
+        Bit2_Front_Under_Ice_Outer_Blue_Extract = CLEAR;
+        Bit1_Front_Under_Ice_Inner_Blue_Extract = CLEAR;
+    }
+    else if( gu8_Led_Display_Step == LED_Display__SLEEP )
+    {
+        Bit1_Animation_Dimming_Water_Extract_State = CLEAR;
+        Bit0_Animation_Dimming_Ice_Extract_Outer_State = CLEAR;
+        Bit7_Animation_Dimming_Ice_Extract_Inner_State = CLEAR;
+        Bit2_Front_Under_Ice_Outer_Blue_Extract = CLEAR;
+        Bit1_Front_Under_Ice_Inner_Blue_Extract = CLEAR;
+    }
+	else if( gu8_Led_Display_Step == LED_Display__MANUAL_DRAIN )
+    {
+        Bit1_Animation_Dimming_Water_Extract_State = CLEAR;
+        Bit0_Animation_Dimming_Ice_Extract_Outer_State = CLEAR;
+        Bit7_Animation_Dimming_Ice_Extract_Inner_State = CLEAR;
+        Bit2_Front_Under_Ice_Outer_Blue_Extract = CLEAR;
+        Bit1_Front_Under_Ice_Inner_Blue_Extract = CLEAR;
+    }
+    else if( gu8_Led_Display_Step == LED_Display__WIFI_PAIRING )
+    {
+        Bit1_Animation_Dimming_Water_Extract_State = CLEAR;
+        Bit0_Animation_Dimming_Ice_Extract_Outer_State = CLEAR;
+        Bit7_Animation_Dimming_Ice_Extract_Inner_State = CLEAR;
+        Bit2_Front_Under_Ice_Outer_Blue_Extract = CLEAR;
+        Bit1_Front_Under_Ice_Inner_Blue_Extract = CLEAR;
+    }
+    else if( gu8_Led_Display_Step == LED_Display__WIFI_PAIRING )
+    {
+        Bit1_Animation_Dimming_Water_Extract_State = CLEAR;
+        Bit0_Animation_Dimming_Ice_Extract_Outer_State = CLEAR;
+        Bit7_Animation_Dimming_Ice_Extract_Inner_State = CLEAR;
+        Bit2_Front_Under_Ice_Outer_Blue_Extract = CLEAR;
+        Bit1_Front_Under_Ice_Inner_Blue_Extract = CLEAR;
+    }
+    else
+    {
+        Bit1_Animation_Dimming_Water_Extract_State = SET;
+        Bit0_Animation_Dimming_Ice_Extract_Outer_State = SET;
+        Bit7_Animation_Dimming_Ice_Extract_Inner_State = SET;
+        Bit2_Front_Under_Ice_Outer_Blue_Extract = SET;
+        Bit1_Front_Under_Ice_Inner_Blue_Extract = SET;
+    }
+    #endif
 
     if( gu8_Led_Display_Step == LED_Display__MAIN )
     {
@@ -43,8 +101,6 @@ void breath_control(void)
         Bit1_Front_Under_Ice_Inner_Blue_Extract = CLEAR;
     }
 }
-
-
 
 
 

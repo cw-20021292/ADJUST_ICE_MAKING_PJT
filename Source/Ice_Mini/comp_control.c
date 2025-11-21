@@ -10,7 +10,6 @@
 #include    "Global_Variable.h"
 #include    "Port_Define.h"
 #include    "Comp_Control.h"
-#include    "App_Comm_Protocol.h"
 
 void output_comp_control(void);
 void comp_stable_check(void);
@@ -149,6 +148,23 @@ void output_comp_control(void)
         gu8_cold_init_timer = 0;
     }
 
+    #if 0
+    if( gu8IceStep == STATE_31_MAIN_ICE_MAKING )
+    {
+        if( gu16IceMakeTime > 0 )
+        {
+            Bit1_Ice_Make_On_State = Bit1_Ice_Make_Go;
+        }
+        else
+        {
+            Bit1_Ice_Make_On_State = CLEAR;
+        }
+    }
+    else
+    {
+        Bit1_Ice_Make_On_State = CLEAR;
+    }
+    #endif
 
     if( Bit1_Ice_Make_Go == SET )
     {
@@ -189,6 +205,16 @@ void output_comp_control(void)
     {
         Bit2_Ice_Init_On_State = F_IceInit;
 
+        #if 0
+        if( gu16IceMakeTime > 0 )
+        {
+            Bit2_Ice_Init_On_State = F_IceInit;
+        }
+        else
+        {
+            Bit2_Ice_Init_On_State = CLEAR;
+        }
+        #endif
     }
     else
     {
@@ -196,6 +222,24 @@ void output_comp_control(void)
     }
 
 
+    #if 0
+    /*..hui [23-9-4오후 2:51:07] 트레이 제빙방향 재시도중 해빙작업 핫가스 가동할때 조건..*/
+    if( F_Safety_Routine == SET && F_Ice_Tray_Down_Move_Reset == SET )
+    {
+        if( gu8_over_ice_melt_proc == 5 )
+        {
+            Bit3_Ice_Tray_Melt_On_State = SET;
+        }
+        else
+        {
+            Bit3_Ice_Tray_Melt_On_State = CLEAR;
+        }
+    }
+    else
+    {
+        Bit3_Ice_Tray_Melt_On_State = CLEAR;
+    }
+    #endif
 
     /*..hui [23-9-22오전 9:44:29] 해빙 동작 중 핫가스 동작 삭제..*/
     Bit3_Ice_Tray_Melt_On_State = CLEAR;
@@ -389,6 +433,14 @@ U8 cold_init_operation( U8 mu8_disable )
         break;
     }
 
+    #if 0
+    /*..hui [19-7-26오후 4:47:09] 컴프 가동중이라면 정지없이 즉시 냉수측으로 이동..*/
+    if(F_Comp_Output == SET)
+    {
+        mu8_return = SET;
+    }
+    else{}
+    #endif
 
     return mu8_return;
 }
@@ -540,6 +592,57 @@ void bldc_comp_on(void)
     }
 
 
+    #if 0
+    switch( gu8_bldc_on_step )
+    {
+        case 0:
+
+            gu16_bldc_on_timer++;
+
+            if( gu16_bldc_on_timer >= 10 )
+            {
+                gu16_bldc_on_timer = 0;
+                gu8_bldc_on_step++;
+            }
+            else{}
+
+        break;
+
+        case 1:
+
+            pCOMP = SET;
+            /*F_Comp_Output = SET;*/
+            gu16_bldc_on_timer = 0;
+            gu8_bldc_on_step++;
+
+        break;
+
+        case 2:
+
+            gu16_bldc_on_timer++;
+
+            if( gu16_bldc_on_timer >= 30 )
+            {
+                gu16_bldc_on_timer = 0;
+                gu8_bldc_on_step++;
+            }
+            else{}
+
+        break;
+
+        case 3:
+
+            pCOMP = SET;
+            F_Comp_Output = SET;
+
+        break;
+
+        default:
+            gu16_bldc_on_timer = 0;
+            gu8_bldc_on_step = 0;
+        break;
+    }
+    #endif
 }
 
 /***********************************************************************************************************************
@@ -637,12 +740,6 @@ U8 get_cold_mode_comp_rps(void)
         mu8_return = BLDC_COMP_45Hz;                    /* V18 냉각테이블 */
     }
 
-    /* CH.PARK 냉각 검토 고정값 데이터 반영 */
-    if(GetB1ColdTargetRPS() > 0)
-    {
-        mu8_return = GetB1ColdTargetRPS();
-    }
-
     return mu8_return;
 }
 
@@ -652,7 +749,5 @@ U8 get_cold_mode_comp_rps(void)
 * Function Name: System_ini
 * Description  :
 ***********************************************************************************************************************/
-
-
 
 

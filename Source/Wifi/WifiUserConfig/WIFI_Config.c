@@ -31,7 +31,11 @@ extern void Play_Voice(U16 mu16MemoryAddress);
 extern void get_wifi_time ( U16 mYear, U16 mMonth, U16 mDate, U16 mHour, U16 mMin, U16 mSec );
 extern void start_fota(void);
 
-
+extern TYPE_BYTE          U8FactoryTestModeB;
+#define            u8FactoryTestMode                 U8FactoryTestModeB.byte
+#define            Bit0_Pcb_Test_Mode                U8FactoryTestModeB.Bit.b0
+#define            Bit1_Uart_Test_Mode               U8FactoryTestModeB.Bit.b1
+#define            Bit2_Display_Test_Mode            U8FactoryTestModeB.Bit.b2
 
 /******************************************************************************/
 
@@ -44,6 +48,12 @@ extern void start_fota(void);
 /* User eeprom write settings */
 void UserWriteEep ( U16 mu16Addr, U8 mu8Val )
 {
+    if(u8FactoryTestMode != NONE_TEST_MODE)
+    {
+        return;
+    }
+    else{}
+
     if( mu16Addr == EEPROM_ADDR_WIFI_POWER )
     {
         /* Start user code.*/
@@ -135,7 +145,7 @@ void UserBuzzSound ( U16 mu16Buzz )
     U16 Sound = 0;
     switch( mu16Buzz )
     {
-        case WIFI_BUZZER_SELECT :       // ï¿½ï¿½î¸µ (ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ "ï¿½ï¿½")
+        case WIFI_BUZZER_SELECT :       // Æä¾î¸µ (¼±ÅÃÀ½ "¶ò")
             /* Start user code.*/
             // ex) Sound = 1196;
             Play_Voice(VOICE_196_MELODY_SELECT);
@@ -143,7 +153,7 @@ void UserBuzzSound ( U16 mu16Buzz )
             /* End user code. */
             break;
 
-        case WIFI_BUZZER_AP_CONNECT :   // APï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ "ï¿½ì¸®ï¿½ï¿½" / Wi-Fi ï¿½ï¿½ï¿½ï¿½ï¿½å°¡ È°ï¿½ï¿½È­ ï¿½Ç¾ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.)
+        case WIFI_BUZZER_AP_CONNECT :   // AP¿¬°á (ÁøÀÔÀ½ "¶ì¸®¸µ" / Wi-Fi ¿¬°á¸ðµå°¡ È°¼ºÈ­ µÇ¾ú½À´Ï´Ù.)
             /* Start user code.*/
             // ex) Sound = 1001;
             Play_Voice(VOICE_23_INFORM_APP_PAIRING_SUCCESS_WITH_WIFI);
@@ -151,7 +161,7 @@ void UserBuzzSound ( U16 mu16Buzz )
             /* End user code. */
             break;
 
-        case WIFI_BUZZER_BLE_CONNECT :  // APï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ "ï¿½ì¸®ï¿½ï¿½" / BLEï¿½ï¿½ï¿½ï¿½ï¿½å°¡ È°ï¿½ï¿½È­ ï¿½Ç¾ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.)
+        case WIFI_BUZZER_BLE_CONNECT :  // AP¿¬°á (ÁøÀÔÀ½ "¶ì¸®¸µ" / BLE¿¬°á¸ðµå°¡ È°¼ºÈ­ µÇ¾ú½À´Ï´Ù.)
             /* Start user code.*/
             // ex) Sound = 1001;
             Play_Voice(VOICE_19_START_BLE_PAIRNG);
@@ -159,7 +169,7 @@ void UserBuzzSound ( U16 mu16Buzz )
             /* End user code. */
             break;
 
-        case WIFI_BUZZER_SETUP :        // WIFI ON (ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ "ï¿½òµ¿¢ï¿½" / ï¿½ï¿½Ç°ï¿½ï¿½ Wi-Fiï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.)
+        case WIFI_BUZZER_SETUP :        // WIFI ON (¼³Á¤À½ "¶òµ¿¢Ö" / Á¦Ç°ÀÇ Wi-Fi°¡ ÄÑÁ³½À´Ï´Ù.)
             /* Start user code.*/
             // ex) Sound = 1198;
             Play_Voice(VOICE_27_INFORM_WIFI_ON);
@@ -167,7 +177,7 @@ void UserBuzzSound ( U16 mu16Buzz )
             /* End user code. */
             break;
 
-        case WIFI_BUZZER_SERVER_CONNECT :   // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ "ï¿½ì¸®ï¿½ï¿½ï¿½ï¿½" / ï¿½ï¿½Ç°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ç¾ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.)
+        case WIFI_BUZZER_SERVER_CONNECT :   // ¼­¹ö¿¬°á (¿¬°áÀ½ "¶ì¸®¸µ¢Ö" / Á¦Ç°°ú ¾ÛÀÌ ¼º°øÀûÀ¸·Î ¿¬°áµÇ¾ú½À´Ï´Ù.)
             /* Start user code.*/
             // ex) Sound = 0xFFFF;
             Play_Voice(VOICE_23_INFORM_APP_PAIRING_SUCCESS_WITH_WIFI);
@@ -175,7 +185,7 @@ void UserBuzzSound ( U16 mu16Buzz )
             /* End user code. */
             break;
 
-        case WIFI_BUZZER_CANCEL :           // WIFI OFF (ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ "ï¿½ï¿½ï¿½ï¿½" / ï¿½ï¿½Ç°ï¿½ï¿½ Wi-Fiï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.)
+        case WIFI_BUZZER_CANCEL :           // WIFI OFF (ÇØÁ¦À½ "µ¿¶ò" / Á¦Ç°ÀÇ Wi-Fi°¡ ²¨Á³½À´Ï´Ù.)
             /* Start user code.*/
             // ex) Sound = 1199;
             Play_Voice(VOICE_28_INFORM_WIFI_OFF);
@@ -183,7 +193,7 @@ void UserBuzzSound ( U16 mu16Buzz )
             /* End user code. */
             break;
 
-        case WIFI_BUZZER_AP_START :         // APï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ "ï¿½ï¿½ ï¿½ï¿½")
+        case WIFI_BUZZER_AP_START :         // AP½ÃÀÛÀ½ (¼³Á¤À½ "¶òµ¿ ¢Ö")
             /* Start user code.*/
             // ex) Sound = 1198;
             Play_Voice(VOICE_198_MELODY_SET_ON);
@@ -191,7 +201,7 @@ void UserBuzzSound ( U16 mu16Buzz )
             /* End user code. */
             break;
 
-        case WIFI_BUZZER_ERROR :            // ï¿½Ò°ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½")
+        case WIFI_BUZZER_ERROR :            // ºÒ°¡À½ (¿¡·¯À½ "¶ò±ø¶ò±ø")
             /* Start user code.*/
             // ex) Sound = 1197;
             Play_Voice(VOICE_197_MELODY_WARNING);
@@ -199,7 +209,7 @@ void UserBuzzSound ( U16 mu16Buzz )
             /* End user code. */
             break;
 
-        case WIFI_BUZZER_WiFi_OFF :         // Wi-Fi ï¿½ï¿½î¸µ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½) / Wi-Fi ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½å°¡ ï¿½ï¿½È°ï¿½ï¿½È­ ï¿½Ç¾ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.
+        case WIFI_BUZZER_WiFi_OFF :         // Wi-Fi Æä¾î¸µ ÇØÁ¦À½(µ¿¶ò) / Wi-Fi ¿¬°á ¸ðµå°¡ ºñÈ°¼ºÈ­ µÇ¾ú½À´Ï´Ù.
             /* Start user code.*/
             // ex) Sound = 1199;
             Play_Voice(VOICE_25_INFORM_WIFI_MODE_DEACTIVATED);
@@ -207,7 +217,7 @@ void UserBuzzSound ( U16 mu16Buzz )
             /* End user code. */
             break;
 
-        case WIFI_BUZZER_BLE_OFF :          // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½î¸µ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½) / ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½å°¡ ï¿½ï¿½È°ï¿½ï¿½È­ ï¿½Ç¾ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.
+        case WIFI_BUZZER_BLE_OFF :          // ºí·çÅõ½º Æä¾î¸µ ÇØÁ¦À½(µ¿¶ò) / ºí·çÅõ½º ¿¬°á ¸ðµå°¡ ºñÈ°¼ºÈ­ µÇ¾ú½À´Ï´Ù.
             /* Start user code.*/
             // ex) Sound = 1199;
             Play_Voice(VOICE_21_INFORM_APP_PAIRING_FAIL_WITH_BLE);
@@ -215,7 +225,7 @@ void UserBuzzSound ( U16 mu16Buzz )
             /* End user code. */
             break;
 
-        case WIFI_BUZZER_BLE_CERT :         // (ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ "ï¿½ï¿½") / ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È°ï¿½ï¿½È­ ï¿½ï¿½ï¿½ï¿½ / ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ô´Ï´ï¿½. ï¿½Û¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ìµï¿½ï¿½Ï´ï¿½ ï¿½ï¿½Æ°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½.
+        case WIFI_BUZZER_BLE_CERT :         // (¼±ÅÃÀ½ "¶ò") / ºí·çÅõ½º Á¡À¯ÀÎÁõ È°¼ºÈ­ »óÅÂ / Á¦Ç°ÀÎÁõÀ» ÁøÇà ÁßÀÔ´Ï´Ù. ¾Û¿¡¼­ °¡ÀÌµåÇÏ´Â ¹öÆ°À» ´­·¯ÁÖ¼¼¿ä.
             /* Start user code.*/
             // ex) Sound = 1196;
             Play_Voice(VOICE_29_APPLY_PRODUCT_CERT_OCCUPATION);
@@ -223,7 +233,7 @@ void UserBuzzSound ( U16 mu16Buzz )
             /* End user code. */
             break;
 
-        case WIFI_BUZZER_SERVER_FIRST :     // ï¿½ï¿½î¸µ ï¿½Ï·ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ "ï¿½ì¸®ï¿½ï¿½ï¿½ï¿½" / ï¿½ï¿½Ç°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ç¾ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.
+        case WIFI_BUZZER_SERVER_FIRST :     // Æä¾î¸µ ¿Ï·á ÈÄ ¼­¹ö¿¬°á (¿¬°áÀ½ "¶ì¸®¸µ¢Ö" / Á¦Ç°°ú ¾ÛÀÌ ¼º°øÀûÀ¸·Î ¿¬°áµÇ¾ú½À´Ï´Ù.
             /* Start user code.*/
             // ex) Sound = 0xFFFF;
             Play_Voice(VOICE_30_INFORM_APP_PAIRING_SUCCESS_WITH_WIFI);
@@ -231,7 +241,7 @@ void UserBuzzSound ( U16 mu16Buzz )
             /* End user code. */
             break;
 
-        case WIFI_BUZZER_SMART_CHECK_OK :       // (ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ "ï¿½ï¿½ ï¿½ï¿½") / ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½ ï¿½Ç¾ï¿½ ï¿½ï¿½Ç°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï½ï¿½ ï¿½ï¿½ ï¿½Ö½ï¿½ï¿½Ï´ï¿½.
+        case WIFI_BUZZER_SMART_CHECK_OK :       // (¼³Á¤À½ "¶òµ¿ ¢Ö") / ½º¸¶Æ® Áø´ÜÀÌ ¿Ï·á µÇ¾î Á¦Ç°À» »ç¿ëÇÏ½Ç ¼ö ÀÖ½À´Ï´Ù.
             /* Start user code.*/
             // ex) Sound = 1198;
             Play_Voice(VOICE_17_FINISH_SMART_TESTING_MODE_NO_ERROR);
@@ -239,7 +249,7 @@ void UserBuzzSound ( U16 mu16Buzz )
             /* End user code. */
             break;
 
-        case WIFI_BUZZER_SMART_CHECK_ERROR :    // ï¿½Ò°ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½") / ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½ ï¿½Ç¾ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.
+        case WIFI_BUZZER_SMART_CHECK_ERROR :    // ºÒ°¡À½ (¿¡·¯À½ "¶ò±ø¶ò±ø") / ½º¸¶Æ® Áø´ÜÀÌ ¿Ï·á µÇ¾ú½À´Ï´Ù.
             /* Start user code.*/
             // ex) Sound = 1197;
             Play_Voice(VOICE_18_FINISH_SMART_TESTING_MODE_WITH_ERROR);
@@ -264,7 +274,7 @@ void UserBuzzSound ( U16 mu16Buzz )
 /* Time Setting Option (When using A2010 Time) - Called when time data is received*/
 void SetUserSystemTime ( U16 mYear, U16 mMonth, U16 mDate, U16 mHour, U16 mMin, U16 mSec, U16 mDay )
 {   /* Start user code.*/
-    /* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® */
+    /* ¿ÍÀÌÆÄÀÌ ½Ã°£ µ¥ÀÌÅÍ ¾÷µ¥ÀÌÆ® */
     get_wifi_time( mYear, mMonth, mDate, mHour, mMin, mSec);
 
 
@@ -287,7 +297,7 @@ void SetUserSystemStatusData ( U8 mu8StatusType )
 {
     switch ( mu8StatusType )
     {
-        case USER_MODEL_TYPE:   // ï¿½ï¿½ Å¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        case USER_MODEL_TYPE:   // ¸ðµ¨ Å¸ÀÔ ¼³Á¤
         /*
             SetUserSystemStatus(mu8StatusType, 0U);       // e.g. CHP
             SetUserSystemStatus(USER_MODEL_TYPE, 1U);    // e.g. CP
@@ -296,18 +306,18 @@ void SetUserSystemStatusData ( U8 mu8StatusType )
 
         break;
 
-        case USER_FACTORY_STATUS:       // Wi-Fi ï¿½Ë»ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        case USER_FACTORY_STATUS:       // Wi-Fi °Ë»ç¸ðµå ÁøÀÔ ¼³Á¤
         /*
-            SetUserSystemStatus(mu8StatusType, 0U);       // e.g. ï¿½Ë»ï¿½ï¿½ï¿½ ï¿½Æ´ï¿½
-            SetUserSystemStatus(mu8StatusType, 1U);       // e.g. ï¿½Ë»ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+            SetUserSystemStatus(mu8StatusType, 0U);       // e.g. °Ë»ç¸ðµå ¾Æ´Ô
+            SetUserSystemStatus(mu8StatusType, 1U);       // e.g. °Ë»ç¸ðµå ÁøÀÔ
         */
 
         break;
 
-        case USER_RX_STATUS:    // ï¿½Ï¹ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ò°ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        case USER_RX_STATUS:    // ÀÏ¹ÝÁ¦¾î ºÒ°¡»óÅÂ ¼³Á¤
         /*
-            SetUserSystemStatus(mu8StatusType, 0U);       // e.g. ï¿½ï¿½ï¿½î°¡ï¿½ï¿½
-            SetUserSystemStatus(mu8StatusType, 1U);       // e.g. ï¿½ï¿½ï¿½ï¿½Ò°ï¿½
+            SetUserSystemStatus(mu8StatusType, 0U);       // e.g. Á¦¾î°¡´É
+            SetUserSystemStatus(mu8StatusType, 1U);       // e.g. Á¦¾îºÒ°¡
         */
 
         if((F_ExtractKeySet == SET)
@@ -315,29 +325,33 @@ void SetUserSystemStatusData ( U8 mu8StatusType )
         || (F_WaterOut == SET)
         || (bit_self_test_start == SET)
         || (F_Tank_Cover_Input == CLEAR)
+        || (Bit1_Uart_Test_Mode == SET)
+        || (Bit0_Pcb_Test_Mode == SET)
         || (bit_filter_all == CLEAR)
         )
         {
-            SetUserSystemStatus(mu8StatusType, 1U);     // ï¿½Ò°ï¿½
+            SetUserSystemStatus(mu8StatusType, 1U);     // ºÒ°¡
         }
         else
         {
-            SetUserSystemStatus(mu8StatusType, 0U);     // ï¿½ï¿½ï¿½ï¿½
+            SetUserSystemStatus(mu8StatusType, 0U);     // °¡´É
         }
         break;
 
-        case USER_SMART_POSSIBLE_STATUS:    // ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½Ò°ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        case USER_SMART_POSSIBLE_STATUS:    // ½º¸¶Æ®Áø´Ü ºÒ°¡»óÅÂ ¼³Á¤
         /*
-            SetUserSystemStatus(mu8StatusType, 0U);       // e.g. ï¿½ï¿½ï¿½Ü°ï¿½ï¿½ï¿½
-            SetUserSystemStatus(mu8StatusType, 1U);       // e.g. ï¿½ï¿½ï¿½ÜºÒ°ï¿½
+            SetUserSystemStatus(mu8StatusType, 0U);       // e.g. Áø´Ü°¡´É
+            SetUserSystemStatus(mu8StatusType, 1U);       // e.g. Áø´ÜºÒ°¡
         */
 
         if((F_ExtractKeySet == SET)
         || (bit_ice_tank_ster_start == SET)
         || (F_WaterOut == SET)
         || (F_Tank_Cover_Input == CLEAR)
+        || (Bit1_Uart_Test_Mode == SET)
+        || (Bit0_Pcb_Test_Mode == SET)
         || (bit_filter_all == CLEAR)
-        || (F_First_Hot_Effluent == SET)        // ï¿½ï¿½ï¿½Í¿ï¿½ ï¿½ï¿½ï¿½ï¿½ Ã¤ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Èµï¿½ (ï¿½Ã·ï¿½ï¿½ï¿½ ï¿½ï¿½Åµï¿½ï¿½ ï¿½Èµï¿½)
+        || (F_First_Hot_Effluent == SET)        // È÷ÅÍ¿¡ ¹°ÀÌ Ã¤¿öÁø »óÅÂÀÏ ¶§¿¡¸¸ °¡´É ¹°¾øÀ¸¸é ¾ÈµÊ (ÇÃ·¯½Ì ½ºÅµµµ ¾ÈµÊ)
         )
         {
             SetUserSystemStatus(mu8StatusType, 1U);
@@ -349,10 +363,10 @@ void SetUserSystemStatusData ( U8 mu8StatusType )
 
         break;
 
-        case USER_FOTA_POSSIBLE_STATUS:     // FOTA ï¿½Ò°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        case USER_FOTA_POSSIBLE_STATUS:     // FOTA ºÒ°¡ »óÅÂ ¼³Á¤
         /*
-            SetUserSystemStatus(mu8StatusType, 0U);       // e.g. FOTAï¿½ï¿½ï¿½ï¿½
-            SetUserSystemStatus(mu8StatusType, 1U);       // e.g. FOTAï¿½Ò°ï¿½
+            SetUserSystemStatus(mu8StatusType, 0U);       // e.g. FOTA°¡´É
+            SetUserSystemStatus(mu8StatusType, 1U);       // e.g. FOTAºÒ°¡
         */
 
         if ((F_ExtractKeySet == SET)
@@ -369,10 +383,10 @@ void SetUserSystemStatusData ( U8 mu8StatusType )
 
         break;
 
-        case USER_SMART_SENSING_STATUS:     // ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        case USER_SMART_SENSING_STATUS:     // ½º¸¶Æ®Áø´Ü Áß »óÅÂ ¼³Á¤
         /*
-            SetUserSystemStatus(mu8StatusType, 0U);       // e.g. ï¿½Ï¹ï¿½ ï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Æ´ï¿½)
-            SetUserSystemStatus(mu8StatusType, 1U);       // e.g. ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
+            SetUserSystemStatus(mu8StatusType, 0U);       // e.g. ÀÏ¹Ý »óÅÂ (½º¸¶Æ®Áø´Ü Áß »óÅÂ ¾Æ´Ô)
+            SetUserSystemStatus(mu8StatusType, 1U);       // e.g. ½º¸¶Æ® Áø´Ü ÁøÇà Áß
         */
 
         if ((bit_self_test_start == SET))
@@ -385,10 +399,10 @@ void SetUserSystemStatusData ( U8 mu8StatusType )
         }
         break;
 
-        case USER_FACTORY_DIRECTFOTA_STATUS:    // ï¿½ï¿½ï¿½Ì·ï¿½Æ® ï¿½ï¿½Å¸ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        case USER_FACTORY_DIRECTFOTA_STATUS:    // ´ÙÀÌ·ºÆ® Æ÷Å¸ ÁøÀÔ ¼³Á¤
         /*
-            SetUserSystemStatus(mu8StatusType, 0U);       // e.g. ï¿½ï¿½ï¿½Ì·ï¿½Æ® FOTA ï¿½ï¿½ï¿½ ï¿½Æ´ï¿½
-            SetUserSystemStatus(mu8StatusType, 1U);       // e.g. ï¿½ï¿½ï¿½Ì·ï¿½Æ® FOTA ï¿½ï¿½ï¿½
+            SetUserSystemStatus(mu8StatusType, 0U);       // e.g. ´ÙÀÌ·ºÆ® FOTA ¸ðµå ¾Æ´Ô
+            SetUserSystemStatus(mu8StatusType, 1U);       // e.g. ´ÙÀÌ·ºÆ® FOTA ¸ðµå
         */
         default:
 

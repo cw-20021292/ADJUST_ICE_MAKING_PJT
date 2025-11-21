@@ -106,10 +106,16 @@ void ControlGasSwitch(void)
     }
     else{}
 
+    if(u8FactoryTestMode == NONE_TEST_MODE)
+    {
+        ProcessGasSwitch();
+    }
+    else{}
+
     /* CONTROL SMPS 12V */
     if( gu8_GasSwitch_Mode != GAS_SWITCH_MODE_NONE )
     {
-        /*..hui [20-1-14ï¿½ï¿½ï¿½ï¿½ 8:13:59] UVï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 12V ï¿½ï¿½ï¿½ï¿½Ï¹Ç·ï¿½..*/
+        /*..hui [20-1-14¿ÀÈÄ 8:13:59] UV¿¡¼­µµ 12V »ç¿ëÇÏ¹Ç·Î..*/
         /*p12V_POWER = CLEAR;*/
         Bit0_Gas_Switch_12V_Out_State = SET;
     }
@@ -119,11 +125,30 @@ void ControlGasSwitch(void)
         Bit0_Gas_Switch_12V_Out_State = CLEAR;
     }
 
+    #if 0
+    /* Power Init */
+    // ¿øÁ¡À» Àâ±â À§ÇØ ÃÊ±âÈ­ ÇÑ ÈÄ, ÃÊ±â À§Ä¡ ¼³Á¤À» ³Ã¼öÃøÀ¸·Î Á¤ÀÇÇÑ´Ù.
+    if( (gu8_GasSwitch_Mode & GAS_SWITCH_MODE_POWER_INIT ) == GAS_SWITCH_MODE_POWER_INIT )
+    {
+        mu8Ret = InitSwitch();
+
+        if( mu8Ret == TRUE )
+        {
+            gu8_GasSwitch_Mode &= ~GAS_SWITCH_MODE_POWER_INIT;
+            gu8_GasSwitch_InitStep = 0;
+            gu8_GasSwitch_Status = GAS_SWITCH_COLD;
+        }
+        else{}
+
+        return ;
+    }
+    else{}
+    #endif
 
 
     /* Init */
-    // ï¿½Ê±ï¿½È­ï¿½ï¿½ ï¿½Ï°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½Ã¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½,
-    // ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê´Â´ï¿½.
+    // ÃÊ±âÈ­¸¦ ÇÏ°í ½ÇÁ¦ ½ºÅÜ À§Ä¡´Â ³Ã¼öÃøÀÌÁö¸¸,
+    // À§Ä¡ ¼³Á¤Àº ÇÏÁö ¾Ê´Â´Ù.
     if( (gu8_GasSwitch_Mode & GAS_SWITCH_MODE_INIT ) == GAS_SWITCH_MODE_INIT )
     {
         mu8Ret = InitSwitch();
@@ -357,7 +382,7 @@ static U8 IceSwitch(void)
             }
             break;
 
-        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½Ì¸ï¿½ ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        // ÇöÀç À§Ä¡ÀÌ¸é ÀÌµ¿ ¾øÀÌ Á¤»ó Á¾·á
         case ICE_CHECK_POSITION:
             if( gs16_sm_info_target == GAS_SWITCH_ICE_STEP_VAL )
             {
@@ -423,7 +448,7 @@ static U8 HotGasSwitch(void)
             }
             break;
 
-        // ?ï¿½ì¬ ?ï¿½ì¹˜?ï¿½ë©´ ?ï¿½ë™ ?ï¿½ì´ ?ï¿½ìƒ ì¢…ë£Œ
+        // ?„ì¬ ?„ì¹˜?´ë©´ ?´ë™ ?†ì´ ?•ìƒ ì¢…ë£Œ
         case HOTGAS_CHECK_POSITION:
             /*if( HAL_GetTargetStep( GAS_SWITCH_ID ) == GAS_SWITCH_HOTGAS_STEP_VAL )*/
             if( gs16_sm_info_target == GAS_SWITCH_HOTGAS_STEP_VAL )
@@ -479,14 +504,14 @@ void ProcessGasSwitch(void)
 
         if( F_Comp_Output == OFF )
         {
-            F_GasSwitch_Initial = SET;  // ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­ ï¿½ï¿½ï¿½ï¿½
+            F_GasSwitch_Initial = SET;  // ¿øÁ¡ ÃÊ±âÈ­ ¼³Á¤
         }
         else{}
     }
     else{}
 
 
-    // ï¿½ï¿½ï¿½ï¿½ï¿½ OFF ï¿½ï¿½, 4ï¿½ï¿½ ï¿½Ä¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­ ï¿½ï¿½ï¿½ï¿½
+    // ¾ĞÃà±â OFF ÈÄ, 4ºĞ ÈÄ¿¡ ¿øÁ¡ ÃÊ±âÈ­ µ¿ÀÛ
     if( F_GasSwitch_Initial == SET )
     {
         if(Bit0_Restart_5min_Delay_State == SET)
@@ -622,7 +647,7 @@ void HAL_MoveStep( void )
 * Description  :
 ***********************************************************************************************************************/
 /**
- * ï¿½Ã¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯ ï¿½ï¿½ï¿½Ü¸ï¿½ï¿½ï¿½
+ * ³Ã¸Å À¯·Î ÀüÈ¯ ½ºÅÜ¸ğÅÍ
  */
 static void HAL_ControlGasValveMotor( U8 mode )
 {
@@ -755,13 +780,15 @@ void InitGasSwitch(void)
 
     gu8_GasSwitch_PowerOnTime = POWER_ON_TIME; // @100ms, 1sec
 
+    #if 0
+    gs16_sm_info_current = GAS_SWITCH_ICE_STEP_VAL;
+    gs16_sm_info_target = GAS_SWITCH_ICE_STEP_VAL;
+    #endif
 
     gs16_sm_info_current = GAS_SWITCH_END_STEP_VAL;
     gs16_sm_info_target = GAS_SWITCH_END_STEP_VAL;
 
     F_GasSwitch_Initial = SET;
 }
-
-
 
 

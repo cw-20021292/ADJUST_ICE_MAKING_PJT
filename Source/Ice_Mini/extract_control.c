@@ -309,6 +309,14 @@ void start_effluent_water(void)
                 }
             }
 
+#if 0
+            if(gu8_effluent_timer >= BUFFER_DRAIN_TIME)
+            {
+                gu8_Water_Out_Step = STATE_22_HOT_PRE_HEATING_BUFFER_DRAIN_COMPLETE_STATE;
+                gu8_effluent_timer = 0;
+            }
+            else{}
+#endif
             break;
         case STATE_22_HOT_PRE_HEATING_BUFFER_DRAIN_COMPLETE_STATE :
 
@@ -869,6 +877,16 @@ void start_effluent_coffee_drip(void)
         case STATE_20_HOT_PRE_HEATING_STATE :
 
             mu8_finish = preheat_water();
+#if 0
+			if(gu8_Test_dbg_drain_Mode == CLEAR)
+			{
+            	mu8_finish = preheat_water();
+			}
+			else
+			{
+            	mu8_finish = SET;
+			}
+#endif
             /*.. sean [25-01-16] 예열 후, 온수 Drain으로 물버림 진행..*/
             if(mu8_finish == SET)
             {
@@ -1039,6 +1057,15 @@ void start_effluent_coffee_drip(void)
             if( gu16_drip_standby_timer > 0 )
             {
             	gu16_drip_standby_timer--;
+#if 0
+				if( (F_first_Drip_standby  == SET) && (F_second_Drip_standby  == SET))
+				{
+					//sync 맞추기 위해서 timer 수정 90%
+					if(drip_timer < 1080)
+						drip_timer = 1080;
+					else {}
+				}
+#endif
             }
 			else
             {
@@ -1155,5 +1182,3 @@ void cup_select_init(void)
 	gu8_cup_led_select = SET;
     gu8_cup_led_off_time = 0;
 }
-
-

@@ -344,6 +344,18 @@ void check_error_blocked_water_flow(void)
     {
         // gu16_flow_block_check_timer = 0;
     }
+#if 0
+    if(gu8_clear_block_error == SET)
+    {
+        gu8_clear_block_error = CLEAR;
+        gu16_flow_block_clear_timer = FLOW_BLOCK_ERROR_CLEAR_TIME;
+    }
+    else
+    {
+        /*..hui [23-11-1오전 11:31:02] 플러싱때 단수에러는 버튼 누르기 전까지는 계속 표시하고있는걸로..*/
+        gu16_flow_block_clear_timer = 0;
+    }
+#endif
     if(gu8_clear_block_error == SET)
     {
         gu8_clear_block_error = CLEAR;
@@ -475,7 +487,5 @@ U8 flow_block_condition(void)
 * Function Name: System_ini
 * Description  :
 ***********************************************************************************************************************/
-
-
 
 

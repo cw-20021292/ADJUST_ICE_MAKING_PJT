@@ -29,7 +29,7 @@ extern void INTP11_Flow_Sensor_Input(void);
 extern void StepMotorTimerInterrupt(void);
 extern void UART3_TXD_DATA(void);
 extern void int_UART3_AT_TX(void);
-extern void int_UART3_WORK_RX(void);
+extern void int_UART3_AT_RX(void);
 extern void Uart_ISR3_PC_Tx( void );
 extern void Uart_ISR2_Bldc_Comp_Rx(void);
 extern void Uart_ISR2_Bldc_Comp_Tx(void);
@@ -47,9 +47,13 @@ extern void HAL_ControlFlowMotor( void );
 extern void OUTPUT_HEATER_ICE_DOOR(void);
 
 extern void int_UART3_AT_TX(void);
-extern void int_UART3_WORK_RX(void);
+extern void int_UART3_AT_RX(void);
 /**********************************************************************************************************************/
-
+extern TYPE_BYTE          U8FactoryTestModeB;
+#define            u8FactoryTestMode                 U8FactoryTestModeB.byte
+#define            Bit0_Pcb_Test_Mode                U8FactoryTestModeB.Bit.b0
+#define            Bit1_Uart_Test_Mode               U8FactoryTestModeB.Bit.b1
+#define            Bit2_Display_Test_Mode            U8FactoryTestModeB.Bit.b2
 /**********************************************************************************************************************/
 extern bit F_UART2ErrorInterrupt;
 /**********************************************************************************************************************/
@@ -87,8 +91,8 @@ extern bit  F_NewDataReceive;
 //extern bit  F_RemoReceiveFinish;
 //extern bit  F_ChildNozzleChange;
 extern bit  F_ChildNozzleChange_Bidet;
-extern F32 f32InHot_Temperature;      /*..ï¿½Ô¼ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Âµï¿½ ï¿½ï¿½..*/
-extern F32 f32OutHot_Temperature;      /*..ï¿½Ô¼ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Âµï¿½ ï¿½ï¿½..*/
+extern F32 f32InHot_Temperature;      /*..ÇÔ¼ö¿¡¼­ ¾ò¾î¿Â ¿Âµµ °ª..*/
+extern F32 f32OutHot_Temperature;      /*..ÇÔ¼ö¿¡¼­ ¾ò¾î¿Â ¿Âµµ °ª..*/
 extern U16 u16Seat_Temperature;
 extern U16 u16ADEWFeedbackResult;
 extern U8 gu8_Error_Code;
@@ -96,6 +100,7 @@ extern U8 gu8_Error_Code;
 extern U8  u8Count_1min;
 
 extern U8 gu8_front_rx_receive_cnt;
+extern U8 gu8_test_mode_timeout_1s;
 /**********************************************************************************************************************/
 
 /**********************************************************************************************************************/

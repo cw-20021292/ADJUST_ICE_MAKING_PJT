@@ -24,6 +24,7 @@ bit bit_wifi_first_hot_ster;
 #include "Global_Variable.h"
 #include "macrodriver.h"
 #include "m_wifi_setting_data.h"
+#include "motor_ice_select.h"
 /******************************************************************************/
 extern void wifi_hot_lock( U16 mu16_setting );
 extern void init_water_quantity(void);
@@ -194,7 +195,11 @@ extern TYPE_BYTE          U8IceOutStateB;
 #define            Bit0_Ice_Only_Select_State                U8IceOutStateB.Bit.b0
 #define            Bit1_Ice_Plus_Water_Select_State          U8IceOutStateB.Bit.b1
 
-
+extern TYPE_BYTE          U8FactoryTestModeB;
+#define            u8FactoryTestMode                 U8FactoryTestModeB.byte
+#define            Bit0_Pcb_Test_Mode                U8FactoryTestModeB.Bit.b0
+#define            Bit1_Uart_Test_Mode               U8FactoryTestModeB.Bit.b1
+#define            Bit2_Display_Test_Mode            U8FactoryTestModeB.Bit.b2
 
 extern TYPE_WORD          U16HotTemplSelectW;
 #define            U16HotTemplSelect				U16HotTemplSelectW.word
@@ -345,8 +350,9 @@ static const WifiTxFuncEventList_T WifiFuncEventList[] =
     { 	WIFI_FUNC_011E_ONSU_SET_NUM_MIN,		TYPE_UNUSED,					(U16*)(&WifiFuncEventPreVal),		EVENT_STATUS_CHANGE },
     { 	WIFI_FUNC_011F_DEFAULT_MY_WATER,		TYPE_UNUSED,					(U16*)(&WifiFuncEventPreVal),		EVENT_STATUS_CHANGE },
     { 	WIFI_FUNC_0120_HOT_SETTING_MAX_NUM,		TYPE_UNUSED,					 (U16*)(&WifiFuncEventPreVal),		EVENT_STATUS_CHANGE },
-    { 	WIFI_FUNC_0122_QUANTITY_FOURCUPS,		TYPE_UNUSED,					 (U16*)(&WifiFuncEventPreVal),		EVENT_STATUS_CHANGE },      // ï¿½ï¿½ï¿½ï¿½ ï¿½ë·® ï¿½ß°ï¿½
-    { 	WIFI_FUNC_0123_ICE_TYPE,				TYPE_UNUSED,					 (U16*)(&WifiFuncEventPreVal),		EVENT_STATUS_CHANGE },      // ï¿½ï¿½ï¿½ï¿½ ï¿½ë·® ï¿½ß°ï¿½
+    { 	WIFI_FUNC_0122_QUANTITY_FOURCUPS,		TYPE_UNUSED,					 (U16*)(&WifiFuncEventPreVal),		EVENT_STATUS_CHANGE },      // ³×ÄÅ ¿ë·® Ãß°¡
+    { 	WIFI_FUNC_0123_ICE_TYPE,				TYPE_UNUSED,					 (U16*)(&WifiFuncEventPreVal),		EVENT_STATUS_CHANGE },      // ³×ÄÅ ¿ë·® Ãß°¡
+    { 	WIFI_FUNC_0143_ICE_DOOR_REED,			TYPE_UNUSED,					 (U16*)(&WifiFuncEventPreVal),		EVENT_STATUS_CHANGE },      // ¾óÀ½¹® ¸®µå Ãß°¡
 };
 
 #define SZ_FUNC_EVENT_LIST    (sizeof(WifiFuncEventList)/sizeof(WifiTxFuncEventList_T))
@@ -384,7 +390,7 @@ U16 GetUserSystemFunction ( U16 mu16Func )
 
     switch ( mu16Func )
     {
-        case WIFI_FUNC_0002_COLD_SEL :       /* ID */   /* ï¿½Ã¼ï¿½ ON/OFF ? */
+        case WIFI_FUNC_0002_COLD_SEL :       /* ID */   /* ³Ã¼ö ON/OFF ? */
             // mu16Data = 1;                /* Value */
             if(F_Cold_Enable == SET)
             {
@@ -396,7 +402,7 @@ U16 GetUserSystemFunction ( U16 mu16Func )
             }
         break;
 
-        case WIFI_FUNC_0003_HOT_LOCK_SEL :      /* ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ */
+        case WIFI_FUNC_0003_HOT_LOCK_SEL :      /* ¿Â¼öÀá±Ý */
             if( F_Hot_Lock == SET )
             {
                 mu16Data =  WIFI_HOT_LOCK_ON;
@@ -407,7 +413,7 @@ U16 GetUserSystemFunction ( U16 mu16Func )
             }
         break;
 
-        case WIFI_FUNC_0005_LOCK_SEL :          /* ï¿½ï¿½Ã¼ï¿½ï¿½ï¿½? */
+        case WIFI_FUNC_0005_LOCK_SEL :          /* ÀüÃ¼Àá±Ý? */
             if( F_All_Lock == SET )
             {
                 mu16Data = SET;
@@ -418,15 +424,15 @@ U16 GetUserSystemFunction ( U16 mu16Func )
             }
         break;
 
-        case WIFI_FUNC_0008_ICE_SEL :           /* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  */
+        case WIFI_FUNC_0008_ICE_SEL :           /* ºü¸¥Á¦ºù  */
             if( bit_fast_ice_make == COLD_FIRST_ICE_MAKE )
             {
-                /*..hui [23-6-23ï¿½ï¿½ï¿½ï¿½ 4:07:01] ï¿½Ã¼ï¿½ï¿½ì¼± - 1..*/
+                /*..hui [23-6-23¿ÀÈÄ 4:07:01] ³Ã¼ö¿ì¼± - 1..*/
                 mu16Data = 1;
             }
             else
             {
-                /*..hui [23-6-23ï¿½ï¿½ï¿½ï¿½ 4:07:05] ï¿½ï¿½ï¿½ï¿½ï¿½ì¼± - 3..*/
+                /*..hui [23-6-23¿ÀÈÄ 4:07:05] ¾óÀ½¿ì¼± - 3..*/
                 mu16Data = 3;
             }
         break;
@@ -451,7 +457,7 @@ U16 GetUserSystemFunction ( U16 mu16Func )
 
         break;
 
-        case WIFI_FUNC_000B_WATER_SEL :         /* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?? */
+        case WIFI_FUNC_000B_WATER_SEL :         /* ¹°¼±ÅÃ?? */
             if( u8WaterOutState == PURE_WATER_SELECT )
             {
                 mu16Data = 1;
@@ -473,7 +479,7 @@ U16 GetUserSystemFunction ( U16 mu16Func )
 
         break;
 
-        case WIFI_FUNC_000D_WATER_OUTQUANTITY : /* ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½?? */
+        case WIFI_FUNC_000D_WATER_OUTQUANTITY : /* ¹°·® ¼±ÅÃ?? */
             if( F_WaterOut == SET )
             {
                 mu16Data = 0;
@@ -496,7 +502,7 @@ U16 GetUserSystemFunction ( U16 mu16Func )
             }
         break;
 
-        case WIFI_FUNC_001B_HOT_MEANTEMP :                  /* ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ ï¿½ï¿½Õ¿Âµï¿½ : ï¿½î¶»ï¿½ï¿½ ï¿½ï¿½Õ³ï¿½ï¿½ï¿½ï¿½ï¿½? */
+        case WIFI_FUNC_001B_HOT_MEANTEMP :                  /* ¼ø°£¿Â¼ö Æò±Õ¿Âµµ : ¾î¶»°Ô Æò±Õ³¾°ÇÁö? */
             if(u8WaterOutState == HOT_WATER_SELECT)
             {
                 mu16Data = gu8_Hot_Heater_Temperature_One_Degree;
@@ -566,7 +572,7 @@ U16 GetUserSystemFunction ( U16 mu16Func )
         break;
 
         case WIFI_FUNC_0024_HEART_TIME4 :
-            /*..hui [21-3-17ï¿½ï¿½ï¿½ï¿½ 7:56:45] ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ ï¿½ï¿½ï¿½ï¿½.. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 0ï¿½ï¿½ï¿½ï¿½.. ï¿½ï¿½ï¿½ï¿½..*/
+            /*..hui [21-3-17¿ÀÈÄ 7:56:45] ´ÝÇûÀ»¶§¸¸ ½Ã°£ º¸³¿.. ¿­·ÈÀ»¶§´Â 0À¸·Î.. Çö¹Î..*/
             if( F_Tank_Cover_Input == SET )
             {
                 mu16Data = gu16_cody_care_timer_sec;
@@ -576,7 +582,7 @@ U16 GetUserSystemFunction ( U16 mu16Func )
                 mu16Data = 0;
             }
 
-            /*..hui [21-3-5ï¿½ï¿½ï¿½ï¿½ 3:08:57] Ä¿ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Å¸ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½â¼­ ï¿½Ê±ï¿½È­..*/
+            /*..hui [21-3-5¿ÀÈÄ 3:08:57] Ä¿¹ö ´ÝÈ÷¸é µ¥ÀÌÅ¸ º¸³»°í ¿©±â¼­ ÃÊ±âÈ­..*/
             if( F_Tank_Cover_Input == SET )
             {
                 gu8_cody_care_timer_msec = 0;
@@ -585,7 +591,7 @@ U16 GetUserSystemFunction ( U16 mu16Func )
             else{}
         break;
         case WIFI_FUNC_002C_SILVER_CARE :
-            // 48ï¿½Ã°ï¿½ ï¿½Ì»ï¿½ï¿½ (0ï¿½Ì°ï¿½ï¿½ 1:ï¿½ï¿½ï¿½ï¿½ï¿½)
+            // 48½Ã°£ ¹Ì»ç¿ë (0¹Ì°æ°ú 1:°æ°ú½Ã)
             if( gu16_silver_timer_min >= SILVER_CARE_TIME_MIN )
             {
                 if ( u8FirstSilverCare == CLEAR )
@@ -611,7 +617,7 @@ U16 GetUserSystemFunction ( U16 mu16Func )
                 mu16Data = (U16)(gu32_wifi_ice_out_time / 10);
                 gu8_wifi_ice_send_count++;
 
-                /*..hui [24-1-9ï¿½ï¿½ï¿½ï¿½ 1:29:37] 1010ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 1014ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­ï¿½Ï±ï¿½ï¿½ï¿½ï¿½ï¿½ Ä«ï¿½ï¿½Æ®..*/
+                /*..hui [24-1-9¿ÀÈÄ 1:29:37] 1010º¸³»°í 1014±îÁö º¸³»°í ³­ÈÄ ÃÊ±âÈ­ÇÏ±âÀ§ÇØ Ä«¿îÆ®..*/
                 if( gu8_wifi_ice_send_count >= 2 )
                 {
                     gu8_wifi_ice_send_count = 2;
@@ -677,12 +683,12 @@ U16 GetUserSystemFunction ( U16 mu16Func )
         case WIFI_FUNC_0035_COVER1_OPEN :
             if ( bit_filter_cover == SET )
             {
-                /*..hui [21-8-3ï¿½ï¿½ï¿½ï¿½ 12:48:30] ï¿½ï¿½ï¿½ï¿½..*/
+                /*..hui [21-8-3¿ÀÈÄ 12:48:30] ´ÝÈû..*/
                 mu16Data = 0;
             }
             else
             {
-                /*..hui [21-8-3ï¿½ï¿½ï¿½ï¿½ 12:48:23] ï¿½ï¿½ï¿½ï¿½..*/
+                /*..hui [21-8-3¿ÀÈÄ 12:48:23] ¿­¸²..*/
                 mu16Data = 1;
             }
         break;
@@ -747,23 +753,23 @@ U16 GetUserSystemFunction ( U16 mu16Func )
         case WIFI_FUNC_0043_FILTER_STATUS1 :
             if(bit_filter_reed == SET)
             {
-                mu16Data = 0;       /* ï¿½ï¿½ï¿½ï¿½ */
+                mu16Data = 0;       /* ÀåÂø */
             }
             else
             {
-                mu16Data = 1;       /* ï¿½Ð¸ï¿½ */
+                mu16Data = 1;       /* ºÐ¸® */
             }
         break;
 
         case WIFI_FUNC_004A_WELCOME_LIGHT :
             if( F_Welcome_Led_OnOff == CLEAR )
             {
-                /*..hui [23-6-23ï¿½ï¿½ï¿½ï¿½ 2:32:59] OFF..*/
+                /*..hui [23-6-23¿ÀÈÄ 2:32:59] OFF..*/
                 mu16Data = 0;
             }
             else
             {
-                /*..hui [23-6-23ï¿½ï¿½ï¿½ï¿½ 2:33:03] ON..*/
+                /*..hui [23-6-23¿ÀÈÄ 2:33:03] ON..*/
                 mu16Data = 1;
             }
         break;
@@ -939,7 +945,7 @@ U16 GetUserSystemFunction ( U16 mu16Func )
         break;
 
         case WIFI_FUNC_0078_COLD_TARGET_TEMP_TIME :
-            /*..hui [23-6-23ï¿½ï¿½ï¿½ï¿½ 4:16:22] ï¿½Ã¼ï¿½ ï¿½ï¿½Ç¥ ï¿½Âµï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½..???..*/
+            /*..hui [23-6-23¿ÀÈÄ 4:16:22] ³Ã¼ö ¸ñÇ¥ ¿Âµµ µµ´Þ ½Ã°£..???..*/
             if( bit_wifi_comp == CLEAR )
             {
                 if( bit_wifi_comp_on_time_update == SET )
@@ -961,7 +967,7 @@ U16 GetUserSystemFunction ( U16 mu16Func )
             }
         break;
 
-        case WIFI_FUNC_0083_POWER_SAVING_STATUS :       /* ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Û»ï¿½ï¿½ï¿½ */
+        case WIFI_FUNC_0083_POWER_SAVING_STATUS :       /* ÀýÀü µ¿ÀÛ»óÅÂ */
             if( bit_sleep_mode_start == SET)
           	{
           		if(bit_wifi_first_sleep_mode == CLEAR)
@@ -1004,7 +1010,7 @@ U16 GetUserSystemFunction ( U16 mu16Func )
             }
         break;
 
-        case WIFI_FUNC_008F_ICE_FULL_STATUS:        /* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ */
+        case WIFI_FUNC_008F_ICE_FULL_STATUS:        /* ¸¸ºù»óÅÂ °¨Áö */
             if( F_IceFull == SET )
             {
                 if( bit_wifi_first_ice_full == CLEAR )
@@ -1029,7 +1035,7 @@ U16 GetUserSystemFunction ( U16 mu16Func )
             mu16Data = gu8_wifi_ice_make_state;
         break;
 
-        case WIFI_FUNC_0095_ICEMAKING_COMPLET_TIME :            /* ï¿½ï¿½ï¿½ï¿½ï¿½Ï·ï¿½ ï¿½Ã°ï¿½ */
+        case WIFI_FUNC_0095_ICEMAKING_COMPLET_TIME :            /* Á¦ºù¿Ï·á ½Ã°£ */
             if( gu8IceStep == STATE_50_ICE_FULL_IR_CHECK )
             {
                 mu16Data = (U16)(gu32_wifi_ice_make_time / 10);
@@ -1041,11 +1047,11 @@ U16 GetUserSystemFunction ( U16 mu16Func )
             }
         break;
 
-        case WIFI_FUNC_0096_DEICING_COMPLET_TIME :              /* Å»ï¿½ï¿½ï¿½Ï·ï¿½ ï¿½Ã°ï¿½ */
+        case WIFI_FUNC_0096_DEICING_COMPLET_TIME :              /* Å»ºù¿Ï·á ½Ã°£ */
 
             if( gu8IceStep == STATE_50_ICE_FULL_IR_CHECK )
             {
-                mu16Data = (U16)(gu32_wifi_ice_heater_timer / 10);      // ï¿½ï¿½ï¿½ï¿½Å¸ï¿½Ì¸ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯
+                mu16Data = (U16)(gu32_wifi_ice_heater_timer / 10);      // È÷ÅÍÅ¸ÀÌ¸Ó ÃÊ ´ÜÀ§·Î º¯È¯
                 gu32_wifi_ice_heater_timer = 0;
             }
             else
@@ -1054,7 +1060,7 @@ U16 GetUserSystemFunction ( U16 mu16Func )
             }
         break;
 
-        case WIFI_FUNC_009B_DRAINTANK_LOW_WLEVEL :              /* ï¿½å·¹ï¿½ï¿½ï¿½ï¿½Å© ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ */
+        case WIFI_FUNC_009B_DRAINTANK_LOW_WLEVEL :              /* µå·¹ÀÎÅÊÅ© Àú¼öÀ§¼¾¼­ »óÅÂ */
 
             if( F_drain_water_level_low == SET )
             {
@@ -1075,7 +1081,7 @@ U16 GetUserSystemFunction ( U16 mu16Func )
             }
 
         break;
-        case WIFI_FUNC_009C_DRAINTANK_HIGH_WLEVEL :             /* ï¿½å·¹ï¿½ï¿½ï¿½ï¿½Å© ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ */
+        case WIFI_FUNC_009C_DRAINTANK_HIGH_WLEVEL :             /* µå·¹ÀÎÅÊÅ© ¸¸¼öÀ§¼¾¼­ »óÅÂ */
 
             if( F_drain_water_level_high == SET )
             {
@@ -1097,15 +1103,15 @@ U16 GetUserSystemFunction ( U16 mu16Func )
 
         break;
 
-        case WIFI_FUNC_00A0_COLD_TANK_TEMP :                    /* ï¿½Ã¼ï¿½ï¿½ï¿½Å© ï¿½Âµï¿½ */
+        case WIFI_FUNC_00A0_COLD_TANK_TEMP :                    /* ³Ã¼öÅÊÅ© ¿Âµµ */
             mu16Data = gu8_Cold_Temperature_One_Degree;
         break;
 
-        // case WIFI_FUNC_00AC_FILTER1_WATER_USAGE:                /* ï¿½ï¿½ï¿½ï¿½1 ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ë·® */
+        // case WIFI_FUNC_00AC_FILTER1_WATER_USAGE:                /* ÇÊÅÍ1 ´©Àû »ç¿ë·® */
         //     mu16Data = gu16_water_usage_ino_filter;
         // break;
 
-        // case WIFI_FUNC_00AD_FILTER1_UASGE_DAY:                  /* ï¿½ï¿½ï¿½ï¿½1 ï¿½Ü¿ï¿½ ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ */
+        // case WIFI_FUNC_00AD_FILTER1_UASGE_DAY:                  /* ÆÈÅÍ1 ÀÜ¿© »ç¿ë ½Ã°£ */
         //     mu16Data = 99;
         // break;
 
@@ -1311,75 +1317,75 @@ U16 GetUserSystemFunction ( U16 mu16Func )
         break;
 
         //LSH zzang
-        case WIFI_FUNC_00E1_MYWATER_TEMP_1 :                /* MY WATER 1 ï¿½Âµï¿½ : ï¿½ï¿½ï¿½ */
+        case WIFI_FUNC_00E1_MYWATER_TEMP_1 :                /* MY WATER 1 ¿Âµµ : ¶ó¸é */
             mu16Data = my_setting[MY_INDEX_RAMEN].temp;
         break;
 
-        case WIFI_FUNC_00E2_MYWATER_QUANTITY_1 :            /* MY WATER 1 ï¿½ë·® : ï¿½ï¿½ï¿½ */
+        case WIFI_FUNC_00E2_MYWATER_QUANTITY_1 :            /* MY WATER 1 ¿ë·® : ¶ó¸é */
             mu16Data = my_setting[MY_INDEX_RAMEN].amount;
         break;
 
-        case WIFI_FUNC_00E3_MYWATER_RECIPE_1 :              /* MY WATER 1 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ : ï¿½ï¿½ï¿½ */
+        case WIFI_FUNC_00E3_MYWATER_RECIPE_1 :              /* MY WATER 1 ·¹½ÃÇÇ : ¶ó¸é */
             mu16Data = 4; // ramen
         break;
 
-        case WIFI_FUNC_00E4_MYWATER_TEMP_2 :                /* MY WATER 2 ï¿½Âµï¿½ : ï¿½å¸³Ä¿ï¿½ï¿½ */
+        case WIFI_FUNC_00E4_MYWATER_TEMP_2 :                /* MY WATER 2 ¿Âµµ : µå¸³Ä¿ÇÇ */
             mu16Data = my_setting[MY_INDEX_DRIPCOFFEE].temp;
         break;
 
-        case WIFI_FUNC_00E5_MYWATER_QUANTITY_2 :            /* MY WATER 2 ï¿½ë·® : ï¿½å¸³Ä¿ï¿½ï¿½ */
+        case WIFI_FUNC_00E5_MYWATER_QUANTITY_2 :            /* MY WATER 2 ¿ë·® : µå¸³Ä¿ÇÇ */
             mu16Data = my_setting[MY_INDEX_DRIPCOFFEE].amount;
         break;
 
-        case WIFI_FUNC_00E6_MYWATER_RECIPE_2 :              /* MY WATER 2 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ : ï¿½å¸³Ä¿ï¿½ï¿½ */
+        case WIFI_FUNC_00E6_MYWATER_RECIPE_2 :              /* MY WATER 2 ·¹½ÃÇÇ : µå¸³Ä¿ÇÇ */
             mu16Data = 2; // drip coffee
         break;
 
-        case WIFI_FUNC_00E7_MYWATER_TEMP_3 :                /* MY WATER 3 ï¿½Âµï¿½ : ï¿½ï¿½ */
+        case WIFI_FUNC_00E7_MYWATER_TEMP_3 :                /* MY WATER 3 ¿Âµµ : Â÷ */
             mu16Data = my_setting[MY_INDEX_TEA].temp;
         break;
 
-        case WIFI_FUNC_00E8_MYWATER_QUANTITY_3 :            /* MY WATER 3 ï¿½ë·® : ï¿½ï¿½ */
+        case WIFI_FUNC_00E8_MYWATER_QUANTITY_3 :            /* MY WATER 3 ¿ë·® : Â÷ */
             mu16Data = my_setting[MY_INDEX_TEA].amount;
         break;
 
-        case WIFI_FUNC_00E9_MYWATER_RECIPE_3 :              /* MY WATER 3 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ : ï¿½ï¿½ */
+        case WIFI_FUNC_00E9_MYWATER_RECIPE_3 :              /* MY WATER 3 ·¹½ÃÇÇ : Â÷ */
             mu16Data = 5;
         break;
 
-        case WIFI_FUNC_00EA_MYWATER_TEMP_4 :                /* MY WATER 4 ï¿½Âµï¿½ : MY1ï¿½ï¿½ ï¿½Âµï¿½ */
+        case WIFI_FUNC_00EA_MYWATER_TEMP_4 :                /* MY WATER 4 ¿Âµµ : MY1ÀÇ ¿Âµµ */
             mu16Data = my_setting[MY_INDEX_MY1].temp;
         break;
 
-        case WIFI_FUNC_00EB_MYWATER_QUANTITY_4 :            /* MY WATER 4 ï¿½ë·® : MY1ï¿½ï¿½ ï¿½ë·® */
+        case WIFI_FUNC_00EB_MYWATER_QUANTITY_4 :            /* MY WATER 4 ¿ë·® : MY1ÀÇ ¿ë·® */
             mu16Data = my_setting[MY_INDEX_MY1].amount;
         break;
 
-        case WIFI_FUNC_00EC_MYWATER_RECIPE_4 :              /* MY WATER 4 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ : MY1ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
+        case WIFI_FUNC_00EC_MYWATER_RECIPE_4 :              /* MY WATER 4 ·¹½ÃÇÇ : MY1ÀÇ ·¹½ÃÇÇ */
             mu16Data = 7;
         break;
 
-        case WIFI_FUNC_00ED_MYWATER_TEMP_5 :                /* MY WATER 5 ï¿½Âµï¿½ : MY2ï¿½ï¿½ ï¿½Âµï¿½ */
+        case WIFI_FUNC_00ED_MYWATER_TEMP_5 :                /* MY WATER 5 ¿Âµµ : MY2ÀÇ ¿Âµµ */
             mu16Data = my_setting[MY_INDEX_MY2].temp;
         break;
 
-        case WIFI_FUNC_00EE_MYWATER_QUANTITY_5 :            /* MY WATER 5 ï¿½ë·® : MY2ï¿½ï¿½ ï¿½ë·® */
+        case WIFI_FUNC_00EE_MYWATER_QUANTITY_5 :            /* MY WATER 5 ¿ë·® : MY2ÀÇ ¿ë·® */
             mu16Data = my_setting[MY_INDEX_MY2].amount;
         break;
 
-        case WIFI_FUNC_00EF_MYWATER_RECIPE_5 :              /* MY WATER 5 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ : MY2ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
+        case WIFI_FUNC_00EF_MYWATER_RECIPE_5 :              /* MY WATER 5 ·¹½ÃÇÇ : MY2ÀÇ ·¹½ÃÇÇ */
             mu16Data = 8;
         break;
 
-        case WIFI_FUNC_00F0_MYWATER_TEMP_6:                 /* MY WATER 6 ï¿½Âµï¿½ : 6 ~ 100ï¿½ï¿½ (MY3ï¿½ï¿½ ï¿½Âµï¿½) */
+        case WIFI_FUNC_00F0_MYWATER_TEMP_6:                 /* MY WATER 6 ¿Âµµ : 6 ~ 100¡É (MY3ÀÇ ¿Âµµ) */
             mu16Data = my_setting[MY_INDEX_MY3].temp;
         break;
 
-        case WIFI_FUNC_00F1_MYWATER_QUANTITY_6:             /* MY WATER 6 ï¿½ë·® : 90 ~ 1000ml (MY3ï¿½ï¿½ ï¿½ë·®) */
+        case WIFI_FUNC_00F1_MYWATER_QUANTITY_6:             /* MY WATER 6 ¿ë·® : 90 ~ 1000ml (MY3ÀÇ ¿ë·®) */
             mu16Data = my_setting[MY_INDEX_MY3].amount;
         break;
 
-        case WIFI_FUNC_00F2_MYWATER_RECIPE_6:               /* MY WATER 6 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ : 0 ~ 9 (MY3ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½) */
+        case WIFI_FUNC_00F2_MYWATER_RECIPE_6:               /* MY WATER 6 ·¹½ÃÇÇ : 0 ~ 9 (MY3ÀÇ ·¹½ÃÇÇ) */
             mu16Data = 9;
         break;
 
@@ -1395,47 +1401,47 @@ U16 GetUserSystemFunction ( U16 mu16Func )
 		break;
 
         //LSH zzang
-        case WIFI_FUNC_0107_MYWATER_ENABLE_1 :              /* MY WATER 1 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ (0 : ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, 1 : ï¿½ï¿½ï¿½ï¿½ï¿½) */
+        case WIFI_FUNC_0107_MYWATER_ENABLE_1 :              /* MY WATER 1 »ç¿ëÀ¯¹« (0 : »ç¿ë¾ÈÇÔ, 1 : »ç¿ëÇÔ) */
             mu16Data = my_setting[MY_INDEX_RAMEN].use;
         break;
 
-        case WIFI_FUNC_0108_MYWATER_ENABLE_2 :              /* MY WATER 2 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ (0 : ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, 1 : ï¿½ï¿½ï¿½ï¿½ï¿½) */
+        case WIFI_FUNC_0108_MYWATER_ENABLE_2 :              /* MY WATER 2 »ç¿ëÀ¯¹« (0 : »ç¿ë¾ÈÇÔ, 1 : »ç¿ëÇÔ) */
             mu16Data = my_setting[MY_INDEX_DRIPCOFFEE].use;
         break;
 
-        case WIFI_FUNC_0109_MYWATER_ENABLE_3 :              /* MY WATER 3 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ (0 : ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, 1 : ï¿½ï¿½ï¿½ï¿½ï¿½) */
+        case WIFI_FUNC_0109_MYWATER_ENABLE_3 :              /* MY WATER 3 »ç¿ëÀ¯¹« (0 : »ç¿ë¾ÈÇÔ, 1 : »ç¿ëÇÔ) */
             mu16Data = my_setting[MY_INDEX_TEA].use;
         break;
 
-        case WIFI_FUNC_010A_MYWATER_ENABLE_4 :              /* MY WATER 4 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ (0 : ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, 1 : ï¿½ï¿½ï¿½ï¿½ï¿½) */
+        case WIFI_FUNC_010A_MYWATER_ENABLE_4 :              /* MY WATER 4 »ç¿ëÀ¯¹« (0 : »ç¿ë¾ÈÇÔ, 1 : »ç¿ëÇÔ) */
             mu16Data = my_setting[MY_INDEX_MY1].use;
         break;
 
-        case WIFI_FUNC_010B_MYWATER_ENABLE_5 :              /* MY WATER 5 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ (0 : ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, 1 : ï¿½ï¿½ï¿½ï¿½ï¿½) */
+        case WIFI_FUNC_010B_MYWATER_ENABLE_5 :              /* MY WATER 5 »ç¿ëÀ¯¹« (0 : »ç¿ë¾ÈÇÔ, 1 : »ç¿ëÇÔ) */
             mu16Data = my_setting[MY_INDEX_MY2].use;
         break;
 
-        case WIFI_FUNC_010C_MYWATER_ENABLE_6:               /* MY WATER 6 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ (0 : ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, 1 : ï¿½ï¿½ï¿½ï¿½ï¿½) */
+        case WIFI_FUNC_010C_MYWATER_ENABLE_6:               /* MY WATER 6 »ç¿ëÀ¯¹« (0 : »ç¿ë¾ÈÇÔ, 1 : »ç¿ëÇÔ) */
             mu16Data = my_setting[MY_INDEX_MY3].use;
         break;
 
-        case WIFI_FUNC_0116_AMOUNT_OF_ICE :                 /* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
-        /* 2025-11-04 CH.PARK ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ç¥ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ */
+        case WIFI_FUNC_0116_AMOUNT_OF_ICE :                 /* ¾óÀ½·® */
+        /* 2025-11-04 CH.PARK ¾óÀ½¾ç Ç¥½Ã °³¼± */
         if(F_IceFull == SET)
         {
-            mu16Data = 2;   // ï¿½ï¿½ï¿½ï¿½ (2)
+            mu16Data = 2;   // °¡µæ (2)
         }
         else if( F_IceLack == CLEAR)
         {
-            mu16Data = 1;   // ï¿½ï¿½ï¿½ï¿½ (1)
+            mu16Data = 1;   // º¸Åë (1)
         }
         else
         {
-            mu16Data = 0;   // ï¿½ï¿½ï¿½ï¿½ (0)
+            mu16Data = 0;   // ºÎÁ· (0)
         }
         break;
 
-        case WIFI_FUNC_011A_TRAY_HOT_STER_STATE:            /* ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â»ï¿½ï¿½ ï¿½ï¿½ï¿½Û»ï¿½ï¿½ï¿½ */
+        case WIFI_FUNC_011A_TRAY_HOT_STER_STATE:            /* ¾óÀ½Æ®·¹ÀÌ °í¿Â»ì±Õ µ¿ÀÛ»óÅÂ */
             #if 0
             if(bit_ice_tank_ster_start == SET)
             {
@@ -1483,15 +1489,15 @@ U16 GetUserSystemFunction ( U16 mu16Func )
             }
         break;
 
-        case WIFI_FUNC_011B_TRAY_HOT_STER_HOUR:             /* ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â»ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ (ï¿½ï¿½) */
+        case WIFI_FUNC_011B_TRAY_HOT_STER_HOUR:             /* ¾óÀ½Æ®·¹ÀÌ °í¿Â»ì±Õ ¼³Á¤ ½Ã°£ (½Ã) */
             mu16Data = gu8_wifi_period_ster_hour;
         break;
 
-        case WIFI_FUNC_011C_TRAY_HOT_STER_MINUTE:           /* ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â»ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ (ï¿½ï¿½) */
+        case WIFI_FUNC_011C_TRAY_HOT_STER_MINUTE:           /* ¾óÀ½Æ®·¹ÀÌ °í¿Â»ì±Õ ¼³Á¤ ½Ã°£ (ºÐ) */
             mu16Data = gu8_wifi_period_ster_minute;
         break;
 
-        case WIFI_FUNC_011D_WAITMODE:                       /* ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ (0 : ï¿½Ì»ï¿½ï¿½, 1 : ï¿½ï¿½ï¿½) */
+        case WIFI_FUNC_011D_WAITMODE:                       /* ´ë±â¸ðµå ¼³Á¤ (0 : ¹Ì»ç¿ë, 1 : »ç¿ë) */
         if(bit_waitmode_enable == SET)
 		{
 			mu16Data = 1;
@@ -1502,35 +1508,35 @@ U16 GetUserSystemFunction ( U16 mu16Func )
 		}
         break;
 
-        case WIFI_FUNC_011E_ONSU_SET_NUM_MIN:               /* ï¿½Ö¼ï¿½ ï¿½Â¼ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ (0 ~ 20ï¿½ï¿½) */
-            mu16Data = 4;   /* 4ï¿½ï¿½ */
+        case WIFI_FUNC_011E_ONSU_SET_NUM_MIN:               /* ÃÖ¼Ò ¿Â¼ö ¼³Á¤ °³¼ö (0 ~ 20°³) */
+            mu16Data = 4;   /* 4°³ */
         break;
 
-        case WIFI_FUNC_011F_DEFAULT_MY_WATER:                 /* ï¿½ï¿½ï¿½ï¿½ Myï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 1 ~ 10 */
+        case WIFI_FUNC_011F_DEFAULT_MY_WATER:                 /* ½ÃÀÛ My¿öÅÍ ¼³Á¤ 1 ~ 10 */
             mu16Data = my_receipe_default + 1;
         break;
 
-        case WIFI_FUNC_0120_HOT_SETTING_MAX_NUM:               /* ï¿½Ö´ï¿½ ï¿½Â¼ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ */
-            mu16Data = 4;   /* 4ï¿½ï¿½ */
+        case WIFI_FUNC_0120_HOT_SETTING_MAX_NUM:               /* ÃÖ´ë ¿Â¼ö ¼³Á¤ °³¼ö */
+            mu16Data = 4;   /* 4°³ */
         break;
 
-        case WIFI_FUNC_00BE_QUANTITY_HALFCUP:                   /* ï¿½ï¿½ï¿½ï¿½ ï¿½ë·® */
+        case WIFI_FUNC_00BE_QUANTITY_HALFCUP:                   /* ¹ÝÄÅ ¿ë·® */
             mu16Data = gu16_WaterQuantity_half;
         break;
 
-        case WIFI_FUNC_00BF_QUANTITY_ONECUP:                    /* ï¿½ï¿½ï¿½ï¿½ ï¿½ë·® */
+        case WIFI_FUNC_00BF_QUANTITY_ONECUP:                    /* ÇÑÄÅ ¿ë·® */
             mu16Data = gu16_WaterQuantity_one;
         break;
 
-        case WIFI_FUNC_00C0_QUANTITY_TWOCUPS:                   /* ï¿½ï¿½ï¿½ï¿½ ï¿½ë·® */
+        case WIFI_FUNC_00C0_QUANTITY_TWOCUPS:                   /* µÎÄÅ ¿ë·® */
             mu16Data = gu16_WaterQuantity_two;
         break;
 
-        case WIFI_FUNC_0122_QUANTITY_FOURCUPS:                  /* ï¿½ï¿½ï¿½ï¿½ ï¿½ë·® */
+        case WIFI_FUNC_0122_QUANTITY_FOURCUPS:                  /* ³×ÄÅ ¿ë·® */
             mu16Data = gu16_WaterQuantity_four;
         break;
 
-        case WIFI_FUNC_0123_ICE_TYPE:                           /* ï¿½ï¿½ï¿½ï¿½Å¸ï¿½ï¿½ : ï¿½Ï¹ï¿½(0)/ï¿½ï¿½ï¿½ï¿½(1) */
+        case WIFI_FUNC_0123_ICE_TYPE:                           /* ¾óÀ½Å¸ÀÔ : ÀÏ¹Ý(0)/Á¶°¢(1) */
             if(F_IceBreak == CLEAR)
             {
                 mu16Data = 0;
@@ -1539,6 +1545,10 @@ U16 GetUserSystemFunction ( U16 mu16Func )
             {
                 mu16Data = 1;
             }
+        break;
+
+        case WIFI_FUNC_0143_ICE_DOOR_REED:                       /* ¾ÆÀÌ½ºµµ¾î ¸®µå Ãß°¡ */
+            mu16Data = GetIceDoorReedStatus();
         break;
 
         default:
@@ -1784,27 +1794,27 @@ void SetUserSystemFunction ( U16 mu16Func, U16 mData )
             wifi_wait_mode_enable(mData);
 			break;
 
-        case WIFI_FUNC_011F_DEFAULT_MY_WATER:                 /* ï¿½ï¿½ï¿½ï¿½ Myï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 1 ~ 10 */
+        case WIFI_FUNC_011F_DEFAULT_MY_WATER:                 /* ½ÃÀÛ My¿öÅÍ ¼³Á¤ 1 ~ 10 */
             wifi_my_default(mData);
         break;
 
-        case WIFI_FUNC_00BE_QUANTITY_HALFCUP:                   /* ï¿½ï¿½ï¿½ï¿½ ï¿½ë·® */
+        case WIFI_FUNC_00BE_QUANTITY_HALFCUP:                   /* ¹ÝÄÅ ¿ë·® */
             wifi_set_waterquantity( CUP_LEVEL_HALF, mData );
         break;
 
-        case WIFI_FUNC_00BF_QUANTITY_ONECUP:                    /* ï¿½ï¿½ï¿½ï¿½ ï¿½ë·® */
+        case WIFI_FUNC_00BF_QUANTITY_ONECUP:                    /* ÇÑÄÅ ¿ë·® */
             wifi_set_waterquantity( CUP_LEVEL_ONE, mData );
         break;
 
-        case WIFI_FUNC_00C0_QUANTITY_TWOCUPS:                   /* ï¿½ï¿½ï¿½ï¿½ ï¿½ë·® */
+        case WIFI_FUNC_00C0_QUANTITY_TWOCUPS:                   /* µÎÄÅ ¿ë·® */
             wifi_set_waterquantity( CUP_LEVEL_TWO, mData );
         break;
 
-        case WIFI_FUNC_0122_QUANTITY_FOURCUPS:                  /* ï¿½ï¿½ï¿½ï¿½ ï¿½ë·® */
+        case WIFI_FUNC_0122_QUANTITY_FOURCUPS:                  /* ³×ÄÅ ¿ë·® */
             wifi_set_waterquantity( CUP_LEVEL_FOUR, mData );
         break;
 
-        // case WIFI_FUNC_0123_ICE_TYPE:                           /* ï¿½ï¿½ï¿½ï¿½Å¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½ : ï¿½Ï¹ï¿½(0)/ï¿½ï¿½ï¿½ï¿½(1) */
+        // case WIFI_FUNC_0123_ICE_TYPE:                           /* ¾óÀ½Å¸ÀÔ ¼³Á¤ Ãß°¡ : ÀÏ¹Ý(0)/Á¶°¢(1) */
         //     wifi_set_ice_type(mData);
         // break;
 

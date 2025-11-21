@@ -1222,6 +1222,32 @@ void    key_my_select_job(void)
             my_recipe_select = my_receipe_default;
 
             play_melody_select_196();
+#if 0
+            if(my_recipe_select == RECIPE_RAMEN)
+            {
+                play_voice_ramyeon_recipe_select_147();
+            }
+            else if(my_recipe_select == RECIPE_DRIPCOFFEE)
+            {
+                play_voice_drip_coffee_recipe_select_148();
+            }
+            else if(my_recipe_select == RECIPE_TEA)
+            {
+                play_voice_tea_recipe_select_149();
+            }
+            else if(my_recipe_select == RECIPE_MY1)
+            {
+                play_voice_my1_recipe_select_150();
+            }
+            else if(my_recipe_select == RECIPE_MY2)
+            {
+                play_voice_my2_recipe_select_151();
+            }
+            else if(my_recipe_select == RECIPE_MY3)
+            {
+                play_voice_my3_recipe_select_152();
+            }
+#endif
             gu8_water_out_state_old = u8WaterOutState;
         }
         else
@@ -1715,8 +1741,6 @@ void memento_mode_error_clear(void)
     u8Memento_Buff[5] = CLEAR;
     F_ErrorSave = SET;      /* ¿˙¿Â */
 }
-
-
 
 
 

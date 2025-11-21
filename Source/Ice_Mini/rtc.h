@@ -32,6 +32,8 @@ extern U8 gu8_time_setting_Year;      // 0 ~ 99
 extern U8 gu8_time_setting_Month;     // 1 ~ 12
 extern U8 gu8_time_setting_Date;      // 1 ~ 31
 
+extern U8 gu8_factory_test_step;
+
 extern U8 u811111;
 
 extern U8 gu8_eeprom_initial_test_input;

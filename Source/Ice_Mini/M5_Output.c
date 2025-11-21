@@ -107,6 +107,17 @@ void output_pump(void)
 void output_valve(void)
 {
     /*..hui [19-7-18오후 5:01:36] 센서 다 읽을때까지 기다린다..*/
+    #if 0
+    if(u8_system_init_timer < 50)
+    {
+        u8_system_init_timer++;
+        return;
+    }
+    else
+    {
+        u8_system_init_timer = 50;
+    }
+    #endif
 
     if(u8_system_init_timer < 30)
     {
@@ -163,7 +174,5 @@ void output_valve(void)
 * Function Name: System_ini
 * Description  :
 ***********************************************************************************************************************/
-
-
 
 

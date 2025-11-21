@@ -31,7 +31,7 @@ void fnd_right_tray_clean(void)
     U8 mu8_temporary_one = 0;
     U8 mu8_flick_state = 0;
 
-    /*..hui [25-7-7���� 3:18:01] �巹����ũ �¼� ����Ҷ���?ǥ�� �и�..*/
+    /*..hui [25-7-7���� 3:18:01] �巹����ũ �¼� ����Ҷ��� ǥ�� �и�..*/
     if( gu8_drain_tank_ster_count == DRAIN_TANK__STER_CYCLE )
     {
         if( gu8_ice_ster_mode == STER_MODE_PREPARE )
@@ -206,7 +206,7 @@ void fnd_right_tray_clean(void)
         }
         else if( gu8_ice_ster_mode == STER_MODE_DRAIN_PREHEAT )
         {
-            /*..hui [25-7-7���� 3:15:46] ���� �߸����������?���?.*/
+            /*..hui [25-7-7���� 3:15:46] ���� �߸���������� ���..*/
             gu8_tray_clean_percent = 90;
         }
         else if( gu8_ice_ster_mode == STER_MODE_DRAIN_INPUT_STATE )
@@ -225,6 +225,16 @@ void fnd_right_tray_clean(void)
             }
             else if( gu8_wait_finish_step == 1 )
             {
+                #if 0
+                if( gu16_wait_finish_timer <= 300 )
+                {
+                    gu8_tray_clean_percent = 80;
+                }
+                else
+                {
+                    gu8_tray_clean_percent = 90;
+                }
+                #endif
 
                 gu8_tray_clean_percent = 90;
             }
@@ -282,6 +292,22 @@ void fnd_right_tray_clean(void)
 ***********************************************************************************************************************/
 void led_tray_clean(void)
 {
+    #if 0
+    /*funcition_led_output();*/
+    setting_function_led();
+    /*level_led_output();*/
+    setting_led_output();
+    /*extract_led_output();*/
+    /*recipe_led_output();*/
+
+    /*icon_led_output();*/
+    ice_first_icon_out();
+    sleep_icon_out();
+    ice_size_text_out();
+    cold_temp_text_out();
+    ice_lock_icon_output();
+    hot_lock_icon_output();
+    #endif
 
     hot_ster_text_out();
     percent_icon_out();
@@ -292,7 +318,5 @@ void led_tray_clean(void)
 * Function Name: System_ini
 * Description  :
 ***********************************************************************************************************************/
-
-
 
 

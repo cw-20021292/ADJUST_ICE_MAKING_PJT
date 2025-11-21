@@ -26,7 +26,8 @@ extern void service_check(void);
 extern void cody_ice_tray_test(void);
 /* Cody Water Line Clean Service */
 extern void cody_water_line_clean(void);
-extern void model_select(void);
+extern void uart_test_mode_decision(void);
+extern void ModelSelect(void);
 extern void calculate_electric_rate(void);
 extern void cody_empty_tank(void);
 extern void cody_service(void);
@@ -193,6 +194,8 @@ extern U8 gu8IRTime;
 
 extern U8 gu8IceClose;
 
+extern U8 gu8TrayCWInterval;
+extern U8 gu8TrayCCWInterval;
 
 //extern U16 gu16ErrColdLEVDelay;
 //extern U16 gu16IceOutTest;
@@ -201,6 +204,7 @@ extern U8 gu8ErrDoor;
 extern U8 gu8IceOutCCWInterval;
 
 extern U8 u8_Tray_up_moving_retry_timer;
+extern U8 u8Trayretry1;
 //extern U16 gu16WashTime;
 //extern U16 gu16NeutralTime;
 //extern U8 gu8_room_level_delay;
@@ -209,6 +213,7 @@ extern U8 u8_Tray_up_moving_retry_timer;
 
 
 //extern U8 gu8LockLEDFlick;
+extern U16 gu16ErrTrayMotor;
 
 //extern U8 gu8ErrEW;
 //extern U8 gu8LockFlick;

@@ -10,7 +10,7 @@
 #include    "Global_Variable.h"
 #include    "Port_Define.h"
 #include    "mode_decision.h"
-#include    "App_Comm_Protocol.h"
+
 void Make_Mode_Decision(void);
 void cold_mode_decision(void);
 void ice_mode_decision(void);
@@ -209,6 +209,19 @@ void ice_mode_decision(void)
 {
     Bit0_Ice_Setting = F_IceOn;
 
+    #if 0
+	/*..sean [25-01-20] 2도 이상일때에만 제빙 동작하도록 세팅..*/
+    if(gu16_Cold_Temperature > PROTECT_COLD_TEMP)
+    {
+        Bit1_Ice_Temp_Protect = SET;
+    }
+    else
+    {
+        /*Bit2_Ice_Temp_Protect = CLEAR;*/
+        /*..hui [19-11-7오후 3:36:57] 제빙은 삭제..*/
+        Bit1_Ice_Temp_Protect = SET;
+    }
+    #endif
 
     if( bit_tray_in_error_temporary == CLEAR )
     {
@@ -436,6 +449,103 @@ U8 cold_mode_comp_control(void)
 {
 
 /*..hui [20-1-29오후 2:00:42] 냉각 지연시간 있는 버전.. 혹시 나중에 변경될수있으니 남겨두는걸로..*/
+#if 0
+    U16 mu16_cold_on_temp = 0;
+    U16 mu16_cold_off_temp = 0;
+
+    if(F_Sleep == SET)
+    {
+        mu16_cold_on_temp = COLD_ON_TEMP_SAVING;
+    }
+    else
+    {
+        mu16_cold_on_temp = COLD_ON_TEMP_NORMAL;
+    }
+    //gu16_Amb_Front_Temperature=333;
+
+    /*..hui [19-7-25오후 8:45:00] 30도 이상이었다가 30분 추가 냉각중 30도 미만으로 다시 내려오면..??????..*/
+    if(gu16_Amb_Front_Temperature < COLD_OFF_REF_TEMP_AMB)
+    {
+        mu16_cold_off_temp = COLD_OFF_TEMP_4_DEGREE;
+    }
+    else
+    {
+        mu16_cold_off_temp = COLD_OFF_TEMP_5_DEGREE;
+    }
+
+    if(gu16_Cold_Temperature >= mu16_cold_on_temp)
+    {
+        Bit0_Temp_Control = SET;
+
+        /*..hui [19-7-25오후 5:37:11] 30분 추가 기동 중 다시 가동조건 됐을때 초기화..*/
+        Bit1_Temp_Add_Control = CLEAR;
+        F_cold_add_op = CLEAR;
+        gu16_cold_add_op_timer = 0;
+    }
+    else
+    {
+        if(Bit0_Temp_Control == SET)
+        {
+            if(gu16_Cold_Temperature <= mu16_cold_off_temp)
+            {
+                if(mu16_cold_off_temp == COLD_OFF_TEMP_5_DEGREE)
+                {
+                    Bit0_Temp_Control = CLEAR;
+                    Bit1_Temp_Add_Control = SET;
+                    gu16_cold_add_op_timer = 0;
+                }
+                else
+                {
+                    Bit0_Temp_Control = CLEAR;
+                }
+            }
+            else{}
+        }
+        else{}
+    }
+
+
+    if(Bit1_Temp_Add_Control == SET)
+    {
+        /*..hui [19-7-26오후 7:32:20] 분할냉각..*/
+        if(gu8_GasSwitch_Status == GAS_SWITCH_COLD)
+        {
+            gu16_cold_add_op_timer++;
+        }
+        else{}
+
+        /*..hui [19-7-25오후 5:33:28] 30분 추가 기동 후 종료..*/
+        if(gu16_cold_add_op_timer >= COLD_ADD_OPERATION_TIME)
+        {
+            Bit1_Temp_Add_Control = CLEAR;
+        }
+        else
+        {
+            Bit1_Temp_Add_Control = SET;
+        }
+    }
+    else
+    {
+        Bit1_Temp_Add_Control = CLEAR;
+        gu16_cold_add_op_timer = 0;
+    }
+
+    /*..hui [19-7-25오후 5:40:39] 2도 이하 프로텍트 OFF 위치이동..*/
+    if(gu16_Cold_Temperature <= PROTECT_COLD_TEMP)
+    {
+        gu8_Cold_Temp_Control = 0;
+    }
+    else{}
+
+    if(gu8_Cold_Temp_Control > 0)
+    {
+        return SET;
+    }
+    else
+    {
+        return CLEAR;
+    }
+#endif
 
     return CLEAR;
 
@@ -629,22 +739,6 @@ U8 cold_comp_test(void)
             gu16_display_cold_on_temp = 110;
             gu16_display_cold_off_temp = 70;
         }
-    }
-
-    /* CH.PARK 냉각 테이블 데이터 반영 */
-    if(GetB1ColdOnTemp() > 0)
-    {
-        SetB1ColdOnTemp((U8*)&mu16_cold_on_temp);
-    }
-
-    if(GetB1ColdOffTemp() > 0)
-    {
-        SetB1ColdOffTemp((U8*)&mu16_cold_off_temp);
-    }
-
-    if(GetB1ColdDelayTime() > 0)
-    {
-        SetB1ColdDelayTime(&mu16_cold_delay_time);
     }
 
     /*..hui [24-4-11오후 4:22:44] 디버깅.. 확인용..*/
@@ -898,8 +992,6 @@ void ice_priority_decision(void)
 * Function Name: System_ini
 * Description  :
 ***********************************************************************************************************************/
-
-
 
 
 

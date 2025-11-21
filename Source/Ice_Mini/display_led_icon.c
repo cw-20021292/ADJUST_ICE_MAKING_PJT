@@ -305,6 +305,47 @@ void sleep_icon_out(void)
 		Bit4_Front_Left_Led_Sleep_Icon = CLEAR;
 	}
 
+#if 0
+	if(bit_setting_mode_start == SET)
+	{
+		/* 슬립모드 설정 표시 추가. 250224 CH.PARK */
+		if(bit_sleep_mode_enable == SET)
+		{
+			Bit4_Front_Left_Led_Sleep_Icon = SET;
+		}
+		else
+		{
+			Bit4_Front_Left_Led_Sleep_Icon = CLEAR;
+		}
+	}
+	else
+	{
+		if(bit_display_sleep_start == SET)
+		{
+			Bit4_Front_Left_Led_Sleep_Icon = SET;
+		}
+		else
+		{
+			Bit4_Front_Left_Led_Sleep_Icon = CLEAR;
+		}
+	}
+
+	if( gu8_Led_Display_Step == LED_Display__SLEEP)
+	{
+		if(bit_display_sleep_start == SET)
+		{
+			set_duty_percent( DIMMING__PERCENT_SLEEP_ICON, top_small_led_percent );
+		}
+		else
+		{
+			set_duty_percent( DIMMING__PERCENT_SLEEP_ICON, SLEEP_MODE_DIMMING_PERCENT );
+		}
+	 }
+	 else
+	 {
+		set_duty_percent( DIMMING__PERCENT_SLEEP_ICON, top_small_led_percent );
+	 }
+#endif
 }
 
 /***********************************************************************************************************************
@@ -1243,6 +1284,54 @@ void hot_lock_icon_output(void)
 ***********************************************************************************************************************/
 void comp_operation_dot_output(void)
 {
+#if 0
+	if(bit_display_sleep_start == SET)
+    {
+		// 취침모드 시 WHITE, BLUE 소등
+		Bit6_Front_Led_Icon_Comp_White = CLEAR;
+		Bit5_Front_Led_Icon_Comp_Blue = CLEAR;
+	}
+	else if( bit_setting_mode_start == SET )
+	{
+		Bit6_Front_Led_Icon_Comp_White = CLEAR;
+	}
+	else
+	{
+		if((u8WaterOutState == COLD_WATER_SELECT)	/* 냉수 선택 */
+		&& (u8IceOutState == ICE_SELECT__NONE)		/* 얼음 미선택 */
+		&& (bit_myWater_setting_start == 0)		/* MY 미선택 */
+		)
+		{
+			if(F_Cold_Enable == SET)
+			{
+				if(gu16_Cold_Temperature < gu16_test_cold_on_temp)
+				{
+					// 목표온도 도달 전 WHITE 점등
+					Bit5_Front_Led_Icon_Comp_Blue = CLEAR;
+					Bit6_Front_Led_Icon_Comp_White = SET;
+				}
+				else
+				{
+					// 목표온도 도달 시 BLUE 점등
+					Bit5_Front_Led_Icon_Comp_Blue = SET;
+					Bit6_Front_Led_Icon_Comp_White = CLEAR; // blue on
+				}
+			}
+			else
+			{
+				// 냉수OFF 시 WHITE, BLUE 소등
+				Bit6_Front_Led_Icon_Comp_White = CLEAR;
+				Bit5_Front_Led_Icon_Comp_Blue = CLEAR;
+			}
+		}
+		else
+		{
+			// 냉수 미선택 시 WHITE, BLUE 소등
+			Bit6_Front_Led_Icon_Comp_White = CLEAR;
+			Bit5_Front_Led_Icon_Comp_Blue = CLEAR;
+		}
+	}
+#endif
 	if(bit_display_sleep_start == SET)
     {
 		Bit5_Front_Led_Icon_Comp_Blue = CLEAR;
@@ -2014,4 +2103,3 @@ void ice_extract_led_output(void)
 	under_text_led_output();	// [얼음대소], [냉수강약], [일반/조각], [냉수OFF]
 	under_icon_led_output();	// [COMP LED], [자물쇠]
 }
-

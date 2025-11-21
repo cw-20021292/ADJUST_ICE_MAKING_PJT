@@ -13,6 +13,10 @@
 #define DEFAULT_ICE_DOOR_CLOSE_TIME     86400
 
 void IceStuckInit(void);
+void IceDoorReedInit(void);
+void CheckIceDoorReedStatus(void);
+void SetIceDoorReedStatus(REED_INFO mu8_reed_status);
+REED_INFO GetIceDoorReedStatus(void);
 
 extern U8 finish_ice_setting(void);
 

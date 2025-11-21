@@ -165,11 +165,12 @@ extern U16 gu16_water_select_return_time;
 extern bit F_ErrorSave;
 extern U8 u8Memento_Buff[];
 
+//extern U8 gu8_test_mode_timeout_1s;
 extern bit F_IceVV;
 extern U16 gu16CompOffDelay;
 extern bit F_IceHeater;
 extern U16 gu16IceVVTime;
-extern bit F_IceDoorClose;        /* ï¿½ï¿½ï¿½Ì½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ */
+extern bit F_IceDoorClose;        /* ¾ÆÀÌ½º µµ¾î ´ÝÈû */
 
 extern bit F_FW_Version_Display_Mode;
 extern U8 gu8_led_version_step;

@@ -484,6 +484,34 @@ void halt_ice_tank_ster(void)
         }
         else{}
 
+        #if 0
+        /*..hui [23-8-28???? 9:38:31] ???? ???? ????(????????/?????????)?? ??? ??o ???.. ????? ????? ??u..*/
+        if( u8DrainWaterLevel == DRAIN_LEVEL_ERROR )
+        {
+            gu16_drain_fault_timer++;
+
+            /*..hui [24-2-19???? 5:09:36] 10?? ???? ?????? ???????????? ????..*/
+            if( gu16_drain_fault_timer >= 6000 )
+            {
+                gu16_drain_fault_timer = 0;
+                /*play_melody_warning_197();*/
+                finish_ice_ster();
+
+                gu8_ice_ster_drain_stop_count++;
+
+                if( gu8_ice_ster_drain_stop_count >= 99 )
+                {
+                    gu8_ice_ster_drain_stop_count = 99;
+                }
+                else{}
+            }
+            else{}
+        }
+        else
+        {
+            gu16_drain_fault_timer = 0;
+        }
+        #endif
     }
     else{}
 }
@@ -518,8 +546,6 @@ void finish_ice_ster(void)
 * Function Name: System_ini
 * Description  :
 ***********************************************************************************************************************/
-
-
 
 
 

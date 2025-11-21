@@ -10,7 +10,6 @@
 #include    "Global_Variable.h"
 #include    "Port_Define.h"
 #include    "swing_bar.h"
-#include    "App_Comm_Protocol.h"
 
 void output_swing_bar(void);
 
@@ -35,7 +34,7 @@ void output_swing_bar(void)
         gu8_cristal_timer--;
     }
     else{}
-
+		
     if(Bit2_Ice_Operation_Disable_State == SET
     || F_ErrTrayMotor_DualInital == SET
     || F_Safety_Routine == SET)
@@ -55,6 +54,15 @@ void output_swing_bar(void)
     }
     else{}
 
+    #if 0
+    if( gu8IceStep >= STATE_11_WAIT_ROOM_WATER_FULL && gu8IceStep < STATE_31_MAIN_ICE_MAKING )
+    {
+        gu8_cristal_timer = 0;
+        pSWING_BAR = 1;                              // ½ºÀ®¹ÙÁ¤Áö
+        return;
+    }
+    else{}
+    #endif
 
     if(gu16IceMakeTime <= 5)
     {
@@ -70,28 +78,12 @@ void output_swing_bar(void)
 
         if(F_Cristal == SET)
         {
-            if(GetB2SwingbarOn() > 0)
-            {
-                gu8_cristal_timer = GetB2SwingbarOn();
-            }
-            else
-            {
-                gu8_cristal_timer = CRISTAL_ON;
-            }
-
+            gu8_cristal_timer = CRISTAL_ON;
             pSWING_BAR = 1;
         }
         else
         {
-            if(GetB2SwingbarOff() > 0)
-            {
-                gu8_cristal_timer = GetB2SwingbarOff();
-            }
-            else
-            {
-                gu8_cristal_timer = CRISTAL_OFF;
-            }
-
+            gu8_cristal_timer = CRISTAL_OFF;
             pSWING_BAR = 0;
         }
     }
@@ -102,7 +94,5 @@ void output_swing_bar(void)
 * Function Name: System_ini
 * Description  :
 ***********************************************************************************************************************/
-
-
 
 

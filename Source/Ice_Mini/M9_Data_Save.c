@@ -544,6 +544,57 @@ void save_iot_function(void)
     }
     else{}
 
+#if 0
+    if( gu16_cup_level_select_old != u16CupLevelSelect
+       || gu8_cup_level_order_old != gu8_cup_level_order
+       /////|| gu8_oF__oC_select_old != gu8_oF__oC_select
+       /////|| gu8_ml__oz_select_old != gu8_ml__oz_select
+       || gu8_hot_level_order_old != gu8_hot_level_order
+       || gu8_hot_default_temp_old != gu8_hot_default_temp
+       /*|| gu16_total_usage_water_gal_save_old != gu16_total_usage_water_gal_save*/
+       /*|| gu16_filter_reset_day_neo_old != gu16_filter_reset_day_neo*/
+       /*|| gu16_filter_reset_day_ro_old != gu16_filter_reset_day_ro*/
+       || bit_child_lock_enable_old != bit_child_lock_enable
+       || gu8_fota_start_old != gu8_fota_start
+       || gu8_wifi_filter_change_cycle_old != gu8_wifi_filter_cycle_percent )
+    {
+        mu8_enable = SET;
+    }
+    else{}
+
+    if(mu8_enable == SET)
+    {
+        apply_before_iot_function_setting();
+
+        gu8_eeprom_wbuf[0] = (U8)(u16CupLevelSelect/(U16)256);
+        gu8_eeprom_wbuf[1] = (U8)(u16CupLevelSelect%(U16)256);
+        gu8_eeprom_wbuf[2] = gu8_cup_level_order;
+        ///gu8_eeprom_wbuf[3] = gu8_oF__oC_select;
+        ///gu8_eeprom_wbuf[4] = gu8_ml__oz_select;
+        gu8_eeprom_wbuf[5] = gu8_hot_level_order;
+        gu8_eeprom_wbuf[6] = gu8_hot_default_temp;
+        /*gu8_eeprom_wbuf[7] = (U8)(gu16_total_usage_water_gal_save/(U16)256);*/
+        /*gu8_eeprom_wbuf[8] = (U8)(gu16_total_usage_water_gal_save%(U16)256);*/
+        gu8_eeprom_wbuf[7] = (U8)0;
+        gu8_eeprom_wbuf[8] = (U8)0;
+
+        /*gu8_eeprom_wbuf[9] = (U8)(gu16_filter_reset_day_neo/(U16)256);*/
+        /*gu8_eeprom_wbuf[10] = (U8)(gu16_filter_reset_day_neo%(U16)256);*/
+        /*gu8_eeprom_wbuf[11] = (U8)(gu16_filter_reset_day_ro/(U16)256);*/
+        /*gu8_eeprom_wbuf[12] = (U8)(gu16_filter_reset_day_ro%(U16)256);*/
+        gu8_eeprom_wbuf[9] = 0;
+        gu8_eeprom_wbuf[10] = 0;
+        gu8_eeprom_wbuf[11] = 0;
+        gu8_eeprom_wbuf[12] = 0;
+
+        gu8_eeprom_wbuf[13] = (U8)bit_child_lock_enable;
+        gu8_eeprom_wbuf[14] = gu8_fota_start;
+        gu8_eeprom_wbuf[15] = gu8_wifi_filter_cycle_percent;
+
+        EepromPageWrite(IOT_FUNCTION_ADDR, gu8_eeprom_wbuf, IOT_FUNCTION_LENGTH);
+    }
+    else{}
+#endif
 }
 
 void my_setting_data_save(void)
@@ -613,6 +664,12 @@ void hot_temp_data_save(void)
 {
     U8 mu8_enable = 0;
 
+#if 0
+    if( selected_hot_temp[0] != selected_hot_temp_0_old
+     ||selected_hot_temp[1] != selected_hot_temp_1_old
+     ||selected_hot_temp[2] != selected_hot_temp_2_old
+     ||selected_hot_temp[3] != selected_hot_temp_3_old)
+#endif
     if(U16HotTemplSelect != U16HotTemplSelect_old)
     {
         mu8_enable = SET;
@@ -732,6 +789,32 @@ void water_usage_save(void)
     }
     else{}
 
+    #if 0
+    if( gu32_total_usage_water_ml_save != gu32_total_usage_water_ml_save_old )
+    {
+        mu8_enable = SET;
+    }
+    else
+    {
+        mu8_enable = CLEAR;
+    }
+
+    if(mu8_enable == SET)
+    {
+        apply_water_usage_data();
+
+        mu16_a = (U16)(gu32_total_usage_water_ml_save/(U32)65536);
+        mu16_b = (U16)(gu32_total_usage_water_ml_save%(U32)65536);
+
+        gu8_eeprom_wbuf[0] = (U8)(mu16_a/(U16)256);
+        gu8_eeprom_wbuf[1] = (U8)(mu16_a%(U16)256);
+        gu8_eeprom_wbuf[2] = (U8)(mu16_b/(U16)256);
+        gu8_eeprom_wbuf[3] = (U8)(mu16_b%(U16)256);
+
+        EepromPageWrite(WATER_USAGE_ADDR, gu8_eeprom_wbuf, WATER_USAGE_LENGTH);
+    }
+    else{}
+    #endif
 }
 
 /***********************************************************************************************************************
@@ -860,6 +943,24 @@ void apply_before_iot_function_setting(void)
     gu8_fota_start_old = gu8_fota_start;
     
     gu8_drain_tank_ster_count_old = gu8_drain_tank_ster_count;
+#if 0
+    gu16_cup_level_select_old = u16CupLevelSelect;
+    gu8_cup_level_order_old = gu8_cup_level_order;
+
+    ///gu8_oF__oC_select_old = gu8_oF__oC_select;
+    ///gu8_ml__oz_select_old = gu8_ml__oz_select;
+    gu8_hot_level_order_old = gu8_hot_level_order;
+    gu8_hot_default_temp_old = gu8_hot_default_temp;
+    /*gu16_total_usage_water_gal_save_old = gu16_total_usage_water_gal_save;*/
+
+    /*gu16_filter_reset_day_neo_old = gu16_filter_reset_day_neo;*/
+    //*gu16_filter_reset_day_ro_old = gu16_filter_reset_day_ro;*/
+
+    bit_child_lock_enable_old = bit_child_lock_enable;
+    gu8_fota_start_old = gu8_fota_start;
+
+    gu8_wifi_filter_change_cycle_old = gu8_wifi_filter_cycle_percent;
+#endif
 }
 
 /***********************************************************************************************************************
@@ -923,7 +1024,5 @@ void init_before_save_data(void)
 * Function Name: System_ini
 * Description  :
 ***********************************************************************************************************************/
-
-
 
 

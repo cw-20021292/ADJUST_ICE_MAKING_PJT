@@ -1043,6 +1043,16 @@ void mainheating_flow_control(void)
 
     if( gu8_Hot_Heater_Temperature_One_Degree >= 95 )
     {
+        #if 0
+        if(u16Heater_Power_Save <= HEATER_POWER_LOW)
+        {
+            mu8_stable_timr = 1;
+        }
+        else
+        {
+            mu8_stable_timr = 2;
+        }
+        #endif
 
         mu8_stable_timr = 1;
     }
@@ -1177,7 +1187,26 @@ void Cal_HeaterWatt(void)
     U32 b = 0;
     U32 c = 0;
 
+    #if 0
+    /*..hui [21-2-19ï¿½ï¿½ï¿½ï¿½ 3:05:51] AIS3.0 - ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 2720W..*/
+    if(gu16_AD_Result_Heater_Current_Feed >= 100)
+    {
+        a = (U32)gu16_AD_Result_Heater_Current_Feed;
+        b = (U32)((455 * a) / 100);
+        c = (U32)(b - 1510);
+    }
+    else{}
+    #endif
 
+    #if 0
+    if(gu16_AD_Result_Heater_Current_Feed >= 450)
+    {
+        a = (U32)gu16_AD_Result_Heater_Current_Feed;
+        b = (U32)((780 * a) / 100);
+        c = (U32)(b - 1341);
+    }
+    else{}
+    #endif
 
     // if(gu16_AD_Result_Heater_Current_Feed >= 400)
     // {
@@ -1318,6 +1347,13 @@ void Cal_HotFlowHz(void)
         return;
     }
     else{}
+#if 0
+    // [25-02-20 14:35:26] yspark, Ç® Ãâ·ÂÀÏ ¶§¸¸ °è»ê
+    if ((pHEATER_HOT_H_RELAY == SET && pHEATER_HOT_TRIAC_L == SET && gu8TriacLevelMax == STEP_TRIAC) == 0)
+    {
+        return;
+    }
+#endif
 // [25-05-23 16:01:05] yspark, ¼öÁ¤
 // Target À¯·®À» ÅëÀÏÈ­ ÇÏ±â À§ÇØ¼­ ¼öÁ¤
     // if( gu8_Water_Out_Step == STATE_20_HOT_PRE_HEATING_STATE )
@@ -1760,6 +1796,47 @@ void Cal_HotFlowHz(void)
     else{}
 
 		/* sean [25-5-08] Heater ¿Âµµ°¡ ³ô¾ÆÁ³À»¶§¿¡´Â À¯·®Á¶ÀýÇÏ´Â ºÎºÐ Skip	*/
+#if 0
+        if( gu8_Hot_Out_Temperature_One_Degree >= HOT_TRIAC_OFF_TEMP
+            || gu8_Hot_Heater_Temperature_One_Degree >= HOT_TRIAC_OFF_TEMP )
+        {
+            u8Target_Hz_Hot = C_07_LPM;
+        }
+        // else if( gu8_Hot_Out_Temperature_One_Degree >= 96
+        //     || gu8_Hot_Heater_Temperature_One_Degree >= 96 )
+        // {
+        //     u8Target_Hz_Hot = C_07_LPM;
+        // }
+        else
+        {
+            u8Target_Hz_Hot = u8Target_Hz_Hot + gs8_flow_inc;
+        }
+    }
+    else{}
+#endif
+#if 0
+    /*..hui [21-3-18ï¿½ï¿½ï¿½ï¿½ 5:50:45] Ä¿ï¿½ï¿½ ï¿½Ô¼ï¿½ 15ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ã¹ï¿½ï¿½ï¿½Ï¶ï¿½ ï¿½Ê¹Ý¿ï¿½ ï¿½Âµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½..*/
+    /*..hui [21-3-18ï¿½ï¿½ï¿½ï¿½ 5:50:57] ï¿½ï¿½ï¿½Í°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ä¾ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Âµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½..*/
+    if( u16Heater_Power_Save <= HEATER_POWER_HIGH
+        && gu8_hot_setting_temperature == HOT_SET_TEMP_3__COFFEE__85_oC
+        /*&& gu8_Hot_In_Temperature_One_Degree <= 15*/
+        && gu8_Hot_In_Temperature_One_Degree <= 20
+        && gu8_Hot_Heater_Temperature_One_Degree <= 65
+        && gu8_pre_heater_temp <= 20 )
+    {
+        u8Target_Hz_Hot = u8Target_Hz_Hot - 5;
+    }
+    else if( u16Heater_Power_Save <= HEATER_POWER_HIGH
+        && gu8_hot_setting_temperature == HOT_SET_TEMP_3__COFFEE__85_oC
+        /*&& gu8_Hot_In_Temperature_One_Degree <= 15*/
+        && gu8_Hot_In_Temperature_One_Degree <= 27
+        && gu8_Hot_Heater_Temperature_One_Degree <= 75
+        && gu8_pre_heater_temp <= 30 )
+    {
+        u8Target_Hz_Hot = u8Target_Hz_Hot - 4;
+    }
+    else{}
+#endif
     if(u8Target_Hz_Hot <= C_033_LPM)
     {
         u8Target_Hz_Hot = C_033_LPM;
@@ -1830,6 +1907,39 @@ void heating_control(void)
     else if( Bit1_Main_Heating_State == SET)// && gu8_hot_setting_temperature == HOT_SETTING_TEMP_COFFEE )
     {
         main_heating_control( mu8_target );
+#if 0
+        if( gu8_hot_setting_temperature != HOT_SET_TEMP_1__MILK__43_oC
+            && u16Heater_Power_Save <= HEATER_POWER_HIGH
+            && ( gu8_Hot_Out_Temperature_One_Degree <= 85 && gu8_Hot_Heater_Temperature_One_Degree <= 85 ) )
+        {
+            gu8_heater_full_timer++;
+
+            if( gu8_heater_full_timer >= 10 )
+            {
+                gu8_heater_full_timer = 10;
+            }
+            else
+            {
+                u8Delta_Power_Level = 100;
+            }
+        }
+        else{}
+
+        /*..hui [21-3-18¿ÀÀü 10:53:04] Ä¿ÇÇ ¼³Á¤ÀÏ¶§ ÀÔ¼ö 17µµ ¹Ì¸¸ÀÏ°æ¿ì ÃßÃâÈÄ¿¡µµ 80µµ ¹Ì¸¸ÀÌ¸é Ç® °¡µ¿..*/
+        /*..hui [21-3-18¿ÀÀü 10:53:32] ÀÌ°Ô ¾øÀ¸¸é ¿¹¿­½Ã°£ÀÌ Àû¾î¼­ ¿Âµµ°¡ ¾È¿Ã¶ó°¬´Âµ¥µµ °è»ê»ó È÷ÅÍ Àü·ÂÀ» ³»¸±¼öÀÖÀ½..*/
+        if( gu8_hot_setting_temperature == HOT_SET_TEMP_3__COFFEE__85_oC
+            && gu8_Hot_In_Temperature_One_Degree <= 27
+            && u16Heater_Power_Save <= HEATER_POWER_HIGH
+            && gu8_pre_heater_temp <= 30 )
+        {
+            if( gu8_Hot_Out_Temperature_One_Degree <= 80 )
+            {
+                u8Delta_Power_Level = 100;
+            }
+            else{}
+        }
+        else{}
+#endif
         // [25-02-20 15:18:19] yspark Æ©´×
         // [25-05-23 17:05:57] ysaprk 2Â÷ Æ©´×
         //cbr
@@ -1934,6 +2044,19 @@ void heating_control(void)
             else{}
         }
         else{}
+#if 0
+        if( (gu8_Hot_Out_Temperature_One_Degree >= mu8_target + 8)
+             && (gu8_hot_setting_temperature == HOT_SET_TEMP_1__MILK__43_oC)
+             && (u16Heater_Power_Save > HEATER_POWER_LOW) )
+        {
+            if(u8Delta_Power_Level > gu8_min_power)
+            {
+                u8Delta_Power_Level = u8Delta_Power_Level - 5;
+            }
+            else{}
+        }
+        else{}
+#endif
         /*if( gu8_Flow_1sec <= C_025_LPM )*/    //kdh
         //if( gu8_Flow_1sec <= C_03_LPM ) 
         //sean [25-05-13] À¯·®°ªÀÌ ºÎÁ·ÇÏ¿© 0.25LPMÀ¸·Î ¼¼ÆÃ
@@ -2236,6 +2359,18 @@ void main_heating_control( U8 mu8_target )
     //////////////////////////////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////////////////////////
     // [25-02-20 16:37:27] yspark, È÷ÅÍ Á¶Á¤ °ª º¯°æ
+#if 0
+    if( u8Delta_Power_Level >= gu8_min_power )
+    {
+        if (gu8_hot_setting_temperature == HOT_SET_TEMP_1__MILK__43_oC)
+        {
+            u8Delta_Power_Level = u8Delta_Power_Level + gs8_adjust_heater_power;
+        }
+        else
+        {}
+    }
+    else{}
+#endif
 }
 
 
@@ -3601,5 +3736,3 @@ void SetTargetTempUnder_25(void)
         break;
     }
 }
-
-

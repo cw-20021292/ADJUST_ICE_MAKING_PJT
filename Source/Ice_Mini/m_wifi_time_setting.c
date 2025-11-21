@@ -50,6 +50,14 @@ void wifi_time_setting(void)
     S8 ms8_temp = 0;
     U16 mu16_req_time = 0;
 
+    #if 0
+    /*..hui [21-3-9오후 1:01:08] 연결됐을때만..*/
+    if( gu8_Wifi_Connect_State != WIFI_CONNECT )
+    {
+        return;
+    }
+    else{}
+    #endif
 
     /*..hui [21-8-23오후 4:50:56] 현민이쪽에서 시간을 불러와도 써주는건 넣어야...........*/
     write_rtc_wifi_time();
@@ -138,8 +146,6 @@ void write_rtc_wifi_time(void)
 * Function Name: System_ini
 * Description  :
 ***********************************************************************************************************************/
-
-
 
 
 

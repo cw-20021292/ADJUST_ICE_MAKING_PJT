@@ -99,7 +99,7 @@ void front_rx_communication(void)
     {
         /*convert_received_data_asc_to_dec();*/
 
-        mu16_cal_crc = (U16)CRC_Cal(gu8_front_rx_buffer, FRONT_CRC_CALC_RANGE);
+        mu16_cal_crc = (U16)Rx_CRC_CCITT(gu8_front_rx_buffer, FRONT_CRC_CALC_RANGE);
 
         mu8_crc_high = (U8)HighByte(mu16_cal_crc);
         mu8_crc_low = (U8)LowByte(mu16_cal_crc);
@@ -168,6 +168,18 @@ void front_rx_communication(void)
 ***********************************************************************************************************************/
 void convert_received_data_asc_to_dec(void)
 {
+#if 0
+    gu8_front_rx_buffer[0] = gu8_front_rx_buffer_temp[0];
+    gu8_front_rx_buffer[1] = gu8_front_rx_buffer_temp[1];
+    gu8_front_rx_buffer[2] = gu8_front_rx_buffer_temp[2];
+
+    gu8_front_rx_buffer[3] = AscToHex(gu8_front_rx_buffer_temp[3], gu8_front_rx_buffer_temp[4]);
+    gu8_front_rx_buffer[4] = AscToHex(gu8_front_rx_buffer_temp[5], gu8_front_rx_buffer_temp[6]);
+    gu8_front_rx_buffer[5] = AscToHex(gu8_front_rx_buffer_temp[7], gu8_front_rx_buffer_temp[8]);
+    gu8_front_rx_buffer[6] = AscToHex(gu8_front_rx_buffer_temp[9], gu8_front_rx_buffer_temp[10]);
+
+    gu8_front_rx_buffer[7] = gu8_front_rx_buffer_temp[11];
+#endif
 }
 
 /***********************************************************************************************************************
@@ -196,6 +208,15 @@ void apply_receive_data(U8 *mu8_rx_data)
 {
     U8 mu8_voice = 0;
 
+    #if 0
+    gu32_front_rcv_select_key_data = (U16)((mu8_rx_data[3] * 256) + mu8_rx_data[4]);
+
+    gu8_Key_Water_Extract = (U8)((gu32_front_rcv_select_key_data >> 3) & 0x01);
+    gu8_Key_Ice_Extract  = (U8)((gu32_front_rcv_select_key_data >> 2) & 0x01);
+    gu32_Key_Input = (U16)(gu32_front_rcv_select_key_data & 0xFFF0);
+
+    gu8_front_version = mu8_rx_data[5];
+    #endif
 
     gu8_front_model = mu8_rx_data[2];
     gu8_front_version = mu8_rx_data[3];
@@ -220,7 +241,7 @@ void apply_receive_data(U8 *mu8_rx_data)
     else{}
 
     gu8_Key_Water_Extract = (U8)((gu32_front_rcv_select_key_data >> 1) & 0x01);           // 물 추출 버튼
-    gu8_Key_Ice_Extract  = (U8)((U32)(gu32_front_rcv_select_key_data >> 15) & 0x02);      // 얼음 및 얼음물 추출 버튼
+    gu8_Key_Ice_Extract  = (U8)((U32)(gu32_front_rcv_select_key_data >> 15) & 0x02);      // 얼음 및 얼음물 추출 버튼 
     gu32_Key_Input = (U32)(gu32_front_rcv_select_key_data & 0xFFFEFFFE);                  // 위 추출버튼을 제외한 모든 버튼 입력
 }
 
@@ -323,12 +344,12 @@ void make_front_tx_data(void)
 
     gu8_front_tx_buffer[0] = PROTOCOL_STX;
     gu8_front_tx_buffer[1] = PROTOCOL_DEVICE_ID_FRONT;
-
+    
     /* 왼쪽 Segments */
     gu8_front_tx_buffer[2] = gu8_front_temp_fnd_hundred;
     gu8_front_tx_buffer[3] = gu8_front_temp_fnd_ten;
     gu8_front_tx_buffer[4] = gu8_front_temp_fnd_one;
-
+    
     /* 오른쪽 Segments */
     gu8_front_tx_buffer[5] = gu8_front_amount_fnd_hundred;
     gu8_front_tx_buffer[6] = gu8_front_amount_fnd_ten;
@@ -389,13 +410,13 @@ void make_front_tx_data(void)
     gu8_front_tx_buffer[52] = gu8_dimming_set_thirty_four;
     gu8_front_tx_buffer[53] = gu8_dimming_set_thirty_five;
     gu8_front_tx_buffer[54] = gu8_dimming_set_thirty_six;
-
+    
     gu8_front_tx_buffer[55] = gu8_dimming_set_thirty_seven;
     gu8_front_tx_buffer[56] = gu8_dimming_set_thirty_eight;
     gu8_front_tx_buffer[57] = gu8_dimming_set_thirty_nine;
     gu8_front_tx_buffer[58] = gu8_dimming_set_fourty;
-
-
+    
+    
     gu8_front_tx_buffer[59] = gu8_etc_1;
     gu8_front_tx_buffer[60] = gu8_etc_2;
 
@@ -416,7 +437,7 @@ void make_front_tx_data(void)
     gu8_front_tx_buffer[70] = gu8_animation_dimming_six;
     gu8_front_tx_buffer[71] = gu8_animation_dimming_seven;
     gu8_front_tx_buffer[72] = gu8_animation_dimming_eight;      // LPP 추가
-
+    
 ////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////
     gu8_front_tx_buffer[73] = gu8_fota_start;
@@ -431,17 +452,23 @@ void make_front_tx_data(void)
     gu8_front_tx_buffer[79] = gu8_rgb_ice_outer_red_on_time;
     gu8_front_tx_buffer[80] = gu8_rgb_ice_outer_green_on_time;
     gu8_front_tx_buffer[81] = gu8_rgb_ice_outer_blue_on_time;
-
+    
     gu8_front_tx_buffer[82] = gu8_rgb_ice_inner_red_on_time;
     gu8_front_tx_buffer[83] = gu8_rgb_ice_inner_green_on_time;
     gu8_front_tx_buffer[84] = gu8_rgb_ice_inner_blue_on_time;
-
+    
+    #if 0
+    gu8_front_tx_buffer[64] = gu8_play;
+    gu8_front_tx_buffer[65] = gu8_volume;
+    gu8_front_tx_buffer[66] = (U8)(gu16_address/(U16)256);
+    gu8_front_tx_buffer[67] = (U8)(gu16_address%(U16)256);
+    #endif
 
     if(bit_sleep_voice_sync == SET)
     {
         bit_sleep_voice_sync = CLEAR;
 
-        /* 와이파이로 취침모드 사용 / 미사용 설정 시 최초 1회는 스킵함.
+        /* 와이파이로 취침모드 사용 / 미사용 설정 시 최초 1회는 스킵함. 
         (소리가 1로 줄어들고 설정음을 내보내야함) 250827 CH.PARK */
         gu8_front_tx_buffer[85] = CLEAR;
         gu8_front_tx_buffer[86] = CLEAR;
@@ -477,14 +504,14 @@ void make_front_tx_data(void)
     gu8_front_tx_buffer[90] = gu8_etc_3;
     gu8_front_tx_buffer[91] = gu8_etc_4;
 
-    mu16_cal_crc = CRC_Cal(gu8_front_tx_buffer, MAIN_CRC_CALC_RANGE);
+    mu16_cal_crc = Rx_CRC_CCITT(gu8_front_tx_buffer, MAIN_CRC_CALC_RANGE);
 
     mu8_crc_high = (U8)HighByte(mu16_cal_crc);
     mu8_crc_low = (U8)LowByte(mu16_cal_crc);
 
     gu8_front_tx_buffer[92] = mu8_crc_high;
     gu8_front_tx_buffer[93] = mu8_crc_low;
-
+    
     gu8_front_tx_buffer[94] = PROTOCOL_ETX;
 }
 
@@ -495,6 +522,40 @@ void make_front_tx_data(void)
 ***********************************************************************************************************************/
 void convert_final_asc_data(U8 *mu8_tx_data, U8 mu8_length)
 {
+#if 0
+    gu8_front_tx_buffer[0] = mu8_tx_data[0];
+    gu8_front_tx_buffer[1] = mu8_tx_data[1];
+    gu8_front_tx_buffer[2] = mu8_tx_data[2];
+
+    gu8_front_tx_buffer[3] = (U8)( (HexToAsc(mu8_tx_data[3]) >> 8) & 0xFF );
+    gu8_front_tx_buffer[4] = (U8)( (HexToAsc(mu8_tx_data[3])) & 0xFF );
+
+    gu8_front_tx_buffer[5] = (U8)( (HexToAsc(mu8_tx_data[4]) >> 8) & 0xFF );
+    gu8_front_tx_buffer[6] = (U8)( (HexToAsc(mu8_tx_data[4])) & 0xFF );
+
+    gu8_front_tx_buffer[7] = (U8)( (HexToAsc(mu8_tx_data[5]) >> 8) & 0xFF );
+    gu8_front_tx_buffer[8] = (U8)( (HexToAsc(mu8_tx_data[5])) & 0xFF );
+
+    gu8_front_tx_buffer[9] = (U8)( (HexToAsc(mu8_tx_data[6]) >> 8) & 0xFF );
+    gu8_front_tx_buffer[10] = (U8)( (HexToAsc(mu8_tx_data[6])) & 0xFF );
+
+    gu8_front_tx_buffer[11] = (U8)( (HexToAsc(mu8_tx_data[7]) >> 8) & 0xFF );
+    gu8_front_tx_buffer[12] = (U8)( (HexToAsc(mu8_tx_data[7])) & 0xFF );
+
+    gu8_front_tx_buffer[13] = (U8)( (HexToAsc(mu8_tx_data[8]) >> 8) & 0xFF );
+    gu8_front_tx_buffer[14] = (U8)( (HexToAsc(mu8_tx_data[8])) & 0xFF );
+
+    gu8_front_tx_buffer[15] = (U8)( (HexToAsc(mu8_tx_data[9]) >> 8) & 0xFF );
+    gu8_front_tx_buffer[16] = (U8)( (HexToAsc(mu8_tx_data[9])) & 0xFF );
+
+    gu8_front_tx_buffer[17] = (U8)( (HexToAsc(mu8_tx_data[10]) >> 8) & 0xFF );
+    gu8_front_tx_buffer[18] = (U8)( (HexToAsc(mu8_tx_data[10])) & 0xFF );
+
+    gu8_front_tx_buffer[19] = (U8)( (HexToAsc(mu8_tx_data[11]) >> 8) & 0xFF );
+    gu8_front_tx_buffer[20] = (U8)( (HexToAsc(mu8_tx_data[11])) & 0xFF );
+
+    gu8_front_tx_buffer[21] = mu8_tx_data[12];
+#endif
 }
 
 /***********************************************************************************************************************
@@ -578,6 +639,4 @@ void Uart_ISR0_Front_Panel_Tx ( void )
 * Function Name: System_ini
 * Description  :
 ***********************************************************************************************************************/
-
-
 

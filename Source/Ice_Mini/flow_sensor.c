@@ -49,9 +49,11 @@ U16 u16_tray_ster_hz;
 
 typedef struct _drain_flow_
 {
-    U8  u8FlowMeter;                    /* 제빙수 유량센서 플래그 */
-    U16 gu16IceMakeBeforeFlowHz;        /* 제빙수 전 유량센서 측정값 */
-    U16 gu16IceMakeAfterFlowHz;         /* 제빙수 후 유량센서 측정값 */
+    U8  u8FlowMeter;                   /* 제빙수 유량센서 플래그 */
+    U16 gu16IceMakeBeforeFlowHz;       /* 제빙수 전 유량센서 측정값 */
+    U16 gu16IceMakeAfterFlowHz;        /* 제빙수 후 유량센서 측정값 */
+    U16 gu16VIcePrevFlowHz;            /* 제빙수 이전 유량센서 측정값 */
+    U16 gu16VIceCurFlowHz;             /* 제빙수 현재 유량센서 측정값 */
 } DRAIN_FLOW_T;
 DRAIN_FLOW_T DrainFlow;
 
@@ -121,11 +123,32 @@ U16 GetDrainAfterFlowHz(void)
     return DrainFlow.gu16IceMakeAfterFlowHz;
 }
 
+void SetDrainPrevFlowHz(U16 u16FlowHz)
+{
+    DrainFlow.gu16VIcePrevFlowHz = u16FlowHz;
+}
+
+U16 GetDrainPrevFlowHz(void)
+{
+    return DrainFlow.gu16VIcePrevFlowHz;
+}
+
+void SetDrainCurFlowHz(U16 u16FlowHz)
+{
+    DrainFlow.gu16VIceCurFlowHz = u16FlowHz;
+}
+
+U16 GetDrainCurFlowHz(void)
+{
+    return DrainFlow.gu16VIceCurFlowHz;
+}
+
 // 총 제빙에 사용된 물량 계산 (Hz단위를 cc단위로 변환해야됨)
 U16 GetDrainFlow(void)
 {
-    // 트레이에 남는 물, 드레인탱크에 남는 물, 오차 등을 생각해서 +10cc 보정
-    return ((DrainFlow.gu16IceMakeBeforeFlowHz - DrainFlow.gu16IceMakeAfterFlowHz) + GetCCToHz(10));
+    // 트레이에 남는 물, 드레인탱크에 남는 물, 오차(기타손실) 등을 생각해서 +10cc 보정
+//    return ((DrainFlow.gu16IceMakeBeforeFlowHz - DrainFlow.gu16IceMakeAfterFlowHz) + GetCCToHz(10));
+    return ((DrainFlow.gu16IceMakeBeforeFlowHz - DrainFlow.gu16IceMakeAfterFlowHz));
 }
 
 // CC단위를 Hz단위로 변환
@@ -133,6 +156,50 @@ U16 GetCCToHz(U16 u16CC)
 {
     F32 OneCC = 4.66F;
     return (U16)(u16CC * OneCC);
+}
+
+// 배수유량이 입수유량의 +5%보다 크면 OK
+// SET : 케이스 사용 가능
+// CLEAR : 케이스 사용 불가
+
+
+F32 SetValidGain(void)
+{
+    F32 mf32_isvalid = INVALID;
+
+    U16 mu16_cur_flow = GetDrainCurFlowHz();
+    U16 mu16_prev_flow = GetDrainPrevFlowHz();
+    F32 mf32_diff = 0.0F;
+
+    // 현재 유량이 이전 유량보다 크면 차이를 계산
+    if(mu16_cur_flow > mu16_prev_flow)
+    {
+        mf32_diff = (F32)(mu16_cur_flow - mu16_prev_flow);
+    }
+    else
+    {
+        mf32_diff = (F32)(mu16_prev_flow - mu16_cur_flow);
+    }
+
+    // 배수유량이 입수유량의 +5%보다 크면 NG
+    if(DrainFlow.gu16IceMakeAfterFlowHz > (U16)(DrainFlow.gu16IceMakeBeforeFlowHz * 1.05))
+    {
+        return INVALID;
+    }
+    // 배수유량이 입수유량보다 크거나, 차이가 80cc 이상이면 의심
+    else if((DrainFlow.gu16IceMakeAfterFlowHz > DrainFlow.gu16IceMakeBeforeFlowHz)
+    || (mf32_diff > (F32)GetCCToHz(80))         // 80cc 이상 차이나면 케이스 의심
+    )
+    {
+        return SUSPECT;
+    }
+    // 정상
+    else
+    {
+        return VALID;
+    }
+
+    return mf32_isvalid;
 }
 
 /***********************************************************************************************************************
@@ -180,7 +247,7 @@ void DrainFlowInput(void)
     {
         DrainFlow.gu16IceMakeAfterFlowHz++;
     }
-        
+
     DrainFlowStop();
 }
 
@@ -200,11 +267,11 @@ void INTP11_Flow_Sensor_Input(void)
             if (u8Extract_Continue == SET)
             {
                 gu16Extracted_Hz++;
-                
+
                 if (u16Efluent_Time == 0)
                 {
                     F_Effluent_OK = SET;
-                    
+
                     gu16Extracted_Hz  = 0;
 
                     F_WaterOut_Disable_State = SET;
@@ -251,14 +318,14 @@ void INTP11_Flow_Sensor_Input(void)
     }
     else if( F_WaterOut == SET && u8Extract_Continue == SET )
     {
-        gu16Extracted_Hz ++;	
-        
+        gu16Extracted_Hz ++;
+
         if( gu8_Water_Out_Step == STATE_31_WATER_EXTRACT_STATE )
         {
             clac_extract_amount();
         }
     }
-    else 
+    else
     {
         gu16Extracted_Hz  = 0;
     }
@@ -296,7 +363,7 @@ void INTP11_Flow_Sensor_Input(void)
 
             if(gu16_Cold_Tank_Fill_Hz == 0)
             {
-            
+
             }
             else{}
 	      }
@@ -311,7 +378,7 @@ void INTP11_Flow_Sensor_Input(void)
 
             if(gu16_Cold_Tank_Flush_Hz == 0)
             {
-            
+
             }
             else{}
         }
@@ -325,15 +392,15 @@ void INTP11_Flow_Sensor_Input(void)
 
             if(gu16_filter_flushing_HZ == 0)
             {
-            
+
             }
             else{}
         }
         else{}
     }
-	
+
 	/*.. sean [25-01-21] tray 입수 유량센서 확인 하기 위해 추가..*/
-    if((gu8IceStep == STATE_20_WATER_IN_ICE_TRAY) 
+    if((gu8IceStep == STATE_20_WATER_IN_ICE_TRAY)
     && ( F_WaterOut == CLEAR )
     )
     {

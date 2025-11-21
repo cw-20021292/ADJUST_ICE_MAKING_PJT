@@ -382,6 +382,14 @@ void self_tesr_proc(void)
 
             /*..sean [25-03-12] 제빙 동작은 완료 후 마무리..*/
 			gu8_self_test_manual_step++;
+#if 0
+            /*..hui [23-12-22오후 4:41:59] 얼음 만드는중이었으면 완료될때까지 대기..*/
+            if( gu8IceStep == STATE_0_STANDBY )
+            {
+                gu8_self_test_manual_step++;
+            }
+            else{}
+#endif
         break;
 
         case 2 :
@@ -536,6 +544,4 @@ void initial_each_self_data( U8 mu8_num )
 
     SELF_Test_Result_Data.word[ mu8_num ] = SELF_TEST_INITIAL_DATA;
 }
-
-
 

@@ -28,6 +28,10 @@ U8 all_lock_flickering_timer(U8 flick_time, U8 interval);
 void start_all_lock_flick(void);
 
 
+#if 0
+void start_ice_lock_flick(void);
+U8 indicator_flick_timer(U8 flick_time, U8 interval);
+#endif
 
 void start_ice_lock_flick(void);
 U8 ice_lock_flickering_timer(U8 flick_time, U8 interval);
@@ -414,6 +418,53 @@ U8 water_extract_flickering_timer(U8 flick_time, U8 interval)
 * Function Name: System_ini
 * Description  :
 ***********************************************************************************************************************/
+#if 0
+void start_ice_lock_flick(void)
+{
+    /*..hui [24-4-3오후 5:34:52] 기존 깜빡거리던거 있으면 전부 종료하고 싲가하도??.*/
+    gu8_bitton_indicator = 0;
+
+    Bit0_Ice_Lock_Indicator = SET;
+    gu8_indicator_flick_timer = 0;
+    gu8_indicator_flick_cnt = 0;
+
+    /*..hui [23-2-10오전 9:14:10] 온수잠금 표시중이었으면 즉시 종료..*/
+    Bit1_Hot_Lock_Indicator = CLEAR;
+}
+
+U8 indicator_flick_timer(U8 flick_time, U8 interval)
+{
+    static U8 u8_indi_flick_state = 0;
+
+    if( gu8_indicator_flick_timer == 0 )
+    {
+        u8_indi_flick_state = CLEAR;
+    }
+    else{}
+
+    gu8_indicator_flick_timer++;
+
+    if( (gu8_indicator_flick_timer % interval) == 0 )
+    {
+        u8_indi_flick_state ^= SET;
+        gu8_indicator_flick_cnt++;
+    }
+    else{}
+
+    if( gu8_indicator_flick_cnt >= flick_time && u8_indi_flick_state == SET )
+    {
+        gu8_indicator_flick_cnt = 0;
+        gu8_indicator_flick_timer = 0;
+        u8_indi_flick_state = CLEAR;
+
+        Bit0_Ice_Lock_Indicator = CLEAR;
+        Bit1_Hot_Lock_Indicator = CLEAR;
+    }
+    else{}
+
+    return u8_indi_flick_state;
+}
+#endif
 U8 get_remain_flick_timer()
 {
 	if(gu8_indicator_flick_timer != 0
@@ -448,5 +499,3 @@ void init_flick_timer()
 
     gu16_ice_lock_flick_timer = 0;
 }
-
-

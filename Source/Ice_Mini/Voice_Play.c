@@ -308,6 +308,17 @@ void play_voice_filter_reed_sw_open_4( void )
 {
     // Play_Voice(VOICE_1_SHUTOFF_WATER_FILTER_COVER);
 
+    #if 0
+    if( gu8Sound_Type == SOUND_TYPE_VOICE )
+    {
+        Play_Voice(VOICE_3_SHUTOFF_WATER_SIDE_COVER);
+    }
+    else if( gu8Sound_Type == SOUND_TYPE_MELODY )
+    {
+        play_melody_warning_197();
+    }
+    else{}
+    #endif
 }
 
 
@@ -1217,8 +1228,6 @@ void play_voice_sleep_mode_ice_extract_52(void)
 * Function Name: System_ini
 * Description  :
 ***********************************************************************************************************************/
-
-
 
 
 

@@ -66,6 +66,18 @@ void led_display(void)
                 gu8_pure_temp_old = CLEAR;
             }
             else{}
+#if 0
+            led_normal_state();
+            if(u8IceOutState == ICE_SELECT__ICE_WATER)
+            {
+                fnd_left_ice_out();
+            }
+            else
+            {
+                fnd_left_normal_state();
+            }
+            fnd_right_water_out();
+#endif
             led_normal_state();
             fnd_left_ice_out();
             fnd_right_water_out_normal();
@@ -84,6 +96,23 @@ void led_display(void)
                 init_water_extract_display();
             }
             else{}
+#if 0
+            led_normal_state();
+            fnd_left_ice_out();
+            
+            if(u8IceOutState == ICE_SELECT__ICE)
+            {
+                fnd_right_ice_out();
+            }
+            if(u8IceOutState == ICE_SELECT__ICE_WATER)
+            {
+                fnd_right_water_out();
+            }
+            else
+            {   
+                /* DO NOTHING */
+            }
+#endif
             led_normal_state();
             fnd_left_normal_state();
             // fnd_left_my_recipe();
@@ -447,8 +476,46 @@ void get_popup(void)
         }
         else{}
 
+        #if 0
+        else if( bit_filter_alarm_start == SET )
+        {
+            gu8_filter_alarm_popup_enable = SET;
+        }
+        else if( bit_uv_water_tank_out == SET
+                 && gu16_AD_Result_UV_Water_Tank_1_2_Current_Feed < UV_COUPLE__ERROR_CHECT_OVER_AD
+                 && gu16_AD_Result_UV_Water_Tank_1_2_Current_Feed > UV_COUPLE__ERROR_CHECK_UNDER_AD
+                 && bit_uv_fault_test_start == CLEAR )
+        {
+            /*..hui [24-11-28오전 10:03:48] 전원인가후 UV 테스트하는 동안에는 표시 안함 추가..*/
+            gu8_uv_popup_enable = SET;
+        }
+        else if( ( bit_uv_ice_tray_out == SET && bit_ice_tray_making_enable == CLEAR )
+                 && gu16_AD_Result_UV_Ice_Tray_1_2_Current < UV_COUPLE__ERROR_CHECT_OVER_AD
+                 && gu16_AD_Result_UV_Ice_Tray_1_2_Current > UV_COUPLE__ERROR_CHECK_UNDER_AD
+                 && bit_uv_fault_test_start == CLEAR )
+        {
+            gu8_uv_popup_enable = SET;
+        }
+        else if( bit_uv_ice_tank_out == SET
+                 && gu16_AD_Result_UV_Ice_Tank_1_2_Back_Current < UV_COUPLE__ERROR_CHECT_OVER_AD
+                 && gu16_AD_Result_UV_Ice_Tank_1_2_Back_Current > UV_COUPLE__ERROR_CHECK_UNDER_AD
+                 && bit_uv_fault_test_start == CLEAR )
+        {
+            gu8_uv_popup_enable = SET;
+        }
+        else{}
+        #endif
 
         /*..hui [24-4-5오전 9:11:09] 얼음탱크 앞UV는 아이스트레이랑 연동되기 떄문에 표시 안함..*/
+        #if 0
+        else if( bit_uv_ice_tank_front_out == SET
+                 && gu16_AD_Result_UV_Ice_Tank_Front_Current < UV_SOLO__ERROR_CHECK_OVER_AD
+                 && gu16_AD_Result_UV_Ice_Tank_Front_Current > UV_SOLO__ERROR_CHECK_UNDER_AD )
+        {
+            gu8_uv_popup_enable = SET;
+        }
+        else{}
+        #endif
 
         #if 1
         if( gu16_wifi_pairing_30min_timer >= WIFI_PAIRING_START_30_MIN )
@@ -519,6 +586,4 @@ void ice_disp_key_check(void)
 * Function Name: System_ini
 * Description  :
 ***********************************************************************************************************************/
-
-
 

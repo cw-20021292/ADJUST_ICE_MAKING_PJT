@@ -48,6 +48,24 @@ extern bit F_DrainStatus;
 void output_cold_drain_valve_feed6(void)
 {
     /***********************************************************************************************/
+#if 0
+    if(gu8_flushing_mode == FLUSHING_COLD_TANK)
+    {
+        if(gu8_cold_tank_flushing_step >= COLDTANK_FLUSHING_INIT 
+        && gu8_cold_tank_flushing_step < COLDTANK_FLUSHING_FINISH)
+        {
+            Bit0_CD_Flushing_Tank_Drain_On_State = SET;
+        }
+        else
+        {
+            Bit0_CD_Flushing_Tank_Drain_On_State = CLEAR;
+        }
+    }
+    else
+    {
+        Bit0_CD_Flushing_Tank_Drain_On_State = CLEAR;
+    }
+#endif
 
     if( F_Circul_Drain == SET )
     {
@@ -120,8 +138,6 @@ void output_cold_drain_valve_feed6(void)
 * Function Name: System_ini
 * Description  :
 ***********************************************************************************************************************/
-
-
 
 
 

@@ -14,7 +14,11 @@
 extern void R_UART2_Start(void);
 
 
-
+extern TYPE_BYTE          U8FactoryTestModeB;
+#define            u8FactoryTestMode                 U8FactoryTestModeB.byte
+#define            Bit0_Pcb_Test_Mode                U8FactoryTestModeB.Bit.b0
+#define            Bit1_Uart_Test_Mode               U8FactoryTestModeB.Bit.b1
+#define            Bit2_Display_Test_Mode            U8FactoryTestModeB.Bit.b2
 
 
 extern TYPE_LONG       U32ControlErrorsD;
@@ -55,8 +59,21 @@ extern TYPE_LONG       U32ControlErrorsD;
 #define         Bit27_Ice_Tank_3_UV_Error__E75                	U32ControlErrorsD.Bit.b27   //E79
 #define         Bit28_Ice_Tray_1_2_UV_Error__E76                	U32ControlErrorsD.Bit.b28   //E76
 
+
+
+
+
+
+
+
+
+
+extern bit bit_bldc_rx_pba_test_ok;
+
 extern U8 gu8_memento_e29_detail_code;
 extern bit bit_bldc_operation_error_total;
+extern U8 gu8_uart_bldc_comm_error;
+
 
 
 
@@ -68,7 +85,7 @@ extern bit bit_bldc_operation_error_total;
 #define BLDC_CHECK_CODE                                     0x55
 
 
-/*..hui [24-11-18ï¿½ï¿½ï¿½ï¿½ 4:43:52] ï¿½ï¼º ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È£..*/
+/*..hui [24-11-18¿ÀÈÄ 4:43:52] »ï¼º ÄÄÇÁ·¹¼Å ¿¡·¯ ¹øÈ£..*/
 #define SAMSUNG_BLDC_COMP_E81_CURRENT_SENSING_ERROR         2
 #define SAMSUNG_BLDC_COMP_E82_STARTING_FAIL_ERROR           1
 #define SAMSUNG_BLDC_COMP_E83_OVER_CURRENT_ERROR            3
@@ -77,7 +94,7 @@ extern bit bit_bldc_operation_error_total;
 #define SAMSUNG_BLDC_COMP_E86_ABNORMAL_VOLTAGE_ERROR        4
 
 
-/*..hui [24-11-18ï¿½ï¿½ï¿½ï¿½ 4:48:40] ï¿½ï¿½ï¿½Û¿ï¿½ï¿½ï¿½ ï¿½ï¿½Ãµï¿½ È½ï¿½ï¿½ 10È¸..*/
+/*..hui [24-11-18¿ÀÈÄ 4:48:40] µ¿ÀÛ¿¡·¯ Àç½Ãµµ È½¼ö 10È¸..*/
 #define BLDC_COMP_ERROR_RETRY_COUNT                         10
 
 

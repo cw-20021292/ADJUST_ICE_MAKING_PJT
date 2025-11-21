@@ -77,8 +77,16 @@ Global functions
 #define pROOM_TH_POWER                         P6.2
 #define pCOLD_TH_POWER                         P6.3
 /******************************************************************************************************************************************/
+#ifndef FEEDER_SCREW_DIRECTION_BEFORE
+/* 얼음 토출모터 (최종) */
 #define pMOTOR_ICE_OUT_CW                      P7.4     // 얼음 추출 정방향 출력 (목업 : 커넥터 반대로)
 #define pMOTOR_ICE_OUT_CCW                     P7.5     // 얼음 추출 역방향 출력 (목업 : 커넥터 반대로)
+
+#else
+/* 개발용 (노란색) */
+#define pMOTOR_ICE_OUT_CW                      P7.5     // 얼음 추출 정방향 출력 (목업 : 커넥터 반대로)
+#define pMOTOR_ICE_OUT_CCW                     P7.4     // 얼음 추출 역방향 출력 (목업 : 커넥터 반대로)
+#endif
 /******************************************************************************************************************************************/
 #define pCOMP                                  P7.2
 #define P_OUT_ICE_CRUSH                        P7.3     // 얼음 분쇄모터 (DC)

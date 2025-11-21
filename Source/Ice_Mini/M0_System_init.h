@@ -60,7 +60,11 @@ extern TYPE_BYTE          U8IceOutStateB;
 #define            Bit0_Ice_Only_Select_State                U8IceOutStateB.Bit.b0
 #define            Bit1_Ice_Plus_Water_Select_State          U8IceOutStateB.Bit.b1
 
-
+extern TYPE_BYTE          U8FactoryTestModeB;
+#define            u8FactoryTestMode                 U8FactoryTestModeB.byte
+#define            Bit0_Pcb_Test_Mode                U8FactoryTestModeB.Bit.b0
+#define            Bit1_Uart_Test_Mode               U8FactoryTestModeB.Bit.b1
+#define            Bit2_Display_Test_Mode            U8FactoryTestModeB.Bit.b2
 
 
 extern TYPE_LONG       U32ControlErrorsD;
@@ -168,6 +172,7 @@ extern U16 gu16_water_select_return_time;
 
 
 
+//extern U8 gu8_test_mode_timeout_1s;
 
 //extern bit F_ColdIn;
 extern bit F_ColdIce;
@@ -187,6 +192,7 @@ extern U8 gu8_rtc_time_Hour;      // 0 ~ 23
 extern U8 gu8_rtc_time_Min;       // 0 ~ 59
 extern U8 gu8_rtc_time_Sec;       // 0 ~ 59
 
+extern U8 gu8_test_mode_timeout_1s;
 extern bit F_Circul_Drain;
 
 extern U8 gu8_selected_led_dimming;
@@ -209,6 +215,7 @@ extern bit bit_hot_first_op;
 extern U8 gu8_altutude_setting_timeout;
 
 extern U8 gu8_uart_test_mode;
+extern bit bit_manual_test_start;
 extern U8 gu8_fota_start;
 extern bit bit_temporary_no_operation;
 extern U8 gu8_wifi_water_select;

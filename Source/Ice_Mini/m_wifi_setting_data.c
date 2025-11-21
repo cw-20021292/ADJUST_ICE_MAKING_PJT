@@ -200,6 +200,27 @@ void wifi_child_lock( U16 mu16_setting )
 ***********************************************************************************************************************/
 void wifi_mute( U16 mu16_setting )
 {
+    #if 0
+    if( mu16_setting <= 1 )
+    {
+        if( mu16_setting == 0 )
+        {
+            F_Mute_Enable = CLEAR;
+            play_melody_setting_on_198();
+        }
+        else /*if( mu16_setting == 1 )*/
+        {
+            F_Mute_Enable = SET;
+            /*..hui [23-7-26오후 7:11:02] 무음 설정이 취소음.. 무음 설정되는게 OFF임.. UI 사양..*/
+            /////BuzStep(BUZZER_CANCEL_MUTE);
+            play_melody_setting_off_199();
+        }
+    }
+    else
+    {
+        play_melody_warning_197();
+    }
+    #endif
 }
 
 /***********************************************************************************************************************
@@ -509,6 +530,33 @@ void wifi_hot_default_temp( U16 mu16_setting )
     }
 
 
+    #if 0
+    if( mu16_setting <= 3 )
+    {
+        if( mu16_setting == 0 )
+        {
+            gu8_hot_default_temp = HOT_SET_TEMP_1__MILK__43_oC;
+        }
+        else if( mu16_setting == 1 )
+        {
+            gu8_hot_default_temp = HOT_SET_TEMP_2__TEA__70_oC;
+        }
+        else if( mu16_setting == 2 )
+        {
+            gu8_hot_default_temp = HOT_SET_TEMP_3__COFFEE__85_oC;
+        }
+        else /*if( mu16_setting == 3 )*/
+        {
+            gu8_hot_default_temp = HOT_SET_TEMP_4__MAX__100_oC;
+        }
+
+        play_melody_setting_on_198();
+    }
+    else
+    {
+        play_melody_warning_197();
+    }
+    #endif
 }
 
 /***********************************************************************************************************************
@@ -545,6 +593,17 @@ void wifi_default_cup( U16 mu16_setting )
 ***********************************************************************************************************************/
 void wifi_period_ster_hour( U16 mu16_setting )
 {
+    #if 0
+    if( mu16_setting <= 23 )
+    {
+        gu8_wifi_period_ster_hour = (U8)mu16_setting;
+        /*BuzStep(BUZZER_SETUP);*/
+    }
+    else
+    {
+        /*BuzStep(BUZZER_ERROR);*/
+    }
+    #endif
 
     gu8_temporary_period_ster_hour = (U8)mu16_setting;
 }
@@ -555,6 +614,17 @@ void wifi_period_ster_hour( U16 mu16_setting )
 ***********************************************************************************************************************/
 void wifi_period_ster_minute( U16 mu16_setting )
 {
+    #if 0
+    if( mu16_setting <= 59 )
+    {
+        gu8_wifi_period_ster_minute = (U8)mu16_setting;
+        BuzStep(BUZZER_SETUP);
+    }
+    else
+    {
+        BuzStep(BUZZER_ERROR);
+    }
+    #endif
 
     gu8_temporary_period_ster_minute = (U8)mu16_setting;
 
@@ -603,6 +673,17 @@ void wifi_sleep_mode_enable( U16 mu16_setting )
 ***********************************************************************************************************************/
 void wifi_sleep_start_hour( U16 mu16_setting )
 {
+    #if 0
+    if( mu16_setting <= 23 )
+    {
+        gu8_sleep_mode_start_hour = (U8)mu16_setting;
+        /*BuzStep(BUZZER_SETUP);*/
+    }
+    else
+    {
+        /*BuzStep(BUZZER_ERROR);*/
+    }
+    #endif
 
     gu8_temporary_sleep_mode_start_hour = (U8)mu16_setting;
 }
@@ -613,6 +694,17 @@ void wifi_sleep_start_hour( U16 mu16_setting )
 ***********************************************************************************************************************/
 void wifi_sleep_start_minute( U16 mu16_setting )
 {
+    #if 0
+    if( mu16_setting <= 59 )
+    {
+        gu8_sleep_mode_start_minute = (U8)mu16_setting;
+        /*BuzStep(BUZZER_SETUP);*/
+    }
+    else
+    {
+        /*BuzStep(BUZZER_ERROR);*/
+    }
+    #endif
 
     gu8_temporary_sleep_mode_start_minute = (U8)mu16_setting;
 
@@ -624,6 +716,17 @@ void wifi_sleep_start_minute( U16 mu16_setting )
 ***********************************************************************************************************************/
 void wifi_sleep_finish_hour( U16 mu16_setting )
 {
+    #if 0
+    if( mu16_setting <= 23 )
+    {
+        gu8_sleep_mode_finish_hour = (U8)mu16_setting;
+        /*BuzStep(BUZZER_SETUP);*/
+    }
+    else
+    {
+        /*BuzStep(BUZZER_ERROR);*/
+    }
+    #endif
 
     gu8_temporary_sleep_mode_finish_hour = (U8)mu16_setting;
 
@@ -635,6 +738,17 @@ void wifi_sleep_finish_hour( U16 mu16_setting )
 ***********************************************************************************************************************/
 void wifi_sleep_finish_minute( U16 mu16_setting )
 {
+    #if 0
+    if( mu16_setting <= 59 )
+    {
+        gu8_sleep_mode_finish_minute = (U8)mu16_setting;
+        BuzStep(BUZZER_SETUP);
+    }
+    else
+    {
+        BuzStep(BUZZER_ERROR);
+    }
+    #endif
 
     gu8_temporary_sleep_mode_finish_minute = (U8)mu16_setting;
 
@@ -1128,6 +1242,4 @@ void wifi_set_ice_type(U16 mu16_setting)
         Play_Voice(VOICE_157_BREAK_ICE_SELECTED);
     }
 }
-
-
 

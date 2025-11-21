@@ -82,6 +82,29 @@ void output_valve_cold_in_feed2(void)
 		{
 			Bit6_Tank_Flushing_Cold_In = CLEAR;
 		}
+#if 0
+		if(gu8_cold_tank_flushing_step == COLDTANK_FLUSHING_INIT)
+		{
+			Bit6_Tank_Flushing_Cold_In = SET;
+		}
+		else if(gu8_cold_tank_flushing_step == COLDTANK_FLUSHING_5MINUTE)
+		{
+			Bit6_Tank_Flushing_Cold_In = SET;
+		}
+		else if(gu8_cold_tank_flushing_step == COLDTANK_FLUSHING_DRAIN
+		|| gu8_cold_tank_flushing_step == COLDTANK_FLUSHING_DRAIN_READY)
+		{
+			Bit6_Tank_Flushing_Cold_In = CLEAR;
+		}
+		else if(gu8_cold_tank_flushing_step == COLDTANK_FLUSHING_FINISH)
+		{
+			Bit6_Tank_Flushing_Cold_In = CLEAR;
+		}
+		else
+		{
+			Bit6_Tank_Flushing_Cold_In = CLEAR;
+		}
+#endif
 	}
 	else
 	{
@@ -247,8 +270,6 @@ void output_valve_cold_in_feed2(void)
 * Function Name: System_ini
 * Description  :
 ***********************************************************************************************************************/
-
-
 
 
 

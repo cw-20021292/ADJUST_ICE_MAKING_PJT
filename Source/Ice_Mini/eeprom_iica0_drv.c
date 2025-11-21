@@ -210,6 +210,23 @@ static U8 PageWrite( U8 _dev, U16 _addr , U8 *_data, U8 _len )
     //IICA0_StopCondition();
     /*Delay_MS( DEFAULT_DELAY );*/
 
+#if 0
+    // Read.. page
+    if( !HAL_RTC_SeqRead( _dev, _addr, &rbuf[ 0 ], _len ) )
+    {
+        gu8_rtc_write_fail_cnt++;
+        iica0_stop_condition_generate();
+        return IIC_FAIL;
+    }
+
+    // Check data..
+    if( memcmp( &buf[ 2 ], &rbuf[ 0 ], _len ) != 0 )
+    {
+        gu8_rtc_write_fail_cnt++;
+        iica0_stop_condition_generate();
+        return IIC_FAIL;
+    }
+#endif
 
     iica0_stop_condition_generate();
     //Delay_MS( DEFAULT_DELAY );
@@ -528,6 +545,23 @@ U8 IICA0_Master_Receive(U8 adr, U8 * const rx_buf, U16 rx_num, U8 wait)
 {
     U8 status = MD_OK;
 
+#if 0
+        IICAMK0 = 1U;                                   /* disable INTIIA0 interrupt */
+
+        /* Check bus busy */
+        if( 1U == IICBSY0 )
+        {
+            IICAMK0 = 0U;                               /* enable INTIIA0 interrupt */
+            status  = MD_ERROR1;
+        }
+        /* Check trigger */
+        else if( ( 1U == SPT0 ) || ( 1U == STT0 ) )
+        {
+            IICAMK0 = 0U;                               /* enable INTIICA0 interrupt */
+            status  = MD_ERROR2;
+        }
+        else
+#endif
 
     {
         STT0 = 1; /* set IICA0 start condition */
@@ -717,6 +751,9 @@ static void r_iica0_callback_master_error(U8 flag)
 ***********************************************************************************************************************/
 static void r_iica0_callback_master_receiveend(void)
 {
+#if 0
+    SPT0 = 1;
+#endif
     /* Start user code. Do not edit comment generated here */
     /* End user code. Do not edit comment generated here */
 
@@ -731,6 +768,9 @@ static void r_iica0_callback_master_receiveend(void)
 ***********************************************************************************************************************/
 static void r_iica0_callback_master_sendend(void)
 {
+#if 0
+    SPT0 = 1;
+#endif
     /* Start user code. Do not edit comment generated here */
     /* End user code. Do not edit comment generated here */
 
@@ -758,7 +798,5 @@ void IICA0_Start(void)
 * Function Name: System_ini
 * Description  :
 ***********************************************************************************************************************/
-
-
 
 

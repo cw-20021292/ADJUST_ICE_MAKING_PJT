@@ -10,8 +10,7 @@
 #include    "Global_Variable.h"
 #include    "Port_Define.h"
 #include    "Main.h"
-#include    "test_uart_comm.h"
-#include    "App_Comm.h"
+
 void main(void);
 void Sync_50MS(void);
 void Sync_100MS(void);
@@ -30,39 +29,78 @@ extern void Main_PBA_Test_Mode_Start();
 void main(void)
 {
     System_ini();
-
-    Uart_Init();
+    //eeprom_initial();
+    // diplay_test_start();
+    //Main_PBA_Test_Mode_Start();
 
     while(1)
     {
         WDTE = (U8)0xAC;
-       
-        Sync_50MS();
-        Front_Communication();
 
-        Sync_100MS();
-        Input();
-        Mode_Control();
-        Ice_Make_Process();
-        Make_Mode_Decision();
-        Heating_Control();
-        flushing_main();
-        Output();
-        Error_Control();
-        Display_Control();
-        Front_Communication();
-        ProcessVoice_Main();
-        self_test();
+        if(u8FactoryTestMode > 0)
+        {
+            Sync_100MS();
 
-        AT_UART_Communication();
-        Comm_Packet_Handler();
+            if(u8FactoryTestMode == PCB_TEST_MODE)
+            {
+                Front_Communication();
+                Pcb_Test_Main();
+                ProcessVoice_Main();	
+                wifi();
+            }
+            else if(u8FactoryTestMode == DISPLAY_TEST_MODE)
+            {
+                Front_Communication();  
+                /* ¸ÞÀÎÇÁ·ÐÆ®, ¼­ºêÇÁ·ÐÆ® °Ë»ç ´Ù½Ã ±¸ºÐ 250718 CH.PARK */
+                #ifdef _DISPLAY_FCT_SUB_LINE_
+                Display_test_step_Handler();
+                #else
+                Display_Test_Main();
+                #endif
+                ProcessVoice_Main();
+            }
+            else /*if(u8FactoryTestMode == UART_TEST_MODE)*/
+            {
+                /*..hui [23-3-15ï¿½ï¿½ï¿½ï¿½ 2:16:43] 2ï¿½ï¿½ï¿?. ï¿½ï¿½ï¿½ï¿½Æ® ï¿½Ë»ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ë»ï¿½ï¿½ï¿½..*/
+                /*..hui [24-4-26ï¿½ï¿½ï¿½ï¿½ 5:26:41] 1ï¿½ï¿½å¿¡ï¿½ï¿?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ç¥ï¿½ï¿½ ï¿½ß°ï¿½..*/
+                if( gu8_uart_test_mode == INCLUDE_FRNOT_UART_TEST
+                || gu8_uart_test_mode == NOT_INCLUDE_FRONT_UART_TEST )
+                {
+                    Front_Communication();
+                }
+                else{}
 
-        Save_Eeprom_Data();
-        wifi();
+                Uart_Test_Main();
+                ProcessVoice_Main();
+                wifi();
+            }
+        }
+        else
+        {
+            Sync_50MS();
+            Front_Communication();
 
-        #if CONFIG_MMI
-            Pc_Communication();
-        #endif
+            Sync_100MS();
+            Input();
+            Mode_Control();
+            Ice_Make_Process();
+            Make_Mode_Decision();
+            Heating_Control();
+            flushing_main();
+            Output();
+            Error_Control();
+            Display_Control();
+            Front_Communication();
+            ProcessVoice_Main();
+            self_test();
+
+            Save_Eeprom_Data();
+            wifi();
+
+            #if CONFIG_MMI
+                Pc_Communication();
+            #endif
+        }
     }
 
 }/* --- End of main() --- */

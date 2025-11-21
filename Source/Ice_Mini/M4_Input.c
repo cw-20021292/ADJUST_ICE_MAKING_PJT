@@ -10,7 +10,7 @@
 #include    "Global_Variable.h"
 #include    "Port_Define.h"
 #include    "M4_Input.h"
-
+#include    "motor_ice_select.h"
 
 void Input(void);
 //void input_select_bar(void);
@@ -91,10 +91,12 @@ void Input(void)
     /*input_cds();*/
 
     /*detect_front_cds();*/
-    
+
     /* 필터리드, 필터커버, 필터교체 등 관련 함수 */
     input_filter();
 
+    /* [2025-11-17] CH.PARK 아이스도어 리드 상태 체크 */
+    CheckIceDoorReedStatus();
 }
 
 /***********************************************************************************************************************
@@ -180,7 +182,7 @@ void check_ice_full(void)
 /****************************************************************************************************************/
 /**
  * @brief 저빙 입력 체크
- * 
+ *
  */
 void check_ice_low(void)
 {
@@ -286,7 +288,7 @@ void ice_tank_amount_check(void)
     {
         gu8_ice_tank_ice_amount = ICE_TANK_MID;
     }
-    else 
+    else
     {
         gu8_ice_tank_ice_amount = ICE_TANK_MID;
     }
@@ -300,8 +302,8 @@ void ice_tank_amount_check(void)
             /* 고객피로도 이슈로 삭제 */
             // Play_Voice(VOICE_156_ICE_30_PERCENT_UNDER);
         }
-        else {  } 
+        else {  }
     }
-    else {  } 
+    else {  }
 }
 

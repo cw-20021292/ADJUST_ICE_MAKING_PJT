@@ -263,6 +263,27 @@ void check_flushing_enable(void)
 	gu8_display_flushing_total_percent = 0;
 	bit_flushing_check_finish = SET;
 
+#if 0
+	/* 설치플러싱 및 필터플러싱 둘중 하나라도 완료 안됐다면 처음부터 시작 250228 CH.PARK */
+	if( (bit_install_flushing_state == SET)
+	|| (gu8_filter_flushing_state == SET)		/* 설치 및 필터플러싱 */
+	)
+	{
+		gu8_flushing_mode = FLUSHING_STANDBY_STATE;
+		bit_install_voice_start = SET;
+	}
+	else if(F_All_Lock == SET)
+	{
+		gu8_flushing_mode = FLUSHING_STANDBY_STATE;
+	}
+	else if( F_First_Hot_Effluent == SET )		/* 전원플러싱 */
+	{
+		gu8_flushing_mode = FLUSHING_FILL_COLD_TANK_START_STATE;
+	}
+
+	gu8_display_flushing_total_percent = 0;
+	bit_flushing_check_finish = SET;
+#endif
 
 }
 
@@ -553,6 +574,29 @@ U8 cold_tank_fill_proc(void)
 				}
 				else{}
 			}
+#if 0
+            /*..hui [21-6-21오전 11:01:45] FEED3   ON..*/
+            gu16_cold_tank_timer++;
+            if( gu16_cold_tank_timer >= 20 )
+            {
+                gu16_cold_tank_timer = 0;
+                gu8_cold_tank_fill_step++;
+
+				if(gu8_filter_flushing_state == SET)
+				{
+					gu8_display_flushing_total_percent = 30;
+				}
+				else{}
+            }
+            else
+			{
+				if(gu8_filter_flushing_state == SET)
+				{
+					gu8_display_flushing_total_percent = 20;
+				}
+				else {  }
+			}
+#endif
             break;
 
         case COLD_TANK_FILL_OVERFLOW_OPEN: // 오버플로우 밸브 OPEN
@@ -962,6 +1006,4 @@ void flushing_percent_display(void)
 		gu8_display_flushing_total_percent = 100;
 	}
 }
-
-
 

@@ -65,7 +65,7 @@ void Timer_250us_Service(void)
     if(u8Count_500us >= 2)
     {
         u8Count_500us = 0;
-        /*..hui [24-11-13ï¿½ï¿½ï¿½ï¿½ 2:34:48] TDS ï¿½Ù½ï¿½ ï¿½ï¿½ï¿½ï¿½..*/
+        /*..hui [24-11-13¿ÀÈÄ 2:34:48] TDS ´Ù½Ã »èÁ¦..*/
         /*TDS_Out_Pulse_Control();*/
     }
     else{}
@@ -84,7 +84,7 @@ void Timer_250us_Service(void)
         F_ADC_Check = SET;
         /*BuzControl();*/
 
-        /*..hui [24-11-13ï¿½ï¿½ï¿½ï¿½ 2:34:48] TDS ï¿½Ù½ï¿½ ï¿½ï¿½ï¿½ï¿½..*/
+        /*..hui [24-11-13¿ÀÈÄ 2:34:48] TDS ´Ù½Ã »èÁ¦..*/
         /*TDS_In_Control();*/
 
         u8CountSync++;
@@ -148,7 +148,7 @@ void Timer_250us_Service(void)
         //}
         //else{}
 /***********************************************************************************************************************/
-        /*BuzTimeCounter();*/       // Buzzer ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ Counter
+        /*BuzTimeCounter();*/       // Buzzer À½ Á¦¾î ½Ã°£ Counter
 /***********************************************************************************************************************/
         //input_select_bar();
 /***********************************************************************************************************************/
@@ -159,6 +159,19 @@ void Timer_250us_Service(void)
         ////////////////////BLDC_RXD2_TimeOutCheck();
 
 
+        #if 0
+        /*..hui [20-1-14¿ÀÈÄ 8:17:29] ³Ã¸ÅÀüÈ¯¹ëºê¿¡¼­¸¸ ¾²´ø 12V Àü¿øÀ» UV¿¡¼­µµ »ç¿ëÇÏµµ·Ï º¯°æµÊ..*/
+        if( u8PowerControl12V > 0 )
+        {
+            /*..hui [20-1-14¿ÀÈÄ 8:30:42] ON..*/
+            p12V_POWER = CLEAR;
+        }
+        else
+        {
+            /*..hui [20-1-14¿ÀÈÄ 8:30:46] OFF..*/
+            p12V_POWER = SET;
+        }
+        #endif
     }
     else{}
 
@@ -176,9 +189,9 @@ void Timer_250us_Service(void)
         F_100ms = SET;
         u8Count_100ms = CLEAR;
 
-        if(gu8IceClose) { gu8IceClose--; }                      // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        if(gu8IceClose) { gu8IceClose--; }                      // ¾óÀ½¹® ´ÝÈû µô·¹ÀÌ
         if(gu8IceInnerClose) { gu8IceInnerClose--; }
-        
+
         u8Count_1sec++;
     }
     else{}
@@ -189,12 +202,23 @@ void Timer_250us_Service(void)
         F_1sec = SET;
         u8Count_1sec = CLEAR;
 
-        F_Powerin1sec = SET; /*..ï¿½ï¿½ï¿½ï¿½ onï¿½ï¿½ 1ï¿½ï¿½..*/
+        F_Powerin1sec = SET; /*..Àü¿ø onÈÄ 1ÃÊ..*/
+#if 0
+        /*..yspark [25-2-17¿ÀÈÄ 17:00:40] ¿¬¼ÓÃßÃâ ½Ã°£ Á¦¾î Ãß°¡(¸±·¹ÀÌ ¹Ýº¹ ON/OFF ¹ö±× °³¼±)..*/
+        if (u16Efluent_Time && (gu8_Water_Out_Step == STATE_31_WATER_EXTRACT_STATE || gu8_Water_Out_Step == STATE_32_WATER_AIR_VENT_STATE))
+        {
+            u16Efluent_Time--;  // ¿¬¼ÓÃßÃâ ½Ã ÃßÃâ ½Ã°£ Ä«¿îÆ®(ÃßÃâ Áß¿¡¸¸ ½ÇÇà)
+        }
+#endif
         //IceMakeOrder();
 
-        //if(gu16MeltTime) gu16MeltTime--;                        // SB ï¿½ï¿½ï¿½ï¿½ï¿½Ìºï¿½ï¿½Í´ï¿½ï¿?
+        //if(gu16MeltTime) gu16MeltTime--;                        // SB ¿øÁ¡¹Ìº¹±Í´ë±â
  /***********************************************************************************************************************/
-
+        if(gu8_test_mode_timeout_1s > 0)
+        {
+            gu8_test_mode_timeout_1s--;                    //nfc test key delay  20150410
+        }
+        else{}
 
         if(gu8_altutude_setting_timeout > 0)
         {
@@ -202,10 +226,10 @@ void Timer_250us_Service(void)
         }
         else{}
 
-        /*..hui [19-7-25ï¿½ï¿½ï¿½ï¿½ 8:33:32] Å¸ï¿½Ì¸ï¿½ 1ï¿½Ê·ï¿½ ï¿½Ìµï¿½..*/
+        /*..hui [19-7-25¿ÀÈÄ 8:33:32] Å¸ÀÌ¸Ó 1ÃÊ·Î ÀÌµ¿..*/
         if(gu16IceStopTime > 0)
         {
-            gu16IceStopTime--;                  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 6ï¿½Ã°ï¿½
+            gu16IceStopTime--;                  // Á¦ºùÁ¤ÁöÇØÁ¦ 6½Ã°£
         }
         else{}
 
@@ -229,6 +253,4 @@ void Timer_250us_Service(void)
 * Function Name: System_ini
 * Description  :
 ***********************************************************************************************************************/
-
-
 

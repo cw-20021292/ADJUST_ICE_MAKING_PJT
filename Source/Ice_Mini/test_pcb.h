@@ -6,37 +6,63 @@
 * Copyright    : Coway_Electronics Engineering Team (DH,Kim)
 * Description  :
 ***********************************************************************************************************************/
-#ifndef _DISPLAY_AMOUNT_FND_H_
-#define _DISPLAY_AMOUNT_FND_H_
+#ifndef _TEST_PCB_H_
+#define _TEST_PCB_H_
 
 //
-extern void fnd_right_out( U8 mu8_direct, U8 mu8_hundred, U8 mu8_ten, U8 mu8_one  );
-extern U8 uv_time_display_timer(U16 flick_time );
+
+
+extern void eeprom_initial(void);
+extern void off_all_control_led( void );
+extern void UARTest_NO_LOAD_Set(void);
+extern void led_blink_timer(void);
+extern void calculate_flow_input(void);
+extern void display_version( void );
+extern void eeprom_test(void);
+
+extern void FactoryResetRtc(void);
+extern void ControlGasSwitch(void);
+extern void GasSwitchInit(void);
+extern void start_drain_pump( U16 u16_data );
+extern void stop_drain_pump( void );
+extern void start_tray_pump( U16 u16_data );
+extern void stop_tray_pump( void );
+extern void AT_UART_Communication(void);
+extern void BuzStep(U8 mu8Step);
+extern void ReadRtcTime(void);
+//extern U8 test_pcb_check_rtc_init(void);
+//extern void InitRtcTime(void);
+extern void Bldc_Comp_Communication(void);
+extern void fnd_left_pba_test(void);
+extern void fnd_right_pba_test(void);
+extern void WifiKey ( E_WIFI_KEY_T mu8Key );
+/*extern void ControlMixFlow(void);*/
+/*extern void run_init_flow(void);*/
+extern U8 GetWifiStatusValue ( E_WIFI_STATUS_T mType );
+extern void InitRtcTime(void);
+extern void all_breath_stop(void);
 extern void set_duty_percent( U8 mu8_number, U8 mu8_percent );
-extern U8 button_set_display_timer( U8 flick_time );
-extern TYPE_WORD          U16ButtonIndicatorB;
-#define            gu8_bitton_indicator                        U16ButtonIndicatorB.word
-#define            gu8_button_indicator_L                      U16ButtonIndicatorB.byte[0]
-#define            gu8_button_indicator_H                      U16ButtonIndicatorB.byte[1]
-#define            Bit0_Ice_Lock_Indicator                     U16ButtonIndicatorB.Bit.b0
-#define            Bit1_Hot_Lock_Indicator                     U16ButtonIndicatorB.Bit.b1
-#define            Bit2_Cold_Off_Indicator                     U16ButtonIndicatorB.Bit.b2
-#define            Bit3_Hot_Off_Indicator                      U16ButtonIndicatorB.Bit.b3
-#define            Bit4_All_Lock_Indicator                     U16ButtonIndicatorB.Bit.b4
-#define            Bit5_Ice_Off_Indicator                      U16ButtonIndicatorB.Bit.b6
-#define            Bit6_Icewater_Off_Indicator                 U16ButtonIndicatorB.Bit.b7
-#define            Bit7_water_extract_Indicator                U16ButtonIndicatorB.Bit.b8
+extern void all_duty_100_percent(void);
+extern void play_melody_select_196( void );
+extern void play_melody_warning_197( void );
+extern void play_melody_setting_on_198( void );
+extern void play_melody_setting_off_199( void );
+extern void play_voice_test_mode_151( void );
 
-extern TYPE_BYTE          U8ButtonSetDisplayB;
-#define            u8ButtonSetDisplay                   U8ButtonSetDisplayB.byte
-#define            Bit0_Cold_Button_Set_Display         U8ButtonSetDisplayB.Bit.b0
-#define            Bit1_Mute_Button_Set_Display         U8ButtonSetDisplayB.Bit.b1
-#define            Bit2_Ice_Button_Set_Display          U8ButtonSetDisplayB.Bit.b2
-#define            Bit3_Recover_Fast_Ice_Set_Display    U8ButtonSetDisplayB.Bit.b3
+extern void comp_off(void);
+extern void comp_on(void);
+extern void Bldc_Comp_Communication(void);
+extern void clear_bldc_buffer(void);
+//extern void tds_out_control(void);
+extern void stop_tray_motor(void);
+extern void up_tray_motor(void);
+extern void down_tray_motor(void);
 
-//
+
+
 /////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////
+
 extern TYPE_BYTE          U8FrontTempHundredB;
 #define            gu8_front_temp_fnd_hundred                  U8FrontTempHundredB.byte
 #define            Bit0_Front_Temp_Fnd_Hundred_1               U8FrontTempHundredB.Bit.b0
@@ -105,84 +131,85 @@ extern TYPE_BYTE          U8FrontAmountOneB;
 ///////////
 extern TYPE_BYTE          U8FrontLeftLEDB;
 #define            gu8_front_left_led                          U8FrontLeftLEDB.byte
-#define            Bit0_Front_Left_Led_Ice_Full_Text           U8FrontLeftLEDB.Bit.b0
-#define            Bit1_Front_Left_Led_Ice_Shortae_Text        U8FrontLeftLEDB.Bit.b1
-#define            Bit2_Front_Left_Led_UV_Ster_Text            U8FrontLeftLEDB.Bit.b2
-#define            Bit3_Front_Left_Led_Hot_Ster_Text           U8FrontLeftLEDB.Bit.b3
-#define            Bit4_Front_Left_Led_Sleep_Icon              U8FrontLeftLEDB.Bit.b4
-#define            Bit5_Front_Left_Led_Step_Text               U8FrontLeftLEDB.Bit.b5
-#define            Bit6_Front_Left_Led_Clock_Colon_Icon        U8FrontLeftLEDB.Bit.b6
-#define            Bit7_Front_Left_Led_Celcius_oC_Icon         U8FrontLeftLEDB.Bit.b7
+#define            Bit0_Front_Left_Led_Ice_Full_Text           U8FrontLeftLEDB.Bit.b0      // O
+#define            Bit1_Front_Left_Led_Ice_Shortae_Text        U8FrontLeftLEDB.Bit.b1      /* 추가 1 / O */
+#define            Bit2_Front_Left_Led_UV_Ster_Text            U8FrontLeftLEDB.Bit.b2      // O
+#define            Bit3_Front_Left_Led_Hot_Ster_Text           U8FrontLeftLEDB.Bit.b3      // O
+#define            Bit4_Front_Left_Led_Sleep_Icon              U8FrontLeftLEDB.Bit.b4      // O
+#define            Bit5_Front_Left_Led_Step_Text               U8FrontLeftLEDB.Bit.b5      // O
+#define            Bit6_Front_Left_Led_Clock_Colon_Icon        U8FrontLeftLEDB.Bit.b6      // O
+#define            Bit7_Front_Left_Led_Celcius_oC_Icon         U8FrontLeftLEDB.Bit.b7      // O
 
 /* LED 제어 BIT 추가 250203 CH.PARK */
 extern TYPE_BYTE          U8FrontTextLEDB;
 #define            gu8_front_left_led_2                         U8FrontTextLEDB.byte
-#define            Bit0_Front_Left_Led_Eff_Faucet_Text          U8FrontTextLEDB.Bit.b0
-#define            Bit1_Front_Left_Led_Ice_Faucet_Text          U8FrontTextLEDB.Bit.b1
-#define            Bit2_Front_Left_Led_Ice_Tray_Text            U8FrontTextLEDB.Bit.b2
-#define            Bit3_Front_Left_Led_Ice_Storage_Box_Text     U8FrontTextLEDB.Bit.b3
-#define            Bit4_Front_Right_Led_Filter_Clean_Text       U8FrontTextLEDB.Bit.b4
-#define            Bit5_Front_Right_Seg_Dot_Text                U8FrontTextLEDB.Bit.b5
+#define            Bit0_Front_Left_Led_Eff_Faucet_Text          U8FrontTextLEDB.Bit.b0      // O      /* 추가 2 */
+#define            Bit1_Front_Left_Led_Ice_Faucet_Text          U8FrontTextLEDB.Bit.b1      // O      /* 추가 3 */
+#define            Bit2_Front_Left_Led_Ice_Tray_Text            U8FrontTextLEDB.Bit.b2      // O      /* 추가 4 */
+#define            Bit3_Front_Left_Led_Ice_Storage_Box_Text     U8FrontTextLEDB.Bit.b3      // O      /* 추가 5 */
+#define            Bit4_Front_Right_Led_Filter_Clean_Text       U8FrontTextLEDB.Bit.b4      // O      /* 추가 6 */
+#define            Bit5_Front_Right_Seg_Dot_Text                U8FrontTextLEDB.Bit.b5      // O      /* 추가 7 */
 
 extern TYPE_BYTE          U8FrontRightLEDB;
 #define            gu8_front_right_led                         U8FrontRightLEDB.byte
-#define            Bit0_Front_Right_Led_Wifi_Icon_White        U8FrontRightLEDB.Bit.b0
-#define            Bit1_Front_Right_Led_Wifi_Icon_Blue         U8FrontRightLEDB.Bit.b1
-#define            Bit2_Front_Right_Led_Sunny_Icon             U8FrontRightLEDB.Bit.b2
-#define            Bit3_Front_Right_Led_Cloud_Icon             U8FrontRightLEDB.Bit.b3
-#define            Bit4_Front_Right_Led_Rain_Icon              U8FrontRightLEDB.Bit.b4
-#define            Bit5_Front_Right_Led_Percent_Icon           U8FrontRightLEDB.Bit.b5
-#define            Bit6_Front_Right_Led_Liter_L_Icon           U8FrontRightLEDB.Bit.b6
-#define            Bit7_Front_Right_Led_ml_Icon                U8FrontRightLEDB.Bit.b7
+#define            Bit0_Front_Right_Led_Wifi_Icon_White        U8FrontRightLEDB.Bit.b0      // O
+#define            Bit1_Front_Right_Led_Wifi_Icon_Blue         U8FrontRightLEDB.Bit.b1      // O
+#define            Bit2_Front_Right_Led_Sunny_Icon             U8FrontRightLEDB.Bit.b2      // O
+#define            Bit3_Front_Right_Led_Cloud_Icon             U8FrontRightLEDB.Bit.b3      // O
+#define            Bit4_Front_Right_Led_Rain_Icon              U8FrontRightLEDB.Bit.b4      // O
+#define            Bit5_Front_Right_Led_Percent_Icon           U8FrontRightLEDB.Bit.b5      // O
+#define            Bit6_Front_Right_Led_Liter_L_Icon           U8FrontRightLEDB.Bit.b6      // O
+#define            Bit7_Front_Right_Led_ml_Icon                U8FrontRightLEDB.Bit.b7      // O
 
 
 extern TYPE_BYTE          U8FrontTempSettingLEDB;
 #define            gu8_front_temp_setting_bar_led              U8FrontTempSettingLEDB.byte
-#define            Bit0_Front_Led_Temp_Setting_Bar_1_1         U8FrontTempSettingLEDB.Bit.b0
-#define            Bit1_Front_Led_Temp_Setting_Bar_1_2         U8FrontTempSettingLEDB.Bit.b1
-#define            Bit2_Front_Led_Temp_Setting_Bar_1_3         U8FrontTempSettingLEDB.Bit.b2
-#define            Bit3_Front_Led_Temp_Setting_Bar_1_4         U8FrontTempSettingLEDB.Bit.b3
-#define            Bit4_Front_Led_Temp_Setting_Bar_1_5         U8FrontTempSettingLEDB.Bit.b4        // [좌측 BAR 5 아이콘]
+#define            Bit0_Front_Led_Temp_Setting_Bar_1_1         U8FrontTempSettingLEDB.Bit.b0    // O
+#define            Bit1_Front_Led_Temp_Setting_Bar_1_2         U8FrontTempSettingLEDB.Bit.b1    // O
+#define            Bit2_Front_Led_Temp_Setting_Bar_1_3         U8FrontTempSettingLEDB.Bit.b2    // O
+#define            Bit3_Front_Led_Temp_Setting_Bar_1_4         U8FrontTempSettingLEDB.Bit.b3    // O
+#define            Bit4_Front_Led_Temp_Setting_Bar_1_5         U8FrontTempSettingLEDB.Bit.b4    // O// [좌측 BAR 5 아이콘] 8 추가
 
 extern TYPE_BYTE          U8FrontAmountSettingLEDB;
 #define            gu8_front_amount_setting_bar_led            U8FrontAmountSettingLEDB.byte
-#define            Bit0_Front_Led_Amount_Setting_Bar_2_1       U8FrontAmountSettingLEDB.Bit.b0
-#define            Bit1_Front_Led_Amount_Setting_Bar_2_2       U8FrontAmountSettingLEDB.Bit.b1
-#define            Bit2_Front_Led_Amount_Setting_Bar_2_3       U8FrontAmountSettingLEDB.Bit.b2
-#define            Bit3_Front_Led_Amount_Setting_Bar_2_4       U8FrontAmountSettingLEDB.Bit.b3        // [좌측 BAR 4 아이콘]
-#define            Bit4_Front_Led_Amount_Setting_Bar_Continue  U8FrontAmountSettingLEDB.Bit.b4
+#define            Bit0_Front_Led_Amount_Setting_Bar_2_1       U8FrontAmountSettingLEDB.Bit.b0    // O
+#define            Bit1_Front_Led_Amount_Setting_Bar_2_2       U8FrontAmountSettingLEDB.Bit.b1    // O
+#define            Bit2_Front_Led_Amount_Setting_Bar_2_3       U8FrontAmountSettingLEDB.Bit.b2    // O
+#define            Bit3_Front_Led_Amount_Setting_Bar_2_4       U8FrontAmountSettingLEDB.Bit.b3    // O // [좌측 BAR 4 아이콘] 9 추가
+#define            Bit4_Front_Led_Amount_Setting_Bar_Continue  U8FrontAmountSettingLEDB.Bit.b4    // O
 
 extern TYPE_BYTE          U8FrontCenterRecipeLEDB;
 #define            gu8_front_center_recipe_led                 U8FrontCenterRecipeLEDB.byte
-#define            Bit0_Front_Center_Recipe_Ramen_Text         U8FrontCenterRecipeLEDB.Bit.b0
-#define            Bit1_Front_Center_Tea_Text                  U8FrontCenterRecipeLEDB.Bit.b1   // '차' 추가 CH.PARK      // ADDED CH.PARK   // '차' 추가 CH.PARK      // ADDED CH.PARK
-#define            Bit2_Front_Center_Recipe_Drip_Coffee_Text   U8FrontCenterRecipeLEDB.Bit.b2
-#define            Bit3_Front_Center_MY_1_Text                 U8FrontCenterRecipeLEDB.Bit.b3
-#define            Bit4_Front_Center_MY_2_Text                 U8FrontCenterRecipeLEDB.Bit.b4
-#define            Bit5_Front_Center_MY_3_Text                 U8FrontCenterRecipeLEDB.Bit.b5
+#define            Bit0_Front_Center_Recipe_Ramen_Text         U8FrontCenterRecipeLEDB.Bit.b0    // O
+#define            Bit1_Front_Center_Tea_Text                  U8FrontCenterRecipeLEDB.Bit.b1    // O   // '차' 10 추가 CH.PARK 추가
+#define            Bit2_Front_Center_Recipe_Drip_Coffee_Text   U8FrontCenterRecipeLEDB.Bit.b2    // O
+#define            Bit3_Front_Center_MY_1_Text                 U8FrontCenterRecipeLEDB.Bit.b3    // O
+#define            Bit4_Front_Center_MY_2_Text                 U8FrontCenterRecipeLEDB.Bit.b4    // O
+#define            Bit5_Front_Center_MY_3_Text                 U8FrontCenterRecipeLEDB.Bit.b5    // O   /* 추가 17 */
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 extern TYPE_BYTE          U8FrontSelectLEDB;
 #define            gu8_front_select_led                        U8FrontSelectLEDB.byte
-#define            Bit0_Front_Led_Ice_Select                   U8FrontSelectLEDB.Bit.b0
-#define            Bit1_Front_Led_Ice_Water_Select             U8FrontSelectLEDB.Bit.b1
-#define            Bit2_Front_Led_Hot_Select                   U8FrontSelectLEDB.Bit.b2
-#define            Bit3_Front_Led_Ambient_Select               U8FrontSelectLEDB.Bit.b3
-#define            Bit4_Front_Led_Cold_Select                  U8FrontSelectLEDB.Bit.b4
-#define            Bit5_Front_Led_Amount_Select                U8FrontSelectLEDB.Bit.b5
-#define            Bit6_Front_Led_My_Select                    U8FrontSelectLEDB.Bit.b6     // [MY] 터치 선택 아이콘
+#define            Bit0_Front_Led_Ice_Select                   U8FrontSelectLEDB.Bit.b0    // O
+#define            Bit1_Front_Led_Ice_Water_Select             U8FrontSelectLEDB.Bit.b1    // O
+#define            Bit2_Front_Led_Hot_Select                   U8FrontSelectLEDB.Bit.b2    // O
+#define            Bit3_Front_Led_Ambient_Select               U8FrontSelectLEDB.Bit.b3    // O
+#define            Bit4_Front_Led_Cold_Select                  U8FrontSelectLEDB.Bit.b4    // O
+#define            Bit5_Front_Led_Amount_Select                U8FrontSelectLEDB.Bit.b5    // O
+#define            Bit6_Front_Led_My_Select                    U8FrontSelectLEDB.Bit.b6    // O    // [MY] 11 터치 선택 아이콘 추가
 
 extern TYPE_BYTE          U8FrontSettingLEDB;
 #define            gu8_front_setting_led                       U8FrontSettingLEDB.byte
-#define            Bit0_Front_Led_Ice_Size                     U8FrontSettingLEDB.Bit.b0
-#define            Bit1_Front_Led_Ice_Off                      U8FrontSettingLEDB.Bit.b1
-#define            Bit2_Front_Led_Hot_Lock_Text                     U8FrontSettingLEDB.Bit.b2
-#define            Bit3_Front_Led_Ice_First                    U8FrontSettingLEDB.Bit.b3
-#define            Bit4_Front_Led_Cold_Temp                    U8FrontSettingLEDB.Bit.b4
-#define            Bit5_Front_Led_Sleep_Mode_Text                   U8FrontSettingLEDB.Bit.b5
-#define            Bit6_Front_Led_Cold_Off                     U8FrontSettingLEDB.Bit.b6    // [냉수OFF] 터치 선택 아이콘
+#define            Bit0_Front_Led_Ice_Size                     U8FrontSettingLEDB.Bit.b0    // O
+#define            Bit1_Front_Led_Ice_Off                      U8FrontSettingLEDB.Bit.b1    // O
+#define            Bit2_Front_Led_Hot_Lock_Text                U8FrontSettingLEDB.Bit.b2    // O
+#define            Bit3_Front_Led_Ice_First                    U8FrontSettingLEDB.Bit.b3    // O
+#define            Bit4_Front_Led_Cold_Temp                    U8FrontSettingLEDB.Bit.b4    // O
+#define            Bit5_Front_Led_Sleep_Mode_Text              U8FrontSettingLEDB.Bit.b5    // O
+#define            Bit6_Front_Led_Cold_Off                     U8FrontSettingLEDB.Bit.b6    // O    // [냉수OFF] 터치 선택 아이콘 12 추가
+
 
 
 /* LED 제어 BIT 추가 250203 CH.PARK */
@@ -192,7 +219,9 @@ extern TYPE_BYTE          U8FrontSettingLEDB_2;
 #define            Bit1_Front_Led_All_Lock                     U8FrontSettingLEDB_2.Bit.b1
 #define            Bit2_Front_Led_Icon_Led_Ice_Locker          U8FrontSettingLEDB_2.Bit.b2      // [얼음 자물쇠 아이콘]
 #define            Bit3_Front_Led_Icon_Led_Hot_Locker          U8FrontSettingLEDB_2.Bit.b3      // [온수 자물쇠 아이콘]
-
+#define            Bit4_Front_Led_Icon_Fast_Ice                U8FrontSettingLEDB_2.Bit.b4      // LPP 추가 : 빠른제빙 설정 아이콘
+#define            Bit5_Front_Led_Icon_Comp_Blue               U8FrontSettingLEDB_2.Bit.b5      // LPP 추가 : COMP 블루 LED
+#define            Bit6_Front_Led_Icon_Comp_White              U8FrontSettingLEDB_2.Bit.b6      // COMP 화이트 LED
 
 extern TYPE_BYTE          U8FrontUnderTextLEDB;
 #define            gu8_front_under_text_led                    U8FrontUnderTextLEDB.byte
@@ -207,15 +236,14 @@ extern TYPE_BYTE          U8FrontUnderTextLEDB;
 
 
 extern TYPE_BYTE          U8FrontUnderIconLEDB;
-#define            gu8_front_under_icon_led                    U8FrontUnderIconLEDB.byte
-#define            Bit6_Front_Led_Icon_Comp_White    U8FrontUnderIconLEDB.Bit.b0      // 냉수 버튼 우상단 [DOT]
-#define            Bit1_Front_Under_Ice_Inner_White_Extract      U8FrontUnderIconLEDB.Bit.b1
-#define            Bit3_Front_Under_Ice_Outer_White_Extract      U8FrontUnderIconLEDB.Bit.b2      // 얼음 추출 관련 LED 
-#define            Bit2_Front_Under_Ice_Outer_Blue_Extract      U8FrontUnderIconLEDB.Bit.b3      // 얼음물 추출 관련 LED
-#define            Bit4_Front_Under_Water_White_Extract          U8FrontUnderIconLEDB.Bit.b4      // 음용수 추출 관련 LED
-#define            Bit5_Front_Under_Led_Welcome                U8FrontUnderIconLEDB.Bit.b5      // WELCOME 1 LED
-#define            Bit6_Front_Under_Led_Welcome_2              U8FrontUnderIconLEDB.Bit.b6      // WELCOME 2 LED CH.PARK ADDED 250204
-#define            Bit1_Front_Under_Ice_Inner_Blue_Extract U8FrontUnderIconLEDB.Bit.b7
+#define            gu8_front_under_icon_led                         U8FrontUnderIconLEDB.byte
+#define            Bit1_Front_Under_Ice_Inner_Blue_Extract          U8FrontUnderIconLEDB.Bit.b0     // 얼음추출부 안쪽 블루 LED
+#define            Bit1_Front_Under_Ice_Inner_White_Extract         U8FrontUnderIconLEDB.Bit.b1     // 얼음추출부 안쪽 화이트 LED
+#define            Bit2_Front_Under_Ice_Outer_Blue_Extract          U8FrontUnderIconLEDB.Bit.b2     // 얼음추출부 바깥쪽 블루 LED
+#define            Bit3_Front_Under_Ice_Outer_White_Extract         U8FrontUnderIconLEDB.Bit.b3     // 얼음추출부 바깥쪽 화이트 LED
+#define            Bit4_Front_Under_Water_White_Extract             U8FrontUnderIconLEDB.Bit.b4     // 냉온정추출부 화이트 LED
+#define            Bit5_Front_Under_Led_Welcome                     U8FrontUnderIconLEDB.Bit.b5     // WELCOME 1 LED
+#define            Bit6_Front_Under_Led_Welcome_2                   U8FrontUnderIconLEDB.Bit.b6     // WELCOME 2 LED CH.PARK ADDED 250204
 
 //////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -565,133 +593,149 @@ extern TYPE_BYTE          U8AnimationDimmingEightB;
 #define            Bit2_Animation_Dimming_Comp_Blue_State                     U8AnimationDimmingEightB.Bit.b2
 #define            Bit3_Animation_Dimming_Ice_Locker_State                    U8AnimationDimmingEightB.Bit.b3
 
+
 /////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-extern TYPE_LONG       U32ControlErrorsD;
-#define         u32ControlErrors                                    U32ControlErrorsD.dward
-#define         Bit0_Hot_Water_Flow_Block_Error__E08              	U32ControlErrorsD.Bit.b0    //E08
-#define         Bit1_Main_Water_Flow_Leaked_Error__E02              U32ControlErrorsD.Bit.b1    //E02
-#define         Bit2_Room_Temp_Open_Short_Error__E42                U32ControlErrorsD.Bit.b2    //E42
-#define         Bit3_Leakage_Sensor_Error__E01                      U32ControlErrorsD.Bit.b3    //E01
 
-#define         Bit4_Hot_In_Temp_Open_Short_Error__E46              U32ControlErrorsD.Bit.b4    //E46
-#define         Bit5_Hot_Heater_OverHeat_Error__E40		            U32ControlErrorsD.Bit.b5    //E40
-#define         Bit6_Main_Water_Flow_Block_Error__E09               U32ControlErrorsD.Bit.b6    //E09
-#define         Bit7_BLDC_Communication_Error__E27                  U32ControlErrorsD.Bit.b7    //E27
-
-#define         Bit8_BLDC_Operation_Error_Current_Sensing__E81      U32ControlErrorsD.Bit.b8    //E81
-#define         Bit9_BLDC_Operation_Error_Starting_Fail__E82        U32ControlErrorsD.Bit.b9    //E82
-#define         Bit10_BLDC_Operation_Error_Over_Current__E83        U32ControlErrorsD.Bit.b10   //E83
-#define         Bit11_BLDC_Operation_Error_Overheat__E84            U32ControlErrorsD.Bit.b11   //E84
-
-#define         Bit12_BLDC_Operation_Error_Disconnection_Comm__E85  U32ControlErrorsD.Bit.b12   //E85
-#define         Bit13_BLDC_Operation_Error_Abnormal_Voltage__E86    U32ControlErrorsD.Bit.b13   //E86
-#define         Bit14_Cold_Temp_Open_Short_Error__E44               U32ControlErrorsD.Bit.b14   //E44
-#define         Bit15_Amb_Temp_Open_Short_Error__E43                U32ControlErrorsD.Bit.b15   //E43
-
-#define         Bit16_Drain_Pump_Error__E60                         U32ControlErrorsD.Bit.b16   //E60
-#define         Bit17_Tray_Micro_SW_Dual_Detect_Error__E61          U32ControlErrorsD.Bit.b17   //E61
-#define         Bit18_Tray_Micro_SW_Up_Move_Error__E62              U32ControlErrorsD.Bit.b18   //E62
-#define         Bit19_Tray_Micro_SW_Down_Move_Error__E63            U32ControlErrorsD.Bit.b19   //E63
-
-#define         Bit20_Hot_Out_Temp_Open_Short_Error__E47	        U32ControlErrorsD.Bit.b20   //E52
-#define         Bit21_Amb_Side_Temp_Open_Short_Error__E53           U32ControlErrorsD.Bit.b21   //E53
-#define         Bit22_Hot_Heater_Temp_Open_Short_Error__E48		    U32ControlErrorsD.Bit.b22   //E48
-
-#define         Bit23_faucet_UV_Error__E77                  		U32ControlErrorsD.Bit.b23   //E77
-#define         Bit24_Ice_Tank_1_2_UV_Error__E75					    U32ControlErrorsD.Bit.b24   //E75
-#define         Bit25_Ice_Faucet_UV_1_Error__E78                    U32ControlErrorsD.Bit.b25   //E78
-#define         Bit26_Ice_Faucet_UV_2_Error__E78                    U32ControlErrorsD.Bit.b26   //E78
-#define         Bit27_Ice_Tank_3_UV_Error__E75                	U32ControlErrorsD.Bit.b27   //E79
-#define         Bit28_Ice_Tray_1_2_UV_Error__E76                	U32ControlErrorsD.Bit.b28   //E76
+/////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 
-extern TYPE_BYTE          U8TimeSettingLongKeyB;
-#define            u8TimeSettingLongKey                        U8TimeSettingLongKeyB.byte
-#define            Bit0_Ice_Water_Continue                           U8TimeSettingLongKeyB.Bit.b0
-#define            Bit1_Ice_Continue                          U8TimeSettingLongKeyB.Bit.b1
 
-//////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////
-extern CUP_LEVEL gu8Cup_level;
-extern U8 u8Extract_Continue;
-extern U8 gu8_fnd_left_ice_step;
-extern U8 gu8_fnd_left_ice_timer;
-extern U8 gu8_display_uv_reamin_minute;
-extern U16 gu16_uv_time_flick_timer;
-extern bit bit_uv_display_finish;
-extern U8 gu8_water_ext_test_input;
-extern U8 gu8_right_fnd_off_timer;
+
+extern TYPE_BYTE          U8FactoryTestModeB;
+#define            u8FactoryTestMode                 U8FactoryTestModeB.byte
+#define            Bit0_Pcb_Test_Mode                U8FactoryTestModeB.Bit.b0
+#define            Bit1_Uart_Test_Mode               U8FactoryTestModeB.Bit.b1
+#define            Bit2_Display_Test_Mode            U8FactoryTestModeB.Bit.b2
+
+
+
+
+
+
+
+extern TYPE_BYTE          U812VPowerControl;
+#define            u8PowerControl12V                                    U812VPowerControl.byte
+#define            Bit0_Gas_Switch_12V_Out_State                        U812VPowerControl.Bit.b0
+#define            Bit1_Ice_Tank_UV_12V_Out_State                       U812VPowerControl.Bit.b1
+#define            Bit2_Uart_Test_Mode_State                            U812VPowerControl.Bit.b2
+#define            Bit3_Water_Tank_UV_12V_Out_State                     U812VPowerControl.Bit.b3
+#define            Bit4_Ice_Tray_UV_12V_Out_State                       U812VPowerControl.Bit.b4
+#define            Bit5_Ice_Tank_Front_UV_12V_Out_State                 U812VPowerControl.Bit.b5
+#define            Bit6_Drain_Pump_FeedBack_12V_Out_State               U812VPowerControl.Bit.b6
+
+
+
+
+
+
+extern U8 gu8_test_mode_timeout_1s;
+
+extern bit F_Key_IceExtraction;
+
+extern bit F_FW_Version_Display_Mode;
+
+
+
+extern U8 gu8AT_Wifi_Connect;
+
+
+extern U16 gu16_AD_Result_Hot_Tank_Temp;
+extern U16 gu16_AD_Result_Hot_Tank_Temp;
+extern U16 gu16_AD_Result_Eva_First;
+extern U16 gu16_AD_Result_Eva_Second;
+extern U16 gu16_AD_Result_Amb;
+extern U16 gu16_AD_Result_Cold;
+extern U16 gu16_AD_Result_Room;
+extern U16 gu16ADIceFull;
+extern U16 gu16ADIceLow;
+extern U16 gu16_AD_Result_IceDoor_Heater_Current;
+extern U16 gu16_AD_Drain_Pump_Current;
+extern U16 gu16_AD_Tray_Pump_Current;
+
+extern U16 gu16ADCds;
+extern U16 gu16ADLeakage;
+
+extern U16 gu16_AD_Result_Hot_Out;
+extern U16 gu16_AD_Result_Hot_Heater;
+extern U16 gu16_AD_Result_Hot_In;
+
+extern bit bit_eeprom_err;
 extern bit F_cds_detect;
 extern bit F_Wink_500ms;
-extern U8 gu8_display_test_error;
-extern U8 gu8_Eva_Cold_Temperature_One_Degree;
-extern U8 gu8_Cold_Temperature_One_Degree;
-extern U8 gu8_Amb_Temperature_One_Degree;
-extern bit bit_manual_test_start;
-extern U8 gu8_GasSwitch_Status;
-extern U32 gu32_aging_count;
-extern U8 gu8_durable_test_start;
-extern bit bit_display_test_filter_reed_error;
-extern U8 gu8_display_reed_test_step;
-extern bit bit_uv_ice_tank_out;
-extern bit bit_uv_ice_tray_out;
-extern bit bit_ice_tray_making_enable;
-extern U8 gu8_uv_popup_enable;
+extern bit F_IceInit;
+extern bit F_IceOpen;
+extern bit F_IceSelect;
+extern bit F_GasSwitch_Initial;
 extern U8 gu8_Flow_1sec;
-extern U8 gu8_uart_test_mode;
-extern bit bit_setting_mode_start;
-extern bit bit_fast_ice_make;
-extern bit F_IceOn;
-extern bit F_Cold_Enable;
-extern bit bit_30_min_no_use_start;
 
-extern U8 gu8_temporary_Year;      // 0 ~ 99
-extern U8 gu8_temporary_Month;     // 1 ~ 12
-extern U8 gu8_temporary_Date;      // 1 ~ 31
-extern U8 gu8_temporary_Hour;      // 0 ~ 23
-extern U8 gu8_temporary_Min;       // 0 ~ 59
-extern U8 gu8_temporary_Sec;       // 0 ~ 59
+extern U8 gu8UARTData[20];
+extern U8 gu8UART_DataLength;
+extern bit AT_F_TxStart;
+extern bit AT_F_RxComplete;
+extern U8 AT_gu8TX_ERROR;
 
-extern U8 gu8_time_setting_step;
-extern U8 gu8_time_set_flicker_timer;
-extern bit F_time_set_flick;
+extern U8 u8_water_select_testmode;
+extern U8 u8_cup_select_testmode;
 
-extern bit bit_time_setting_start;
-extern MY_RECIPE_INDEX my_recipe_select;
-extern bit bit_myWater_setting_start;
-extern U8 gu8VoiceVolumeLevel;
-extern bit bit_volume_setting_start;
-extern LED_STEP gu8_Led_Display_Step;
-// Endurance Here!
-extern U32 gu32_feeder_screw_ccw_count;
-extern U8 gu8Sound_Type;
 
-extern U8 gu8_wifi_self_test_progress;
 
-extern special_func cody_water_line;
-extern MY_RECEIPE my_setting[MY_INDEX_MAX];
-extern U16 gu16_button_set_display_timer;
-extern U8 gu8_recover_org_fast_ice;
-extern bit F_Mute_Enable;
-extern U8 gu8_uart_setting_all_lock_test_input;
+extern U8 gu8_selected_led_dimming;
+extern U8 gu8_unselected_led_dimming;
 
-extern U8 left_normal_state_percent;
-extern U8 right_normal_state_percent;
-extern U8 setting_mode_function_extra_percent;
-extern U8 setting_mode_function_main_percent;
-extern U8 funtion_led_percent;
-extern U8 setting_led_percent;
-extern U8 extract_led_percent;
-extern U8 bar_led_percent;
-extern U8 receipe_led_percent;
-extern U8 big_ster_led_percent;
-extern U8 small_ster_led_percent;
-extern U8 top_small_led_percent;
-extern U8 middle_small_led_percent;
-extern U8 setting_led_side_percent;
-extern U8 receipe_led_dripcoffee_percent;
+extern bit bit_adc_cold_start;
+extern bit bit_adc_room_start;
 
-extern bit bit_display_sleep_start;
+
+extern U8 u811111;
+extern U8 gu8_rtc_time_Sec;
+extern U8 gu8_rtc_time_Min;
+extern U8 gu8_rtc_time_Hour;
+extern U8 gu8_rtc_time_Date;
+extern U8 gu8_rtc_time_Month;
+extern U8 gu8_rtc_time_Year;
+extern U8 gu8_rtc_init_success;
+
+extern U8 gu8_display_test_error;
+
+
+extern U8 gu8_bldc_target_hz;
+
+extern U16 gu16_AD_Result_Mixing_Out;
+extern U16 gu16_AD_Result_UV_Ice_Faucet_Two_Current;
+extern U16 gu16_AD_Result_UV_Water_Faucet_Current_Feed;
+extern U16 gu16_AD_Result_UV_Ice_Faucet_One_Current;
+extern U16 gu16_AD_Result_UV_Ice_Tray_1_2_Current_Feed;
+extern U16 gu16_AD_Result_UV_Ice_Tank_1_2_Current;
+extern U16 gu16_AD_Result_UV_Ice_Tank_3_Current_Feed;
+
+extern U16 gu16_AD_Result_DC_Current_12V;
+extern U16 gu16_AD_Result_DC_Current_24V;
+
+
+extern U16 gu16_AD_Result_Fan_Current;
+
+extern U8 gu8_GasSwitch_Mode;
+extern bit bit_manual_test_start;
+extern bit bit_display_test_filter_reed_error;
+extern U16 gu16_AD_Result_Amb_Side;
+//extern U16 gu16_AD_Result_TDS_In_Temp;
+extern bit F_TDS_ON;
+extern U16 gu16TDS_IN_Pulse;
+extern U16 gu16TDS_OUT_Data;
+/////extern bit bit_drain_level_power_output;
+extern U16 gu16_uart_test_pulse;
+extern U16 gu16_AD_Result_TDS_Out_Data;
+extern bit AT_F_RxComplete;
+
+
+
+
+#define TEST_MODE_START_CHECK_TIME   50000
+
+
+extern void flow_sensor_stop(void);
+extern void flow_sensor_start(void);
 #endif

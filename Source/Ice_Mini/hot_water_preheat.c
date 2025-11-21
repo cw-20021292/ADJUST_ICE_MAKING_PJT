@@ -800,8 +800,67 @@ U8 preheat_water(void)
                     mu8_max_time = 1;
                 }
 				else {}
+#if 0
+                if (gu8_Hot_Heater_Temperature_One_Degree >= 80)
+                {
+                    mu8_max_time = 1;
+                }
+                else if (gu8_Hot_Heater_Temperature_One_Degree >= 90)
+                {
+                    mu8_max_time = 10;
+                }
+				else {}
+#endif
             }
 			else {}
+#if 0
+            else if( gu8_Hot_In_Temperature_One_Degree <= 15 )
+            {
+                if( gu8_pre_heater_temp >= 80 )
+                {
+                    mu8_max_time = 30;
+
+                }
+                else if( gu8_pre_heater_temp >= 60 )
+                {
+                    mu8_max_time = 10;
+                }
+                else
+                {
+                    mu8_max_time = 8;
+                }
+            }
+            else if( gu8_Hot_In_Temperature_One_Degree <= 25 )
+            {
+                if( gu8_pre_heater_temp >= 80 )
+                {
+                    mu8_max_time = 60;
+                }
+                else if( gu8_pre_heater_temp >= 60 )
+                {
+                    mu8_max_time = 30;
+                }
+                else
+                {
+                    mu8_max_time = 10;
+                }
+            }
+            else
+            {
+                if( gu8_pre_heater_temp >= 80 )
+                {
+                    mu8_max_time = 60;
+                }
+                else if( gu8_pre_heater_temp >= 60 )
+                {
+                    mu8_max_time = 30;
+                }
+                else
+                {
+                    mu8_max_time = 20;
+                }
+            }
+#endif
 			u8_drain_test_time = mu8_max_time;
             
             /*..hui [21-2-19오전 10:00:30] 드레인 최대시간 1.5초로 고정..*/
@@ -943,6 +1002,24 @@ U8 preheat_water(void)
 		        }
 				else {}
             }
+#if 0
+            if( ((gu8_Hot_Heater_Temperature_One_Degree < gu8_Hot_Preheat_Temp + mu8_temp) || gu8_preheat_drain_max_timer >= mu8_max_time)
+                || (gu8_Hot_Heater_Temperature_One_Degree <= 93 && gu8_hot_setting_temperature != HOT_SET_TEMP_1__MILK__43_oC) )
+            {
+                gu8_preheat_timer++;
+
+                if(gu8_preheat_timer >= mu8_coffee_time)
+                {
+                    gu8_preheat_timer = 0;
+                    gu8_Preheat_Step++;
+
+                    gu8_pre_timer = 0;
+                    gu8_test_timer = 0;
+                }
+                else{}
+            }
+            else{}
+#endif
             break;
 
         case STATE_3_PREHEAT_CHECK_TIME :
@@ -999,6 +1076,13 @@ U8 preheat_water(void)
                         {
                             gu8_additionalHeatingTime = 10;
                         }
+#if 0
+                        if (gu8_pre_heater_temp >= 70
+                            && gu8_Hot_In_Temperature_One_Degree <= 32)
+                        {
+                            mu8_coffee_time = mu8_coffee_time - 20;
+                        }
+#endif
                     }
 
                     if( gu8_pre_heater_temp >= 35 && gu8_pre_heater_temp <= 90)
@@ -1381,6 +1465,17 @@ U8 preheat_water(void)
 
                         if( gu8_Hot_Heater_Temperature_One_Degree >= mu8_safety_temp )
                         {
+                            #if 0
+                            if( gu8_pre_heater_temp >= 25 )
+                            {
+                                mu8_safety_time = 45;
+                            }
+                            else
+                            {
+                                //mu8_safety_time = 55;
+                                mu8_safety_time = 50;
+                            }
+                            #endif
 
                             if( gu8_pre_heater_temp <= 35 )
                             {
@@ -1454,6 +1549,45 @@ U8 preheat_water(void)
         case STATE_4_PREHEAT_OPERATE_STATE :
 
             gu8_preheat_timer++;
+#if 0
+			/*..hui [20-10-7오전 10:42:57] 커피일때는 가둬놓고 지지기 때문에 스팀발생 최소화하기 위해..*/
+            /*..hui [20-10-7오전 10:43:11] 추출전에 500ms 드레인으로 흘려주고 추출로 넘어가도록..*/
+            if( gu8_hot_setting_temperature == HOT_SET_TEMP_4__MAX__100_oC )
+            {
+            	if(u16Heater_Power_Save <= HEATER_POWER_LOW)
+            	{
+                	gu8_additionalHeatingTime = 30;
+            	}
+            	else if(u16Heater_Power_Save <= HEATER_POWER_HIGH)
+            	{
+                	gu8_additionalHeatingTime = 20;
+            	}
+				else 
+            	{
+                	gu8_additionalHeatingTime = 10;
+            	}
+					
+            }
+            else if( gu8_hot_setting_temperature == HOT_SET_TEMP_3__COFFEE__85_oC )
+            {
+            	if(u16Heater_Power_Save <= HEATER_POWER_LOW)
+            	{
+                	gu8_additionalHeatingTime = 20;
+            	}
+            	else if(u16Heater_Power_Save <= HEATER_POWER_HIGH)
+            	{
+                	gu8_additionalHeatingTime = 15;
+            	}
+				else 
+            	{
+                	gu8_additionalHeatingTime = 10;
+            	}
+            }
+            else
+            {
+                gu8_additionalHeatingTime = 5;
+            }
+#endif
             gu8_additionalHeatingTime = 1;
 
 			if(gu8_preheat_timer >= gu8_additionalHeatingTime)
@@ -1494,7 +1628,5 @@ U8 preheat_water(void)
 * Function Name: System_ini
 * Description  :
 ***********************************************************************************************************************/
-
-
 
 

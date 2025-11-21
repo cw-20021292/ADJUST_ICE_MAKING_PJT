@@ -110,6 +110,16 @@ void output_valve_ice_tray_feed3(void)
 
     /*..hui [19-8-27오후 7:24:57] 온수 추출 뿐만아니라 정수/냉수 추출중에도 트레이 입수는 잠시 대기..*/
     /*..hui [19-8-28오후 2:44:21] 트레이 입수 안될경우 재시도 대기 시간동안 OFF 추가..*/
+		#if 0
+    if(gu8IceStep == STATE_20_WATER_IN_ICE_TRAY)
+    {
+        Bit3_Tray_Hot_Out_Off_State = F_WaterOut;  /* | F_Tray_In_Error_Temporary;*/
+    }
+    else
+    {
+        Bit3_Tray_Hot_Out_Off_State = CLEAR;
+    }
+#endif
     /***********************************************************************************************/
     /*..hui [19-12-13오후 3:09:53] 그 외 조건일 경우 저수위 미만일때만 닫음..*/
 /*
@@ -168,7 +178,5 @@ if( gu8_Room_Water_Level == ROOM_LEVEL_LOW)
 * Function Name: System_ini
 * Description  :
 ***********************************************************************************************************************/
-
-
 
 

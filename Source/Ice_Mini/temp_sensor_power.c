@@ -109,6 +109,16 @@ void output_room_temp_power(void)
 
     ////////////////////////////////////////////////////////////////////////////////////////////
     /*..hui [20-2-17오후 5:58:13] 코디 테스트 모드 및 개발자 모드에서는 ON..*/
+    #if 0
+    if( gu8_Led_Display_Step == LED_Display__DEBUG )
+    {
+        Bit4_Room_Temp_Doctor_Test_State = SET;
+    }
+    else
+    {
+        Bit4_Room_Temp_Doctor_Test_State = CLEAR;
+    }
+    #endif
 
 
     u16_room_power_timer++;
@@ -203,9 +213,30 @@ void output_cold_temp_power(void)
     Bit2_Cold_Temp_Init_State = Bit3_Room_Temp_Init_State;
 
     ////////////////////////////////////////////////////////////////////////////////////////////
+    #if 0
+    if( gu8_Led_Display_Step == LED_Display__DEBUG )
+    {
+        Bit3_Cold_Temp_Doctor_Test_State = SET;
+    }
+    else
+    {
+        Bit3_Cold_Temp_Doctor_Test_State = CLEAR;
+    }
+    #endif
     ////////////////////////////////////////////////////////////////////////////////////////////
     if( F_WaterOut == SET )
     {
+        #if 0
+        /*..hui [23-12-18오후 2:25:29] 온수 또는 정수 추출할때 냉수 온도센서를 사용하므로....*/
+        if( u8WaterOutState == HOT_WATER_SELECT || u8WaterOutState == PURE_WATER_SELECT )
+        {
+            Bit4_Cold_Temp_Extract_State = SET;
+        }
+        else
+        {
+            Bit4_Cold_Temp_Extract_State = CLEAR;
+        }
+        #endif
 
         /*..hui [23-12-18오후 3:03:44] 냉수 추출할떄도 ON.. 냉수 추출할때 냉수 온도 변화가 생길수 있기때문..*/
         Bit4_Cold_Temp_Extract_State = SET;
@@ -258,7 +289,5 @@ void output_cold_temp_power(void)
 * Function Name: System_ini
 * Description  :
 ***********************************************************************************************************************/
-
-
 
 

@@ -60,8 +60,8 @@ void cody_ice_tray_test(void)
 
     if( u8_ice_tray_test_step >= 1 && u8_ice_tray_test_step <= 4 )
     {
-        if( F_Ice_Tray_Up_Move_Reset == SET 
-        || F_Ice_Tray_Down_Move_Reset == SET 
+        if( F_Ice_Tray_Up_Move_Reset == SET
+        || F_Ice_Tray_Down_Move_Reset == SET
         || F_ErrTrayMotor_DualInital == SET )
         {
             play_melody_warning_197();
@@ -94,8 +94,8 @@ void cody_ice_tray_test(void)
             /*..hui [23-7-21오후 5:47:38] 핫가스 탈빙 끝나고 대기모드에서만..*/
             /*..hui [23-7-21오후 5:47:45] 트레이에 얼음 떨어질수있음..*/
             //if( F_TrayMotorUP == CLEAR && F_TrayMotorDOWN == CLEAR && gu8IceStep == STATE_0_STANDBY )
-			if( F_TrayMotorUP == CLEAR 
-            && F_TrayMotorDOWN == CLEAR 
+			if( F_TrayMotorUP == CLEAR
+            && F_TrayMotorDOWN == CLEAR
             && gu8IceStep == STATE_0_STANDBY )
             {
                 u8_ice_tray_test_timer = 0;
@@ -125,7 +125,7 @@ void cody_ice_tray_test(void)
             break;
 
         case 3:
-            if(F_TrayMotorUP != SET 
+            if(F_TrayMotorUP != SET
             && gu8IceTrayLEV == ICE_TRAY_POSITION_ICE_MAKING)
 			{
                 /*.. sean [25-02-05] 트레이 미감지 이슈로 스텝모터 pulse 추가..*/
@@ -206,7 +206,7 @@ void stop_ice_tray_test_mode(void)
                 && gu8IceStep <= STATE_30_CALC_ICE_MAKING_TIME )
             {
                 if( F_Comp_Output == CLEAR )
-                {   
+                {
                     /*..hui [20-1-29오후 3:48:29] 제빙 전단계이면 바로 만빙체크 후 종료..*/
                     /*..hui [20-2-19오후 7:46:55] 수정 - 제빙 안들어갔으므로 만빙 체크 없이 즉시 종료..*/
                     gu8IceStep = STATE_51_FINISH_ICE_MAKE;

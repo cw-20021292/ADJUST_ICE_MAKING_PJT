@@ -36,7 +36,7 @@
 #define	AD_Count_25						            25
 #define	AD_Count_26						            26
 /***********************************************************************************************************************/
-/* ADCï¿½ï¿½ ï¿½Þ¾Æµï¿½ï¿½Ì´ï¿½ Ã¤ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ */
+/* ADC·Î ¹Þ¾ÆµéÀÌ´Â Ã¤³Î Á¤¸® */
 #define AD_Channel_DC_Current_24V                   0       // O
 #define AD_Channel_DC_Current_12V                   1       // O
 #define AD_Channel_Water_Leakage                    2       // O
@@ -57,11 +57,17 @@
 #define AD_Channel_UV_Ice_Tank_3_Current            20      // O x
 
 #define AD_Channel_Ice_Full_Receive_1               19      // O
-#define AD_Channel_Ice_Full_Receive_2               21      // 2KG ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å© ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ã¤ï¿½ï¿½ ï¿½ß°ï¿½. 250207 @CH.PARK
+#define AD_Channel_Ice_Full_Receive_2               21      // 2KG ¾óÀ½ÅÊÅ© ¸¸ºù °ü·Ã Ã¤³Î Ãß°¡. 250207 @CH.PARK
 #define AD_Channel_Ice_Door_Heater_IAD              22      // O
 #define AD_Channel_Hot_Heater_Current               23      // O
 #define AD_Channel_Amb_2_Temp                       25      // O
 #define AD_Channel_FAN_Current                      26      // O
+/***********************************************************************************************************************/
+extern TYPE_BYTE          U8FactoryTestModeB;
+#define            u8FactoryTestMode                 U8FactoryTestModeB.byte
+#define            Bit0_Pcb_Test_Mode                U8FactoryTestModeB.Bit.b0
+#define            Bit1_Uart_Test_Mode               U8FactoryTestModeB.Bit.b1
+#define            Bit2_Display_Test_Mode            U8FactoryTestModeB.Bit.b2
 /***********************************************************************************************************************/
 /////#define AD_CONV_10BIT                      6
 /////#define AD_CONV_8BIT                       8

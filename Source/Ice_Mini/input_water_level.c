@@ -120,6 +120,150 @@ void input_water_level(void)
 }
 
 
+#if 0
+/***********************************************************************************************************************
+* Function Name: System_ini
+* Description  :
+***********************************************************************************************************************/
+void input_room_water_level(void)
+{
+    /*..hui [24-1-24오후 12:13:36] 수위센서 감지 로직 변경..*/
+    room_low_water_level_input();
+    room_high_water_level_input();
+    room_water_level_confirm();
+}
+
+/***********************************************************************************************************************
+* Function Name: System_ini
+* Description  :
+***********************************************************************************************************************/
+void room_low_water_level_input(void)
+{
+    if( pLEVEL_PURIFY_LOW == CLEAR )
+    {
+        gu16_room_low_level_on_timer = 0;
+        gu16_room_low_level_off_timer++;
+
+        if( gu16_room_low_level_off_timer >= ROOM_WATER_LEVEL_DETECT_TIME )
+        {
+            gu16_room_low_level_off_timer = ROOM_WATER_LEVEL_DETECT_TIME;
+
+            if( bit_room_water_level_low == SET )
+            {
+                bit_room_water_level_low = CLEAR;
+            }
+            else{}
+        }
+        else{}
+    }
+    else
+    {
+        gu16_room_low_level_off_timer = 0;
+        gu16_room_low_level_on_timer++;
+
+        if ( gu16_room_low_level_on_timer >= ROOM_WATER_LEVEL_DETECT_TIME )
+        {
+            gu16_room_low_level_on_timer = ROOM_WATER_LEVEL_DETECT_TIME;
+
+            if( bit_room_water_level_low == CLEAR )
+            {
+                bit_room_water_level_low = SET;
+            }
+            else{}
+        }
+        else{}
+
+    }
+}
+
+
+/***********************************************************************************************************************
+* Function Name: System_ini
+* Description  :
+***********************************************************************************************************************/
+void room_high_water_level_input(void)
+{
+    if( pLEVEL_PURIFY_HIGH == CLEAR )
+    {
+        gu16_room_high_level_on_timer = 0;
+        gu16_room_high_level_off_timer++;
+
+        if( gu16_room_high_level_off_timer >= ROOM_WATER_LEVEL_DETECT_TIME )
+        {
+            gu16_room_high_level_off_timer = ROOM_WATER_LEVEL_DETECT_TIME;
+
+            if( bit_room_water_level_high == SET )
+            {
+                bit_room_water_level_high = CLEAR;
+            }
+            else{}
+        }
+        else{}
+    }
+    else
+    {
+        gu16_room_high_level_off_timer = 0;
+        gu16_room_high_level_on_timer++;
+
+        if ( gu16_room_high_level_on_timer >= ROOM_WATER_LEVEL_DETECT_TIME )
+        {
+            gu16_room_high_level_on_timer = ROOM_WATER_LEVEL_DETECT_TIME;
+
+            if( bit_room_water_level_high == CLEAR )
+            {
+                bit_room_water_level_high = SET;
+            }
+            else{}
+        }
+        else{}
+    }
+}
+
+/***********************************************************************************************************************
+* Function Name: System_ini
+* Description  :
+***********************************************************************************************************************/
+void room_water_level_confirm(void)
+{
+    U8 mu8_room_level = 0;
+
+    mu8_room_level |= (U8)(bit_room_water_level_low);
+    mu8_room_level |= (U8)(bit_room_water_level_high << 1);
+
+
+    switch(mu8_room_level)
+    {
+        case 0 :
+
+            gu8_Room_Water_Level = ROOM_LEVEL_LOW;
+
+            break;
+
+        case 1 :
+
+            gu8_Room_Water_Level = ROOM_LEVEL_MID;
+
+            break;
+
+        case 2 :
+
+            gu8_Room_Water_Level = ROOM_LEVEL_ERROR;
+
+            break;
+
+        case 3 :
+
+            gu8_Room_Water_Level = ROOM_LEVEL_FULL;
+
+            break;
+
+        default :
+             //
+            break;
+    }
+
+}
+#endif
 
 /***********************************************************************************************************************
 * Function Name: System_ini
@@ -199,7 +343,35 @@ void drain_tank_high_water_level_input(void)
     mu8_drain_detect_time = 20;
 
 
+    #if 0
+    if( bit_ice_tank_ster_start == SET )
+    {
+        /*..hui [23-10-23오후 2:10:12] 온수세척할때는 5초..*/
+        mu8_drain_detect_time = 50;
+    }
+    else if( gu8_acid_clean_mode == ACID_CLEAN_PREPARE && gu8_acid_prepare_step == 4 )
+    {
+        /*..hui [24-7-30오후 5:16:18] 드레인탱크 구연산 채울때는 5초..*/
+        mu8_drain_detect_time = 50;
+    }
+    else
+    {
+        /*..hui [23-10-23오후 2:10:22] 그 외에는 2초..*/
+        mu8_drain_detect_time = 20;
+    }
+    #endif
 
+    #if 0
+    /*..hui [24-11-13오후 4:00:55] 드레인 전압 삭제..*/
+    if( bit_drain_level_power_output == CLEAR )
+    {
+        /*..hui [24-7-26오후 5:37:14] 1초 끄는 동안에 초기화 안함.. 다시 전원 들어가면 이어서 카운팅하도록..*/
+        /*u8drain_high_level_on_decision_cnt = 0;*/
+        /*u8drain_high_level_off_decision_cnt = 0;*/
+        return;
+    }
+    else{}
+    #endif
 
     if(pLEVEL_ICE_DRAIN_HIGH == CLEAR)
     {
@@ -299,7 +471,5 @@ void drain_tank_water_level_confirm(void)
 * Function Name: System_ini
 * Description  :
 ***********************************************************************************************************************/
-
-
 
 

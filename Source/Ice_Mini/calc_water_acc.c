@@ -57,35 +57,70 @@ U16 gu16_water_usage_ro_filter;
 U16 gu16_water_usage_ino_filter;
 
 
+
+U8 gu8_teeeeeeeeeeeeeeeest;
 /***********************************************************************************************************************
 * Function Name: System_ini
 * Description  :
 ***********************************************************************************************************************/
 void calc_water_usage(void)
 {
-    /*..hui [23-5-10ï¿½ï¿½ï¿½ï¿½ 9:58:52] Ã³ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½..*/
+    /*..hui [23-5-10¿ÀÀü 9:58:52] Ã³À½ ¸¸¼öÀ§ µµ´ÞÇÏ°í³ª¼­ ½ÃÀÛ..*/
     if( F_FW_Version_Display_Mode == CLEAR )
     {
         return;
     }
     else{}
 
-    /*..hui [23-5-10ï¿½ï¿½ï¿½ï¿½ 9:54:16] ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½..*/
+    /*..hui [23-5-10¿ÀÀü 9:54:16] ÃßÃâ À¯·® °è»ê..*/
     clac_effluent_water_acc();
 
-    /*..hui [23-5-10ï¿½ï¿½ï¿½ï¿½ 9:54:44] Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½..*/
+    /*..hui [23-5-10¿ÀÀü 9:54:44] Æ®·¹ÀÌ ÀÔ¼ö À¯·® °è»ê..*/
     calc_ice_tray_input_water();
 
-    /*..hui [23-7-28ï¿½ï¿½ï¿½ï¿½ 2:49:08] ï¿½ï¿½È¯ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½..*/
+    /*..hui [23-7-28¿ÀÈÄ 2:49:08] ¼øÈ¯¹è¼ö À¯·® °è»ê..*/
     calc_auto_drain_water();
 
-    /*..hui [23-7-28ï¿½ï¿½ï¿½ï¿½ 2:54:23] ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å© ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½..*/
+    /*..hui [23-7-28¿ÀÈÄ 2:54:23] ¾óÀ½ ÅÊÅ© »ì±Õ ½Ã À¯·® °è»ê..*/
     /////calc_hot_ster_water();
 
-    /*..hui [23-12-18ï¿½ï¿½ï¿½ï¿½ 3:34:07] ï¿½Ã·ï¿½ï¿½Ì½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½..*/
-    /*..hui [23-12-18ï¿½ï¿½ï¿½ï¿½ 7:04:34] flushing_finishï¿½ï¿½ ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ñ¹ï¿½ï¿½ï¿½....*/
+    /*..hui [23-12-18¿ÀÈÄ 3:34:07] ÇÃ·¯½Ì½Ã À¯·® °è»ê..*/
+    /*..hui [23-12-18¿ÀÈÄ 7:04:34] flushing_finish·Î ÀÌµ¿ Á¾·á ÈÄ ÇÑ¹ø¸¸....*/
     /*calc_flushing_water();*/
 
+    #if 0
+    if( gu8_teeeeeeeeeeeeeeeest == 1 )
+    {
+        gu8_teeeeeeeeeeeeeeeest = 0;
+        acc_user_water( 500 );
+    }
+    else if( gu8_teeeeeeeeeeeeeeeest == 2 )
+    {
+        gu8_teeeeeeeeeeeeeeeest = 0;
+        acc_user_water( 1230 );
+    }
+    else if( gu8_teeeeeeeeeeeeeeeest == 3 )
+    {
+        gu8_teeeeeeeeeeeeeeeest = 0;
+        acc_user_water( 2690 );
+    }
+    else if( gu8_teeeeeeeeeeeeeeeest == 4 )
+    {
+        gu8_teeeeeeeeeeeeeeeest = 0;
+        acc_user_water( 3510 );
+    }
+    else if( gu8_teeeeeeeeeeeeeeeest == 5 )
+    {
+        gu8_teeeeeeeeeeeeeeeest = 0;
+        acc_user_water( 4920 );
+    }
+    else if( gu8_teeeeeeeeeeeeeeeest == 6 )
+    {
+        gu8_teeeeeeeeeeeeeeeest = 0;
+        acc_user_water( 5940 );
+    }
+    else{}
+    #endif
 
 }
 
@@ -145,14 +180,14 @@ void clac_effluent_water_acc(void)
         {
             u16_user_effluent_time = u16_user_effluent_time + 1;
 
-            /*..hui [23-8-2ï¿½ï¿½ï¿½ï¿½ 4:43:13] 5ml ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö±ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ..*/
+            /*..hui [23-8-2¿ÀÈÄ 4:43:13] 5ml ´ÜÀ§µµ ÀÖ±â ¶§¹®¿¡ ..*/
             mu16_water_acc =
                 (U16)(((U32)u16_user_effluent_time * (U32)u16_user_effluent_cup_size) / u16_user_effluent_total_time);
 
             /*mu16_water_acc = mu16_water_acc * 10;*/
             acc_user_water( mu16_water_acc );
 
-            /*..hui [21-8-3ï¿½ï¿½ï¿½ï¿½ 3:53:17] ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½..*/
+            /*..hui [21-8-3¿ÀÈÄ 3:53:17] ¿ÍÀÌÆÄÀÌ Àû»ê¿ë ¹°·®..*/
             gu16_wifi_water_acc = (gu16_extract_display_cnt*10);
 
             u16_user_effluent_time = 0;
@@ -181,7 +216,7 @@ void calc_ice_tray_input_water(void)
         if( bit_tray_water_acc == CLEAR )
         {
             bit_tray_water_acc = SET;
-            /*..hui [23-5-9ï¿½ï¿½ï¿½ï¿½ 2:45:56] ï¿½ï¿½ï¿½Ì½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ ï¿½ë·® 300cc..*/
+            /*..hui [23-5-9¿ÀÈÄ 2:45:56] ¾ÆÀÌ½ºÆ®·¹ÀÌ ÀÔ¼ö ¿ë·® 300cc..*/
             mu16_water_acc = ICE_TRAY_INPUT_USING_WATER;
             acc_user_water( mu16_water_acc );
         }
@@ -208,7 +243,7 @@ void calc_auto_drain_water(void)
         {
             bit_drain_water_acc = SET;
 
-            /*..hui [23-7-28ï¿½ï¿½ï¿½ï¿½ 2:50:12] ï¿½Úµï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 500cc.. È®ï¿½ï¿½ï¿½Øºï¿½ï¿½ï¿½ ï¿½ï¿½ ..*/
+            /*..hui [23-7-28¿ÀÈÄ 2:50:12] ÀÚµ¿¹è¼ö ¹°·® 500cc.. È®ÀÎÇØºÁ¾ß ÇÔ ..*/
             mu16_water_acc = AUTO_DRAIN_USING_WATER;
             acc_user_water( mu16_water_acc );
         }
@@ -225,6 +260,89 @@ void calc_auto_drain_water(void)
 * Function Name: System_ini
 * Description  :
 ***********************************************************************************************************************/
+#if 0
+void calc_hot_ster_water(void)
+{
+    U16 mu16_water_acc = 0;
+
+    if( bit_ice_tank_ster_start == SET )
+    {
+        if( gu8_ice_ster_mode == STER_MODE_PREPARE )
+        {
+            if( Bit0_Ster_Prepare_Acc_State == CLEAR )
+            {
+                Bit0_Ster_Prepare_Acc_State = SET;
+                mu16_water_acc = PREPARE_STER_USING_WATER;
+                acc_user_water( mu16_water_acc );
+            }
+            else{}
+        }
+        else if( gu8_ice_ster_mode == STER_MODE_HOT_SPRAY_STATE )
+        {
+            if( Bit1_Hot_Spray_Acc_State == CLEAR )
+            {
+                Bit1_Hot_Spray_Acc_State = SET;
+                mu16_water_acc = HOT_SPRAY_USING_WATER;
+                acc_user_water( mu16_water_acc );
+            }
+            else{}
+        }
+        else if( gu8_ice_ster_mode == STER_MODE_LUKEWARM_SPRAY_STATE )
+        {
+            if( Bit2_Lukewarm_Spray_Acc_State == CLEAR )
+            {
+                Bit2_Lukewarm_Spray_Acc_State = SET;
+                mu16_water_acc = LUKEWARM_SPRAY_USING_WATER;
+                acc_user_water( mu16_water_acc );
+            }
+            else{}
+        }
+        else if( gu8_ice_ster_mode == STER_MODE_FINAL_CLEAN_STATE )
+        {
+            if( Bit3_Final_Clean_Acc_State == CLEAR )
+            {
+                Bit3_Final_Clean_Acc_State = SET;
+                mu16_water_acc = FINAL_CLEAN_USING_WATER;
+                acc_user_water( mu16_water_acc );
+            }
+            else{}
+        }
+        else if( gu8_ice_ster_mode == STER_MODE_ICE_TRAY_CLEAN_PREPARE )
+        {
+            Bit4_Ice_Tray_Clean_Acc_State = CLEAR;
+        }
+        else if( gu8_ice_ster_mode == STER_MODE_ICE_TRAY_CLEAN )
+        {
+            if( Bit4_Ice_Tray_Clean_Acc_State == CLEAR )
+            {
+                Bit4_Ice_Tray_Clean_Acc_State = SET;
+                mu16_water_acc = ICE_TRAY_CLEAN_USING_WATER;
+                acc_user_water( mu16_water_acc );
+            }
+            else{}
+        }
+        else if( gu8_ice_ster_mode == STER_MODE_MELT_ICE_PREPARE )
+        {
+            Bit5_Melt_Ice_Acc_State = CLEAR;
+        }
+        else if( gu8_ice_ster_mode == STER_MODE_MELT_ICE )
+        {
+            if( Bit5_Melt_Ice_Acc_State == CLEAR )
+            {
+                Bit5_Melt_Ice_Acc_State = SET;
+                mu16_water_acc = MELT_ICE_USING_WATER;
+                acc_user_water( mu16_water_acc );
+            }
+            else{}
+        }
+        else{}
+    }
+    else
+    {
+        u8IceTankSterAcc = 0;
+    }
+}
+#endif
 
 /***********************************************************************************************************************
 * Function Name: System_ini
@@ -264,14 +382,14 @@ void acc_user_water( U16 mu16_water_acc )
 
     gu16_temporary_save_usage += mu16_water_acc;
 
-    /*..hui [23-12-5ï¿½ï¿½ï¿½ï¿½ 5:22:02] 1ï¿½ï¿½ï¿½Í¸ï¿½ï¿½ï¿½ EEPROMï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½..*/
+    /*..hui [23-12-5¿ÀÈÄ 5:22:02] 1¸®ÅÍ¸¶´Ù EEPROM¿¡ ÀúÀå..*/
     if( gu16_temporary_save_usage >= 1000 )
     {
         mu16_a = (U16)(gu16_temporary_save_usage / 1000);
 
         gu16_temporary_save_usage = (gu16_temporary_save_usage - (mu16_a * 1000));
 
-        /*..hui [23-12-5ï¿½ï¿½ï¿½ï¿½ 5:23:39] 1ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½..*/
+        /*..hui [23-12-5¿ÀÈÄ 5:23:39] 1¸®ÅÍ Áõ°¡..*/
         /*gu16_water_usage_neo_filter = gu16_water_usage_neo_filter + 1;*/
         gu16_water_usage_neo_filter = gu16_water_usage_neo_filter + mu16_a;
 
@@ -282,7 +400,7 @@ void acc_user_water( U16 mu16_water_acc )
         else{}
 
 
-        /*..hui [23-12-5ï¿½ï¿½ï¿½ï¿½ 5:23:39] 1ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½..*/
+        /*..hui [23-12-5¿ÀÈÄ 5:23:39] 1¸®ÅÍ Áõ°¡..*/
         /*gu16_water_usage_ro_filter = gu16_water_usage_ro_filter + 1;*/
         gu16_water_usage_ro_filter = gu16_water_usage_ro_filter + mu16_a;
 
@@ -292,7 +410,7 @@ void acc_user_water( U16 mu16_water_acc )
         }
         else{}
 
-        /*..hui [23-12-5ï¿½ï¿½ï¿½ï¿½ 5:23:39] 1ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½..*/
+        /*..hui [23-12-5¿ÀÈÄ 5:23:39] 1¸®ÅÍ Áõ°¡..*/
         /*gu16_water_usage_ino_filter = gu16_water_usage_ino_filter + 1;*/
         gu16_water_usage_ino_filter = gu16_water_usage_ino_filter + mu16_a;
 
@@ -306,17 +424,93 @@ void acc_user_water( U16 mu16_water_acc )
     else{}
 
 
+    #if 0
+    gu32_total_usage_water_ml += mu16_water_acc;
+
+    if(gu32_total_usage_water_ml >= TOTAL_USAGE_MAX_WATER)
+    {
+        gu32_total_usage_water_ml = TOTAL_USAGE_MAX_WATER;
+    }
+    else{}
+
+    gu16_wifi_total_usage_water = (U16)(gu32_total_usage_water_ml / 1000);
+
+    /*..hui [23-6-7¿ÀÈÄ 5:32:58] 1ÀÌ¸é 0.1gal..*/
+    u16_display_usage_water_gal = (U16)(gu32_total_usage_water_ml / ML_PER_GAL);
+
+    if( u16_display_usage_water_gal >= MAX_GAL )
+    {
+        u16_display_usage_water_gal = MAX_GAL;
+    }
+    else{}
+
+    #if 0
+    if( gu32_total_usage_water_ml <= 1000 )
+    {
+        mu8_diff = 1;
+    }
+    else
+    {
+        /*..hui [23-6-7¿ÀÈÄ 5:44:26] 1000gal ÀÌ»ó(100gal)Àº 1gal¸¶´Ù ÀúÀå..*/
+        mu8_diff = 10;
+    }
+    #endif
+
+    mu8_diff = 120;
+
+
+    if( gu32_total_usage_water_ml >= gu32_total_usage_water_ml_old + mu8_diff
+        || gu32_total_usage_water_ml < gu32_total_usage_water_ml_old )
+    {
+        gu32_total_usage_water_ml_old = gu32_total_usage_water_ml;
+
+        gu32_total_usage_water_ml_save = gu32_total_usage_water_ml;
+
+        if( gu32_total_usage_water_ml_save >= TOTAL_USAGE_MAX_WATER )
+        {
+            gu32_total_usage_water_ml_save = TOTAL_USAGE_MAX_WATER;
+        }
+        else{}
+    }
+    else{}
+    #endif
 
 
 
 
+    #if 0
+    /*..hui [23-6-7¿ÀÈÄ 5:44:03] 99.9gal ÀÌÇÏ´Â 0.1gal¸¶´Ù ÀúÀå..*/
+    /*if( u16_display_usage_water_gal <= 999 )*/
+    if( u16_display_usage_water_gal <= 1000 )
+    {
+        mu8_diff = 1;
+    }
+    else
+    {
+        /*..hui [23-6-7¿ÀÈÄ 5:44:26] 1000gal ÀÌ»ó(100gal)Àº 1gal¸¶´Ù ÀúÀå..*/
+        mu8_diff = 10;
+    }
+
+    if( u16_display_usage_water_gal >= u16_display_usage_water_gal_old + mu8_diff
+        || u16_display_usage_water_gal < u16_display_usage_water_gal_old )
+    {
+        u16_display_usage_water_gal_old = u16_display_usage_water_gal;
+
+        gu16_total_usage_water_gal_save = u16_display_usage_water_gal;
+
+        if( gu16_total_usage_water_gal_save >= MAX_GAL )
+        {
+            gu16_total_usage_water_gal_save = MAX_GAL;
+        }
+        else{}
+    }
+    else{}
+    #endif
 }
 
 /***********************************************************************************************************************
 * Function Name: System_ini
 * Description  :
 ***********************************************************************************************************************/
-
-
 
 

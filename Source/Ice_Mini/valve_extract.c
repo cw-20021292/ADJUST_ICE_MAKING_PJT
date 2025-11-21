@@ -121,6 +121,39 @@ void output_valve_room_cold_extract_feed5(void)
         Bit0_RCOF6_Water_Out_State = CLEAR;
     }
 
+#if 0
+    if( F_WaterOut == SET )
+    {
+        if( u8IceOutState == ICE_SELECT__NONE )
+        {
+            if( u8WaterOutState == COLD_WATER_SELECT 
+            || u8WaterOutState == PURE_WATER_SELECT )
+            {
+                if( gu8_Water_Out_Step >= STATE_30_EXTRACT_VALVE_ON_STATE
+                && gu8_Water_Out_Step < STATE_40_EXTRACT_VALVE_OFF_STATE )
+                {
+                    Bit0_RCOF6_Water_Out_State = SET;
+                }
+                else
+                {
+                    Bit0_RCOF6_Water_Out_State = CLEAR;
+                }
+            }
+            else
+            {
+                Bit0_RCOF6_Water_Out_State = CLEAR;
+            }
+        }
+        else
+        {
+            Bit0_RCOF6_Water_Out_State = CLEAR;
+        }
+    }
+    else
+    {
+        Bit0_RCOF6_Water_Out_State = CLEAR;
+    }
+#endif
     /* 코디유로살균 Cody Water Line Clean Service */
     if(cody_water_line.gu8_start == SET)
     {
@@ -262,8 +295,6 @@ void output_valve_hot_out_feed_8(void)
 * Function Name: System_ini
 * Description  :
 ***********************************************************************************************************************/
-
-
 
 
 

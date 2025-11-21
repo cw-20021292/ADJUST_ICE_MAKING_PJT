@@ -273,11 +273,12 @@ extern U16 gu16_water_select_return_time;
 extern bit F_ErrorSave;
 extern U8 u8Memento_Buff[];
 
+//extern U8 gu8_test_mode_timeout_1s;
 extern bit F_IceVV;
 extern U16 gu16CompOffDelay;
 extern bit F_IceHeater;
 extern U16 gu16IceVVTime;
-extern bit F_IceDoorClose;        /* ï¿½ï¿½ï¿½Ì½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ */
+extern bit F_IceDoorClose;        /* ¾ÆÀÌ½º µµ¾î ´ÝÈû */
 
 extern bit F_FW_Version_Display_Mode;
 extern U8 gu8_led_version_step;
@@ -387,11 +388,11 @@ extern U8 gu8_my_cup_type;
 extern U8 gu8_my_led_off_time;
 
 /*************************************************************************************/
-/* ï¿½Ã°ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½ */
+/* ½Ã°£¼³Á¤ °ü·Ã µ¥ÀÌÅÍ Ãß°¡ */
 extern bit bit_setting_time_mode_start;
 extern U16 gu16_Time_Setting_Mode_Timer_100ms;
 /*************************************************************************************/
-/* ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½â·® ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
+/* ¾óÀ½ ÃßÃâ·® ¼³Á¤ °ü·Ã µ¥ÀÌÅÍ */
 extern ICE_LEVEL  gu8_ice_amount_step;
 /*************************************************************************************/
 extern U16 gu16_cold_off_flick_timer;

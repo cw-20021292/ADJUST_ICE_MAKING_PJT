@@ -2,15 +2,15 @@
 * DISCLAIMER
 * This software is supplied by Renesas Electronics Corporation and is only intended for use with Renesas products.
 * No other uses are authorized. This software is owned by Renesas Electronics Corporation and is protected under all
-* applicable laws, including copyright laws. 
+* applicable laws, including copyright laws.
 * THIS SOFTWARE IS PROVIDED "AS IS" AND RENESAS MAKES NO WARRANTIES REGARDING THIS SOFTWARE, WHETHER EXPRESS, IMPLIED
 * OR STATUTORY, INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
 * NON-INFRINGEMENT.  ALL SUCH WARRANTIES ARE EXPRESSLY DISCLAIMED.TO THE MAXIMUM EXTENT PERMITTED NOT PROHIBITED BY
 * LAW, NEITHER RENESAS ELECTRONICS CORPORATION NOR ANY OF ITS AFFILIATED COMPANIES SHALL BE LIABLE FOR ANY DIRECT,
 * INDIRECT, SPECIAL, INCIDENTAL OR CONSEQUENTIAL DAMAGES FOR ANY REASON RELATED TO THIS SOFTWARE, EVEN IF RENESAS OR
 * ITS AFFILIATES HAVE BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
-* Renesas reserves the right, without notice, to make changes to this software and to discontinue the availability 
-* of this software. By using this software, you agree to the additional terms and conditions found by accessing the 
+* Renesas reserves the right, without notice, to make changes to this software and to discontinue the availability
+* of this software. By using this software, you agree to the additional terms and conditions found by accessing the
 * following link:
 * http://www.renesas.com/disclaimer
 *
@@ -109,30 +109,30 @@ Macro definitions (Register bit)
 #define _01_KR0_SIGNAL_DETECT_ON        (0x01U)   /* detect KR0 signal */
 /* Key interrupt mode control (KRM1) */
 #define _00_KR1_SIGNAL_DETECT_OFF       (0x00U)   /* not detect KR1 signal */
-#define _02_KR1_SIGNAL_DETECT_ON        (0x02U)   /* detect KR1 signal */        
+#define _02_KR1_SIGNAL_DETECT_ON        (0x02U)   /* detect KR1 signal */
 /* Key interrupt mode control (KRM2) */
 #define _00_KR2_SIGNAL_DETECT_OFF       (0x00U)   /* not detect KR2 signal */
-#define _04_KR2_SIGNAL_DETECT_ON        (0x04U)   /* detect KR2 signal */        
+#define _04_KR2_SIGNAL_DETECT_ON        (0x04U)   /* detect KR2 signal */
 /* Key interrupt mode control (KRM3) */
 #define _00_KR3_SIGNAL_DETECT_OFF       (0x00U)   /* not detect KR3 signal */
-#define _08_KR3_SIGNAL_DETECT_ON        (0x08U)   /* detect KR3 signal */        
+#define _08_KR3_SIGNAL_DETECT_ON        (0x08U)   /* detect KR3 signal */
 /* Key interrupt mode control (KRM4) */
 #define _00_KR4_SIGNAL_DETECT_OFF       (0x00U)   /* not detect KR4 signal */
-#define _10_KR4_SIGNAL_DETECT_ON        (0x10U)   /* detect KR4 signal */        
+#define _10_KR4_SIGNAL_DETECT_ON        (0x10U)   /* detect KR4 signal */
 /* Key interrupt mode control (KRM5) */
 #define _00_KR5_SIGNAL_DETECT_OFF       (0x00U)   /* not detect KR5 signal */
-#define _20_KR5_SIGNAL_DETECT_ON        (0x20U)   /* detect KR5 signal */        
+#define _20_KR5_SIGNAL_DETECT_ON        (0x20U)   /* detect KR5 signal */
 /* Key interrupt mode control (KRM6) */
 #define _00_KR6_SIGNAL_DETECT_OFF       (0x00U)   /* not detect KR6 signal */
-#define _40_KR6_SIGNAL_DETECT_ON        (0x40U)   /* detect KR6 signal */        
+#define _40_KR6_SIGNAL_DETECT_ON        (0x40U)   /* detect KR6 signal */
 /* Key interrupt mode control (KRM7) */
 #define _00_KR7_SIGNAL_DETECT_OFF       (0x00U)  /* not detect KR7 signal */
-#define _80_KR7_SIGNAL_DETECT_ON        (0x80U)   /* detect KR7 signal */        
+#define _80_KR7_SIGNAL_DETECT_ON        (0x80U)   /* detect KR7 signal */
 
 /***********************************************************************************************************************
 Macro definitions
 ***********************************************************************************************************************/
-#define KEY_WAITTIME                    (8U)      /* change the waiting time according to the system */ 
+#define KEY_WAITTIME                    (8U)      /* change the waiting time according to the system */
 
 /***********************************************************************************************************************
 Typedef definitions
@@ -146,7 +146,6 @@ void R_INTC10_Start(void);
 void R_INTC10_Stop(void);
 void R_INTC11_Start(void);
 void R_INTC11_Stop(void);
-
 /* Start user code for function. Do not edit comment generated here */
 /* End user code. Do not edit comment generated here */
 #endif

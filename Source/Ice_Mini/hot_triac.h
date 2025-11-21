@@ -25,6 +25,18 @@ extern TYPE_BYTE          U8OperationB;
 #define            Bit0_Cold_Operation_Disable_State       U8OperationB.Bit.b0
 #define            Bit1_Hot_Operation_Disable_State        U8OperationB.Bit.b1
 #define            Bit2_Ice_Operation_Disable_State        U8OperationB.Bit.b2
+
+
+extern TYPE_BYTE          U8FactoryTestModeB;
+#define            u8FactoryTestMode                 U8FactoryTestModeB.byte
+#define            Bit0_Pcb_Test_Mode                U8FactoryTestModeB.Bit.b0
+#define            Bit1_Uart_Test_Mode               U8FactoryTestModeB.Bit.b1
+#define            Bit2_Display_Test_Mode            U8FactoryTestModeB.Bit.b2
+
+
+
+
+
 extern bit F_WaterOut;
 extern U8 gu8_hot_setting_temperature;
 extern U8 gu8_Preheat_Step;
@@ -67,8 +79,8 @@ extern U8 gu8_Test_dbg_drain_Mode;
 extern bit bit_ice_tank_ster_start;
 extern ICE_STER_MODE gu8_ice_ster_mode;
 extern FLUSHING_STEP gu8_flushing_mode;
-extern U8 gu8_hot_filling_max_hz;							// ï¿½ï¿½U 2025-06-10 Phil 
-extern U8 u8Target_Hz_Hot; 										// ï¿½ï¿½U 2025-06-10 Phil 
+extern U8 gu8_hot_filling_max_hz;							// ¢®U 2025-06-10 Phil 
+extern U8 u8Target_Hz_Hot; 										// ¢®U 2025-06-10 Phil 
 
 extern bit F_hot_flow_error;    //cbr_test
 extern U8 gu8_hot_drain_cold;

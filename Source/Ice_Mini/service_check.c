@@ -48,6 +48,15 @@ extern bit bit_install_flushing_state;
 ***********************************************************************************************************************/
 void service_check(void)
 {
+    #if 0
+    if(F_FW_Version_Display_Mode == SET)
+    {
+        /*..hui [19-11-4오후 10:17:53] 서비스 점검 표시 삭제..*/
+        /*service_check_timer();*/
+        /*service_clear_check();*/
+    }
+    else{}
+    #endif
 }
 
 /***********************************************************************************************************************
@@ -56,6 +65,37 @@ void service_check(void)
 ***********************************************************************************************************************/
 void service_check_timer(void)
 {
+    #if 0
+    gu16_service_timer_sec++;
+
+    if(gu16_service_timer_sec >= 600)
+    {
+        gu16_service_timer_sec = 0;
+        gu16_service_timer_min++;
+    }
+    else{}
+
+    if(gu16_service_timer_min >= 60)
+    {
+        gu16_service_timer_min = 0;
+        gu16_service_timer_hour++;
+    }
+    else{}
+
+    if(gu16_service_timer_hour >= 24)
+    {
+        gu16_service_timer_hour = 0;
+        gu8_service_timer_1day++;
+    }
+    else{}
+
+    if(gu8_service_timer_1day >= SERVICE_ELAPSE_TIME)
+    {
+        gu8_service_timer_1day = SERVICE_ELAPSE_TIME;
+        F_Service_Elaspe_State = SET;
+    }
+    else{}
+    #endif
 }
 
 
@@ -65,6 +105,17 @@ void service_check_timer(void)
 ***********************************************************************************************************************/
 void service_clear_check(void)
 {
+    #if 0
+    if(F_Tank_Cover_Input == CLEAR)
+    {
+        gu16_service_timer_sec = 0;
+        gu16_service_timer_min = 0;
+        gu16_service_timer_hour = 0;
+        gu8_service_timer_1day = 0;
+        F_Service_Elaspe_State = CLEAR;
+    }
+    else{}
+    #endif
 }
 
 /***********************************************************************************************************************
@@ -118,6 +169,14 @@ void start_instruction_mode(void)
     }
     else{}
 
+    #if 0
+    if( gu8_Led_Display_Step != LED_Display__FLUSHING )
+    {
+        play_melody_warning_197();
+        return;
+    }
+    else{}
+    #endif
 
     if( gu8_flushing_mode == FLUSHING_NONE_STATE )
     {
@@ -143,8 +202,6 @@ void start_instruction_mode(void)
 * Function Name: System_ini
 * Description  :
 ***********************************************************************************************************************/
-
-
 
 
 

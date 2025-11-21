@@ -40,10 +40,8 @@
 #pragma interrupt INTSRE2 INTSRE2
 
 /* 공장 자동화검사 Uart 통신 */
-#if 0
 #pragma interrupt INTST3 INTST3
 #pragma interrupt INTSR3 INTSR3
-#endif
 #pragma interrupt INTSRE3 INTSRE3
 
 /* RTC, EEPROM Module I2C 통신 */
@@ -177,6 +175,12 @@ __interrupt void INTTM02(void) /* 500us */
  * Function Name: System_ini
  * Description  :
  ***********************************************************************************************************************/
+#if 0
+__interrupt void INTTM13 ( void )
+{
+    //
+}
+#endif
 
 /***********************************************************************************************************************
  * Function Name: System_ini
@@ -192,18 +196,41 @@ __interrupt void INTTM02(void) /* 500us */
  * Function Name: System_ini
  * Description  :
  ***********************************************************************************************************************/
+#if 0
+__interrupt void INTP4 (void)
+{
+    //
+    /*..hui [18-8-9오후 5:28:35] TDS INPUT..*/
+    INTP4_TDS_Input();
+}
+#endif
 
 /***********************************************************************************************************************
  * Function Name: System_ini
  * Description  :
  ***********************************************************************************************************************/
- __interrupt void INTP10(void)
- {
-    /* [2025-11-19] CH.PARK 드레인단 유량센서..*/
-    DrainFlowInput();
- }
+#if 0
+__interrupt void INTP7 (void)
+{
+    //
+    /*..hui [19-7-17오후 3:24:58] 필터 유량센서..*/
+    INTP7_Filter_Flow_Sensor_Input();
+}
+#endif
 
- /***********************************************************************************************************************
+/***********************************************************************************************************************
+ * Function Name: System_ini
+ * Description  :
+ ***********************************************************************************************************************/
+__interrupt void INTP10(void)
+{
+    #ifndef __DUMMY_PROGRAM__
+    /*..hui [19-7-17오후 3:24:58] 유량센서..*/
+    DrainFlowInput();
+    #endif
+}
+
+/***********************************************************************************************************************
  * Function Name: System_ini
  * Description  :
  ***********************************************************************************************************************/
@@ -306,6 +333,31 @@ __interrupt void INTSRE1(void)
 {
     InterruptUartWifiError();
 
+#if 0
+    U8 err_type;
+
+    if( (SSR03 & 1) == SET )
+    {
+        u8Uart1_ErrorCode = FRAMING_ERROR;
+    }
+    else if( (SSR03 & 2) == SET )
+    {
+        u8Uart1_ErrorCode = PARITY_ERROR;
+    }
+    else if( (SSR03 & 4) == SET )
+    {
+        u8Uart1_ErrorCode = OVERRUN_ERROR;
+    }
+    else
+    {
+        u8Uart1_ErrorCode = UNKNOWN_ERROR;
+    }
+
+    u8Uart1_ErrorCnt++;
+
+    SIR03 = 0x0007;
+    SREIF1 = CLEAR;
+#endif
 }
 
 /***********************************************************************************************************************
@@ -369,16 +421,31 @@ __interrupt void INTSRE2(void)
     SIR11 = 0x0007;
     SREIF2 = CLEAR;
 
+#if 0
+    rx_data = RXD2;
+
+    F_UART2ErrorInterrupt = SET;
+
+    UART2_Error_Interrupt();
+    SIR11 = 0x0007;
+    SREIF2 = CLEAR;
+#endif
 }
 
-#if 0
 /***********************************************************************************************************************
  * Function Name: System_ini
  * Description  :
  ***********************************************************************************************************************/
 __interrupt void INTST3(void)
 {
-    int_UART3_AT_TX();
+    if(gu8_test_mode_timeout_1s == 0 && u8FactoryTestMode == NONE_TEST_MODE)
+    {
+        // Uart_ISR3_PC_Tx();
+    }
+    else
+    {
+        int_UART3_AT_TX();
+    }
 }
 
 /***********************************************************************************************************************
@@ -387,9 +454,15 @@ __interrupt void INTST3(void)
  ***********************************************************************************************************************/
 __interrupt void INTSR3(void)
 {
-    int_UART3_WORK_RX();
+    if (gu8_test_mode_timeout_1s == 0 && u8FactoryTestMode == NONE_TEST_MODE)
+    {
+        // Uart_ISR3_PC_Rx();
+    }
+    else
+    {
+        int_UART3_AT_RX();
+    }
 }
-#endif /* NEVER */
 
 /***********************************************************************************************************************
  * Function Name: System_ini
@@ -444,5 +517,3 @@ __interrupt static void INTIICA0(void)
  * Function Name: System_ini
  * Description  :
  ***********************************************************************************************************************/
-
-

@@ -11,11 +11,11 @@
 #include    "Port_Define.h"
 #include    "model_select.h"
 
-void model_select(void);
+void ModelSelect(void);
 
 MODEL model;
 
-#define MODEL_JUDGE_DONE_TIME       20  // 2초
+#define MODEL_JUDGE_DONE_TIME       10  // 1초
 
 extern U16 gu16_IceSelect_StepMotor;
 
@@ -35,9 +35,9 @@ void ModelInit(void)
 * Function Name: System_ini
 * Description  :
 ***********************************************************************************************************************/
-void model_select(void)
+void ModelSelect(void)
 {
-    if(model.u8IsModelChecked == SET)
+    if(GetIsSelectModel() == SET)
     {
         model.u8ModelCheckTimer = 0;
         return;
@@ -53,16 +53,16 @@ void model_select(void)
             model.u8ModelCheckTimer = MODEL_JUDGE_DONE_TIME;
 
             /* LOW ACTIVE (감지) */
-            if(GET_INNER_DOOR_REED_SW() == CLEAR)
+            if(GET_INNER_DOOR_REED_SW() == ACTIVE_LOW_DETECTED)
             {
-                model.u8model = MODEL_REED_USE;
+                SetModel(MODEL_REED_USE);
             }
             else
             {
-                model.u8model = MODEL_REED_NONE;
+                SetModel(MODEL_REED_NONE);
             }
 
-            model.u8IsModelChecked = SET;
+            SetIsSelectModel(SET);
         }
     }
     else
@@ -71,5 +71,23 @@ void model_select(void)
     }
 }
 
+void SetIsSelectModel(U8 mu8_is_model_checked)
+{
+    model.u8IsModelChecked = mu8_is_model_checked;
+}
 
+U8 GetIsSelectModel(void)
+{
+    return model.u8IsModelChecked;
+}
+
+void SetModel(MODEL_DATA mu8_model)
+{
+    model.u8model = mu8_model;
+}
+
+MODEL_DATA GetModel(void)
+{
+    return model.u8model;
+}
 

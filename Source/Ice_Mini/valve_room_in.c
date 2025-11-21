@@ -167,8 +167,54 @@ void output_valve_room_in_feed1(void)
         Bit3_Tray_retry_state = CLEAR;
     }
 
+#if 0
+    if(tray_error_flag_E63 == SET)
+	{
+		if( tray_abnormal_E63_step == 2 || tray_abnormal_E63_step == 4 )
+		{
+			Bit3_Tray_retry_state  = SET;
+		}
+		else
+		{
+			Bit3_Tray_retry_state = CLEAR;
+		}
+	}
+	else
+	{
+		Bit3_Tray_retry_state = CLEAR;
+	}
+#endif
 
+#if 0
+		if(gu8_flushing_mode == FLUSHING_FILTER)
+		{
+			if(gu8_filter_flushing_step == 1)
+			{
+				Bit1_Flushing_Heater_In_Valve_on = SET;
+			}
 
+		}
+		else
+#endif
+
+#if 0
+    /* 플러싱 - 히터 채우기 할 때 정수입수밸브 open */
+    if(gu8_flushing_mode == FLUSHING_FILL_HOT_TANK_STATE)
+    {
+        if( gu8_Hot_Filling_Step >= 1 && gu8_Hot_Filling_Step <= 6 )
+        {
+            Bit1_Flushing_Heater_In_Valve_on = F_First_Hot_Effluent;
+        }
+        else
+        {
+            Bit1_Flushing_Heater_In_Valve_on= CLEAR;
+        }
+    }
+    else
+    {
+        Bit1_Flushing_Heater_In_Valve_on = CLEAR;
+    }
+#endif
 
     /* 코디유로살균 Cody Water Line Clean Service */
     if(cody_water_line.gu8_start == SET)
@@ -234,8 +280,6 @@ void output_valve_room_in_feed1(void)
 * Function Name: System_ini
 * Description  :
 ***********************************************************************************************************************/
-
-
 
 
 

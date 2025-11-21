@@ -74,7 +74,7 @@ U8 gu8_hot_last_current_temp;
 U8 gu8_hour_setting_blink_timer;
 bit bit_hour_blink_500ms;
 
-U8 gu8_preheating_display_timer;        // LPP ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ç¥ï¿½ï¿½ Å¸ï¿½Ì¸Óºï¿½ï¿½ï¿½ ï¿½ß°ï¿½ 250611 CH.PARK
+U8 gu8_preheating_display_timer;        // LPP ¿¹¿­ ½Ã ´©ÀûÁõ°¡ Ç¥½Ã Å¸ÀÌ¸Óº¯¼ö Ãß°¡ 250611 CH.PARK
 
 U8 gu8_cold_temp_old = CLEAR;
 U16 gu16_cold_temp_update_timer;
@@ -134,12 +134,12 @@ void fnd_left_normal_state(void)
         return;
     }
 
-    /* ï¿½Ã°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½Ç¥ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ */
-    if(( gu8_cup_led_select == CLEAR ) 
-    && ( gu16_water_select_return_time == 0 ) 
+    /* ½Ã°£ ¼³Á¤µÈ »óÅÂÀÇ ½Ã°èÇ¥½Ã »óÅÂ */
+    if(( gu8_cup_led_select == CLEAR )
+    && ( gu16_water_select_return_time == 0 )
     && (bit_myWater_setting_start == 0)
-    && (gu8_clock_hide_state == CLEAR) 
-    && (F_WaterOut == CLEAR) 
+    && (gu8_clock_hide_state == CLEAR)
+    && (F_WaterOut == CLEAR)
     && (F_IceOut == CLEAR)
     )
     {
@@ -161,17 +161,17 @@ void fnd_left_normal_state(void)
             }
             else
             {
-                /* ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ SEGMENT Ç¥ï¿½ï¿½ */
+                /* Æò»ó½Ã ÁÂÃø SEGMENT Ç¥½Ã */
                 fnd_left_normal_water_state();
             }
         }
     }
     else
     {
-        /* ï¿½ï¿½ï¿½ï¿½ OR ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ */
+        /* ¾óÀ½ OR ¾óÀ½¹° ¼±ÅÃ ½Ã */
         if( u8IceOutState != ICE_SELECT__NONE )
         {
-            /*..hui [25-1-9ï¿½ï¿½ï¿½ï¿½ 6:44:10] ï¿½Ó½ï¿½..*/
+            /*..hui [25-1-9¿ÀÈÄ 6:44:10] ÀÓ½Ã..*/
             fnd_left_normal_ice_state();
         }
         else
@@ -207,8 +207,8 @@ void fnd_left_normal_ice_state(void)
     U8 mu8_temporary_hundred = 0;
     U8 mu8_temporary_ten = 0;
     U8 mu8_temporary_one = 0;
-    
-    if((Bit2_Cold_Off_Indicator != 0) 
+
+    if((Bit2_Cold_Off_Indicator != 0)
     || (Bit0_Ice_Lock_Indicator != 0)
     || (Bit6_Icewater_Off_Indicator != 0)
     || (Bit5_Ice_Off_Indicator != 0)
@@ -220,7 +220,7 @@ void fnd_left_normal_ice_state(void)
     }
     else
     {
-        /* ï¿½ï¿½ï¿½ï¿½ ï¿½Ü°ï¿½ Ç¥ï¿½ï¿½ */
+        /* ¾óÀ½ ´Ü°è Ç¥½Ã */
         mu8_temporary_hundred = DISPLAY_OFF;
         mu8_temporary_ten =  DISPLAY_OFF;
         mu8_temporary_one = gu8_ice_amount_step;
@@ -253,7 +253,7 @@ void fnd_left_normal_water_state(void)
     U8 mu8_temporary_ten = 0;
     U8 mu8_temporary_one = 0;
 
-    if((Bit2_Cold_Off_Indicator != 0) 
+    if((Bit2_Cold_Off_Indicator != 0)
     || (Bit0_Ice_Lock_Indicator != 0)
     || (Bit6_Icewater_Off_Indicator != 0)
     )
@@ -343,7 +343,7 @@ void normal_state_pure_temp(void)
     }
     else{}
 
-    //  ï¿½Âµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Äºï¿½ï¿½ï¿½ 1ï¿½ï¿½...
+    //  ¿Âµµ º¯°æµÈ ÈÄºÎÅÍ 1ºÐ...
     if(gu8_pure_temp_old != mu8_pure_temp)
     {
         gu8_pure_temp_old = mu8_pure_temp;
@@ -353,7 +353,7 @@ void normal_state_pure_temp(void)
     {
         gu16_pure_temp_update_timer++;
 
-		/*..sean [25-06-10] ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ 60ï¿½ï¿½ï¿½ï¿½ 30ï¿½Ê·ï¿½ ï¿½ï¿½ï¿½ï¿½..*/
+		/*..sean [25-06-10] ºü¸¥ ¾÷µ¥ÀÌÆ® À§ÇØ 60¿¡¼­ 30ÃÊ·Î º¯°æ..*/
         //if( gu16_cold_temp_update_timer >= 600 )
         if(gu16_pure_temp_update_timer >= 300)
         {
@@ -363,8 +363,15 @@ void normal_state_pure_temp(void)
         else{}
     }
 
+    #if 0
+    if( gu8_pure_temp_old == 0 || gu8_pure_temp_one_degree_display == 0 )
+    {
+        gu8_pure_temp_one_degree_display = mu8_pure_temp;
+    }
+    else{}
+    #endif
 
-	/*.. sean [25-06-08] 30ï¿½Ì»ï¿½ï¿½ï¿½ ï¿½ï¿½ì¿¡ï¿½ï¿½ 30ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ Ç¥ï¿½ï¿½ ..*/
+	/*.. sean [25-06-08] 30ÀÌ»óÀÏ °æ¿ì¿¡´Â 30À¸·Î °íÁ¤ÇÏ¿© Ç¥½Ã ..*/
 	if(gu8_pure_temp_one_degree_display <= 2)
 	{
 		gu8_pure_temp_one_degree_display = 2;
@@ -377,7 +384,7 @@ void normal_state_pure_temp(void)
 
     if( Bit4_Hot_In_Temp_Open_Short_Error__E46 == SET )
     {
-        /*..hui [25-6-10ï¿½ï¿½ï¿½ï¿½ 3:04:51] ï¿½Â¼ï¿½ï¿½Ô¼ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 25ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ç¥ï¿½ï¿½..*/
+        /*..hui [25-6-10¿ÀÈÄ 3:04:51] ¿Â¼öÀÔ¼ö¼¾¼­ ¿¡·¯½Ã 25µµ °íÁ¤ Ç¥½Ã..*/
         gu8_pure_temp_one_degree_display = 25;
     }
     else{}
@@ -386,7 +393,7 @@ void normal_state_pure_temp(void)
     gu8_pure_temp_one_degree_display = 25;
     #endif
 
-    /*..hui [24-1-31ï¿½ï¿½ï¿½ï¿½ 9:14:53] 10ï¿½Ì¸ï¿½ï¿½Ï¶ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 2ï¿½ï¿½ OFFï¿½ï¿½ Ç¥ï¿½ï¿½..*/
+    /*..hui [24-1-31¿ÀÀü 9:14:53] 10¹Ì¸¸ÀÏ¶§´Â ¿ÞÂÊ 2°³ OFFÈÄ Ç¥½Ã..*/
     if( gu8_pure_temp_one_degree_display < 10 )
     {
         gu8_temp_hundred = DISPLAY_OFF;
@@ -417,7 +424,7 @@ void normal_state_pure_temp(void)
 // 				return;
 // 		}
 // #endif
-//     /*..hui [24-1-31ï¿½ï¿½ï¿½ï¿½ 9:14:53] 10ï¿½Ì¸ï¿½ï¿½Ï¶ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 2ï¿½ï¿½ OFFï¿½ï¿½ Ç¥ï¿½ï¿½..*/
+//     /*..hui [24-1-31¿ÀÀü 9:14:53] 10¹Ì¸¸ÀÏ¶§´Â ¿ÞÂÊ 2°³ OFFÈÄ Ç¥½Ã..*/
 //     if( gu8_Room_Temperature_One_Degree < 10 )
 //     {
 //         gu8_temp_hundred = DISPLAY_OFF;
@@ -455,21 +462,21 @@ void normal_state_cold_temp(void)
 
     if( Bit14_Cold_Temp_Open_Short_Error__E44 == SET )
     {
-        /*..hui [25-6-10ï¿½ï¿½ï¿½ï¿½ 2:50:25] ï¿½Ã¼ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¶ï¿½ï¿½ï¿½ --- Ç¥ï¿½ï¿½..*/
+        /*..hui [25-6-10¿ÀÈÄ 2:50:25] ³Ã¼ö¼¾¼­ ¿¡·¯ÀÏ¶§´Â --- Ç¥½Ã..*/
         gu8_temp_hundred = DISPLAY_BAR;
         gu8_temp_ten = DISPLAY_BAR;
         gu8_temp_one = DISPLAY_BAR;
     }
     else if( F_Cold_Enable == CLEAR )
     {
-        /*..hui [25-6-10ï¿½ï¿½ï¿½ï¿½ 2:50:32] ï¿½Ã¼ï¿½ OFFï¿½Ï¶ï¿½ï¿½ï¿½ OFF Ç¥ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½..*/
+        /*..hui [25-6-10¿ÀÈÄ 2:50:32] ³Ã¼ö OFFÀÏ¶§´Â OFF Ç¥½Ã À¯Áö..*/
         gu8_temp_hundred = DISPLAY_NUM_LARGE_O;
         gu8_temp_ten = DISPLAY_NUM_LARGE_F;
         gu8_temp_one = DISPLAY_NUM_LARGE_F;
     }
     else
     {
-        /*..hui [24-1-31ï¿½ï¿½ï¿½ï¿½ 9:14:53] 10ï¿½Ì¸ï¿½ï¿½Ï¶ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 2ï¿½ï¿½ OFFï¿½ï¿½ Ç¥ï¿½ï¿½..*/
+        /*..hui [24-1-31¿ÀÀü 9:14:53] 10¹Ì¸¸ÀÏ¶§´Â ¿ÞÂÊ 2°³ OFFÈÄ Ç¥½Ã..*/
         if( gu8_Celcius_temp < 10 )
         {
             gu8_temp_hundred = DISPLAY_OFF;
@@ -503,7 +510,7 @@ void normal_state_hot_temp(void)
         && (gu8_Water_Out_Step <= STATE_23_HOT_PRE_HEATING_PRESS_DOWN_STATE)
         )
         {
-            // 0.7ï¿½Ê¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ç¥ï¿½ï¿½
+            // 0.7ÃÊ¸¶´Ù ¿¹¿­ ´©ÀûÁõ°¡ Ç¥½Ã
             gu8_preheating_display_timer++;
             if(gu8_preheating_display_timer <= 7)
             {
@@ -526,13 +533,13 @@ void normal_state_hot_temp(void)
             else
             {
                 gu8_preheating_display_timer = 0;
-            }   
+            }
         }
         else
         {
             gu8_preheating_display_timer = 0;
 
-            /* ï¿½ï¿½ï¿½ï¿½ï¿½ß¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½Ç¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Âµï¿½ Ç¥ï¿½ï¿½ */
+            /* ÃßÃâÁß¿¡ ¿¹¿­ ¿Ï·áµÇ¸é ¼³Á¤¿Âµµ Ç¥½Ã */
             if( gu8_hot_setting_temperature == HOT_SET_TEMP____100oC )
             {
                 gu8_temp_hundred = DISPLAY_NUM_1;
@@ -709,7 +716,7 @@ void fnd_left_setting(void)
     // U8 mu8_flick_state = 0;
 
 
-    // /*..hui [23-2-7ï¿½ï¿½ï¿½ï¿½ 7:55:29] ICE OFF, Cold Temp, Eco Mode..*/
+    // /*..hui [23-2-7¿ÀÈÄ 7:55:29] ICE OFF, Cold Temp, Eco Mode..*/
     // switch( u8SetDisplay )
     // {
     //     case ON_OFF_DISPLAY_OFF:
@@ -855,7 +862,7 @@ void fnd_left_error(void)
     if( mu8_flick_state == SET )
     {
         /*mu8_temporary_hundred = DISPLAY_OFF;*/
-        /*..hui [23-11-24ï¿½ï¿½ï¿½ï¿½ 2:30:48] ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½é¼­ Exxï¿½ï¿½ Ç¥ï¿½ï¿½..*/
+        /*..hui [23-11-24¿ÀÈÄ 2:30:48] ¿¡·¯ ¾ÆÀÌÄÜ ºüÁö¸é¼­ Exx·Î Ç¥½Ã..*/
         mu8_temporary_hundred = DISPLAY_NUM_LARGE_E;
         mu8_temporary_ten = (gu8_Error_Code / 10);
         mu8_temporary_one = (gu8_Error_Code % 10);
@@ -958,7 +965,7 @@ void fnd_left_my_recipe(void)
     && (gu8_Water_Out_Step <= STATE_23_HOT_PRE_HEATING_PRESS_DOWN_STATE)
     )
     {
-        // 0.7ï¿½Ê¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ç¥ï¿½ï¿½
+        // 0.7ÃÊ¸¶´Ù ¿¹¿­ ´©ÀûÁõ°¡ Ç¥½Ã
         gu8_preheating_display_timer++;
         if(gu8_preheating_display_timer <= 7)
         {
@@ -982,11 +989,11 @@ void fnd_left_my_recipe(void)
         {
             gu8_preheating_display_timer = 0;
 
-            // ï¿½ï¿½ï¿½ï¿½ ï¿½È³ï¿½ï¿½ï¿½ï¿½ï¿½ 000ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+            // ¿©±â ¾È³ÖÀ¸¸é 000À¸·Î ³ª¿È
             mu8_temporary_hundred = DISPLAY_NUM_PREHEAT_UPPER_BAR;
             mu8_temporary_ten = DISPLAY_NUM_PREHEAT_UPPER_BAR;
             mu8_temporary_one = DISPLAY_NUM_PREHEAT_UPPER_BAR;
-        }   
+        }
     }
     else
     {
@@ -1014,7 +1021,7 @@ void fnd_left_my_recipe(void)
             {
                 if(F_Cold_Enable == SET)
                 {
-                    /*..hui [24-1-31ï¿½ï¿½ï¿½ï¿½ 9:14:53] 10ï¿½Ì¸ï¿½ï¿½Ï¶ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 2ï¿½ï¿½ OFFï¿½ï¿½ Ç¥ï¿½ï¿½..*/
+                    /*..hui [24-1-31¿ÀÀü 9:14:53] 10¹Ì¸¸ÀÏ¶§´Â ¿ÞÂÊ 2°³ OFFÈÄ Ç¥½Ã..*/
                     if( gu8_Celcius_temp < 10 )
                     {
                         mu8_temporary_hundred = DISPLAY_OFF;
@@ -1042,7 +1049,7 @@ void fnd_left_my_recipe(void)
                 }
             }
             else
-            {			
+            {
                 mu8_temporary_hundred = (U8)((my_setting[RECIPE_MY1].temp / 100));
                 if(mu8_temporary_hundred == 0)
                 {
@@ -1064,7 +1071,7 @@ void fnd_left_my_recipe(void)
             {
                 if(F_Cold_Enable == SET)
                 {
-                    /*..hui [24-1-31ï¿½ï¿½ï¿½ï¿½ 9:14:53] 10ï¿½Ì¸ï¿½ï¿½Ï¶ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 2ï¿½ï¿½ OFFï¿½ï¿½ Ç¥ï¿½ï¿½..*/
+                    /*..hui [24-1-31¿ÀÀü 9:14:53] 10¹Ì¸¸ÀÏ¶§´Â ¿ÞÂÊ 2°³ OFFÈÄ Ç¥½Ã..*/
                     if( gu8_Celcius_temp < 10 )
                     {
                         mu8_temporary_hundred = DISPLAY_OFF;
@@ -1092,7 +1099,7 @@ void fnd_left_my_recipe(void)
                 }
             }
             else
-            {			
+            {
                 mu8_temporary_hundred = (U8)((my_setting[RECIPE_MY2].temp / 100));
                 if(mu8_temporary_hundred == 0)
                 {
@@ -1114,7 +1121,7 @@ void fnd_left_my_recipe(void)
             {
                 if(F_Cold_Enable == SET)
                 {
-                    /*..hui [24-1-31ï¿½ï¿½ï¿½ï¿½ 9:14:53] 10ï¿½Ì¸ï¿½ï¿½Ï¶ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 2ï¿½ï¿½ OFFï¿½ï¿½ Ç¥ï¿½ï¿½..*/
+                    /*..hui [24-1-31¿ÀÀü 9:14:53] 10¹Ì¸¸ÀÏ¶§´Â ¿ÞÂÊ 2°³ OFFÈÄ Ç¥½Ã..*/
                     if( gu8_Celcius_temp < 10 )
                     {
                         mu8_temporary_hundred = DISPLAY_OFF;
@@ -1142,7 +1149,7 @@ void fnd_left_my_recipe(void)
                 }
             }
             else
-            {			
+            {
                 mu8_temporary_hundred = (U8)((my_setting[RECIPE_MY3].temp / 100));
                 if(mu8_temporary_hundred == 0)
                 {
@@ -1159,7 +1166,7 @@ void fnd_left_my_recipe(void)
             }
         }
     }
-        
+
     if(F_WaterOut == CLEAR)
     {
         gu8_preheating_display_timer = 0;
@@ -1248,6 +1255,204 @@ void fnd_left_aging_count(void)
 ***********************************************************************************************************************/
 void fnd_left_display_test(void)
 {
+    U8 mu8_temporary_hundred = 0;
+    U8 mu8_temporary_ten = 0;
+    U8 mu8_temporary_one = 0;
+
+    if( gu8_display_test_error == 1 )
+    {
+        mu8_temporary_hundred = DISPLAY_NUM_LARGE_E;
+        mu8_temporary_ten = DISPLAY_NUM_LARGE_C;
+        mu8_temporary_one = DISPLAY_NUM_SMALL_t;
+
+        fnd_left_out( FIXED_DISPLAY, mu8_temporary_hundred, mu8_temporary_ten, mu8_temporary_one);
+    }
+    else if( gu8_display_test_error == 2 )
+    {
+        mu8_temporary_hundred = DISPLAY_NUM_LARGE_E;
+        mu8_temporary_ten = DISPLAY_NUM_LARGE_H;
+        mu8_temporary_one = DISPLAY_NUM_SMALL_t;
+
+        fnd_left_out( FIXED_DISPLAY, mu8_temporary_hundred, mu8_temporary_ten, mu8_temporary_one);
+    }
+    else if( gu8_display_test_error == 3 )
+    {
+        mu8_temporary_hundred = DISPLAY_NUM_LARGE_E;
+        mu8_temporary_ten = DISPLAY_NUM_SMALL_d;
+        mu8_temporary_one = DISPLAY_NUM_SMALL_t;
+
+        fnd_left_out( FIXED_DISPLAY, mu8_temporary_hundred, mu8_temporary_ten, mu8_temporary_one);
+    }
+    else if( gu8_display_test_error == 4 )
+    {
+        mu8_temporary_hundred = DISPLAY_NUM_LARGE_E;
+        mu8_temporary_ten = DISPLAY_NUM_LARGE_L;
+        mu8_temporary_one = DISPLAY_NUM_SMALL_t;
+
+        fnd_left_out( FIXED_DISPLAY, mu8_temporary_hundred, mu8_temporary_ten, mu8_temporary_one);
+    }
+    else if( gu8_display_test_error == 5 )
+    {
+        mu8_temporary_hundred = DISPLAY_NUM_LARGE_E;
+        mu8_temporary_ten = DISPLAY_NUM_LARGE_A;
+        mu8_temporary_one = DISPLAY_NUM_SMALL_t;
+
+        fnd_left_out( FIXED_DISPLAY, mu8_temporary_hundred, mu8_temporary_ten, mu8_temporary_one);
+    }
+    else if( gu8_display_test_error == 6 )
+    {
+        mu8_temporary_hundred = DISPLAY_NUM_LARGE_E;
+        mu8_temporary_ten = DISPLAY_NUM_SMALL_o;
+        mu8_temporary_one = DISPLAY_NUM_SMALL_t;
+
+        fnd_left_out( FIXED_DISPLAY, mu8_temporary_hundred, mu8_temporary_ten, mu8_temporary_one);
+    }
+    else if( gu8_display_test_error == 7 )
+    {
+        mu8_temporary_hundred = DISPLAY_NUM_LARGE_E;
+        mu8_temporary_ten = DISPLAY_NUM_SMALL_u;
+        mu8_temporary_one = DISPLAY_NUM_SMALL_t;
+
+        fnd_left_out( FIXED_DISPLAY, mu8_temporary_hundred, mu8_temporary_ten, mu8_temporary_one);
+    }
+    else if( gu8_display_test_error == 8 )
+    {
+        mu8_temporary_hundred = DISPLAY_NUM_LARGE_E;
+        mu8_temporary_ten = DISPLAY_NUM_LARGE_E;
+        mu8_temporary_one = DISPLAY_NUM_SMALL_t;
+
+        fnd_left_out( FIXED_DISPLAY, mu8_temporary_hundred, mu8_temporary_ten, mu8_temporary_one);
+    }
+    else if( gu8_display_test_error == 9 )
+    {
+        mu8_temporary_hundred = DISPLAY_NUM_LARGE_E;
+        mu8_temporary_ten = DISPLAY_NUM_LARGE_L;
+        mu8_temporary_one = DISPLAY_NUM_SMALL_d;
+
+        fnd_left_out( FIXED_DISPLAY, mu8_temporary_hundred, mu8_temporary_ten, mu8_temporary_one);
+    }
+    else if( gu8_display_test_error == 10 )
+    {
+        mu8_temporary_hundred = DISPLAY_NUM_LARGE_E;
+        mu8_temporary_ten = DISPLAY_NUM_LARGE_H;
+        mu8_temporary_one = DISPLAY_NUM_SMALL_d;
+
+        fnd_left_out( FIXED_DISPLAY, mu8_temporary_hundred, mu8_temporary_ten, mu8_temporary_one);
+    }
+    else if( gu8_display_test_error == 11 )
+    {
+        mu8_temporary_hundred = DISPLAY_NUM_LARGE_E;
+        mu8_temporary_ten = DISPLAY_NUM_SMALL_d;
+        mu8_temporary_one = DISPLAY_NUM_SMALL_d;
+
+        fnd_left_out( FIXED_DISPLAY, mu8_temporary_hundred, mu8_temporary_ten, mu8_temporary_one);
+    }
+    else if( gu8_display_test_error == 12 )
+    {
+        mu8_temporary_hundred = DISPLAY_NUM_LARGE_E;
+        mu8_temporary_ten = DISPLAY_NUM_LARGE_F;
+        mu8_temporary_one = DISPLAY_NUM_SMALL_d;
+
+        fnd_left_out( FIXED_DISPLAY, mu8_temporary_hundred, mu8_temporary_ten, mu8_temporary_one);
+    }
+    else if( gu8_display_test_error == 13 )
+    {
+        mu8_temporary_hundred = DISPLAY_NUM_LARGE_E;
+        mu8_temporary_ten = DISPLAY_NUM_SMALL_t;
+        mu8_temporary_one = DISPLAY_NUM_1;
+
+        fnd_left_out( FIXED_DISPLAY, mu8_temporary_hundred, mu8_temporary_ten, mu8_temporary_one);
+    }
+    else if( gu8_display_test_error == 14 )
+    {
+        mu8_temporary_hundred = DISPLAY_NUM_LARGE_E;
+        mu8_temporary_ten = DISPLAY_NUM_SMALL_n;
+        mu8_temporary_one = DISPLAY_NUM_LARGE_O;
+
+        fnd_left_out( FIXED_DISPLAY, mu8_temporary_hundred, mu8_temporary_ten, mu8_temporary_one);
+    }
+    else if( gu8_display_test_error == 15 )
+    {
+        // [2025-11-17] CH.PARK ¾ÆÀÌ½ºµµ¾î ¸®µå ¹Ì°¨Áö Ç¥½Ã [Eld]
+        mu8_temporary_hundred = DISPLAY_NUM_LARGE_E;
+        mu8_temporary_ten = DISPLAY_NUM_1;
+        mu8_temporary_one = DISPLAY_NUM_SMALL_d;
+
+        fnd_left_out( FIXED_DISPLAY, mu8_temporary_hundred, mu8_temporary_ten, mu8_temporary_one);
+    }
+    else
+    {
+        if( gu8_uart_setting_ice_lock_test_input == 0 )
+        {
+            mu8_temporary_hundred = DISPLAY_NUM_8;
+            mu8_temporary_ten = DISPLAY_NUM_8;
+            mu8_temporary_one = DISPLAY_NUM_8;
+
+            fnd_left_out( FIXED_DISPLAY, mu8_temporary_hundred, mu8_temporary_ten, mu8_temporary_one);
+            gu8_left_fnd_off_timer = 0;
+        }
+        else
+        {
+            gu8_left_fnd_off_timer++;
+
+            if( gu8_left_fnd_off_timer <= 2 )
+            {
+                mu8_temporary_hundred = 0x5F;
+                mu8_temporary_ten = 0x5F;
+                mu8_temporary_one = 0x5F;
+            }
+            else if( gu8_left_fnd_off_timer <= 4 )
+            {
+                mu8_temporary_hundred = 0x5E;
+                mu8_temporary_ten = 0x5E;
+                mu8_temporary_one = 0x5E;
+            }
+            else if( gu8_left_fnd_off_timer <= 6 )
+            {
+                mu8_temporary_hundred = 0x5C;
+                mu8_temporary_ten = 0x5C;
+                mu8_temporary_one = 0x5C;
+            }
+            else if( gu8_left_fnd_off_timer <= 8 )
+            {
+                mu8_temporary_hundred = 0x58;
+                mu8_temporary_ten = 0x58;
+                mu8_temporary_one = 0x58;
+            }
+            else if( gu8_left_fnd_off_timer <= 10 )
+            {
+                mu8_temporary_hundred = 0x50;
+                mu8_temporary_ten = 0x50;
+                mu8_temporary_one = 0x50;
+            }
+            else if( gu8_left_fnd_off_timer <= 12 )
+            {
+                mu8_temporary_hundred = 0x40;
+                mu8_temporary_ten = 0x40;
+                mu8_temporary_one = 0x40;
+            }
+            else
+            {
+                gu8_left_fnd_off_timer = 13;
+
+                if( F_cds_detect == SET && F_Wink_500ms == SET )
+                {
+                    mu8_temporary_hundred = 0x7F;
+                    mu8_temporary_ten = 0x7F;
+                    mu8_temporary_one = 0x7F;
+                }
+                else
+                {
+                    mu8_temporary_hundred = 0x00;
+                    mu8_temporary_ten = 0x00;
+                    mu8_temporary_one = 0x00;
+                }
+            }
+
+            fnd_left_out( DIRECT_DISPLAY, mu8_temporary_hundred, mu8_temporary_ten, mu8_temporary_one);
+        }
+    }
+
 }
 
 /***********************************************************************************************************************
@@ -1274,7 +1479,40 @@ void fnd_left_pba_test(void)
 ***********************************************************************************************************************/
 void fnd_left_uart_test(void)
 {
-    
+    U8 mu8_temporary_hundred = 0;
+    U8 mu8_temporary_ten = 0;
+    U8 mu8_temporary_one = 0;
+    U8 mu8_flick_state = 0;
+
+    if( gu8_uart_test_mode == NOT_INCLUDE_FRONT_UART_TEST )
+    {
+        mu8_temporary_hundred = (U8)((gu8_Flow_1sec / 100) % 10);
+        mu8_temporary_ten = (U8)((gu8_Flow_1sec / 10) % 10);
+        mu8_temporary_one = (U8)(gu8_Flow_1sec % 10);
+    }
+    else
+    {
+        if( gu8_factory_test_step == 1 )
+        {
+            mu8_temporary_hundred = DISPLAY_NUM_SMALL_t;
+            mu8_temporary_ten = DISPLAY_NUM_LARGE_E;
+            mu8_temporary_one = DISPLAY_NUM_1;
+        }
+        else if( gu8_factory_test_step == 2 )
+        {
+            mu8_temporary_hundred = DISPLAY_NUM_SMALL_t;
+            mu8_temporary_ten = DISPLAY_NUM_LARGE_E;
+            mu8_temporary_one = DISPLAY_NUM_2;
+        }
+        else
+        {
+            mu8_temporary_hundred = DISPLAY_OFF;
+            mu8_temporary_ten = DISPLAY_OFF;
+            mu8_temporary_one = DISPLAY_OFF;
+        }
+    }
+
+    fnd_left_out( FIXED_DISPLAY, mu8_temporary_hundred, mu8_temporary_ten, mu8_temporary_one);
 }
 
 /***********************************************************************************************************************
@@ -1336,7 +1574,7 @@ void update_cold_temp(void)
 
 ////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////
-    mu16_time = 100;        // ï¿½Ã¼ï¿½ï¿½Âµï¿½ Ç¥ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ : 10ï¿½ï¿½
+    mu16_time = 100;        // ³Ã¼ö¿Âµµ Ç¥½Ã °»½Å ½Ã°£ : 10ÃÊ
 
     gu16_cold_temp_update_timer++;
 
@@ -1349,21 +1587,21 @@ void update_cold_temp(void)
         {
             if( gu8_Celcius_temp > COLD_COMPLETE_DISPLAY_TEMPERATURE )
             {
-                gu8_Celcius_temp = (gu8_Celcius_temp - 1);        // ï¿½Ã°ï¿½ ï¿½Ï·ï¿½ ï¿½ï¿½ Ç¥ï¿½Ã¿Âµï¿½ï¿½ï¿½ 5ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 10ï¿½Ê¸ï¿½ï¿½ï¿½ 1ï¿½ï¿½ï¿½ï¿½ Ç¥ï¿½Ã¸ï¿½ ï¿½ï¿½ï¿½ï¿½
+                gu8_Celcius_temp = (gu8_Celcius_temp - 1);        // ³Ã°¢ ¿Ï·á ½Ã Ç¥½Ã¿Âµµ°¡ 5µµº¸´Ù ³ôÀ¸¸é 10ÃÊ¸¶´Ù 1µµ¾¿ Ç¥½Ã¸¦ ³·Ãã
             }
             else
             {
-                if( gu8_Cold_Temperature_One_Degree > gu8_Celcius_temp )    // ï¿½Ã¼ï¿½ï¿½Âµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ç¥ï¿½Ã°ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ (ï¿½Âµï¿½ï¿½ï¿½ ï¿½Ã¶ï¿½ ï¿½ï¿½, 10ï¿½Ê¸ï¿½ï¿½ï¿½ 1ï¿½ï¿½ï¿½ï¿½ ï¿½Ã¸ï¿½)
+                if( gu8_Cold_Temperature_One_Degree > gu8_Celcius_temp )    // ³Ã¼ö¿Âµµ ½ÇÃø°ªÀÌ Ç¥½Ã°ªº¸´Ù ³ôÀ» ¶§ (¿Âµµ°¡ ¿Ã¶ó°¥ ¶§, 10ÃÊ¸¶´Ù 1µµ¾¿ ¿Ã¸²)
                 {
                     gu8_Celcius_temp = (gu8_Celcius_temp + 1);
-                    
+
                     if( gu8_Celcius_temp >= COLD_COMPLETE_DISPLAY_TEMPERATURE )
                     {
                         gu8_Celcius_temp = COLD_COMPLETE_DISPLAY_TEMPERATURE;
                     }
                     else{}
                 }
-                else if( gu8_Cold_Temperature_One_Degree < gu8_Celcius_temp )   // Ç¥ï¿½Ã°ï¿½ï¿½ï¿½ ï¿½Ã¼ï¿½ï¿½Âµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ (ï¿½Âµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½, 10ï¿½Ê¸ï¿½ï¿½ï¿½ 1ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
+                else if( gu8_Cold_Temperature_One_Degree < gu8_Celcius_temp )   // Ç¥½Ã°ªÀÌ ³Ã¼ö¿Âµµ ½ÇÃø°ªº¸´Ù ³ôÀ» ¶§ (¿Âµµ°¡ ³»·Á°¬À» ¶§, 10ÃÊ¸¶´Ù 1µµ¾¿ ³»¸²)
                 {
                     gu8_Celcius_temp = (gu8_Celcius_temp - 1);
 
@@ -1377,17 +1615,17 @@ void update_cold_temp(void)
         }
         else
         {
-            if( gu8_Cold_Temperature_One_Degree > gu8_Celcius_temp )        // ï¿½Ã¼ï¿½ï¿½Âµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ç¥ï¿½Ã°ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ (ï¿½Âµï¿½ï¿½ï¿½ ï¿½Ã¶ï¿½ ï¿½ï¿½, 10ï¿½Ê¸ï¿½ï¿½ï¿½ 1ï¿½ï¿½ï¿½ï¿½ ï¿½Ã¸ï¿½)
+            if( gu8_Cold_Temperature_One_Degree > gu8_Celcius_temp )        // ³Ã¼ö¿Âµµ ½ÇÃø°ªÀÌ Ç¥½Ã°ªº¸´Ù ³ôÀ» ¶§ (¿Âµµ°¡ ¿Ã¶ó°¥ ¶§, 10ÃÊ¸¶´Ù 1µµ¾¿ ¿Ã¸²)
             {
                 gu8_Celcius_temp = (gu8_Celcius_temp + 1);
-                
+
                 if( gu8_Celcius_temp >= gu8_Cold_Temperature_One_Degree )
                 {
                     gu8_Celcius_temp = gu8_Cold_Temperature_One_Degree;
                 }
                 else{}
             }
-            else if(gu8_Cold_Temperature_One_Degree < gu8_Celcius_temp )    // Ç¥ï¿½Ã°ï¿½ï¿½ï¿½ ï¿½Ã¼ï¿½ï¿½Âµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ (ï¿½Âµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½, 10ï¿½Ê¸ï¿½ï¿½ï¿½ 1ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
+            else if(gu8_Cold_Temperature_One_Degree < gu8_Celcius_temp )    // Ç¥½Ã°ªÀÌ ³Ã¼ö¿Âµµ ½ÇÃø°ªº¸´Ù ³ôÀ» ¶§ (¿Âµµ°¡ ³»·Á°¬À» ¶§, 10ÃÊ¸¶´Ù 1µµ¾¿ ³»¸²)
             {
                 gu8_Celcius_temp = (gu8_Celcius_temp - 1);
 
@@ -1398,11 +1636,11 @@ void update_cold_temp(void)
                 else{}
             }
             else {}
-        }       
+        }
     }
     else{}
 
-    /*..hui [25-6-10ï¿½ï¿½ï¿½ï¿½ 2:59:35] ï¿½ï¿½ï¿½ï¿½ ï¿½Ã¼ï¿½ï¿½Âµï¿½ 2ï¿½ï¿½ ~ 30ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½..*/
+    /*..hui [25-6-10¿ÀÈÄ 2:59:35] ÇöÀç ³Ã¼ö¿Âµµ 2µµ ~ 30µµ Á¦ÇÑ..*/
     if( gu8_Celcius_temp <= 2 )
     {
         gu8_Celcius_temp = 2;
@@ -1413,5 +1651,3 @@ void update_cold_temp(void)
     }
     else{}
 }
-
-

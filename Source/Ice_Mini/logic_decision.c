@@ -296,6 +296,27 @@ void water_select_return_decision(void)
                 /*..hui [19-8-22오후 2:14:09] 순간온수이므로 온수OFF일때 조건 삭제..*/
                 gu16_water_select_return_time = 0;
 
+                #if 0
+                if(u8WaterOutState == HOT_WATER_SELECT)
+                {
+                    /*..hui [18-1-10오전 10:19:07] 온수모드 OFF 상태에서 온수 선택하고 추출하면 추출 종료하고 바로 이전 상태로 복귀..*/
+                    if(F_Hot_Enable != SET)
+                    {
+                        gu16_water_select_return_time = 69;
+                    }
+                    else
+                    {
+                        /*..hui [18-1-10오전 10:23:58] 온수모드 ON 상태이면 시간 초기화..*/
+                        gu16_water_select_return_time = 0;
+                    }
+                }
+                else
+                {
+                    /*..hui [18-1-10오전 10:24:13] 정수 모드이면 시간 초기화..*/
+                    /*..hui [18-1-10오전 10:24:38] 정수 선택 상태면 들어올일 없긴하지만.....*/
+                    gu16_water_select_return_time = 0;
+                }
+                #endif
             }
         }
         else
@@ -696,7 +717,5 @@ void instruction_mode_timeout_check(void)
 * Function Name: System_ini
 * Description  :
 ***********************************************************************************************************************/
-
-
 
 

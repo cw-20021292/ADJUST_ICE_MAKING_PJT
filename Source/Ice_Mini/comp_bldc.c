@@ -90,10 +90,12 @@ void bldc_rx_communication(void)
             bit_bldc_tx_request = SET;
             receive_bldc_data( gu8_bldc_rx_buffer );
 
-            /*..hui [23-7-4ï¿½ï¿½ï¿½ï¿½ 10:42:52] ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ¹ï¿½ï¿½Ì¶ï¿½ ï¿½Â°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ä«ï¿½ï¿½Æ® ï¿½Ê±ï¿½È­..*/
+            /*..hui [23-7-4¿ÀÀü 10:42:52] µ¥ÀÌÅÍ ÇÑ¹øÀÌ¶óµµ ¸Â°Ô µé¾î¿À¸é Ä«¿îÆ® ÃÊ±âÈ­..*/
             gu8_comm_error_retry_count = 0;
 
-            /*..hui [24-11-25ï¿½ï¿½ï¿½ï¿½ 10:03:01] Ã¼Å©ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­..*/
+            bit_bldc_rx_pba_test_ok = SET;
+
+            /*..hui [24-11-25¿ÀÀü 10:03:01] Ã¼Å©¼¶±îÁö Á¤»óÀûÀÎ µ¥ÀÌÅÍ µé¾î¿ÔÀ»¶§¸¸ ÃÊ±âÈ­..*/
             /*gu16_bldc_comm_error_timer = 0;*/
         }
         else
@@ -118,12 +120,19 @@ void bldc_rx_communication(void)
                 gu8_comm_error_retry_count++;
 
                 /*if( gu8_comm_error_retry_count >= 3 )*/
-                /*..hui [24-11-18ï¿½ï¿½ï¿½ï¿½ 1:27:11] ï¿½ï¿½Å¿ï¿½ï¿½ï¿½ ï¿½ï¿½Ãµï¿½ È½ï¿½ï¿½ 10È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½..*/
+                /*..hui [24-11-18¿ÀÈÄ 1:27:11] Åë½Å¿¡·¯ Àç½Ãµµ È½¼ö 10È¸·Î º¯°æ..*/
                 if( gu8_comm_error_retry_count >= 10 )
                 {
                     Bit7_BLDC_Communication_Error__E27 = SET;
                 }
                 else{}
+            }
+            else{}
+
+            /*..hui [24-12-2¿ÀÀü 10:55:43] °øÀå ¶óÀÎ °Ë»ç½Ã¿¡´Â 30ÃÊµ¿¾È Åë½Å ¾ÈµÇ¸é ¹Ù·Î ¿¡·¯..*/
+            if( u8FactoryTestMode > 0 )
+            {
+                gu8_uart_bldc_comm_error = SET;
             }
             else{}
         }
@@ -142,7 +151,7 @@ void receive_bldc_data(U8 *mu8_rx_data)
     gu8_bldc_opration_hz = mu8_rx_data[BLDC_RX_DATA_OPERATION_FREQUENCY];
     //gu8_bldc_temperature = mu8_rx_data[BLDC_RX_DATA_TEMPERATURE];
 
-    /*..hui [24-1-11ï¿½ï¿½ï¿½ï¿½ 2:09:24] COMP ï¿½Ñ°ï¿½ 1ï¿½ï¿½ ï¿½Äºï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ë»ï¿½.. ï¿½ï¿½ï¿½Î½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ç¼­..*/
+    /*..hui [24-1-11¿ÀÈÄ 2:09:24] COMP ÄÑ°í 1ºÐ ÈÄºÎÅÍ ¿¡·¯ °Ë»ç.. ÃÖÀÎ½Ä Á¦¾î»ç¾ç¼­..*/
     if( gu16_comp_error_check_timer >= 600 )
     {
         if( gu8_bldc_error_code > 0 )
@@ -232,7 +241,7 @@ void receive_bldc_data(U8 *mu8_rx_data)
                     }
                     else
                     {
-                        /*..hui [24-11-18ï¿½ï¿½ï¿½ï¿½ 5:01:26] ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½×³ï¿½ E85 ï¿½ï¿½Å¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â°É·ï¿½.....*/
+                        /*..hui [24-11-18¿ÀÈÄ 5:01:26] ¸¸¾à ±× ¿ÜÀÇ ¿¡·¯°¡ µé¾î¿À¸é ±×³É E85 Åë½Å¿¡·¯ ¶ç¿ì´Â°É·Î.....*/
                         gu8_bldc_self_error_e85_samsung_e6_retry_count++;
 
                         if( gu8_bldc_self_error_e85_samsung_e6_retry_count >= BLDC_COMP_ERROR_RETRY_COUNT )
@@ -245,6 +254,20 @@ void receive_bldc_data(U8 *mu8_rx_data)
                     }
 
 
+                    #if 0
+                    gu8_bldc_self_error_e81_samsung_e2_retry_count++;
+
+                    /*if( gu8_bldc_self_error_e81_samsung_e2_retry_count >= 3 )*/
+                    /*..hui [24-1-11¿ÀÈÄ 2:46:10] 5È¸·Î º¯°æ.. ÇÔÀçÁø ÄÚ¾îÇÃ·¯½º »ç¾ç..*/
+                    /*if( gu8_bldc_self_error_e81_samsung_e2_retry_count >= 5 )*/
+                    /*..hui [24-11-18¿ÀÈÄ 1:27:37] Àç½Ãµµ È½¼ö 10È¸·Î º¯°æ..*/
+                    if( gu8_bldc_self_error_e81_samsung_e2_retry_count >= 10 )
+                    {
+                        bit_bldc_operation_error_total = SET;
+                        gu8_memento_e29_detail_code = gu8_bldc_error_code;
+                    }
+                    else{}
+                    #endif
                 }
                 else{}
             }
@@ -256,16 +279,16 @@ void receive_bldc_data(U8 *mu8_rx_data)
 
             gu16_bldc_self_release_count++;
 
-            /*..hui [23-7-4ï¿½ï¿½ï¿½ï¿½ 11:11:02] ï¿½ï¿½ï¿½ï¿½ 10ï¿½ï¿½ ï¿½Ì»ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Úµï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­..*/
+            /*..hui [23-7-4¿ÀÀü 11:11:02] ¿¬¼Ó 10¹ø ÀÌ»ó ¿¡·¯ÄÚµå ¾øÀ½ ¹Þ¾ÒÀ»¶§¸¸ ÃÊ±âÈ­..*/
             /*if( gu16_bldc_self_release_count >= 10 )*/
-            /*..hui [24-1-11ï¿½ï¿½ï¿½ï¿½ 2:55:16] ï¿½Î¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ì¹ï¿½ ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ ï¿½ï¿½ï¿½ï¿½..*/
-            /*..hui [24-1-11ï¿½ï¿½ï¿½ï¿½ 2:55:32] 1ï¿½ï¿½ + 2ï¿½ï¿½ ï¿½ï¿½ 3ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.. ï¿½Ö´ï¿½ï¿½ï¿½ ï¿½Ë³ï¿½ï¿½Ï°ï¿½..*/
+            /*..hui [24-1-11¿ÀÈÄ 2:55:16] ÀÎ¹öÅÍ µå¶óÀÌ¹ö ÀÚÃ¼ ¿¡·¯ °¨Áö ½Ã°£ °í·Á..*/
+            /*..hui [24-1-11¿ÀÈÄ 2:55:32] 1ºÐ + 2ºÐ ÃÑ 3ºÐÀ¸·Î º¯°æ.. ÃÖ´ëÇÑ ³Ë³ËÇÏ°Ô..*/
             /*if( gu16_bldc_self_release_count >= 60 )*/
             if( gu16_bldc_self_release_count >= 300 )
             {
                 gu16_bldc_self_release_count = 0;
-                /*..hui [23-7-4ï¿½ï¿½ï¿½ï¿½ 11:04:40] ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Å½ï¿½ ï¿½ï¿½Ãµï¿½ È½ï¿½ï¿½ ï¿½Ê±ï¿½È­..*/
-                /*..hui [24-11-18ï¿½ï¿½ï¿½ï¿½ 5:03:28] ï¿½Ð¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­..*/
+                /*..hui [23-7-4¿ÀÀü 11:04:40] ¿¡·¯ ¾øÀ½ Á¤»ó ¼ö½Å½Ã Àç½Ãµµ È½¼ö ÃÊ±âÈ­..*/
+                /*..hui [24-11-18¿ÀÈÄ 5:03:28] ºÐ¸®µÈ ¿¡·¯µé È½¼ö ÀüºÎ ÃÊ±âÈ­..*/
                 gu8_bldc_self_error_e81_samsung_e2_retry_count = 0;
                 gu8_bldc_self_error_e82_samsung_e1_retry_count = 0;
                 gu8_bldc_self_error_e83_samsung_e3_retry_count = 0;
@@ -307,6 +330,38 @@ void Uart_ISR2_Bldc_Comp_Rx(void)
         gu8_bldc_rx_receive_cnt = 0;
     }
 
+    #if 0
+    if( u8FactoryTestMode == PCB_TEST_MODE )
+    {
+        if( gu8_bldc_rx_pba_test_cnt == 0 )
+        {
+            if( mu8_rx_buffer == 0x77 )
+            {
+                gu8_bldc_rx_pba_test_cnt = 1;
+            }
+            else
+            {
+                gu8_bldc_rx_pba_test_cnt = 0;
+            }
+        }
+        else if( gu8_bldc_rx_pba_test_cnt == 1 )
+        {
+            if( mu8_rx_buffer == 0x22 )
+            {
+                bit_bldc_rx_pba_test_ok = SET;
+            }
+            else
+            {
+                gu8_bldc_rx_pba_test_cnt = 0;
+            }
+        }
+        else
+        {
+            gu8_bldc_rx_pba_test_cnt = 0;
+        }
+    }
+    else{}
+    #endif
 }
 
 
@@ -348,7 +403,7 @@ void bldc_transmit_error_check(void)
             bit_bldc_tx_request = SET;
             R_UART2_Start();
 
-            /*..hui [24-11-25ï¿½ï¿½ï¿½ï¿½ 11:23:22] RX ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­ ï¿½ß°ï¿½..*/
+            /*..hui [24-11-25¿ÀÀü 11:23:22] RX ¹öÆÛ ÃÊ±âÈ­ Ãß°¡..*/
             gu8_bldc_rx_receive_cnt = 0;
         }
         else{}
@@ -475,7 +530,7 @@ void bldc_comm_error_check(void)
 {
     gu16_comp_error_check_timer++;
 
-    /*..hui [24-1-11ï¿½ï¿½ï¿½ï¿½ 2:09:24] COMP ï¿½Ñ°ï¿½ 1ï¿½ï¿½ ï¿½Äºï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ë»ï¿½.. ï¿½ï¿½ï¿½Î½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ç¼­..*/
+    /*..hui [24-1-11¿ÀÈÄ 2:09:24] COMP ÄÑ°í 1ºÐ ÈÄºÎÅÍ ¿¡·¯ °Ë»ç.. ÃÖÀÎ½Ä Á¦¾î»ç¾ç¼­..*/
     if( gu16_comp_error_check_timer >= 600 )
     {
         gu16_comp_error_check_timer = 600;
@@ -487,7 +542,5 @@ void bldc_comm_error_check(void)
 * Function Name: System_ini
 * Description  :
 ***********************************************************************************************************************/
-
-
 
 

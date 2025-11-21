@@ -141,6 +141,119 @@ void get_wifi_info_data(void)
     /*..hui [21-3-12오후 2:51:29] 케이웨더 서버 고장시에는 이전 값 표시 유지..*/
     /*if( mu8_data != 0xff )*/
 
+    #if 0
+    /*..hui [21-3-24오후 3:33:20] AQI 값으로 필터링..*/
+    if( mu8_aqi != 99 )
+    {
+        /*..hui [24-6-27오후 1:33:46] 현재온도..*/
+        mu8_data = (U8)GetWifiRequestValue( WIFI_RQST_CURRENT_TEMP );
+
+        /*..hui [21-3-24오후 3:33:25] 온도값으로 한번 더 필터링..*/
+        if( mu8_data != 99 )
+        {
+            gu8_unsigned_wifi_current_temperature = mu8_data;
+
+            if( gu8_unsigned_wifi_current_temperature >= 128 )
+            {
+                if( gu8_unsigned_wifi_current_temperature <= MIN_TEMPATURE )
+                {
+                    gu8_wifi_current_temperature = MIN_TEMPATURE;
+                }
+                else
+                {
+                    gu8_wifi_current_temperature = gu8_unsigned_wifi_current_temperature;
+                }
+            }
+            else
+            {
+                if( gu8_unsigned_wifi_current_temperature >= MAX_TEMPERATURE )
+                {
+                    gu8_wifi_current_temperature = MAX_TEMPERATURE;
+                }
+                else
+                {
+                    gu8_wifi_current_temperature = gu8_unsigned_wifi_current_temperature;
+                }
+            }
+        }
+        else{}
+    }
+    else{}
+
+    if( mu8_aqi != 99 )
+    {
+        /*..hui [24-6-27오후 1:33:50] 최저온도..*/
+        mu8_data = (U8)GetWifiRequestValue( WIFI_RQST_LOW_TEMP );
+
+        /*..hui [21-3-24오후 3:33:25] 온도값으로 한번 더 필터링..*/
+        if( mu8_data != 99 )
+        {
+            gu8_unsigned_wifi_low_temperature = mu8_data;
+
+            if( gu8_unsigned_wifi_low_temperature >= 128 )
+            {
+                if( gu8_unsigned_wifi_low_temperature <= MIN_TEMPATURE )
+                {
+                    gu8_wifi_low_temperature = MIN_TEMPATURE;
+                }
+                else
+                {
+                    gu8_wifi_low_temperature = gu8_unsigned_wifi_low_temperature;
+                }
+            }
+            else
+            {
+                if( gu8_unsigned_wifi_low_temperature >= MAX_TEMPERATURE )
+                {
+                    gu8_wifi_low_temperature = MAX_TEMPERATURE;
+                }
+                else
+                {
+                    gu8_wifi_low_temperature = gu8_unsigned_wifi_low_temperature;
+                }
+            }
+        }
+        else{}
+    }
+    else{}
+
+    if( mu8_aqi != 99 )
+    {
+        /*..hui [24-6-27오후 1:33:55] 최고온도..*/
+        mu8_data = (U8)GetWifiRequestValue( WIFI_RQST_HIGH_TEMP );
+
+        /*..hui [21-3-24오후 3:33:25] 온도값으로 한번 더 필터링..*/
+        if( mu8_data != 99 )
+        {
+            gu8_unsigned_wifi_high_temperature = mu8_data;
+
+            if( gu8_unsigned_wifi_high_temperature >= 128 )
+            {
+                if( gu8_unsigned_wifi_high_temperature <= MIN_TEMPATURE )
+                {
+                    gu8_wifi_high_temperature = MIN_TEMPATURE;
+                }
+                else
+                {
+                    gu8_wifi_high_temperature = gu8_unsigned_wifi_high_temperature;
+                }
+            }
+            else
+            {
+                if( gu8_unsigned_wifi_high_temperature >= MAX_TEMPERATURE )
+                {
+                    gu8_wifi_high_temperature = MAX_TEMPERATURE;
+                }
+                else
+                {
+                    gu8_wifi_high_temperature = gu8_unsigned_wifi_high_temperature;
+                }
+            }
+        }
+        else{}
+    }
+    else{}
+    #endif
 }
 
 
@@ -355,6 +468,84 @@ U8 change_error_number( U8 mu8_error )
 * Function Name: System_ini
 * Description  :
 ***********************************************************************************************************************/
+#if 0
+void get_wifi_filter_period(void)
+{
+    U16 mu16_data = 0;
+    U8 mu8_final = 0;
+
+    /*..hui [21-3-9오후 1:01:08] 연결됐을때만..*/
+    if( gu8_Wifi_Connect_State != WIFI_CONNECT )
+    {
+        return;
+    }
+    else{}
+
+    mu16_data = GetWifiRequestValue(WIFI_RQST_FILTER_CHANGE_CYCLE);
+    /*mu16_data = gu16_test_cycle;*/
+
+    if( mu16_data >= WIFI_FILTER_CHANGE_CYCLE_MIN && mu16_data <= WIFI_FILTER_CHANGE_CYCLE_MAX )
+    {
+        //gu8_wifi_filter_cycle_percent = (U8)mu16_data;
+        if( gu8_wifi_filter_cycle_percent != (U8)mu16_data )
+        {
+            gu8_wifi_filter_cycle_percent = (U8)mu16_data;
+            change_filter_period();
+
+            bit_filter_cycle_change = SET;
+        }
+        else{}
+    }
+    else{}
+
+
+}
+
+/***********************************************************************************************************************
+* Function Name: System_ini
+* Description  :
+***********************************************************************************************************************/
+void change_filter_period(void)
+{
+    F32 mf32_month = 0;
+    F32 mf32_day = 0;
+    U16 mu16_a = 0;
+    U16 mu16_final = 0;
+
+    if( gu8_wifi_filter_cycle_percent < WIFI_FILTER_CHANGE_CYCLE_MIN || gu8_wifi_filter_cycle_percent > WIFI_FILTER_CHANGE_CYCLE_MAX )
+    {
+        gu16_define_filter_period__neo = FILTER_RESET_DEFAULT_12_MONTH_456_DAY_HOUR__NEO;
+        gu16_define_filter_period__ro = FILTER_RESET_DEFAULT_24_MONTH_912_DAY_HOUR__RO;
+        gu16_define_filter_period__ino = FILTER_RESET_DEFAULT_12_MONTH_456_DAY_HOUR__INO;
+    }
+    else{}
+
+    mf32_month = ((F32)(FILTER_RESET_DEFAULT_MONTH__NEO * (F32)gu8_wifi_filter_cycle_percent) / (F32)100);
+    mu16_a = get_round( mf32_month );
+
+    /*..hui [24-2-15오후 5:24:35] 일수로 변환..*/
+    mf32_day = (F32)mu16_a * 30.4f;
+    mf32_day = mf32_day * 24;
+    mu16_final = get_round( mf32_day );
+
+    // gu16_define_filter_period__neo = mu16_final * 24;
+    gu16_define_filter_period__neo = mu16_final;
+    // gu16_define_filter_period__ino = mu16_final * 24;
+    gu16_define_filter_period__ino = mu16_final;
+
+    mf32_month = ((F32)(FILTER_RESET_DEFAULT_MONTH__RO * (F32)gu8_wifi_filter_cycle_percent) / (F32)100);
+    mu16_a = get_round( mf32_month );
+
+    /*..hui [24-2-15오후 5:24:35] 일수로 변환..*/
+    mf32_day = (F32)mu16_a * 30.4f;
+    mf32_day = mf32_day * 24;
+    mu16_final = get_round( mf32_day );
+
+    // gu16_define_filter_period__ro = mu16_final * 24;
+    gu16_define_filter_period__ro = mu16_final;
+
+}
+#endif
 /***********************************************************************************************************************
 * Function Name: System_ini
 * Description  :
@@ -421,6 +612,115 @@ void get_smart_image(void)
     }
 
 
+    #if 0
+    /*..hui [21-3-8오후 6:59:16] 와이파이 연결 안됐으면 와이파이 연결 권고 이미지..*/
+    if( gu8_Wifi_Connect_State == WIFI_OFF )
+    {
+        gu8_smart_image = SMART_IMAGE_SUNNY;
+        return;
+    }
+    else if( gu8_Wifi_Connect_State == WIFI_DISCONNECT )
+    {
+        gu8_smart_image = SMART_IMAGE_SUNNY;
+        return;
+    }
+    else{}
+
+    mu8_day = decision_day_or_night();
+
+    switch ( gu8_wifi_weather )
+    {
+        case WEATHER_SUNNY:
+
+            if( mu8_day == SMART_DAY )
+            {
+                /*..hui [21-3-8오후 6:55:48] 맑음(대체로 맑음)..*/
+                /*..hui [24-8-19오후 1:50:13] 낮..*/
+                gu8_smart_image = SMART_IMAGE_SUNNY;
+            }
+            else
+            {
+                /*..hui [24-8-19오후 1:50:32] 밤..*/
+                gu8_smart_image = SMART_IMAGE_SUNNY_NIGHT;
+            }
+
+        break;
+
+        case WEATHER_BIT_CLOUD:
+        case WEATHER_LOTS_CLOUD:
+        case WEATHER_CLOUDY:
+
+            /*..hui [21-3-8오후 6:56:00] 구름조금/구름많이/흐림..*/
+            gu8_smart_image = SMART_ICON_CLOUDY;
+
+        break;
+
+        case WEATHER_CLOUDY_AND_RAINY:
+
+            /*..hui [21-3-8오후 6:56:05] 흐리고비..*/
+            gu8_smart_image = SMART_ICON_RAINY;
+
+        break;
+
+        case WEATHER_CLOUDY_AND_SNOWY:
+
+            /*..hui [21-3-8오후 6:56:26] 흐리고 눈..*/
+            gu8_smart_image = SMART_IMAGE_SNOWY;
+
+        break;
+
+        case WEATHER_SUNNY_AFTER_RAINY:
+
+            if( mu8_day == SMART_DAY )
+            {
+                /*..hui [21-3-8오후 6:56:55] 비온 후 갬..*/
+                /*..hui [24-8-19오후 1:51:00] 흐린뒤맑음 낮..*/
+                gu8_smart_image = SMART_IMAGE_SUNNY_AFTER_RAINY;
+            }
+            else
+            {
+                /*..hui [24-8-19오후 1:51:40] 흐린뒤맑음 밤..*/
+                gu8_smart_image = SMART_IMAGE_SUNNY_AFTER_RAINY_NIGHT;
+            }
+
+        break;
+
+        case WEATHER_SHOWER:
+
+            /*..hui [21-3-8오후 6:56:15] 소나기..*/
+            gu8_smart_image = SMART_IMAGE_SHOWER;
+
+        break;
+
+        case WEATHER_RAINY_OR_SNOWY:
+        case WEATHER_SNOWY_OR_RAINY:
+
+            /*..hui [21-3-8오후 6:56:36] 비 또는 눈/눈 또는 비..*/
+            gu8_smart_image = SMART_IMAGE_RAINY_OR_SNOWY;
+
+        break;
+
+        case WEATHER_THUNDER:
+
+            /*..hui [21-3-8오후 6:56:45] 천둥번개..*/
+            gu8_smart_image = SMART_IMAGE_THUNDER;
+
+        break;
+
+        case WEATHER_FOG:
+
+            /*..hui [21-3-8오후 6:56:18] 안개..*/
+            gu8_smart_image = SMART_IMAGE_FOG;
+
+        break;
+
+        default:
+
+            gu8_wifi_weather = WEATHER_SUNNY;
+
+        break;
+    }
+    #endif
 }
 
 /***********************************************************************************************************************
@@ -468,7 +768,5 @@ void get_server_connect(void)
 * Function Name: System_ini
 * Description  :
 ***********************************************************************************************************************/
-
-
 
 

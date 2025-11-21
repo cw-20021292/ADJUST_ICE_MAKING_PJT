@@ -124,6 +124,16 @@ void get_peridoci_test_time(void)
 {
     if( gu8_Wifi_Connect_State == WIFI_CONNECT )
     {
+        #if 0
+        gu32_info_update_timer++;
+
+        if( gu32_info_update_timer >= SELF_TEST_UPDATE_TIME_24HOUR )
+        {
+            gu32_info_update_timer = 0;
+            gu16_periodic_update_time = GetWifiRequestValue(WIFI_RQST_PART_PERIOD);
+        }
+        else{}
+        #endif
 
         gu16_periodic_update_time = GetWifiRequestValue(WIFI_RQST_PART_PERIOD);
     }
@@ -180,6 +190,50 @@ void init_self_test_auto(void)
 * Function Name: System_ini
 * Description  :
 ***********************************************************************************************************************/
+#if 0
+void initial_no_test_data(void)
+{
+    initial_each_self_data( DC_LOAD_1__FEED_VALVE );
+    initial_each_self_data( DC_LOAD_2__NOS_VALVE );
+    initial_each_self_data( DC_LOAD_3__HOT_OUT_VALVE );
+    initial_each_self_data( DC_LOAD_4__PURE_OUT_VALVE );
+    initial_each_self_data( DC_LOAD_5__COLD_OUT_VALVE );
+    initial_each_self_data( DC_LOAD_6__HOT_IN_VALVE );
+    initial_each_self_data( DC_LOAD_7__AIR_FEED_VALVE );
+    initial_each_self_data( DC_LOAD_8__COLD_DRAIN_VALVE );
+    initial_each_self_data( DC_LOAD_9__ICE_TRAY_IN_VALVE );
+    initial_each_self_data( DC_LOAD_10__FLUSHING_FEED );
+    initial_each_self_data( DC_LOAD_11__RO_FLUSHING_MOTOR );
+
+    /*initial_each_self_data( DC_LOAD_COLD_FAN );*/
+    initial_each_self_data( DC_LOAD_12__HOT_OVERHEAT_VALVE );
+
+    initial_each_self_data( DC_LOAD_13__HOT_STER_LEFT_VALVE );
+    initial_each_self_data( DC_LOAD_14__HOT_STER_RIGHT_VALVE );
+
+    initial_each_self_data( DC_LOAD_15__FLUSHING_NOS_VALVE );
+    initial_each_self_data( DC_LOAD_16__COLD_FAN );
+    initial_each_self_data( SENSOR_17__ICE_TRAY_FLOW_SENSOR );
+
+    /*initial_each_self_data( DC_LOAD_FLOW_SENSOR );*/
+    initial_each_self_data( SENSOR_18__RO_DRAIN_FLOW_SENSOR );
+
+    initial_each_self_data( DC_LOAD_19__UV_ICE_TANK_1_2_BACK );
+    initial_each_self_data( DC_LOAD_20__UV_ICE_TRAY_1_2 );
+    initial_each_self_data( DC_LOAD_21__UV_COLD_TANK_1_2 );
+    initial_each_self_data( DC_LOAD_22__UV_ICE_TANK_3_FRONT );
+
+    initial_each_self_data( DC_LOAD_23__SWING_BAR );
+
+    initial_each_self_data( DC_LOAD_24__ICE_DOOR_MOTOR );
+    initial_each_self_data( DC_LOAD_25__GAS_SWITCH_MOTOR );
+    initial_each_self_data( DC_LOAD_26__DRAIN_PUMP );
+    initial_each_self_data( DC_LOAD_27__ICE_TRAY_PUMP );
+    initial_each_self_data( DC_LOAD_28__ICE_FULL_SENSOR );
+
+
+}
+#endif
 
 
 /***********************************************************************************************************************
@@ -309,6 +363,4 @@ void init_cold_target(void)
     /*gu16_wifi_hot_target_time_min = SELF_TEST_INITIAL_DATA;*/
 
 }
-
-
 

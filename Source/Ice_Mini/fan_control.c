@@ -58,6 +58,15 @@ void output_fan(void)
 
     if( F_FW_Version_Display_Mode == CLEAR )
     {
+        #if 0
+        /*..hui [24-3-25오후 2:20:03] 외기 33도 이하에서는 FAN 5분 가동 안함..*/
+        /*..hui [24-3-25오후 3:31:18] 전원 켰을때만 확인..*/
+        if( gu8_Amb_Temperature_One_Degree < 34 )
+        {
+            bit_fan_first = SET;
+        }
+        else{}
+        #endif
 
         return;
     }
@@ -153,9 +162,69 @@ void output_fan(void)
         }
     }
 
+    #if 0
+    /*..hui [24-3-25오후 2:20:03] 외기 33도 이하에서는 FAN 5분 가동 안함..*/
+    if( gu8_Amb_Temperature_One_Degree < 34 )
+    {
+        bit_fan_first = SET;
+    }
+    else{}
+    #endif
+
+    #if 0
+    /*..hui [24-3-25오후 2:13:07] 전원 인가 후 5분동안 무조건 동작..*/
+    if( bit_fan_first == CLEAR )
+    {
+        gu16_fan_first_timer++;
+
+        /*..hui [23-7-12오전 11:21:08] 처음 전원켜고 더미탈빙 전 5분동안 FAN 가동 - 경종과장..*/
+        if( gu16_fan_first_timer >= 3000 )
+        {
+            bit_fan_first = SET;
+
+            gu16_fan_first_timer = 0;
+            Bit4_CF_Fan_First_Operation_State = CLEAR;
+        }
+        else
+        {
+            Bit4_CF_Fan_First_Operation_State = SET;
+        }
+    }
+    else
+    {
+        gu16_fan_first_timer = 0;
+        Bit4_CF_Fan_First_Operation_State = CLEAR;
+    }
+    #endif
 
 
+    #if 0
+    /*..hui [23-9-4오후 2:51:07] 트레이 제빙방향 재시도중 해빙작업 핫가스 가동할때 조건..*/
+    if( F_Safety_Routine == SET && F_Ice_Tray_Down_Move_Reset == SET )
+    {
+        if( gu8_over_ice_melt_proc == 5 )
+        {
+            mu8_hot_gas_fan = get_hotgas_fan_operation();
 
+            if( mu8_hot_gas_fan == SET )
+            {
+                Bit3_CF_Tray_Melt_Operation_State = SET;
+            }
+            else
+            {
+                Bit3_CF_Tray_Melt_Operation_State = CLEAR;
+            }
+        }
+        else
+        {
+            Bit3_CF_Tray_Melt_Operation_State = CLEAR;
+        }
+    }
+    else
+    {
+        Bit3_CF_Tray_Melt_Operation_State = CLEAR;
+    }
+    #endif
 
     /*..hui [23-9-22오전 9:54:36] 해빙 동작때 핫가스 삭제..*/
     /*Bit3_CF_Tray_Melt_Operation_State = CLEAR;*/
@@ -224,8 +293,6 @@ U8 get_hotgas_fan_operation(void)
 * Function Name: System_ini
 * Description  :
 ***********************************************************************************************************************/
-
-
 
 
 

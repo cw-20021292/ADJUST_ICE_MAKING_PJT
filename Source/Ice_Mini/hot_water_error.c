@@ -432,7 +432,48 @@ void check_error_hot_low_water(void)
 ***********************************************************************************************************************/
 void check_error_room_overheat(void)
 {
+#if 0
+    if( Bit2_Room_Temp_Open_Short_Error__E42 == SET )
+    {
+        Bit1_Room_OverHeat_Error__E49 = CLEAR;
+        gu8_room_overheat_off_timer = 0;
+        gu8_room_overheat_on_timer = 0;
+        return;
+    }
+    else{}
+
+    if( gu8_Room_Temperature_One_Degree >= ROOM_OVERHEAT_ERROR_TEMP )
+    {
+        gu8_room_overheat_off_timer = 0;
+        gu8_room_overheat_on_timer++;
+
+        if( gu8_room_overheat_on_timer >= ROOM_OVERHEAT_ERROR_CHECK_TIME )
+        {
+            gu8_room_overheat_on_timer = ROOM_OVERHEAT_ERROR_CHECK_TIME;
+            Bit1_Room_OverHeat_Error__E49 = SET;
+        }
+        else{}
+    }
+    else
+    {
+        gu8_room_overheat_on_timer = 0;
+
+        if( gu8_Room_Temperature_One_Degree <= ROOM_OVERHEAT_CLEAR_TEMP )
+        {
+            gu8_room_overheat_off_timer++;
+
+            if( gu8_room_overheat_off_timer >= ROOM_OVERHEAT_ERROR_CHECK_TIME )
+            {
+                gu8_room_overheat_off_timer = ROOM_OVERHEAT_ERROR_CHECK_TIME;
+                Bit1_Room_OverHeat_Error__E49 = CLEAR;
+            }
+            else{}
+        }
+        else
+        {
+            gu8_room_overheat_off_timer = 0;
+        }
+    }
+#endif
 }
-
-
 

@@ -163,6 +163,26 @@ void manual_drain(void)
 
 
 	
+        #if 0
+        gu16_manual_drain_max_timer++;
+
+        /*..hui [23-8-14오전 11:43:15] 수동배수 최대 동작시간은 최대 1시간..*/
+        /*if(gu16_manual_drain_max_timer >= MANUAL_DRAIN_MAX_TIME)*/
+        if(gu16_manual_drain_max_timer >= 6000)
+        {
+            gu16_manual_drain_max_timer = 0;
+            bit_manual_drain_pump_output = CLEAR;
+            bit_manual_drain_valve_output = CLEAR;
+            gu8_before_manual_drain_level = DRAIN_LEVEL_EMPTY;
+            gu16_manual_drain_op_timer = 0;
+            gu16_manual_drain_finish_timer = 0;
+            gu8_manual_drain_no_water_timer = 0;
+        }
+        else
+        {
+            manual_drain_pump_output();
+        }
+		#endif
     }
 }
 
@@ -208,6 +228,25 @@ void manual_drain_pump_output(void)
 			 }
 			 else{}
 
+             #if 0
+             /*..hui [23-8-14오후 2:04:53] 냉수탱크 저수위 미감지 이하에서만 확인하도록..*/
+             if( gu8_Room_Water_Level == ROOM_LEVEL_LOW )
+             {
+                 gu16_manual_drain_finish_timer++;
+
+                 /*..hui [23-8-14오후 1:37:19] x분동안 드레인밸브 열었는데 저수위 이상 감지 안되면 종료..*/
+                 if( gu16_manual_drain_finish_timer >= MANUAL_DRAIN_FINISH_CHECK_TIME )
+                 {
+                     gu16_manual_drain_finish_timer = 0;
+                     gu16_manual_drain_max_timer = MANUAL_DRAIN_MAX_TIME;
+                 }
+                 else{}
+             }
+             else
+             {
+                 gu16_manual_drain_finish_timer = 0;
+             }
+			 #endif
 			 
 
             break;
@@ -309,7 +348,5 @@ void manual_drain_pump_output(void)
 * Function Name: System_ini
 * Description  :
 ***********************************************************************************************************************/
-
-
 
 

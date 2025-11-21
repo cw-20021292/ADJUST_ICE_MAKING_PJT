@@ -33,7 +33,7 @@ void fnd_right_all_off(void);
 U8 gu8_min_setting_blink_timer;
 bit bit_min_blink_500ms;
 
-/* ï¿½Ã°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Blink ï¿½ï¿½ï¿½ï¿½ */
+/* ½Ã°£¼³Á¤¸ðµå °ü·Ã Blink º¯¼ö */
 U8 gu8_volume_setting_blink_timer;
 bit bit_volume_blink_500ms;
 
@@ -183,11 +183,11 @@ void fnd_right_flushing_state(void)
 
 	if( gu8_flushing_mode == FLUSHING_STANDBY_STATE || bit_flushing_halt == SET )
 	{
-        /*..hui [23-6-14ï¿½ï¿½ï¿½ï¿½ 4:30:12] ï¿½Ã·ï¿½ï¿½ï¿½ ï¿½ÈµÇ´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ß»ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È£ Ç¥ï¿½ï¿½..*/
+        /*..hui [23-6-14¿ÀÈÄ 4:30:12] ÇÃ·¯½Ì ¾ÈµÇ´Â ¿¡·¯ ¹ß»ý½Ã ¿¡·¯¹øÈ£ Ç¥½Ã..*/
         if( Bit3_Leakage_Sensor_Error__E01 == SET )
         {
             /*mu8_temporary_hundred = DISPLAY_OFF;*/
-            /*..hui [23-11-24ï¿½ï¿½ï¿½ï¿½ 2:30:48] ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½é¼­ Exxï¿½ï¿½ Ç¥ï¿½ï¿½..*/
+            /*..hui [23-11-24¿ÀÈÄ 2:30:48] ¿¡·¯ ¾ÆÀÌÄÜ ºüÁö¸é¼­ Exx·Î Ç¥½Ã..*/
             mu8_temporary_hundred = DISPLAY_NUM_LARGE_E;
             mu8_temporary_ten = DISPLAY_NUM_0;
             mu8_temporary_one = DISPLAY_NUM_1;
@@ -195,16 +195,16 @@ void fnd_right_flushing_state(void)
         else if( Bit6_Main_Water_Flow_Block_Error__E09 == SET )
         {
             /*mu8_temporary_hundred = DISPLAY_OFF;*/
-            /*..hui [23-11-24ï¿½ï¿½ï¿½ï¿½ 2:30:48] ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½é¼­ Exxï¿½ï¿½ Ç¥ï¿½ï¿½..*/
+            /*..hui [23-11-24¿ÀÈÄ 2:30:48] ¿¡·¯ ¾ÆÀÌÄÜ ºüÁö¸é¼­ Exx·Î Ç¥½Ã..*/
             mu8_temporary_hundred = DISPLAY_NUM_LARGE_E;
             mu8_temporary_ten = DISPLAY_NUM_0;
             mu8_temporary_one = DISPLAY_NUM_9;
         }
         else if( Bit16_Drain_Pump_Error__E60 == SET )
         {
-            /*..hui [23-8-18ï¿½ï¿½ï¿½ï¿½ 3:15:33] ï¿½ï¿½Å© ï¿½Ã·ï¿½ï¿½ï¿½ ï¿½ß°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.. ï¿½å·¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Èµï¿½..*/
+            /*..hui [23-8-18¿ÀÈÄ 3:15:33] ÅÊÅ© ÇÃ·¯½Ì Ãß°¡¶§¹®¿¡.. µå·¹ÀÎÆßÇÁ °íÀåÀÏ °æ¿ì ÁøÇà¾ÈµÊ..*/
             /*mu8_temporary_hundred = DISPLAY_OFF;*/
-            /*..hui [23-11-24ï¿½ï¿½ï¿½ï¿½ 2:30:48] ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½é¼­ Exxï¿½ï¿½ Ç¥ï¿½ï¿½..*/
+            /*..hui [23-11-24¿ÀÈÄ 2:30:48] ¿¡·¯ ¾ÆÀÌÄÜ ºüÁö¸é¼­ Exx·Î Ç¥½Ã..*/
             mu8_temporary_hundred = DISPLAY_NUM_LARGE_E;
             mu8_temporary_ten = DISPLAY_NUM_6;
             mu8_temporary_one = DISPLAY_NUM_0;
@@ -289,7 +289,7 @@ void fnd_right_my_recipe(void)
 	}
 	else if(my_recipe_select == MY_INDEX_MY1)
 	{
-        if(my_setting[MY_INDEX_MY1].amount >= 1000)             /* 1L ï¿½Ì»ï¿½ */
+        if(my_setting[MY_INDEX_MY1].amount >= 1000)             /* 1L ÀÌ»ó */
         {
             mu8_temporary_hundred = (U8)(my_setting[MY_INDEX_MY1].amount / 1000);
             mu8_temporary_ten = (U8)((my_setting[MY_INDEX_MY1].amount % 1000) / 100);
@@ -319,7 +319,7 @@ void fnd_right_my_recipe(void)
 	}
 	else if(my_recipe_select == MY_INDEX_MY2)
 	{
-		if(my_setting[MY_INDEX_MY2].amount >= 1000)             /* 1L ï¿½Ì»ï¿½ */
+		if(my_setting[MY_INDEX_MY2].amount >= 1000)             /* 1L ÀÌ»ó */
         {
             mu8_temporary_hundred = (U8)(my_setting[MY_INDEX_MY2].amount / 1000);
             mu8_temporary_ten = (U8)((my_setting[MY_INDEX_MY2].amount % 1000) / 100);
@@ -349,7 +349,7 @@ void fnd_right_my_recipe(void)
 	}
     else if(my_recipe_select == MY_INDEX_MY3)
 	{
-        if(my_setting[MY_INDEX_MY3].amount >= 1000)             /* 1L ï¿½Ì»ï¿½ */
+        if(my_setting[MY_INDEX_MY3].amount >= 1000)             /* 1L ÀÌ»ó */
         {
             mu8_temporary_hundred = (U8)(my_setting[MY_INDEX_MY3].amount / 1000);
             mu8_temporary_ten = (U8)((my_setting[MY_INDEX_MY3].amount % 1000) / 100);
@@ -479,7 +479,7 @@ void fnd_right_display_ml(void)
             mu8_temporary_one = (U8)(gu32_feeder_screw_ccw_count % 10);
         }
         #else
-        /* ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ë·®Ç¥ï¿½ï¿½ ï¿½ï¿½ï¿½ßµï¿½ */
+        /* ¾óÀ½ ¼±ÅÃ ½Ã ¿ë·®Ç¥½Ã ²¨¾ßµÊ */
         if( u8IceOutState == ICE_SELECT__ICE )
         {
             mu8_temporary_hundred = DISPLAY_OFF;
@@ -759,11 +759,109 @@ void fnd_right_pba_test(void)
 ***********************************************************************************************************************/
 void fnd_right_display_test(void)
 {
+    U8 mu8_temporary_hundred = 0;
+    U8 mu8_temporary_ten = 0;
+    U8 mu8_temporary_one = 0;
+
+    if( bit_display_test_filter_reed_error == SET)
+    {
+        mu8_temporary_hundred = DISPLAY_OFF;
+        mu8_temporary_ten = DISPLAY_OFF;
+        /*mu8_temporary_one = DISPLAY_OFF;*/
+        mu8_temporary_one = gu8_display_reed_test_step;
+
+        fnd_right_out( FIXED_DISPLAY, mu8_temporary_hundred, mu8_temporary_ten, mu8_temporary_one);
+
+    }
+    else
+    {
+        if( gu8_display_test_error != 0 )
+        {
+            mu8_temporary_hundred = DISPLAY_OFF;
+            mu8_temporary_ten = DISPLAY_OFF;
+            mu8_temporary_one = DISPLAY_OFF;
+
+            fnd_right_out( FIXED_DISPLAY, mu8_temporary_hundred, mu8_temporary_ten, mu8_temporary_one);
+            return;
+        }
+        else{}
+
+        if( gu8_uart_setting_all_lock_test_input == 0 )
+        {
+            mu8_temporary_hundred = DISPLAY_NUM_8;
+            mu8_temporary_ten = DISPLAY_NUM_8;
+            mu8_temporary_one = DISPLAY_NUM_8;
+
+            fnd_right_out( FIXED_DISPLAY, mu8_temporary_hundred, mu8_temporary_ten, mu8_temporary_one);
+            gu8_right_fnd_off_timer = 0;
+        }
+        else
+        {
+            gu8_right_fnd_off_timer++;
+
+            if( gu8_right_fnd_off_timer <= 2 )
+            {
+                mu8_temporary_hundred = 0x5F;
+                mu8_temporary_ten = 0x5F;
+                mu8_temporary_one = 0x5F;
+            }
+            else if( gu8_right_fnd_off_timer <= 4 )
+            {
+                mu8_temporary_hundred = 0x5E;
+                mu8_temporary_ten = 0x5E;
+                mu8_temporary_one = 0x5E;
+            }
+            else if( gu8_right_fnd_off_timer <= 6 )
+            {
+                mu8_temporary_hundred = 0x5C;
+                mu8_temporary_ten = 0x5C;
+                mu8_temporary_one = 0x5C;
+            }
+            else if( gu8_right_fnd_off_timer <= 8 )
+            {
+                mu8_temporary_hundred = 0x58;
+                mu8_temporary_ten = 0x58;
+                mu8_temporary_one = 0x58;
+            }
+            else if( gu8_right_fnd_off_timer <= 10 )
+            {
+                mu8_temporary_hundred = 0x50;
+                mu8_temporary_ten = 0x50;
+                mu8_temporary_one = 0x50;
+            }
+            else if( gu8_right_fnd_off_timer <= 12 )
+            {
+                mu8_temporary_hundred = 0x40;
+                mu8_temporary_ten = 0x40;
+                mu8_temporary_one = 0x40;
+            }
+            else
+            {
+                gu8_right_fnd_off_timer = 13;
+
+                if( F_cds_detect == SET && F_Wink_500ms == SET )
+                {
+                    mu8_temporary_hundred = 0x7F;
+                    mu8_temporary_ten = 0x7F;
+                    mu8_temporary_one = 0x7F;
+                }
+                else
+                {
+                    mu8_temporary_hundred = 0x00;
+                    mu8_temporary_ten = 0x00;
+                    mu8_temporary_one = 0x00;
+                }
+
+            }
+
+            fnd_right_out( DIRECT_DISPLAY, mu8_temporary_hundred, mu8_temporary_ten, mu8_temporary_one);
+        }
+    }
 }
 
 /***********************************************************************************************************************/
 /**
- * @brief ï¿½Ò¸ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ fnd Ç¥ï¿½ï¿½
+ * @brief ¼Ò¸®¼³Á¤ ½Ã ¿ìÃø fnd Ç¥½Ã
  */
 void fnd_right_volume_setting(void)
 {
@@ -779,7 +877,7 @@ void fnd_right_volume_setting(void)
     }
     else {  }
 
-    /* ï¿½ï¿½ï¿½îµ¥ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ (ï¿½Ó½ï¿½) */
+    /* °¡¿îµ¥ ¼³Á¤°ª¸¸ Á¡¸ê (ÀÓ½Ã) */
     if(bit_volume_blink_500ms == CLEAR)
     {
         mu8_temporary_hundred = DISPLAY_BAR;
@@ -823,7 +921,7 @@ void    memento_error_code_display(U8 U8_p_ErrorCode)
     U8 mu8_temporary_ten = 0;
     U8 mu8_temporary_one = 0;
 
-    /* COMP ï¿½ï¿½ï¿½ï¿½ */
+    /* COMP ¿¡·¯ */
     if(U8_p_ErrorCode >= 101 && U8_p_ErrorCode <= 108)
     {
         mu8_temporary_hundred = DISPLAY_NUM_LARGE_E;
@@ -970,10 +1068,10 @@ void fnd_right_button_set(void)
             {
                 /*if( F_Mute_Enable == SET )*/
 
-                /*..hui [23-7-26ï¿½ï¿½ï¿½ï¿½ 7:15:45] ï¿½Ò¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â°ï¿½ ONï¿½ï¿½.. UI È®ï¿½Î¹Þ¾ï¿½ï¿½ï¿½.. ï¿½ï¿½ï¿½ï¿½ï¿½Ñ°ï¿½ ï¿½Â¾Ò³ï¿½..*/
+                /*..hui [23-7-26¿ÀÈÄ 7:15:45] ¼Ò¸®°¡ ³ª´Â°Ô ONÀÓ.. UI È®ÀÎ¹Þ¾ÒÀ½.. ³»°¡ÇÑ°Ô ¸Â¾Ò³×..*/
                 if( F_Mute_Enable == CLEAR )
                 {
-                    /*..hui [23-5-12ï¿½ï¿½ï¿½ï¿½ 2:01:32] ï¿½Ò¸ï¿½ OFFï¿½Ì¹Ç·ï¿½ ONÇ¥ï¿½ï¿½..*/
+                    /*..hui [23-5-12¿ÀÈÄ 2:01:32] ¼Ò¸® OFFÀÌ¹Ç·Î ONÇ¥½Ã..*/
                     mu8_temporary_hundred = DISPLAY_NUM_LARGE_O;
                     mu8_temporary_ten = DISPLAY_NUM_SMALL_n;
                     mu8_temporary_one = DISPLAY_OFF;
@@ -1029,7 +1127,7 @@ void fnd_right_button_set(void)
 
             if( mu8_flick_state == SET )
             {
-                /*..hui [24-4-11ï¿½ï¿½ï¿½ï¿½ 7:27:17] ï¿½ï¿½ï¿½ï¿½ï¿½ì¼± ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½..*/
+                /*..hui [24-4-11¿ÀÈÄ 7:27:17] ¾óÀ½¿ì¼± ¿¹Àü »ç¾çÀ¸·Î..*/
                 if( gu8_recover_org_fast_ice == RECOVER_FAST_ICE )
                 {
                     mu8_temporary_hundred = DISPLAY_NUM_LARGE_O;
@@ -1060,7 +1158,7 @@ void fnd_right_button_set(void)
         break;
     }
 
-    // 2025-09-04 CH.PARK [V1.0.0.5] ï¿½Ò¸ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ fnd ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    // 2025-09-04 CH.PARK [V1.0.0.5] ¼Ò¸®¼³Á¤ ½Ã ¿ìÃø fnd ¹à±â Á¦¾î ¹ÌÈí °³¼±
     set_duty_percent( DIMMING__PERCENT_SEG_RIGHT_HUNDRED, right_normal_state_percent );
     set_duty_percent( DIMMING__PERCENT_SEG_RIGHT_TEN, right_normal_state_percent );
     set_duty_percent( DIMMING__PERCENT_SEG_RIGHT_ONE, right_normal_state_percent );

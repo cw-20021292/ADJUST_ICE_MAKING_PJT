@@ -503,6 +503,26 @@ U8 check_error_state(void)
     }
 */
     /*..hui [21-3-12오후 3:12:16] 온수 히터 센서 에러..*/
+#if 0
+    if( Bit1_Room_OverHeat_Error__E49 == SET )
+    {
+        if( Bit1_Err_Old_1 != SET )
+        {
+            Bit1_Err_Old_1 = SET;
+            mu8_return = SET;
+        }
+        else{}
+    }
+    else
+    {
+        if( Bit1_Err_Old_1 == SET )
+        {
+            Bit1_Err_Old_1 = CLEAR;
+            mu8_return = SET;
+        }
+        else{}
+    }
+#endif
     if( Bit2_Room_Temp_Open_Short_Error__E42 == SET )
     {
         if( Bit2_Err_Old_2 != SET )
@@ -540,6 +560,46 @@ U8 check_error_state(void)
         }
         else{}
     }
+#if 0
+    if( Bit4_Room_Low_Water_Level_Error__E21 == SET )
+    {
+        if( Bit4_Err_Old_4 != SET )
+        {
+            Bit4_Err_Old_4 = SET;
+            mu8_return = SET;
+        }
+        else{}
+    }
+    else
+    {
+        if( Bit4_Err_Old_4 == SET )
+        {
+            Bit4_Err_Old_4 = CLEAR;
+            mu8_return = SET;
+        }
+        else{}
+    }
+#endif
+    #if 0
+    if( Bit5_Hot_Heater_OverHeat_Error__E40_Not_Use == SET )
+    {
+        if( Bit5_Err_Old_5 != SET )
+        {
+            Bit5_Err_Old_5 = SET;
+            mu8_return = SET;
+        }
+        else{}
+    }
+    else
+    {
+        if( Bit5_Err_Old_5 == SET )
+        {
+            Bit5_Err_Old_5 = CLEAR;
+            mu8_return = SET;
+        }
+        else{}
+    }
+    #endif
 
     if( Bit6_Main_Water_Flow_Block_Error__E09 == SET )
     {
@@ -813,6 +873,26 @@ U8 check_error_state(void)
         }
         else{}
     }
+#if 0
+    if( Bit20_Mixing_Out_Temp_Open_Short_Error__E52 == SET )
+    {
+        if( Bit20_Err_Old_20 != SET )
+        {
+            Bit20_Err_Old_20 = SET;
+            mu8_return = SET;
+        }
+        else{}
+    }
+    else
+    {
+        if( Bit20_Err_Old_20 == SET )
+        {
+            Bit20_Err_Old_20 = CLEAR;
+            mu8_return = SET;
+        }
+        else{}
+    }
+#endif
     if( Bit21_Amb_Side_Temp_Open_Short_Error__E53 == SET )
     {
         if( Bit21_Err_Old_21 != SET )
@@ -832,7 +912,223 @@ U8 check_error_state(void)
         else{}
     }
 
+    #if 0
+    if( Bit22_Tray_In_Temp_Open_Short_Error__E41_Not_Use == SET )
+    {
+        if( Bit22_Err_Old_22 != SET )
+        {
+            Bit22_Err_Old_22 = SET;
+            mu8_return = SET;
+        }
+        else{}
+    }
+    else
+    {
+        if( Bit22_Err_Old_22 == SET )
+        {
+            Bit22_Err_Old_22 = CLEAR;
+            mu8_return = SET;
+        }
+        else{}
+    }
 
+    if( Bit23_Water_Tank_1_2_UV_Error__E74 == SET )
+    {
+        if( Bit23_Err_Old_23 != SET )
+        {
+            Bit23_Err_Old_23 = SET;
+            mu8_return = SET;
+        }
+        else{}
+    }
+    else
+    {
+        if( Bit23_Err_Old_23 == SET )
+        {
+            Bit23_Err_Old_23 = CLEAR;
+            mu8_return = SET;
+        }
+        else{}
+    }
+
+    if( Bit24_Ice_Tank_1_2_Back_UV_Error__E75 == SET )
+    {
+        if( Bit24_Err_Old_24 != SET )
+        {
+            Bit24_Err_Old_24 = SET;
+            mu8_return = SET;
+        }
+        else{}
+    }
+    else
+    {
+        if( Bit24_Err_Old_24 == SET )
+        {
+            Bit24_Err_Old_24 = CLEAR;
+            mu8_return = SET;
+        }
+        else{}
+    }
+
+    if( Bit25_Ice_Tray_1_2_UV_Error__E76 == SET )
+    {
+        if( Bit25_Err_Old_25 != SET )
+        {
+            Bit25_Err_Old_25 = SET;
+            mu8_return = SET;
+        }
+        else{}
+    }
+    else
+    {
+        if( Bit25_Err_Old_25 == SET )
+        {
+            Bit25_Err_Old_25 = CLEAR;
+            mu8_return = SET;
+        }
+        else{}
+    }
+
+    if( Bit26_Ice_Tank_3_Front_UV_Error__E79 == SET )
+    {
+        if( Bit26_Err_Old_26 != SET )
+        {
+            Bit26_Err_Old_26 = SET;
+            mu8_return = SET;
+        }
+        else{}
+    }
+    else
+    {
+        if( Bit26_Err_Old_26 == SET )
+        {
+            Bit26_Err_Old_26 = CLEAR;
+            mu8_return = SET;
+        }
+        else{}
+    }
+    #endif
+
+    #if 0
+    /*..hui [24-7-18오전 9:25:12] 2개중 하나만 걸려도 전송..*/
+    if( Bit27_Tds_In_Temp_Open_Short_Error__E90 == SET
+        || Bit0_No_Display_Tds_In_Temp_Open_Short_Error__E90 == SET )
+    {
+        if( Bit27_Err_Old_27 != SET )
+        {
+            Bit27_Err_Old_27 = SET;
+            mu8_return = SET;
+        }
+        else{}
+    }
+    else
+    {
+        if( Bit27_Err_Old_27 == SET )
+        {
+            Bit27_Err_Old_27 = CLEAR;
+            mu8_return = SET;
+        }
+        else{}
+    }
+
+    if( Bit28_Tds_Out_Temp_Open_Short_Error__E91 == SET
+        || Bit1_No_Display_Tds_Out_Temp_Open_Short_Error__E91 == SET )
+    {
+        if( Bit28_Err_Old_28 != SET )
+        {
+            Bit28_Err_Old_28 = SET;
+            mu8_return = SET;
+        }
+        else{}
+    }
+    else
+    {
+        if( Bit28_Err_Old_28 == SET )
+        {
+            Bit28_Err_Old_28 = CLEAR;
+            mu8_return = SET;
+        }
+        else{}
+    }
+
+    if( Bit29_Tds_In_Data_Error__E92 == SET
+        || Bit2_No_Display_Tds_In_Data_Error__E92 == SET )
+    {
+        if( Bit29_Err_Old_29 != SET )
+        {
+            Bit29_Err_Old_29 = SET;
+            mu8_return = SET;
+        }
+        else{}
+    }
+    else
+    {
+        if( Bit29_Err_Old_29 == SET )
+        {
+            Bit29_Err_Old_29 = CLEAR;
+            mu8_return = SET;
+        }
+        else{}
+    }
+
+    if( Bit30_Tds_Out_Data_Error__E93 == SET
+        || Bit3_No_Display_Tds_Out_Data_Error__E93 == SET )
+    {
+        if( Bit30_Err_Old_30 != SET )
+        {
+            Bit30_Err_Old_30 = SET;
+            mu8_return = SET;
+        }
+        else{}
+    }
+    else
+    {
+        if( Bit30_Err_Old_30 == SET )
+        {
+            Bit30_Err_Old_30 = CLEAR;
+            mu8_return = SET;
+        }
+        else{}
+    }
+
+    if( Bit4_No_Display_Tds_In_Pollution_Error__E98 == SET )
+    {
+        if( Bit27_Err_Old_27 != SET )
+        {
+            Bit27_Err_Old_27 = SET;
+            mu8_return = SET;
+        }
+        else{}
+    }
+    else
+    {
+        if( Bit27_Err_Old_27 == SET )
+        {
+            Bit27_Err_Old_27 = CLEAR;
+            mu8_return = SET;
+        }
+        else{}
+    }
+
+    if( Bit5_No_Display_Tds_Remove_Error__E99 == SET )
+    {
+        if( Bit28_Err_Old_28 != SET )
+        {
+            Bit28_Err_Old_28 = SET;
+            mu8_return = SET;
+        }
+        else{}
+    }
+    else
+    {
+        if( Bit28_Err_Old_28 == SET )
+        {
+            Bit28_Err_Old_28 = CLEAR;
+            mu8_return = SET;
+        }
+        else{}
+    }
+    #endif
 
 
     return mu8_return;
@@ -911,6 +1207,16 @@ void make_wifi_app_data(void)
 ***********************************************************************************************************************/
 void wifi_water_select(void)
 {
+    #if 0
+    /*..hui [23-8-2오후 5:12:16] 냉온정 변경상태 추가..*/
+    /*..hui [23-8-2오후 5:12:21] 대신 이건 1010만 보냄..*/
+    if( u8WaterOutState != gu8_wifi_water_select )
+    {
+        gu8_wifi_water_select = u8WaterOutState;
+        send_wifi_water_select_data_control( WIFI_FUNC_000B_WATER_SEL );
+    }
+    else{}
+    #endif
 }
 
 /***********************************************************************************************************************
@@ -919,6 +1225,31 @@ void wifi_water_select(void)
 ***********************************************************************************************************************/
 void avg_mixing_water_temp(void)
 {
+    #if 0
+    gu8_hot_avg_timer++;
+
+    if( gu8_hot_avg_timer >= 10 )
+    {
+        gu8_hot_avg_timer = 0;
+    }
+    else
+    {
+        return;
+    }
+
+    /*..hui [23-6-26오후 7:18:28] 미온수 추출..*/
+    if( F_WaterOut == SET && u8WaterOutState == HOT_WATER_SELECT )
+    {
+        if( gu8_hot_setting_temperature == HOT_SET_TEMP_2__TEA__70_oC
+            || gu8_hot_setting_temperature == HOT_SET_TEMP_1__MILK__43_oC )
+        {
+            u8OutHot_Temp_AVG += gu8_Mixing_Out_Temperature_One_Degree;
+            u8OutHot_Temp_AVG = u8OutHot_Temp_AVG/2;
+        }
+        else{}
+    }
+    else{}
+    #endif
 }
 
 /***********************************************************************************************************************
@@ -964,6 +1295,15 @@ void silver_care(void)
 ***********************************************************************************************************************/
 void cody_care(void)
 {
+    #if 0
+    /*..hui [21-3-5오전 9:58:17] 커버 닫힘..*/
+    if( bit_filter_reed != F_Tank_Cover_Wifi )
+    {
+        F_Tank_Cover_Wifi = bit_filter_reed;
+        send_wifi_system_function();
+    }
+    else{}
+    #endif
 
     /*..hui [21-3-5오전 9:58:17] 커버 닫힘..*/
     if( F_Tank_Cover_Input != F_Tank_Cover_Wifi )
@@ -1031,6 +1371,14 @@ void filter_change(void)
     else{}
 
     /*..hui [24-7-30오후 2:49:13] 구연산 리드 추가..*/
+    #if 0
+    if( bit_acid_reed != F_Acid_Filter_Wifi )
+    {
+        F_Acid_Filter_Wifi = bit_acid_reed;
+        send_wifi_system_function();
+    }
+    else{}
+    #endif
 }
 
 /***********************************************************************************************************************
@@ -1057,7 +1405,42 @@ void power_check(void)
     /*..hui [21-3-5오전 11:59:18] 탈빙히터 150/3600 = 0.04..*/
     /*..hui [23-6-26오후 7:45:15] 온수히터 500/3600 = 0.138 = 0.138..*/
     /*..hui [23-7-25오후 5:15:15] 온수히터 430/3600 = 0.119..*/
+    #if 0
+    if( pHEATER_HOT == SET )
+    {
+        gu16_hot_heater_watt += HOT_HEATER_WATT_FULL;
 
+        /*..hui [21-10-15오후 5:12:31] 최대 50W 제한..*/
+        if( gu16_hot_heater_watt >=  MAX_HOT_HEATER_WATT )
+        {
+            gu16_hot_heater_watt = MAX_HOT_HEATER_WATT;
+        }
+        else{}
+    }
+    else{}
+    #endif
+
+    #if 0
+    if( F_Comp_Output == SET )
+    {
+        if( gu8_bldc_target_hz <= BLDC_COMP_45Hz )
+        {
+            /*..hui [23-6-27오전 9:43:13] 45hz 이하 29.7w == 29.7/3600 = 0.008..*/
+            gu16_comp_watt += COMP_45HZ_UNDER_WATT;
+        }
+        else if( gu8_bldc_target_hz <= BLDC_COMP_60Hz )
+        {
+            /*..hui [23-6-27오전 9:43:55] 60hz 이하 39.7w == 39.7/3600 == 0.011..*/
+            gu16_comp_watt += COMP_60HZ_UNDER_WATT;
+        }
+        else
+        {
+            /*..hui [23-6-27오전 9:44:37] 60hz 초과 43.5w == 43.5/3600 == 0.012..*/
+            gu16_comp_watt += COMP_60HZ_OOVER_WATT;
+        }
+    }
+    else{}
+    #endif
 
 
     if( F_Comp_Output == SET )
@@ -1199,6 +1582,34 @@ void send_wifi_water_select_data_control( U8 mu8_data )
 ***********************************************************************************************************************/
 void check_wifi_auto_drain_state(void)
 {
+    #if 0
+    if( bit_auto_drain_start == SET )
+    {
+        if( gu8_wifi_auto_drain_op == WIFI_AUTO_DRAIN_OPERATION_OFF )
+        {
+            gu8_wifi_auto_drain_op = WIFI_AUTO_DRAIN_OPERATION_ON;
+            send_wifi_system_function();
+        }
+        else
+        {
+            if( gu8_wifi_auto_drain_op == WIFI_AUTO_DRAIN_OPERATION_ON )
+            {
+                gu8_wifi_auto_drain_op = WIFI_AUTO_OPERATION_GOING;
+                send_wifi_system_function();
+            }
+            else{}
+        }
+    }
+    else
+    {
+        if( gu8_wifi_auto_drain_op != WIFI_AUTO_DRAIN_OPERATION_OFF )
+        {
+            gu8_wifi_auto_drain_op = WIFI_AUTO_DRAIN_OPERATION_OFF;
+            send_wifi_system_function();
+        }
+        else{}
+    }
+    #endif
 }
 
 /***********************************************************************************************************************
@@ -1207,6 +1618,35 @@ void check_wifi_auto_drain_state(void)
 ***********************************************************************************************************************/
 void check_wifi_uv_state(void)
 {
+    #if 0
+    /*..hui [21-9-9오전 10:23:49] 일시 정지중에는 0으로 보내고 재시작할때 다시~..*/
+    if( F_UV_Control_State == SET && u8UvSensorOFF == 0 )
+    {
+        if( gu8_wifi_uv_op == WIFI_UV_OPERATION_OFF )
+        {
+            gu8_wifi_uv_op = WIFI_UV_OPERATION_ON;
+            send_wifi_system_function();
+        }
+        else
+        {
+            if( gu8_wifi_uv_op == WIFI_UV_OPERATION_ON )
+            {
+                gu8_wifi_uv_op = WIFI_UV_OPERATION_GOING;
+                send_wifi_system_function();
+            }
+            else{}
+        }
+    }
+    else
+    {
+        if( gu8_wifi_uv_op != WIFI_UV_OPERATION_OFF )
+        {
+            gu8_wifi_uv_op = WIFI_UV_OPERATION_OFF;
+            send_wifi_system_function();
+        }
+        else{}
+    }
+    #endif
 }
 
 
@@ -1260,6 +1700,133 @@ void init_wifi_ice_out_time(void)
 }
 
 
+#if 0
+/***********************************************************************************************************************
+* Function Name: System_ini
+* Description  :
+***********************************************************************************************************************/
+void wifi_water_level_state(void)
+{
+    /*..hui [23-6-23오후 4:45:23] 냉수 저수위/만수위만..*/
+    /*..hui [23-6-23오후 4:45:35] 드레인탱크 저수위/만수위는 water_level 이쪽에서 처리..*/
+    check_cold_tank_low_level_state();
+    check_cold_tank_high_level_state();
+}
+
+/***********************************************************************************************************************
+* Function Name: System_ini
+* Description  :
+***********************************************************************************************************************/
+void check_cold_tank_low_level_state(void)
+{
+    if( pLEVEL_PURIFY_LOW == SET )
+    {
+        gu8_wifi_cold_low_on_timer++;
+        gu8_wifi_cold_low_off_timer = 0;
+
+        if( gu8_wifi_cold_low_on_timer >= 20 )
+        {
+            gu8_wifi_cold_low_on_timer = 20;
+
+            if( bit_wifi_cold_low == CLEAR )
+            {
+                bit_wifi_cold_low = SET;
+                send_wifi_system_function();
+            }
+            else{}
+        }
+        else{}
+    }
+    else
+    {
+        gu8_wifi_cold_low_on_timer = 0;
+        gu8_wifi_cold_low_off_timer++;
+
+        if( gu8_wifi_cold_low_off_timer >= 20 )
+        {
+            gu8_wifi_cold_low_off_timer = 20;
+
+            if( bit_wifi_cold_low == SET )
+            {
+                bit_wifi_cold_low = CLEAR;
+                send_wifi_system_function();
+            }
+            else{}
+        }
+        else{}
+    }
+}
+
+/***********************************************************************************************************************
+* Function Name: System_ini
+* Description  :
+***********************************************************************************************************************/
+void check_cold_tank_high_level_state(void)
+{
+    if( pLEVEL_PURIFY_HIGH == SET )
+    {
+        gu8_wifi_cold_high_on_timer++;
+        gu8_wifi_cold_high_off_timer = 0;
+
+        if( gu8_wifi_cold_high_on_timer >= 20 )
+        {
+            gu8_wifi_cold_high_on_timer = 20;
+
+            if( bit_wifi_cold_high == CLEAR )
+            {
+                bit_wifi_cold_high = SET;
+                send_wifi_system_function();
+            }
+            else{}
+        }
+        else{}
+    }
+    else
+    {
+        gu8_wifi_cold_high_on_timer = 0;
+        gu8_wifi_cold_high_off_timer++;
+
+        if( gu8_wifi_cold_high_off_timer >= 20 )
+        {
+            gu8_wifi_cold_high_off_timer = 20;
+
+            if( bit_wifi_cold_high == SET )
+            {
+                bit_wifi_cold_high = CLEAR;
+                send_wifi_system_function();
+            }
+            else{}
+        }
+        else{}
+    }
+}
+
+/***********************************************************************************************************************
+* Function Name: System_ini
+* Description  :
+***********************************************************************************************************************/
+void wifi_ice_tank_ster_state(void)
+{
+    if( bit_ice_tank_ster_start == SET )
+    {
+        if( bit_wifi_ice_tank_ster_old == CLEAR )
+        {
+            bit_wifi_ice_tank_ster_old = SET;
+            send_wifi_system_function();
+        }
+        else{}
+    }
+    else
+    {
+        if( bit_wifi_ice_tank_ster_old == SET )
+        {
+            bit_wifi_ice_tank_ster_old = CLEAR;
+            send_wifi_system_function();
+        }
+        else{}
+    }
+}
+#endif
 
 /***********************************************************************************************************************
 * Function Name: System_ini
@@ -1268,6 +1835,41 @@ void init_wifi_ice_out_time(void)
 void wifi_hot_heater_state(void)
 {
 	//순간온수 방식이기 때문에 필요없음
+	#if 0
+    /*if( pHEATER_HOT == SET )*/
+    if( F_Heater_Output == SET )
+    {
+        gu32_hot_target_reach_timer_ms++;
+
+        if( gu32_hot_target_reach_timer_ms >= 99990 )
+        {
+            gu32_hot_target_reach_timer_ms = 99990;
+        }
+        else{}
+
+        gu16_hot_target_reach_timer_sec = (U16)(gu32_hot_target_reach_timer_ms / 10);
+
+        if( bit_wifi_hot_heater == CLEAR )
+        {
+            bit_wifi_hot_heater = SET;
+            bit_wifi_heater_on_time_update = CLEAR;
+            send_wifi_system_function();
+
+            init_wifi_hot_heater();
+        }
+        else{}
+    }
+    else
+    {
+        if( bit_wifi_hot_heater == SET )
+        {
+            bit_wifi_hot_heater = CLEAR;
+            bit_wifi_heater_on_time_update  = SET;
+            send_wifi_system_function();
+        }
+        else{}
+    }
+	#endif
 }
 
 /***********************************************************************************************************************
@@ -1382,7 +1984,7 @@ void wifi_ice_step(void)
     }
     else if( gu8IceStep == STATE_20_WATER_IN_ICE_TRAY )
     {
-        if( gu8_wifi_ice_make_state != WIFI_ICE_TRAY_IN_START 
+        if( gu8_wifi_ice_make_state != WIFI_ICE_TRAY_IN_START
         && gu8_wifi_ice_make_state != WIFI_ICE_TRAY_IN_ING )
         {
             gu8_wifi_ice_make_state = WIFI_ICE_TRAY_IN_START;
@@ -1403,7 +2005,7 @@ void wifi_ice_step(void)
     }
     else if( gu8IceStep == STATE_31_MAIN_ICE_MAKING )
     {
-        if( gu8_wifi_ice_make_state != WIFI_ICE_MAKING_START 
+        if( gu8_wifi_ice_make_state != WIFI_ICE_MAKING_START
         && gu8_wifi_ice_make_state != WIFI_ICE_MAKING_ING )
         {
             gu8_wifi_ice_make_state = WIFI_ICE_MAKING_START;
@@ -1424,7 +2026,7 @@ void wifi_ice_step(void)
     }
     else if( gu8IceStep == STATE_45_ICE_TAKE_OFF )
     {
-        if( gu8_wifi_ice_make_state != WIFI_ICE_TAKE_OFF_START 
+        if( gu8_wifi_ice_make_state != WIFI_ICE_TAKE_OFF_START
         && gu8_wifi_ice_make_state != WIFI_ICE_TAKE_OFF_ING )
         {
             gu8_wifi_ice_make_state = WIFI_ICE_TAKE_OFF_START;
@@ -1446,7 +2048,7 @@ void wifi_ice_step(void)
     }
     else if( gu8IceStep == STATE_50_ICE_FULL_IR_CHECK )
     {
-        if( gu8_wifi_ice_make_state != WIFI_ICE_MAKING_FINISH_START 
+        if( gu8_wifi_ice_make_state != WIFI_ICE_MAKING_FINISH_START
         && gu8_wifi_ice_make_state != WIFI_ICE_MAKING_FINISH_ING )
         {
             gu8_wifi_ice_make_state = WIFI_ICE_MAKING_FINISH_START;
@@ -1465,6 +2067,17 @@ void wifi_ice_step(void)
             }
         }
     }
+    #if 0
+    else if( gu8IceStep == STATE_51_FINISH_ICE_MAKE )
+    {
+        if( gu8_wifi_ice_make_state != WIFI_ICE_MAKING_FINISH_START )
+        {
+            gu8_wifi_ice_make_state = WIFI_ICE_MAKING_FINISH_START;
+            send_wifi_system_function();
+        }
+        else{}
+    }
+    #endif
     else
     {
 
@@ -1477,6 +2090,36 @@ void wifi_ice_step(void)
 * Function Name: System_ini
 * Description  :
 ***********************************************************************************************************************/
+#if 0
+void wifi_uv_water_tank_state(void)
+{
+    /*..hui [24-11-28오전 10:12:38] 전원인가후 고장 테스트중에는 안보냄..*/
+    if( bit_uv_fault_test_start == SET )
+    {
+        return;
+    }
+    else{}
+
+    if( bit_uv_water_tank_out == SET )
+    {
+        if( bit_wifi_water_tank_uv_old == CLEAR )
+        {
+            bit_wifi_water_tank_uv_old = SET;
+            send_wifi_system_function();
+        }
+        else{}
+    }
+    else
+    {
+        if( bit_wifi_water_tank_uv_old == SET )
+        {
+            bit_wifi_water_tank_uv_old = CLEAR;
+            send_wifi_system_function();
+        }
+        else{}
+    }
+}
+#endif
 /***********************************************************************************************************************
 * Function Name: System_ini
 * Description  :
@@ -1548,6 +2191,37 @@ void wifi_uv_ice_tray_state(void)
 * Function Name: System_ini
 * Description  :
 ***********************************************************************************************************************/
+#if 0
+void wifi_uv_ice_tank_front_state(void)
+{
+    /*..hui [24-11-28오전 10:12:38] 전원인가후 고장 테스트중에는 안보냄..*/
+    if( bit_uv_fault_test_start == SET )
+    {
+        return;
+    }
+    else{}
+
+    /*if( bit_uv_ice_tank_front_out == SET )*/
+    if( bit_uv_ice_tank_front_out == SET && bit_ice_tray_making_enable == CLEAR )
+    {
+        if( bit_wifi_ice_tank_front_uv_old == CLEAR )
+        {
+            bit_wifi_ice_tank_front_uv_old = SET;
+            send_wifi_system_function();
+        }
+        else{}
+    }
+    else
+    {
+        if( bit_wifi_ice_tank_front_uv_old == SET )
+        {
+            bit_wifi_ice_tank_front_uv_old = CLEAR;
+            send_wifi_system_function();
+        }
+        else{}
+    }
+}
+#endif
 
 /***********************************************************************************************************************
 * Function Name: System_ini
@@ -1643,8 +2317,8 @@ void wifi_flushing(void)
         }
         else{}
     }
-    else if( gu8_flushing_mode == FLUSHING_FILTER 
-    || gu8_flushing_mode == FLUSHING_FILL_COLD_TANK_START_STATE 
+    else if( gu8_flushing_mode == FLUSHING_FILTER
+    || gu8_flushing_mode == FLUSHING_FILL_COLD_TANK_START_STATE
     || gu8_flushing_mode == FLUSHING_FILL_COLD_TANK_FINISH_STATE
     || gu8_flushing_mode == FLUSHING_FILL_HOT_TANK_STATE
     || gu8_flushing_mode == FLUSHING_COLD_TANK )
@@ -2128,7 +2802,5 @@ void check_prohibit_state(void)
 * Function Name: System_ini
 * Description  :
 ***********************************************************************************************************************/
-
-
 
 

@@ -744,7 +744,7 @@ void detect_drain_pump_error(void)
     /*..hui [23-5-15오후 4:55:48] 아이스트레이 입수 끝나고 트레이 내리고 버린물 드레인 해준다..*/
     /*..hui [23-5-15오후 4:56:02] 최대한 드레인탱크 물 없는 상태 유지하도록.. 임재한부장..*/
     ice_make_drain_check();
-    
+
     /*..hui [25-4-17오후 3:44:27] 플러싱할때 드레인..*/
     flushing_drain_check();
 
@@ -821,7 +821,7 @@ void detect_drain_pump_error(void)
         {
             bit_drain_error_check_enable = SET;
         }
-        // bit_drain_error_check_enable = SET;   
+        // bit_drain_error_check_enable = SET;
     }
     else
     {

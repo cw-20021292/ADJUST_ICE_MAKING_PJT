@@ -45,6 +45,14 @@ U8 gu8_button_set_display_state;
 * Function Name: System_ini
 * Description  :
 ***********************************************************************************************************************/
+#if 0
+void start_set_flick( U8 mu8_mode )
+{
+    u8SetDisplay = mu8_mode;
+    gu8_on_off_flick_cnt = 0;
+    gu16_on_off_flick_timer = 0;
+}
+#endif
 
 /***********************************************************************************************************************
 * Function Name: System_ini
@@ -224,7 +232,5 @@ void start_button_set_display( U8 mu8_mode )
 * Function Name: System_ini
 * Description  :
 ***********************************************************************************************************************/
-
-
 
 

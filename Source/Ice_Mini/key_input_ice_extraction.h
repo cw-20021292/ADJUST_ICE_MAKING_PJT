@@ -64,6 +64,12 @@ extern TYPE_BYTE          U8LedFlickerStateB;
 #define            Bit2_Hot_Water_Lock_LED_Flick                U8LedFlickerStateB.Bit.b2
 #define            Bit3_All_Lock_Water_Extract_LED_Flick                U8LedFlickerStateB.Bit.b3
 /*******************************************************************************************************************/
+extern TYPE_BYTE          U8FactoryTestModeB;
+#define            u8FactoryTestMode                 U8FactoryTestModeB.byte
+#define            Bit0_Pcb_Test_Mode                U8FactoryTestModeB.Bit.b0
+#define            Bit1_Uart_Test_Mode               U8FactoryTestModeB.Bit.b1
+#define            Bit2_Display_Test_Mode            U8FactoryTestModeB.Bit.b2
+/*******************************************************************************************************************/
 extern TYPE_WORD          U16ButtonIndicatorB;
 #define            gu8_bitton_indicator                        U16ButtonIndicatorB.word
 #define            gu8_button_indicator_L                      U16ButtonIndicatorB.byte[0]

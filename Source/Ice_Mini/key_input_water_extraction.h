@@ -107,13 +107,13 @@ extern TYPE_BYTE          U8IceOutStateB;
 
 
 
-/*..hui [20-2-3ï¿½ï¿½ï¿½ï¿½ 10:57:20] ï¿½Û¼ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 300ms ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½..*/
+/*..hui [20-2-3¿ÀÀü 10:57:20] ÆÛ¼¾Æ® °è»êÀ» À§ÇØ 300ms Á¤µµ ¿©À¯Áà¾ßÇÔ..*/
 #define EXTRACT_TIME_CONTINUE                        1800 // 903
 #define EXTRACT_TIME_CONTINUE_LINE_TEST              6000
 
 
 
-/*..hui [20-5-11ï¿½ï¿½ï¿½ï¿½ 4:00:55] 5ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½..*/
+/*..hui [20-5-11¿ÀÈÄ 4:00:55] 5ºÐÀ¸·Î º¯°æ..*/
 #define EXTRACT_TIME_COLD_DRAIN                      3003
 
 
@@ -134,7 +134,11 @@ extern TYPE_BYTE          U8LedFlickerStateB;
 
 
 
-
+extern TYPE_BYTE          U8FactoryTestModeB;
+#define            u8FactoryTestMode                 U8FactoryTestModeB.byte
+#define            Bit0_Pcb_Test_Mode                U8FactoryTestModeB.Bit.b0
+#define            Bit1_Uart_Test_Mode               U8FactoryTestModeB.Bit.b1
+#define            Bit2_Display_Test_Mode            U8FactoryTestModeB.Bit.b2
 
 extern TYPE_BYTE          U8PairingStepB;
 #define            u8PairingStep                            U8PairingStepB.byte
