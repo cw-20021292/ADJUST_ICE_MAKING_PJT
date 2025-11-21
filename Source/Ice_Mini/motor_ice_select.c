@@ -526,8 +526,7 @@ void IceStuckProcess(void)
                     // 부팅 후 최대 2회까지만 음성안내 송출
                     if(IceStuck.u8IceJamVoicePlayCount < ICE_JAM_VOICE_INFO_PLAY_COUNT_MAX)
                     {
-                        // 메모리주소 변경필요
-                        Play_Voice(VOICE_151_SPECIAL_FUNCTION);
+                        Play_Voice(VOICE_1365_ICE_STUCK_DETECTED);
                         IceStuck.u8IceJamVoicePlayCount++;
                     }
                 }

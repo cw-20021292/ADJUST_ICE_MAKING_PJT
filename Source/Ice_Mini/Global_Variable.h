@@ -2308,6 +2308,9 @@ typedef enum
 #define VOICE_152_MY3_WATER_EXTRACT                             152
 #define VOICE_157_BREAK_ICE_SELECTED                            157     // "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ÃµÇ¾ï¿½ï¿½ï¿½ï¿½Ï´ï¿½."
 
+/* ICE MINI, MAX ONLY! */
+#define VOICE_1365_ICE_STUCK_DETECTED                           165     // "¾óÀ½ ÅäÃâ±¸¿¡ ¾óÀ½ÀÌ °É·Á ÀÖ½À´Ï´Ù. ÃßÃâ ¹öÆ°À» ÇÑ¹ø ´õ ´­·¯ °É¸° ¾óÀ½À» Á¦°ÅÇØ ÁÖ¼¼¿ä."
+
 /* MELODY (ICE MINI, 1KG, 2KG REVISION) */
 #define VOICE_151_SPECIAL_FUNCTION                             	151     // 'Æ¯ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô´Ï´ï¿??.' (ï¿½ï¿½ï¿½ï¿½/ï¿½ï¿½ï¿½ï¿½ï¿??)
 
