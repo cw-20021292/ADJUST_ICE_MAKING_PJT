@@ -8,10 +8,10 @@
 typedef struct _drain_flow_
 {
     U8  u8FlowMeter;                   /* 제빙수 유량센서 플래그 */
-    U16 gu16IceMakeBeforeFlowHz;       /* 제빙수 전 유량센서 측정값 */
-    U16 gu16IceMakeAfterFlowHz;        /* 제빙수 후 유량센서 측정값 */
-    U16 gu16VIcePrevFlowHz;            /* 제빙수 이전 유량센서 측정값 */
-    U16 gu16VIceCurFlowHz;             /* 제빙수 현재 유량센서 측정값 */
+    I16 gu16IceMakeBeforeFlowHz;       /* 제빙수 전 유량센서 측정값 */
+    I16 gu16IceMakeAfterFlowHz;        /* 제빙수 후 유량센서 측정값 */
+    I16 gu16VIcePrevFlowHz;            /* 제빙수 이전 유량센서 측정값 */
+    I16 gu16VIceCurFlowHz;             /* 제빙수 현재 유량센서 측정값 */
 } DRAIN_FLOW_T;
 DRAIN_FLOW_T DrainFlow;
 
@@ -62,9 +62,17 @@ U16 GetDrainCurFlowHz(void)
 // 총 제빙에 사용된 물량 계산 (Hz단위를 cc단위로 변환해야됨)
 U16 GetDrainFlow(void)
 {
-    // 트레이에 남는 물, 드레인탱크에 남는 물, 오차(기타손실) 등을 생각해서 +10cc 보정
-//    return ((DrainFlow.gu16IceMakeBeforeFlowHz - DrainFlow.gu16IceMakeAfterFlowHz) + GetCCToHz(10));
-    return ((DrainFlow.gu16IceMakeBeforeFlowHz - DrainFlow.gu16IceMakeAfterFlowHz));
+    if(((DrainFlow.gu16IceMakeBeforeFlowHz - DrainFlow.gu16IceMakeAfterFlowHz) - GetCCToHz(15)) > 0)
+    {
+        // 트레이에 남는 물, 드레인탱크에 남는 물, 오차(기타손실) 등을 생각해서 +10cc 보정
+        //    return ((DrainFlow.gu16IceMakeBeforeFlowHz - DrainFlow.gu16IceMakeAfterFlowHz) + GetCCToHz(10));
+        // 오차 -15cc로 보정
+        return (U16)((DrainFlow.gu16IceMakeBeforeFlowHz - DrainFlow.gu16IceMakeAfterFlowHz) - GetCCToHz(15));
+    }
+    else
+    {
+        return 0;
+    }
 }
 
 // CC단위를 Hz단위로 변환

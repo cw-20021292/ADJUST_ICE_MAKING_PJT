@@ -103,22 +103,22 @@ void ProcessIceMaking(void)
     }
 
     // 보정 Gain 설정
-    if(IceAdjust.u16IceMakeAvgFlow >= GetCCToHz(110))              // 110ml 이상 제빙
+    if(IceAdjust.u16IceMakeAvgFlow > GetCCToHz(120))              // 110ml 이상 제빙
     {
         // zone 1 (심각 과제빙) : 강하게 줄이기
         SetGain(ZONE_1_GAIN);
     }
-    else if(IceAdjust.u16IceMakeAvgFlow >= GetCCToHz(90))         // 90ml 이상 제빙
+    else if(IceAdjust.u16IceMakeAvgFlow > GetCCToHz(70))         // 90ml 이상 제빙
     {
         // zone 2 (살짝 과제빙) : 부드럽게 줄이기
         SetGain(ZONE_2_GAIN);
     }
-    else if(IceAdjust.u16IceMakeAvgFlow <= GetCCToHz(30))         // 30ml 이하 제빙
+    else if(IceAdjust.u16IceMakeAvgFlow < GetCCToHz(35))         // 30ml 이하 제빙
     {
         // zone 4 (심각 부족) : 강하게 늘리기
         SetGain(ZONE_4_GAIN);
     }
-    else if(IceAdjust.u16IceMakeAvgFlow <= GetCCToHz(50))         // 50ml 이하 제빙
+    else if(IceAdjust.u16IceMakeAvgFlow < GetCCToHz(60))         // 50ml 이하 제빙
     {
         // zone 3 (살짝 부족) : 부드럽게 늘리기
         SetGain(ZONE_3_GAIN);
@@ -126,6 +126,7 @@ void ProcessIceMaking(void)
     else
     {
         // OK (거의 맞음) : 살살 보정
+        // 60 ~ 70ml 제빙이 목표
         SetGain(ZONE_5_GAIN);
     }
 
