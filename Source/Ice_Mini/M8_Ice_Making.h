@@ -17,12 +17,6 @@ U8 GetIceStep(void);
 void SetUsedFreezingTable(U8 Used);
 U8 GetUsedFreezingTable(void);
 
-#define ZONE_1_GAIN (0.7F)      // 심각 과제빙
-#define ZONE_2_GAIN (0.3F)      // 살짝 과제빙
-#define ZONE_3_GAIN (0.3F)      // 살짝 부족
-#define ZONE_4_GAIN (0.7F)      // 심각 부족
-#define ZONE_5_GAIN (0.05F)     // 거의 맞음 (MID_ZONE)
-
 //extern U8 CheckIceTray(void);
 extern void up_tray_motor(void);
 extern void down_tray_motor(void);
@@ -119,13 +113,6 @@ extern TYPE_WORD          U16CompOffW;
 #define            Bit2_Safty_Routine_State                U16CompOffW.Bit.b2
 #define            Bit3_Ice_Making_Err_State               U16CompOffW.Bit.b3
 #define            Bit4_Self_Test_COMP_Off_State           U16CompOffW.Bit.b4
-
-#define            ICE_FINGER_NUM       7
-#define            ICE_IDEAL_GRAM       10.0F
-#define            ICE_V_TARGET         (U16)(ICE_FINGER_NUM * ICE_IDEAL_GRAM)    // 70ml
-
-#define            ICE_MAKE_TIME_MIN        200
-#define            ICE_MAKE_TIME_MAX        21000
 
 extern bit F_ErrTrayMotor_DualInital;
 extern U8 gu8_Room_Water_Level;
