@@ -25,6 +25,7 @@ bit bit_wifi_first_hot_ster;
 #include "macrodriver.h"
 #include "m_wifi_setting_data.h"
 #include "motor_ice_select.h"
+#include "model_select.h"
 /******************************************************************************/
 extern void wifi_hot_lock( U16 mu16_setting );
 extern void init_water_quantity(void);
@@ -226,7 +227,137 @@ extern TYPE_WORD          U16HotTemplSelectW;
 /* Event List */
 U16 WifiFuncEventPreVal[USER_DATA_MAX_SIZE] = {0};
 
+// [2025-12-10] CH.PARK 이너도어 리드스위치 추가되지 않은 기존 제품용 WIFI 테이블 (0143 Protocol 없음)
 static const WifiTxFuncEventList_T WifiFuncEventList[] =
+{   /*  API ID                                      DATA_TYPE                                 PreVal(Initial)                         EnventForm     */
+    {   WIFI_FUNC_0002_COLD_SEL,                TYPE_A1014,                          (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+    {   WIFI_FUNC_0003_HOT_LOCK_SEL,            TYPE_A1014,                          (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+    {   WIFI_FUNC_0005_LOCK_SEL,                TYPE_A1014,                          (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+    {   WIFI_FUNC_0008_ICE_SEL,                 TYPE_A1014,                          (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+    {   WIFI_FUNC_000A_COLD_TEMP,               TYPE_UNUSED,                          (U16*)(&WifiFuncEventPreVal),         EVENT_UNUSED },
+    {   WIFI_FUNC_000B_WATER_SEL,               TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_UNUSED        },
+    {   WIFI_FUNC_000D_WATER_OUTQUANTITY,       TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_ZERO_TO_OTHER },   // 0 -> ??
+
+    {   WIFI_FUNC_001A_HOT_INTEMP,              TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_UNUSED },
+    {   WIFI_FUNC_001B_HOT_MEANTEMP,            TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_UNUSED },
+    {   WIFI_FUNC_001C_HOT_SELTEMP,             TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_UNUSED },
+
+    {   WIFI_FUNC_0024_HEART_TIME4,             TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_ZERO_TO_OTHER },   // 0 -> ??
+    {   WIFI_FUNC_002C_SILVER_CARE,             TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_ZERO_TO_ONE   },
+
+    {   WIFI_FUNC_0030_ICE_MAKETIME,            TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_ZERO_TO_OTHER },   // 0 -> ??
+    {   WIFI_FUNC_0031_VOICE_SEL,               TYPE_A1014,                         (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },   // 0 -> ??
+    {   WIFI_FUNC_0032_ICELOCK_SEL,             TYPE_A1014,                          (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+    {   WIFI_FUNC_0033_VOICE_VOL_SEL,           TYPE_UNUSED,                          (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+    {   WIFI_FUNC_0035_COVER1_OPEN,             TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+    {   WIFI_FUNC_0036_COVER2_OPEN,             TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+    {   WIFI_FUNC_003C_COLD_STRENGTH_SEL,       TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+
+    {   WIFI_FUNC_0040_SMART_CHECK_RQST,        TYPE_SMART_DIAGNOSIS_CONTROL,        (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+    {   WIFI_FUNC_0041_SMART_CHECK_STATUS,      TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+    {   WIFI_FUNC_0042_SMART_CHECK_PROGRESS,    TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+    {   WIFI_FUNC_0043_FILTER_STATUS1,          TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+    {   WIFI_FUNC_004A_WELCOME_LIGHT,           TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+
+    {   WIFI_FUNC_0050_UV_STERILIZE_STATUS,     TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_ZERO_TO_ONE   },
+    {   WIFI_FUNC_0053_FILTER_RESET1,           TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+    {   WIFI_FUNC_0058_ICE_SIZE_SEL,            TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+    {   WIFI_FUNC_0059_ICE_ONOFF_SEL,           TYPE_A1014,                          (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+    {   WIFI_FUNC_005A_UV_ICE_TANK_STATUS,      TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_ZERO_TO_ONE   },
+    {   WIFI_FUNC_005B_UV_ICE_TRAY_STATUS,      TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_ZERO_TO_ONE   },
+    {   WIFI_FUNC_005C_SMART_CHECK_RESULT,      TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_UNUSED        },
+    {   WIFI_FUNC_005D_UV_ICE_FAUCET_STATUS,    TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_ZERO_TO_ONE   },
+    {   WIFI_FUNC_005E_SLEEP_MODE_SEL,          TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+    {   WIFI_FUNC_005F_SLEEP_START_HOUR,        TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+
+    {   WIFI_FUNC_0060_SLEEP_START_MIN,         TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+    {   WIFI_FUNC_0061_SLEEP_END_HOUR,          TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+    {   WIFI_FUNC_0062_SLEEP_END_MIN,           TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+    {   WIFI_FUNC_0066_DEFAULT_QUANTITY_SEL,    TYPE_A1014,                          (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+    {   WIFI_FUNC_0078_COLD_TARGET_TEMP_TIME,   TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_ZERO_TO_OTHER },   //0 -> ??
+    {   WIFI_FUNC_0083_POWER_SAVING_STATUS,     TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_ZERO_TO_ONE   },
+    {   WIFI_FUNC_008C_COMP_STATUS,             TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_ZERO_TO_ONE   },
+    {   WIFI_FUNC_008F_ICE_FULL_STATUS,         TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_ZERO_TO_ONE   },
+
+    {   WIFI_FUNC_0093_ICEMAKING_STAUTS,        TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_SPECIFIC_CONDITION   },
+    {   WIFI_FUNC_0095_ICEMAKING_COMPLET_TIME,  TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_ZERO_TO_OTHER },   //0 -> ??
+    {   WIFI_FUNC_0096_DEICING_COMPLET_TIME,    TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_ZERO_TO_OTHER },   //0 -> ??
+    {   WIFI_FUNC_009B_DRAINTANK_LOW_WLEVEL,    TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_ZERO_TO_ONE   },
+    {   WIFI_FUNC_009C_DRAINTANK_HIGH_WLEVEL,   TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_ZERO_TO_ONE   },
+
+    {   WIFI_FUNC_00A0_COLD_TANK_TEMP,          TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_UNUSED        },
+    // {   WIFI_FUNC_00AC_FILTER1_WATER_USAGE,     TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_UNUSED        },
+    // {   WIFI_FUNC_00AD_FILTER1_UASGE_DAY,       TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+
+    {   WIFI_FUNC_00B5_FILTER_FLUSHING,         TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_ZERO_TO_ONE   },
+    {   WIFI_FUNC_00BE_QUANTITY_HALFCUP,        TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+    {   WIFI_FUNC_00BF_QUANTITY_ONECUP,         TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+    {   WIFI_FUNC_00C0_QUANTITY_TWOCUPS,        TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+
+    {   WIFI_FUNC_00C1_HOTTEMP_USE_SEL0,        TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+    {   WIFI_FUNC_00C2_HOTTEMP_USE_SEL1,        TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+    {   WIFI_FUNC_00C3_HOTTEMP_USE_SEL2,        TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+    {   WIFI_FUNC_00C4_HOTTEMP_USE_SEL3,        TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+    {   WIFI_FUNC_00C5_HOTTEMP_USE_SEL4,        TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+    {   WIFI_FUNC_00C6_HOTTEMP_USE_SEL5,        TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+    {   WIFI_FUNC_00C7_HOTTEMP_USE_SEL6,        TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+    {   WIFI_FUNC_00C8_HOTTEMP_USE_SEL7,        TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+    {   WIFI_FUNC_00C9_HOTTEMP_USE_SEL8,        TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+    {   WIFI_FUNC_00CA_HOTTEMP_USE_SEL9,        TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+    {   WIFI_FUNC_00CB_WATER_EXTRACT_STATUS,    TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+    {   WIFI_FUNC_00CC_ICE_EXTRACT_STATUS,      TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+    {   WIFI_FUNC_00CD_SETUP_MODE_STATUS,       TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+    {   WIFI_FUNC_00CE_HOTTEMP_USE_SEL10,       TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+    {   WIFI_FUNC_00CF_HOTTEMP_USE_SEL11,       TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+
+    {   WIFI_FUNC_00E1_MYWATER_TEMP_1,          TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+    {   WIFI_FUNC_00E2_MYWATER_QUANTITY_1,      TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+    {   WIFI_FUNC_00E3_MYWATER_RECIPE_1,        TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+    {   WIFI_FUNC_00E4_MYWATER_TEMP_2,          TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+    {   WIFI_FUNC_00E5_MYWATER_QUANTITY_2,      TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+    {   WIFI_FUNC_00E6_MYWATER_RECIPE_2,        TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+    {   WIFI_FUNC_00E7_MYWATER_TEMP_3,          TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+    {   WIFI_FUNC_00E8_MYWATER_QUANTITY_3,      TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+    {   WIFI_FUNC_00E9_MYWATER_RECIPE_3,        TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+    {   WIFI_FUNC_00EA_MYWATER_TEMP_4,          TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+    {   WIFI_FUNC_00EB_MYWATER_QUANTITY_4,      TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+    {   WIFI_FUNC_00EC_MYWATER_RECIPE_4,        TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+    {   WIFI_FUNC_00ED_MYWATER_TEMP_5,          TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+    {   WIFI_FUNC_00EE_MYWATER_QUANTITY_5,      TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+    {   WIFI_FUNC_00EF_MYWATER_RECIPE_5,        TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+
+    /* 2KG */
+    {   WIFI_FUNC_00F0_MYWATER_TEMP_6,          TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+    {   WIFI_FUNC_00F1_MYWATER_QUANTITY_6,      TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+    {   WIFI_FUNC_00F2_MYWATER_RECIPE_6,        TYPE_UNUSED,                         (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+
+    /* MINI,1KG,2KG */
+    {   WIFI_FUNC_0101_STERILIZE_REMAINING_DAY, TYPE_UNUSED,                    (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+
+    {   WIFI_FUNC_0107_MYWATER_ENABLE_1,        TYPE_UNUSED,                    (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+    {   WIFI_FUNC_0108_MYWATER_ENABLE_2,        TYPE_UNUSED,                    (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+    {   WIFI_FUNC_0109_MYWATER_ENABLE_3,        TYPE_UNUSED,                    (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+    {   WIFI_FUNC_010A_MYWATER_ENABLE_4,        TYPE_UNUSED,                    (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+    {   WIFI_FUNC_010B_MYWATER_ENABLE_5,        TYPE_UNUSED,                    (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+
+    /* 2KG */
+    {   WIFI_FUNC_010C_MYWATER_ENABLE_6,        TYPE_UNUSED,                    (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+
+    {   WIFI_FUNC_0116_AMOUNT_OF_ICE,           TYPE_UNUSED,                    (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
+
+    { 	WIFI_FUNC_011A_TRAY_HOT_STER_STATE, 	TYPE_UNUSED,					(U16*)(&WifiFuncEventPreVal),		EVENT_STATUS_CHANGE },
+    { 	WIFI_FUNC_011B_TRAY_HOT_STER_HOUR,		TYPE_UNUSED,					(U16*)(&WifiFuncEventPreVal),		EVENT_STATUS_CHANGE },
+    { 	WIFI_FUNC_011C_TRAY_HOT_STER_MINUTE,	TYPE_UNUSED,					(U16*)(&WifiFuncEventPreVal),		EVENT_STATUS_CHANGE },
+    { 	WIFI_FUNC_011D_WAITMODE,				TYPE_UNUSED,					(U16*)(&WifiFuncEventPreVal),		EVENT_STATUS_CHANGE },
+    { 	WIFI_FUNC_011E_ONSU_SET_NUM_MIN,		TYPE_UNUSED,					(U16*)(&WifiFuncEventPreVal),		EVENT_STATUS_CHANGE },
+    { 	WIFI_FUNC_011F_DEFAULT_MY_WATER,		TYPE_UNUSED,					(U16*)(&WifiFuncEventPreVal),		EVENT_STATUS_CHANGE },
+    { 	WIFI_FUNC_0120_HOT_SETTING_MAX_NUM,		TYPE_UNUSED,					 (U16*)(&WifiFuncEventPreVal),		EVENT_STATUS_CHANGE },
+    { 	WIFI_FUNC_0122_QUANTITY_FOURCUPS,		TYPE_UNUSED,					 (U16*)(&WifiFuncEventPreVal),		EVENT_STATUS_CHANGE },      // 네컵 용량 추가
+    { 	WIFI_FUNC_0123_ICE_TYPE,				TYPE_UNUSED,					 (U16*)(&WifiFuncEventPreVal),		EVENT_STATUS_CHANGE },      // 네컵 용량 추가
+};
+
+// [2025-12-10] CH.PARK 이너도어 리드스위치 추가된 샘플용 WIFI 테이블 (0143 Protocol 있음)
+static const WifiTxFuncEventList_T WifiFuncEventList_ReedAdded[] =
 {   /*  API ID                                      DATA_TYPE                                 PreVal(Initial)                         EnventForm     */
     {   WIFI_FUNC_0002_COLD_SEL,                TYPE_A1014,                          (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
     {   WIFI_FUNC_0003_HOT_LOCK_SEL,            TYPE_A1014,                          (U16*)(&WifiFuncEventPreVal),         EVENT_STATUS_CHANGE },
@@ -355,25 +486,45 @@ static const WifiTxFuncEventList_T WifiFuncEventList[] =
     { 	WIFI_FUNC_0143_ICE_DOOR_REED,			TYPE_UNUSED,					 (U16*)(&WifiFuncEventPreVal),		EVENT_STATUS_CHANGE },      // 얼음문 리드 추가
 };
 
-#define SZ_FUNC_EVENT_LIST    (sizeof(WifiFuncEventList)/sizeof(WifiTxFuncEventList_T))
+#define SZ_FUNC_EVENT_LIST              (sizeof(WifiFuncEventList)/sizeof(WifiTxFuncEventList_T))
+#define SZ_FUNC_EVENT_LIST_REED_ADDED   (sizeof(WifiFuncEventList_ReedAdded)/sizeof(WifiTxFuncEventList_T))
 
 void* GetWifiFuncDataEventList ( void )
 {
     if (IsUserModelType() == Model_0)
     {
-        return WifiFuncEventList;
+        // 이렇게 하면 OK
+        if(GetModel() == MODEL_REED_USE)
+        {
+            return WifiFuncEventList_ReedAdded;
+        }
+        else
+        {
+            return WifiFuncEventList;
+        }
+
+        // return WifiFuncEventList;
     }
     else
     {
 
     }
-
 }
+
 U16 GetWifiFuncEventListSize ( void )
 {
     if (IsUserModelType() == Model_0)
     {
-        return SZ_FUNC_EVENT_LIST;
+        if(GetModel() == MODEL_REED_USE)
+        {
+            return SZ_FUNC_EVENT_LIST_REED_ADDED;
+        }
+        else
+        {
+            return SZ_FUNC_EVENT_LIST;
+        }
+
+        // return SZ_FUNC_EVENT_LIST;
     }
     else
     {

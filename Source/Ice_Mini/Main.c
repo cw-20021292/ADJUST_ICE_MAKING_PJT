@@ -10,6 +10,7 @@
 #include    "Global_Variable.h"
 #include    "Port_Define.h"
 #include    "Main.h"
+#include    "App_Comm.h"
 
 void main(void);
 void Sync_50MS(void);
@@ -45,12 +46,12 @@ void main(void)
             {
                 Front_Communication();
                 Pcb_Test_Main();
-                ProcessVoice_Main();	
+                ProcessVoice_Main();
                 wifi();
             }
             else if(u8FactoryTestMode == DISPLAY_TEST_MODE)
             {
-                Front_Communication();  
+                Front_Communication();
                 /* 메인프론트, 서브프론트 검사 다시 구분 250718 CH.PARK */
                 #ifdef _DISPLAY_FCT_SUB_LINE_
                 Display_test_step_Handler();
@@ -93,6 +94,8 @@ void main(void)
             Front_Communication();
             ProcessVoice_Main();
             self_test();
+
+            Comm_Packet_Handler();
 
             Save_Eeprom_Data();
             wifi();

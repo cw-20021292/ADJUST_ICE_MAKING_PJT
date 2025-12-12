@@ -40,9 +40,9 @@
 #pragma interrupt INTSRE2 INTSRE2
 
 /* 공장 자동화검사 Uart 통신 */
-#pragma interrupt INTST3 INTST3
-#pragma interrupt INTSR3 INTSR3
-#pragma interrupt INTSRE3 INTSRE3
+// #pragma interrupt INTST3 INTST3
+// #pragma interrupt INTSR3 INTSR3
+// #pragma interrupt INTSRE3 INTSRE3
 
 /* RTC, EEPROM Module I2C 통신 */
 #pragma interrupt INTIICA0 INTIICA0
@@ -433,73 +433,73 @@ __interrupt void INTSRE2(void)
 #endif
 }
 
-/***********************************************************************************************************************
- * Function Name: System_ini
- * Description  :
- ***********************************************************************************************************************/
-__interrupt void INTST3(void)
-{
-    if(gu8_test_mode_timeout_1s == 0 && u8FactoryTestMode == NONE_TEST_MODE)
-    {
-        // Uart_ISR3_PC_Tx();
-    }
-    else
-    {
-        int_UART3_AT_TX();
-    }
-}
+// /***********************************************************************************************************************
+//  * Function Name: System_ini
+//  * Description  :
+//  ***********************************************************************************************************************/
+// __interrupt void INTST3(void)
+// {
+//     if(gu8_test_mode_timeout_1s == 0 && u8FactoryTestMode == NONE_TEST_MODE)
+//     {
+//         // Uart_ISR3_PC_Tx();
+//     }
+//     else
+//     {
+//         int_UART3_AT_TX();
+//     }
+// }
 
-/***********************************************************************************************************************
- * Function Name: System_ini
- * Description  :
- ***********************************************************************************************************************/
-__interrupt void INTSR3(void)
-{
-    if (gu8_test_mode_timeout_1s == 0 && u8FactoryTestMode == NONE_TEST_MODE)
-    {
-        // Uart_ISR3_PC_Rx();
-    }
-    else
-    {
-        int_UART3_AT_RX();
-    }
-}
+// /***********************************************************************************************************************
+//  * Function Name: System_ini
+//  * Description  :
+//  ***********************************************************************************************************************/
+// __interrupt void INTSR3(void)
+// {
+//     if (gu8_test_mode_timeout_1s == 0 && u8FactoryTestMode == NONE_TEST_MODE)
+//     {
+//         // Uart_ISR3_PC_Rx();
+//     }
+//     else
+//     {
+//         int_UART3_AT_RX();
+//     }
+// }
 
-/***********************************************************************************************************************
- * Function Name: System_ini
- * Description  :
- ***********************************************************************************************************************/
-__interrupt void INTSRE3(void)
-{
-    U8 err_type;
-    U8 rx_data = 0;
+// /***********************************************************************************************************************
+//  * Function Name: System_ini
+//  * Description  :
+//  ***********************************************************************************************************************/
+// __interrupt void INTSRE3(void)
+// {
+//     U8 err_type;
+//     U8 rx_data = 0;
 
-    rx_data = RXD3;
+//     rx_data = RXD3;
 
-    if ((SSR13 & 1) == SET)
-    {
-        u8Uart3_ErrorCode = FRAMING_ERROR;
-    }
-    else if ((SSR13 & 2) == SET)
-    {
-        u8Uart3_ErrorCode = PARITY_ERROR;
-    }
-    else if ((SSR13 & 4) == SET)
-    {
-        u8Uart3_ErrorCode = OVERRUN_ERROR;
-    }
-    else
-    {
-        u8Uart3_ErrorCode = UNKNOWN_ERROR;
-    }
+//     if ((SSR13 & 1) == SET)
+//     {
+//         u8Uart3_ErrorCode = FRAMING_ERROR;
+//     }
+//     else if ((SSR13 & 2) == SET)
+//     {
+//         u8Uart3_ErrorCode = PARITY_ERROR;
+//     }
+//     else if ((SSR13 & 4) == SET)
+//     {
+//         u8Uart3_ErrorCode = OVERRUN_ERROR;
+//     }
+//     else
+//     {
+//         u8Uart3_ErrorCode = UNKNOWN_ERROR;
+//     }
 
-    u8Uart3_ErrorCnt++;
+//     u8Uart3_ErrorCnt++;
 
-    SS1 |= 0x0008 | 0x0004; /* enable UART3 receive and transmit */
+//     SS1 |= 0x0008 | 0x0004; /* enable UART3 receive and transmit */
 
-    SIR13 = 0x0007;
-    SREIF3 = CLEAR;
-}
+//     SIR13 = 0x0007;
+//     SREIF3 = CLEAR;
+// }
 
 /***********************************************************************************************************************
  * Function Name: System_ini

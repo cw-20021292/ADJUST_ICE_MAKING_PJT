@@ -501,14 +501,7 @@ void ice_make_operation(void)
         case STATE_21_ICE_SWITCH_MOVE :
 
             GasSwitchIce();
-            if(GetUsedFreezingTable() == SET)
-            {
-                gu8IceStep = STATE_22_WAIT_ICE_MAKING_TIME;
-            }
-            else
-            {
-                gu8IceStep = STATE_30_CALC_ICE_MAKING_TIME;
-            }
+            gu8IceStep = STATE_22_WAIT_ICE_MAKING_TIME;
 
             u8IceStepTime = 0;
 
@@ -620,16 +613,21 @@ void ice_make_operation(void)
             break;
 
         case STATE_32_DRAIN_EMPTY:
-            // 탱크가 비면 이동
+            // 드레인탱크가 비워지면 다음 단계로 이동
             if(u8DrainWaterLevel == Bit0_Drain_Water_Empty)
             {
                 gu8IceStep = STATE_40_ICE_TRAY_MOVE_DOWN;
+            }
+            else
+            {
+                // 드레인탱크가 비어있지 않으면 드레인완료 될 때까지 대기
             }
             break;
 
         //-----------------------------------------------// ??????????
         case STATE_40_ICE_TRAY_MOVE_DOWN :
-			if(F_TrayMotorDOWN != SET && gu8IceTrayLEV == ICE_TRAY_POSITION_ICE_THROW)
+			if(F_TrayMotorDOWN != SET
+            && gu8IceTrayLEV == ICE_TRAY_POSITION_ICE_THROW)
             {
 				F_TrayMotorDOWN = 0;
                 gu8IceStep = STATE_41_DRAIN_FLOW_CALCUATE;
@@ -639,14 +637,15 @@ void ice_make_operation(void)
 
         /* [2025-11-19] 드레인 제빙수 물량 계산 */
         case STATE_41_DRAIN_FLOW_CALCUATE:
+            // 드레인되는 물량 확인
             if(u8DrainWaterLevel == Bit0_Drain_Water_Empty)
             {
                 gu8IceStep = STATE_42_NEXT_ICE_AMOUNT_CAL;
             }
             break;
 
-        /* 다음 물량 계산 (보정) */
         case STATE_42_NEXT_ICE_AMOUNT_CAL:
+            /* 다음 물량 계산 (보정) */
             SetDrainPrevFlowHz(GetDrainCurFlowHz());
             SetDrainCurFlowHz(GetDrainFlow());
             ProcessIceMaking();

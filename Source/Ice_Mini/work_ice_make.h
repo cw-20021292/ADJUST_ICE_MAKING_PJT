@@ -11,11 +11,11 @@
 #define            ICE_MAKE_TIME_MAX        21000
 
 
-#define ZONE_1_GAIN (0.8F)      // 심각 과제빙
-#define ZONE_2_GAIN (0.3F)      // 살짝 과제빙
-#define ZONE_3_GAIN (0.3F)      // 살짝 부족
-#define ZONE_4_GAIN (0.8F)      // 심각 부족
-#define ZONE_5_GAIN (0.1F)     // 거의 맞음 (MID_ZONE)
+#define ZONE_1_GAIN (0.7F)      // 심각 과제빙
+#define ZONE_2_GAIN (0.2F)      // 살짝 과제빙
+#define ZONE_3_GAIN (0.2F)      // 살짝 부족
+#define ZONE_4_GAIN (0.7F)      // 심각 부족
+#define ZONE_5_GAIN (0.05F)     // 거의 맞음 (MID_ZONE)
 
 
 void ProcessIceMaking(void);

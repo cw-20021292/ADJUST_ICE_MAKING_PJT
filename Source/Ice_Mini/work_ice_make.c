@@ -97,18 +97,18 @@ void ProcessIceMaking(void)
 
             // 최근 3회 평균 계산
             IceAdjust.u16IceMakeAvgFlow = (U16)((IceAdjust.u16IceMakeFlowHistory[0] +
-                                                    IceAdjust.u16IceMakeFlowHistory[1] +
-                                                    IceAdjust.u16IceMakeFlowHistory[2]) / 3);
+                                                IceAdjust.u16IceMakeFlowHistory[1] +
+                                                IceAdjust.u16IceMakeFlowHistory[2]) / 3);
         }
     }
 
     // 보정 Gain 설정
-    if(IceAdjust.u16IceMakeAvgFlow > GetCCToHz(120))              // 110ml 이상 제빙
+    if(IceAdjust.u16IceMakeAvgFlow > GetCCToHz(90))              // 110ml 이상 제빙
     {
         // zone 1 (심각 과제빙) : 강하게 줄이기
         SetGain(ZONE_1_GAIN);
     }
-    else if(IceAdjust.u16IceMakeAvgFlow > GetCCToHz(70))         // 90ml 이상 제빙
+    else if(IceAdjust.u16IceMakeAvgFlow > GetCCToHz(75))         // 90ml 이상 제빙
     {
         // zone 2 (살짝 과제빙) : 부드럽게 줄이기
         SetGain(ZONE_2_GAIN);
@@ -118,7 +118,7 @@ void ProcessIceMaking(void)
         // zone 4 (심각 부족) : 강하게 늘리기
         SetGain(ZONE_4_GAIN);
     }
-    else if(IceAdjust.u16IceMakeAvgFlow < GetCCToHz(60))         // 50ml 이하 제빙
+    else if(IceAdjust.u16IceMakeAvgFlow < GetCCToHz(50))         // 50ml 이하 제빙
     {
         // zone 3 (살짝 부족) : 부드럽게 늘리기
         SetGain(ZONE_3_GAIN);

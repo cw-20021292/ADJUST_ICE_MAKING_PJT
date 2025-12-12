@@ -67,7 +67,8 @@ U16 GetDrainFlow(void)
         // 트레이에 남는 물, 드레인탱크에 남는 물, 오차(기타손실) 등을 생각해서 +10cc 보정
         //    return ((DrainFlow.gu16IceMakeBeforeFlowHz - DrainFlow.gu16IceMakeAfterFlowHz) + GetCCToHz(10));
         // 오차 -15cc로 보정
-        return (U16)((DrainFlow.gu16IceMakeBeforeFlowHz - DrainFlow.gu16IceMakeAfterFlowHz) - GetCCToHz(15));
+        // return (U16)((DrainFlow.gu16IceMakeBeforeFlowHz - DrainFlow.gu16IceMakeAfterFlowHz) - GetCCToHz(15));
+        return (U16)((DrainFlow.gu16IceMakeBeforeFlowHz - DrainFlow.gu16IceMakeAfterFlowHz));
     }
     else
     {
@@ -78,7 +79,7 @@ U16 GetDrainFlow(void)
 // CC단위를 Hz단위로 변환
 U16 GetCCToHz(U16 u16CC)
 {
-    F32 OneCC = 3.32F;
+    F32 OneCC = C_CUP_MY_PURE;
     return (U16)(u16CC * OneCC);
 }
 

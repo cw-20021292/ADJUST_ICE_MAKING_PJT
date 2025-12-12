@@ -267,6 +267,12 @@
       <ParentItem>3701bf1f-50c8-49c8-b67b-64894b79cfb2</ParentItem>
       <Property>ce7cf4dd-1d92-40a6-a31b-6588cdc0737d</Property>
     </Instance>
+    <Instance Guid="f3686ede-5994-4f92-855e-fabf08553f26">
+      <Name>Module</Name>
+      <Type>Category</Type>
+      <ParentItem>3701bf1f-50c8-49c8-b67b-64894b79cfb2</ParentItem>
+      <Property>08c1e64e-cb40-4a13-886f-82fe5d105374</Property>
+    </Instance>
     <Instance Guid="446a3d94-4e0e-49a6-ab4a-b09094d10ad8">
       <Name>WifiEtc</Name>
       <Type>Category</Type>
@@ -3006,6 +3012,119 @@
       <ParentItem>61c91cc6-c4f7-4786-9cfc-dca7aabe82d9</ParentItem>
       <Property>728feefd-230b-4c5c-acd4-c2472b94efb8</Property>
     </Instance>
+    <Instance Guid="2004ce67-3173-4aae-9a25-fb048b946c7b">
+      <Name>API</Name>
+      <Type>Category</Type>
+      <ParentItem>f3686ede-5994-4f92-855e-fabf08553f26</ParentItem>
+    </Instance>
+    <Instance Guid="73ad22f8-dc81-4ddc-bc48-5b7e0063b3df">
+      <Name>APP</Name>
+      <Type>Category</Type>
+      <ParentItem>f3686ede-5994-4f92-855e-fabf08553f26</ParentItem>
+    </Instance>
+    <Instance Guid="6cbf0247-d69f-4240-92db-55432e78be05">
+      <Name>HAL</Name>
+      <Type>Category</Type>
+      <ParentItem>f3686ede-5994-4f92-855e-fabf08553f26</ParentItem>
+    </Instance>
+    <Instance Guid="16f54a6e-8817-4cd4-8c16-60eb5eebdf78">
+      <Name>api_debug.c</Name>
+      <Type>File</Type>
+      <RelativePath>..\Source\Module\API\api_debug.c</RelativePath>
+      <TreeImageGuid>941832c1-fc3b-4e1b-94e8-01ea17128b42</TreeImageGuid>
+      <ParentItem>2004ce67-3173-4aae-9a25-fb048b946c7b</ParentItem>
+    </Instance>
+    <Instance Guid="fd34ce91-a3e3-42bb-9643-aff846d59a3f">
+      <Name>api_debug.h</Name>
+      <Type>File</Type>
+      <RelativePath>..\Source\Module\API\api_debug.h</RelativePath>
+      <TreeImageGuid>03cad1e8-2eb3-4cde-a8a3-982423631122</TreeImageGuid>
+      <ParentItem>2004ce67-3173-4aae-9a25-fb048b946c7b</ParentItem>
+    </Instance>
+    <Instance Guid="4ca361ec-5600-4d3c-b1e2-0e9e969c426d">
+      <Name>api_queue.c</Name>
+      <Type>File</Type>
+      <RelativePath>..\Source\Module\API\api_queue.c</RelativePath>
+      <TreeImageGuid>941832c1-fc3b-4e1b-94e8-01ea17128b42</TreeImageGuid>
+      <ParentItem>2004ce67-3173-4aae-9a25-fb048b946c7b</ParentItem>
+    </Instance>
+    <Instance Guid="30f33e40-edbb-4967-b1cd-1e0f10ebac2b">
+      <Name>api_queue.h</Name>
+      <Type>File</Type>
+      <RelativePath>..\Source\Module\API\api_queue.h</RelativePath>
+      <TreeImageGuid>03cad1e8-2eb3-4cde-a8a3-982423631122</TreeImageGuid>
+      <ParentItem>2004ce67-3173-4aae-9a25-fb048b946c7b</ParentItem>
+    </Instance>
+    <Instance Guid="6ec6023f-0e95-4167-8047-1b5c1d634682">
+      <Name>api_uart.c</Name>
+      <Type>File</Type>
+      <RelativePath>..\Source\Module\API\api_uart.c</RelativePath>
+      <TreeImageGuid>941832c1-fc3b-4e1b-94e8-01ea17128b42</TreeImageGuid>
+      <ParentItem>2004ce67-3173-4aae-9a25-fb048b946c7b</ParentItem>
+    </Instance>
+    <Instance Guid="40b735f4-0a5b-493a-8752-6c509998c01e">
+      <Name>api_uart.h</Name>
+      <Type>File</Type>
+      <RelativePath>..\Source\Module\API\api_uart.h</RelativePath>
+      <TreeImageGuid>03cad1e8-2eb3-4cde-a8a3-982423631122</TreeImageGuid>
+      <ParentItem>2004ce67-3173-4aae-9a25-fb048b946c7b</ParentItem>
+    </Instance>
+    <Instance Guid="2eb64763-40d5-424a-a3aa-5bf3b484c15c">
+      <Name>App_Comm.c</Name>
+      <Type>File</Type>
+      <RelativePath>..\Source\Module\APP\App_Comm.c</RelativePath>
+      <TreeImageGuid>941832c1-fc3b-4e1b-94e8-01ea17128b42</TreeImageGuid>
+      <ParentItem>73ad22f8-dc81-4ddc-bc48-5b7e0063b3df</ParentItem>
+    </Instance>
+    <Instance Guid="ff9cf546-6dcc-42bb-afc8-4816916a7be7">
+      <Name>App_Comm.h</Name>
+      <Type>File</Type>
+      <RelativePath>..\Source\Module\APP\App_Comm.h</RelativePath>
+      <TreeImageGuid>03cad1e8-2eb3-4cde-a8a3-982423631122</TreeImageGuid>
+      <ParentItem>73ad22f8-dc81-4ddc-bc48-5b7e0063b3df</ParentItem>
+    </Instance>
+    <Instance Guid="128fab94-00ba-482f-86d3-bf4dd08050d3">
+      <Name>App_Comm_CLI.c</Name>
+      <Type>File</Type>
+      <RelativePath>..\Source\Module\APP\App_Comm_CLI.c</RelativePath>
+      <TreeImageGuid>941832c1-fc3b-4e1b-94e8-01ea17128b42</TreeImageGuid>
+      <ParentItem>73ad22f8-dc81-4ddc-bc48-5b7e0063b3df</ParentItem>
+    </Instance>
+    <Instance Guid="14942079-81b2-4288-a05b-ac58652b622f">
+      <Name>App_Comm_CLI.h</Name>
+      <Type>File</Type>
+      <RelativePath>..\Source\Module\APP\App_Comm_CLI.h</RelativePath>
+      <TreeImageGuid>03cad1e8-2eb3-4cde-a8a3-982423631122</TreeImageGuid>
+      <ParentItem>73ad22f8-dc81-4ddc-bc48-5b7e0063b3df</ParentItem>
+    </Instance>
+    <Instance Guid="e11b9a6a-d8a2-4d3a-b35c-359b8c31ab59">
+      <Name>App_Comm_Protocol.c</Name>
+      <Type>File</Type>
+      <RelativePath>..\Source\Module\APP\App_Comm_Protocol.c</RelativePath>
+      <TreeImageGuid>941832c1-fc3b-4e1b-94e8-01ea17128b42</TreeImageGuid>
+      <ParentItem>73ad22f8-dc81-4ddc-bc48-5b7e0063b3df</ParentItem>
+    </Instance>
+    <Instance Guid="081e6ff4-0661-48e1-aa2e-c9f24ed35884">
+      <Name>App_Comm_Protocol.h</Name>
+      <Type>File</Type>
+      <RelativePath>..\Source\Module\APP\App_Comm_Protocol.h</RelativePath>
+      <TreeImageGuid>03cad1e8-2eb3-4cde-a8a3-982423631122</TreeImageGuid>
+      <ParentItem>73ad22f8-dc81-4ddc-bc48-5b7e0063b3df</ParentItem>
+    </Instance>
+    <Instance Guid="fa4bcc58-d8b7-4e3b-9f47-5185a9ad4f58">
+      <Name>hal_serial.c</Name>
+      <Type>File</Type>
+      <RelativePath>..\Source\Module\HAL\hal_serial.c</RelativePath>
+      <TreeImageGuid>941832c1-fc3b-4e1b-94e8-01ea17128b42</TreeImageGuid>
+      <ParentItem>6cbf0247-d69f-4240-92db-55432e78be05</ParentItem>
+    </Instance>
+    <Instance Guid="d7ec2a5b-e4d0-4053-a2b1-3e181ffe87f6">
+      <Name>hal_serial.h</Name>
+      <Type>File</Type>
+      <RelativePath>..\Source\Module\HAL\hal_serial.h</RelativePath>
+      <TreeImageGuid>03cad1e8-2eb3-4cde-a8a3-982423631122</TreeImageGuid>
+      <ParentItem>6cbf0247-d69f-4240-92db-55432e78be05</ParentItem>
+    </Instance>
   </Class>
   <Class Guid="fb98844b-2c27-4275-9804-f6e63e204da0">
     <Instance Guid="2a349cb6-b982-4ade-adcd-104b883ad81c">
@@ -3541,6 +3660,12 @@
     <Instance Guid="412d941d-aa79-47a2-aceb-f02d5e7a9eeb">
       <MemoCount>0</MemoCount>
     </Instance>
+    <Instance Guid="eb70009a-d181-4876-b5d0-4be7f4e9c2b9">
+      <MemoCount>0</MemoCount>
+    </Instance>
+    <Instance Guid="3a2df3c1-6d65-47d9-af9b-e43fb93d09f9">
+      <MemoCount>0</MemoCount>
+    </Instance>
     <Instance Guid="b192acef-a374-4556-a9c5-84ae6a5bade6">
       <MemoCount>0</MemoCount>
     </Instance>
@@ -3940,12 +4065,6 @@
     <Instance Guid="47616e48-b312-4420-aba4-40433b5210ea">
       <MemoCount>0</MemoCount>
     </Instance>
-    <Instance Guid="eb70009a-d181-4876-b5d0-4be7f4e9c2b9">
-      <MemoCount>0</MemoCount>
-    </Instance>
-    <Instance Guid="3a2df3c1-6d65-47d9-af9b-e43fb93d09f9">
-      <MemoCount>0</MemoCount>
-    </Instance>
     <Instance Guid="728feefd-230b-4c5c-acd4-c2472b94efb8">
       <MemoCount>0</MemoCount>
     </Instance>
@@ -3982,6 +4101,9 @@
       <MemoCount>0</MemoCount>
     </Instance>
     <Instance Guid="ce7cf4dd-1d92-40a6-a31b-6588cdc0737d">
+      <MemoCount>0</MemoCount>
+    </Instance>
+    <Instance Guid="08c1e64e-cb40-4a13-886f-82fe5d105374">
       <MemoCount>0</MemoCount>
     </Instance>
     <Instance Guid="e23dd102-c480-4b52-8f39-65388730904e">
@@ -4408,7 +4530,21 @@
       <SourceItemType179>CSource</SourceItemType179>
       <SourceItemGuid180>eed1f513-4d7c-48e9-967c-d3b482d0dddb</SourceItemGuid180>
       <SourceItemType180>CSource</SourceItemType180>
-      <SourceItemCount>181</SourceItemCount>
+      <SourceItemGuid181>16f54a6e-8817-4cd4-8c16-60eb5eebdf78</SourceItemGuid181>
+      <SourceItemType181>CSource</SourceItemType181>
+      <SourceItemGuid182>4ca361ec-5600-4d3c-b1e2-0e9e969c426d</SourceItemGuid182>
+      <SourceItemType182>CSource</SourceItemType182>
+      <SourceItemGuid183>6ec6023f-0e95-4167-8047-1b5c1d634682</SourceItemGuid183>
+      <SourceItemType183>CSource</SourceItemType183>
+      <SourceItemGuid184>2eb64763-40d5-424a-a3aa-5bf3b484c15c</SourceItemGuid184>
+      <SourceItemType184>CSource</SourceItemType184>
+      <SourceItemGuid185>128fab94-00ba-482f-86d3-bf4dd08050d3</SourceItemGuid185>
+      <SourceItemType185>CSource</SourceItemType185>
+      <SourceItemGuid186>e11b9a6a-d8a2-4d3a-b35c-359b8c31ab59</SourceItemGuid186>
+      <SourceItemType186>CSource</SourceItemType186>
+      <SourceItemGuid187>fa4bcc58-d8b7-4e3b-9f47-5185a9ad4f58</SourceItemGuid187>
+      <SourceItemType187>CSource</SourceItemType187>
+      <SourceItemCount>188</SourceItemCount>
       <VfiSourceItemCount>0</VfiSourceItemCount>
       <LastDeviceChangedCounter>3</LastDeviceChangedCounter>
     </Instance>
@@ -4532,8 +4668,11 @@ cl0rle.lib
       <NumberOfLinesPerPage-DefaultValue>0</NumberOfLinesPerPage-DefaultValue>
       <TabWidth-DefaultValue>8</TabWidth-DefaultValue>
       <IsLockedByUser>False</IsLockedByUser>
-      <TimeTagModified--0>-8584482716690358089</TimeTagModified--0>
-      <AdditionalIncludePaths-0>..\Source\Ice_Mini
+      <TimeTagModified--0>-8584362661209909602</TimeTagModified--0>
+      <AdditionalIncludePaths-0>..\Source\Module\HAL
+..\Source\Module\APP
+..\Source\Module\API
+..\Source\Ice_Mini
 ..\Source\Core\H File
 ..\Source\User
 ..\Source\Core
@@ -4796,7 +4935,7 @@ Lib
       <HexadecimalFileFormat-DefaultValue>IntelExtended</HexadecimalFileFormat-DefaultValue>
       <SplittingOfHexadecimalFile-DefaultValue>False</SplittingOfHexadecimalFile-DefaultValue>
       <IsLockedByUser>False</IsLockedByUser>
-      <TimeTagModified--0>-8584379189186268162</TimeTagModified--0>
+      <TimeTagModified--0>-8584362541145532774</TimeTagModified--0>
       <ErrorListFile-0>False</ErrorListFile-0>
       <FillingOfFreeMemorySpace-0>True</FillingOfFreeMemorySpace-0>
       <HexadecimalFile-0>True</HexadecimalFile-0>
@@ -4806,7 +4945,7 @@ Lib
       <HexadecimalFileOutputFolder-0>..\Hex Output</HexadecimalFileOutputFolder-0>
       <PostObjectConvertCommands-0 />
       <FillingStartAddress-0 />
-      <HexadecimalFileName-0>MAIN_CHPI_7420N_2KG_MAX_V9.9.9.9_CS_251121.hex</HexadecimalFileName-0>
+      <HexadecimalFileName-0>MAIN_CHPI_7420N_2KG_MAX_V9.9.9.9_CS_251210.hex</HexadecimalFileName-0>
       <OtherAdditionalOptions-0 />
       <FillingSize-0 />
       <HexadecimalFileFormat-0>IntelExtended</HexadecimalFileFormat-0>
@@ -6313,6 +6452,62 @@ Lib
       <ItemAddTime>638995739437478860</ItemAddTime>
       <ItemAddTimeCount>1</ItemAddTimeCount>
     </Instance>
+    <Instance Guid="16f54a6e-8817-4cd4-8c16-60eb5eebdf78">
+      <ItemAddTime>639009699644746174</ItemAddTime>
+      <ItemAddTimeCount>0</ItemAddTimeCount>
+    </Instance>
+    <Instance Guid="fd34ce91-a3e3-42bb-9643-aff846d59a3f">
+      <ItemAddTime>639009699644746174</ItemAddTime>
+      <ItemAddTimeCount>1</ItemAddTimeCount>
+    </Instance>
+    <Instance Guid="4ca361ec-5600-4d3c-b1e2-0e9e969c426d">
+      <ItemAddTime>639009699644746174</ItemAddTime>
+      <ItemAddTimeCount>2</ItemAddTimeCount>
+    </Instance>
+    <Instance Guid="30f33e40-edbb-4967-b1cd-1e0f10ebac2b">
+      <ItemAddTime>639009699644746174</ItemAddTime>
+      <ItemAddTimeCount>3</ItemAddTimeCount>
+    </Instance>
+    <Instance Guid="6ec6023f-0e95-4167-8047-1b5c1d634682">
+      <ItemAddTime>639009699644746174</ItemAddTime>
+      <ItemAddTimeCount>4</ItemAddTimeCount>
+    </Instance>
+    <Instance Guid="40b735f4-0a5b-493a-8752-6c509998c01e">
+      <ItemAddTime>639009699644746174</ItemAddTime>
+      <ItemAddTimeCount>5</ItemAddTimeCount>
+    </Instance>
+    <Instance Guid="2eb64763-40d5-424a-a3aa-5bf3b484c15c">
+      <ItemAddTime>639009699644836135</ItemAddTime>
+      <ItemAddTimeCount>0</ItemAddTimeCount>
+    </Instance>
+    <Instance Guid="ff9cf546-6dcc-42bb-afc8-4816916a7be7">
+      <ItemAddTime>639009699644836135</ItemAddTime>
+      <ItemAddTimeCount>1</ItemAddTimeCount>
+    </Instance>
+    <Instance Guid="128fab94-00ba-482f-86d3-bf4dd08050d3">
+      <ItemAddTime>639009699644836135</ItemAddTime>
+      <ItemAddTimeCount>2</ItemAddTimeCount>
+    </Instance>
+    <Instance Guid="14942079-81b2-4288-a05b-ac58652b622f">
+      <ItemAddTime>639009699644836135</ItemAddTime>
+      <ItemAddTimeCount>3</ItemAddTimeCount>
+    </Instance>
+    <Instance Guid="e11b9a6a-d8a2-4d3a-b35c-359b8c31ab59">
+      <ItemAddTime>639009699644836135</ItemAddTime>
+      <ItemAddTimeCount>4</ItemAddTimeCount>
+    </Instance>
+    <Instance Guid="081e6ff4-0661-48e1-aa2e-c9f24ed35884">
+      <ItemAddTime>639009699644836135</ItemAddTime>
+      <ItemAddTimeCount>5</ItemAddTimeCount>
+    </Instance>
+    <Instance Guid="fa4bcc58-d8b7-4e3b-9f47-5185a9ad4f58">
+      <ItemAddTime>639009699644866206</ItemAddTime>
+      <ItemAddTimeCount>0</ItemAddTimeCount>
+    </Instance>
+    <Instance Guid="d7ec2a5b-e4d0-4053-a2b1-3e181ffe87f6">
+      <ItemAddTime>639009699644866206</ItemAddTime>
+      <ItemAddTimeCount>1</ItemAddTimeCount>
+    </Instance>
     <Instance Guid="2317529b-91c1-49b6-8351-6d8f51718b0d">
       <TimeTagModified-SourceItem0--0>-8586317059478255625</TimeTagModified-SourceItem0--0>
       <SourceItem0-IsLockedByUser>False</SourceItem0-IsLockedByUser>
@@ -7039,6 +7234,34 @@ Lib
       <SourceItem180-IsLockedByUser>False</SourceItem180-IsLockedByUser>
       <SourceItem180-BuildingTarget-0>True</SourceItem180-BuildingTarget-0>
       <SourceItem180-IndividualCompileOption-0>False</SourceItem180-IndividualCompileOption-0>
+      <TimeTagModified-SourceItem181--0>-8584362661210029634</TimeTagModified-SourceItem181--0>
+      <SourceItem181-IsLockedByUser>False</SourceItem181-IsLockedByUser>
+      <SourceItem181-BuildingTarget-0>True</SourceItem181-BuildingTarget-0>
+      <SourceItem181-IndividualCompileOption-0>False</SourceItem181-IndividualCompileOption-0>
+      <TimeTagModified-SourceItem182--0>-8584362661210029634</TimeTagModified-SourceItem182--0>
+      <SourceItem182-IsLockedByUser>False</SourceItem182-IsLockedByUser>
+      <SourceItem182-BuildingTarget-0>True</SourceItem182-BuildingTarget-0>
+      <SourceItem182-IndividualCompileOption-0>False</SourceItem182-IndividualCompileOption-0>
+      <TimeTagModified-SourceItem183--0>-8584362661210029634</TimeTagModified-SourceItem183--0>
+      <SourceItem183-IsLockedByUser>False</SourceItem183-IsLockedByUser>
+      <SourceItem183-BuildingTarget-0>True</SourceItem183-BuildingTarget-0>
+      <SourceItem183-IndividualCompileOption-0>False</SourceItem183-IndividualCompileOption-0>
+      <TimeTagModified-SourceItem184--0>-8584362661209939673</TimeTagModified-SourceItem184--0>
+      <SourceItem184-IsLockedByUser>False</SourceItem184-IsLockedByUser>
+      <SourceItem184-BuildingTarget-0>True</SourceItem184-BuildingTarget-0>
+      <SourceItem184-IndividualCompileOption-0>False</SourceItem184-IndividualCompileOption-0>
+      <TimeTagModified-SourceItem185--0>-8584362661209939673</TimeTagModified-SourceItem185--0>
+      <SourceItem185-IsLockedByUser>False</SourceItem185-IsLockedByUser>
+      <SourceItem185-BuildingTarget-0>True</SourceItem185-BuildingTarget-0>
+      <SourceItem185-IndividualCompileOption-0>False</SourceItem185-IndividualCompileOption-0>
+      <TimeTagModified-SourceItem186--0>-8584362661209939673</TimeTagModified-SourceItem186--0>
+      <SourceItem186-IsLockedByUser>False</SourceItem186-IsLockedByUser>
+      <SourceItem186-BuildingTarget-0>True</SourceItem186-BuildingTarget-0>
+      <SourceItem186-IndividualCompileOption-0>False</SourceItem186-IndividualCompileOption-0>
+      <TimeTagModified-SourceItem187--0>-8584362661209899596</TimeTagModified-SourceItem187--0>
+      <SourceItem187-IsLockedByUser>False</SourceItem187-IsLockedByUser>
+      <SourceItem187-BuildingTarget-0>True</SourceItem187-BuildingTarget-0>
+      <SourceItem187-IndividualCompileOption-0>False</SourceItem187-IndividualCompileOption-0>
     </Instance>
   </Class>
   <Class Guid="44fa27c9-0aa0-4297-bd3b-2c5c5bdb8881">
@@ -9748,7 +9971,7 @@ Lib
     &lt;PIOR4Value Name="PIOR4Value" Text="0" /&gt;
     &lt;PIOR5Value Name="PIOR5Value" Text="0" /&gt;
     &lt;ProjectName Name="PrjName" Text="Flash" /&gt;
-    &lt;ProjectPath Name="PrjPath" Text="D:\Project\Water\2025\WORKS\ADJUST_ICE_MAKING_PJT\Flash" /&gt;
+    &lt;ProjectPath Name="PrjPath" Text="D:\00_Project\02_Water\2025\WORKS\ADJUST_ICE_MAKING_PJT\Flash" /&gt;
     &lt;ProjectKind Name="PrjKind" Text="Project78K0R" /&gt;
     &lt;DeviceName Name="DeviceName" Fixed="" Text="RL78G13" /&gt;
     &lt;MCUName Name="MCUName" Text="RL78G13_128pin" /&gt;
