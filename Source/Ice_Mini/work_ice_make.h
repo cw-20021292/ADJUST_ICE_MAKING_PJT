@@ -29,6 +29,6 @@ void SetNextIceMakeTime(U16 NextIceMakeTime);
 U16 GetNextIceMakeTime(void);
 void SetThisTimeIceMakeTime(U16 ThisTimeIceMakeTime);
 U16 GetThisTimeIceMakeTime(void);
-static void SetTheoryRatio(U16 Avg);
+static void SetTheoryRatio(I16 Avg);
 
 #endif

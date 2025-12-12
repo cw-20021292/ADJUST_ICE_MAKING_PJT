@@ -8,10 +8,10 @@
 typedef struct _drain_flow_
 {
     U8  u8FlowMeter;                   /* 제빙수 유량센서 플래그 */
-    I16 gu16IceMakeBeforeFlowHz;       /* 제빙수 전 유량센서 측정값 */
-    I16 gu16IceMakeAfterFlowHz;        /* 제빙수 후 유량센서 측정값 */
-    I16 gu16VIcePrevFlowHz;            /* 제빙수 이전 유량센서 측정값 */
-    I16 gu16VIceCurFlowHz;             /* 제빙수 현재 유량센서 측정값 */
+    I16 i16IceMakeBeforeFlowHz;       /* 제빙수 전 유량센서 측정값 */
+    I16 i16IceMakeAfterFlowHz;        /* 제빙수 후 유량센서 측정값 */
+    I16 i16VIcePrevFlowHz;            /* 제빙수 이전 유량센서 측정값 */
+    I16 i16VIceCurFlowHz;             /* 제빙수 현재 유량센서 측정값 */
 } DRAIN_FLOW_T;
 DRAIN_FLOW_T DrainFlow;
 
@@ -19,56 +19,52 @@ DRAIN_FLOW_T DrainFlow;
 * Function Name: System_ini
 * Description  : 제빙수 입수유량 설정
 ***********************************************************************************************************************/
-void SetDrainBeforeFlowHz(U16 u16FlowHz)
+void SetDrainBeforeFlowHz(I16 i16FlowHz)
 {
-    DrainFlow.gu16IceMakeBeforeFlowHz = u16FlowHz;
+    DrainFlow.i16IceMakeBeforeFlowHz = i16FlowHz;
 }
 
-U16 GetDrainBeforeFlowHz(void)
+I16 GetDrainBeforeFlowHz(void)
 {
-    return DrainFlow.gu16IceMakeBeforeFlowHz;
+    return DrainFlow.i16IceMakeBeforeFlowHz;
 }
 
-void SetDrainAfterFlowHz(U16 u16FlowHz)
+void SetDrainAfterFlowHz(I16 i16FlowHz)
 {
-    DrainFlow.gu16IceMakeAfterFlowHz = u16FlowHz;
+    DrainFlow.i16IceMakeAfterFlowHz = i16FlowHz;
 }
 
-U16 GetDrainAfterFlowHz(void)
+I16 GetDrainAfterFlowHz(void)
 {
-    return DrainFlow.gu16IceMakeAfterFlowHz;
+    return DrainFlow.i16IceMakeAfterFlowHz;
 }
 
-void SetDrainPrevFlowHz(U16 u16FlowHz)
+void SetDrainPrevFlowHz(I16 i16FlowHz)
 {
-    DrainFlow.gu16VIcePrevFlowHz = u16FlowHz;
+    DrainFlow.i16VIcePrevFlowHz = i16FlowHz;
 }
 
-U16 GetDrainPrevFlowHz(void)
+I16 GetDrainPrevFlowHz(void)
 {
-    return DrainFlow.gu16VIcePrevFlowHz;
+    return DrainFlow.i16VIcePrevFlowHz;
 }
 
-void SetDrainCurFlowHz(U16 u16FlowHz)
+void SetDrainCurFlowHz(I16 i16FlowHz)
 {
-    DrainFlow.gu16VIceCurFlowHz = u16FlowHz;
+    DrainFlow.i16VIceCurFlowHz = i16FlowHz;
 }
 
-U16 GetDrainCurFlowHz(void)
+I16 GetDrainCurFlowHz(void)
 {
-    return DrainFlow.gu16VIceCurFlowHz;
+    return DrainFlow.i16VIceCurFlowHz;
 }
 
 // 총 제빙에 사용된 물량 계산 (Hz단위를 cc단위로 변환해야됨)
-U16 GetDrainFlow(void)
+I16 GetDrainFlow(void)
 {
-    if(((DrainFlow.gu16IceMakeBeforeFlowHz - DrainFlow.gu16IceMakeAfterFlowHz) - GetCCToHz(15)) > 0)
+    if((DrainFlow.i16IceMakeBeforeFlowHz - DrainFlow.i16IceMakeAfterFlowHz) > 0)
     {
-        // 트레이에 남는 물, 드레인탱크에 남는 물, 오차(기타손실) 등을 생각해서 +10cc 보정
-        //    return ((DrainFlow.gu16IceMakeBeforeFlowHz - DrainFlow.gu16IceMakeAfterFlowHz) + GetCCToHz(10));
-        // 오차 -15cc로 보정
-        // return (U16)((DrainFlow.gu16IceMakeBeforeFlowHz - DrainFlow.gu16IceMakeAfterFlowHz) - GetCCToHz(15));
-        return (U16)((DrainFlow.gu16IceMakeBeforeFlowHz - DrainFlow.gu16IceMakeAfterFlowHz));
+        return (DrainFlow.i16IceMakeBeforeFlowHz - DrainFlow.i16IceMakeAfterFlowHz);
     }
     else
     {
@@ -92,27 +88,27 @@ F32 SetValidGain(void)
 {
     F32 mf32_isvalid = INVALID;
 
-    U16 mu16_cur_flow = GetDrainCurFlowHz();
-    U16 mu16_prev_flow = GetDrainPrevFlowHz();
+    I16 i16_cur_flow = GetDrainCurFlowHz();
+    I16 i16_prev_flow = GetDrainPrevFlowHz();
     F32 mf32_diff = 0.0F;
 
     // 현재 유량이 이전 유량보다 크면 차이를 계산
-    if(mu16_cur_flow > mu16_prev_flow)
+    if(i16_cur_flow > i16_prev_flow)
     {
-        mf32_diff = (F32)(mu16_cur_flow - mu16_prev_flow);
+        mf32_diff = (F32)(i16_cur_flow - i16_prev_flow);
     }
     else
     {
-        mf32_diff = (F32)(mu16_prev_flow - mu16_cur_flow);
+        mf32_diff = (F32)(i16_prev_flow - i16_cur_flow);
     }
 
     // 배수유량이 입수유량의 +5%보다 크면 NG
-    if(DrainFlow.gu16IceMakeAfterFlowHz > (U16)(DrainFlow.gu16IceMakeBeforeFlowHz * 1.05))
+    if(DrainFlow.i16IceMakeAfterFlowHz > (U16)(DrainFlow.i16IceMakeBeforeFlowHz * 1.05))
     {
         return INVALID;
     }
     // 배수유량이 입수유량보다 크거나, 차이가 80cc 이상이면 의심
-    else if((DrainFlow.gu16IceMakeAfterFlowHz > DrainFlow.gu16IceMakeBeforeFlowHz)
+    else if((DrainFlow.i16IceMakeAfterFlowHz > DrainFlow.i16IceMakeBeforeFlowHz)
     || (mf32_diff > (F32)GetCCToHz(80))         // 80cc 이상 차이나면 케이스 의심
     )
     {
@@ -170,7 +166,7 @@ void DrainFlowInput(void)
 
     if(GetIceStep() == STATE_41_DRAIN_FLOW_CALCUATE)
     {
-        DrainFlow.gu16IceMakeAfterFlowHz++;
+        DrainFlow.i16IceMakeAfterFlowHz++;
     }
 
     DrainFlowStop();
