@@ -1,2 +1,114 @@
-# ICON_ICE_MINI
-ì•„ì´ì½˜ ì•„ì´ìŠ¤ ë¯¸ë‹ˆ
+# ?? Ice-Making Auto Calibration Firmware
+**Smart Ice-Making Time Adjustment Algorithm for Embedded Systems**
+
+ÀÌ ÇÁ·ÎÁ§Æ®´Â **Á¦ºù ÀåÄ¡(Ice Maker)**¿¡¼­ ¹ß»ýÇÏ´Â È¯°æ ÆíÂ÷, À¯·®¼¾¼­ ¿ÀÂ÷, ³Ãµ¿ È¿À² º¯È­ µîÀ» ÀÚµ¿À¸·Î º¸Á¤ÇÏ¿©
+**Ç×»ó ¸ñÇ¥ Á¦ºù·®(¿¹: 70ml)À» ´Þ¼ºÇÏµµ·Ï Á¦ºù ½Ã°£À» ÀÚµ¿ Á¶Á¤ÇÏ´Â Æß¿þ¾î**ÀÔ´Ï´Ù.
+
+ÀÔ¼ö·®¡¤³Ã¸Å ¿Âµµ¡¤È¯°æ ¿Âµµ¡¤À¯·®¼¾¼­ ¿ÀÂ÷ ¶§¹®¿¡ Á¦ºù·®ÀÌ º¯µ¿µÇ´Â ½ÇÁ¦ »óÈ²¿¡¼­
+**Zone ±â¹Ý ÆÇ´Ü + ºñ·Ê Á¦¾î(Ratio Control)**¸¦ Á¶ÇÕÇÑ Closed-loop º¸Á¤ ½Ã½ºÅÛÀ» ¼³°èÇß½À´Ï´Ù.
+
+---
+
+## ? ÇÁ·ÎÁ§Æ® ¸ñÀû
+
+- Á¦ºù·®ÀÌ ºÎÁ·ÇÏ°Å³ª °úµµÇÒ ¶§ **ÀÚµ¿À¸·Î Á¦ºù½Ã°£À» Á¶Àý**ÇÏ¿© Ç×»ó ¸ñÇ¥ Á¦ºù·®À» ´Þ¼º
+- À¯·®¼¾¼­ ¿ÀÂ÷(¡¾5~10%) ¶Ç´Â °è»ê ÆíÂ÷¸¦ °í·ÁÇÑ **°­°Ç Á¦ºù ¾Ë°í¸®Áò(Robust Algorithm)** ±¸Çö
+- Æò±Õ Á¦ºù À¯·® ±â¹ÝÀÇ **3-Cycle Rolling Average ÇÊÅÍ Àû¿ë**
+- Zone ±â¹ÝÀÇ ¿Â°Ç/°­ÇÑ º¸Á¤(Gain) ±¸Á¶·Î **¾ÈÁ¤¼º°ú ¹ÝÀÀ¼º ±ÕÇü È®º¸**
+
+---
+
+## ? ÁÖ¿ä ±â´É
+
+### 1. **ÃÖ±Ù 3È¸ Á¦ºù·® ±â¹Ý Æò±Õ À¯·® °è»ê**
+- 1~3»çÀÌÅ¬±îÁö´Â ¼öÁýµÈ È÷½ºÅä¸® °³¼ö¸¸Å­ Æò±Õ
+- 3È¸ ÀÌ»óºÎÅÍ´Â FIFO ¹æ½ÄÀ¸·Î ÃÖ±Ù 3°³¸¸ »ç¿ë
+- ºñÁ¤»ó Èå¸§¿¡ ´ëÇÑ ÇÊÅÍ¸µ È¿°ú
+
+```c
+// ÃÖ±Ù 3°³ Á¦ºù À¯·®À» °ü¸®ÇÏ´Â FIFO ¹öÆÛ + Rolling Average
+IceAdjust.u16IceMakeFlowHistory[0..2]
+
+2. Zone ±â¹Ý Á¦ºù »óÅÂ ÆÇ´Ü (5´Ü°è)
+| Zone   | Á¶°Ç      | ÀÇ¹Ì       | º¸Á¤ ¹æÇâ    |
+| ------ | ------- | -------- | -------- |
+| Zone 1 | > 120ml | ½É°¢ °úÁ¦ºù   | ½Ã°£ Å©°Ô °¨¼Ò |
+| Zone 2 | > 75ml  | »ìÂ¦ °úÁ¦ºù   | ½Ã°£ °¨¼Ò    |
+| Zone 5 | 50~75ml | Á¤»ó(O.K.) | ¼ÒÆø º¸Á¤    |
+| Zone 3 | < 50ml  | ºÎÁ·       | ½Ã°£ Áõ°¡    |
+| Zone 4 | < 35ml  | ½É°¢ ºÎÁ·    | ½Ã°£ Å©°Ô Áõ°¡ |
+
+3. ºñ·Ê Á¦¾î ±â¹Ý ÀÚµ¿ º¸Á¤
+ratio_theory = target / avg;
+final_ratio  = 1 + gain * (ratio_theory - 1);
+NextTime     = CurrTime * final_ratio;
+
+Avg < Target ¡æ ratio > 1 ¡æ Á¦ºù½Ã°£ Áõ°¡
+Avg > Target ¡æ ratio < 1 ¡æ Á¦ºù½Ã°£ °¨¼Ò
+Áï, ¸Å Á¦ºù »çÀÌÅ¬¸¶´Ù Target¿¡ ÀÚµ¿ ¼ö·ÅÇÏ´Â ±¸Á¶.
+
+4. ¼¾¼­ ÀÌ»ó¡¤±Ø´Ü°ª º¸Á¤ Ã³¸®
+Avg°¡ 10ml ÀÌÇÏÀÎ ±Ø´Ü°ªÀº ÀÚµ¿ Å¬·¥ÇÎ
+Avg ¡Â 0 ¡æ Ratio = 1.0 (º¸Á¤ OFF)
+À¯·®¼¾¼­ ÀÌ»ó »óÅÂ¿¡¼­´Â Gain ÀÚµ¿ Ãà¼Ò ¡æ °úº¸Á¤ ¹æÁö
+
+5. ¾ÈÀü Á¦ÇÑ ·ÎÁ÷
+
+ÃÖ¼Ò¡¤ÃÖ´ë Á¦ºù½Ã°£ ¹üÀ§ °­Á¦ Àû¿ë
+
+ÇÑ »çÀÌÅ¬¿¡¼­ º¯È­ °¡´ÉÇÑ ½Ã°£Àº ¡¾600 ´ÜÀ§·Î Á¦ÇÑ
+¡æ Á¦¾î ¾ÈÁ¤¼º È®º¸(overshoot ¹æÁö)
+if (NextTime > CurrTime + 600) NextTime = CurrTime + 600;
+if (NextTime < CurrTime - 600) NextTime = CurrTime - 600;
+
+? ¼Ò½º ÄÚµå ±¸Á¶
+work_ice_make.c
+¦§¦¡ ProcessIceMaking()       // ¸ÞÀÎ ·ÎÁ÷: Æò±Õ °è»ê + Zone ÆÇ´Ü + Ratio °è»ê + ½Ã°£ ¾÷µ¥ÀÌÆ®
+¦§¦¡ SetTheoryRatio()         // Ratio °è»ê ÇÙ½É ÇÔ¼ö
+¦§¦¡ SetGain(), GetGain()     // Zone Gain Á¢±ÙÀÚ
+¦§¦¡ SetNextIceMakeTime()     // ´ÙÀ½ Á¦ºù½Ã°£ ¾÷µ¥ÀÌÆ®
+¦¦¦¡ IceAdjust (±¸Á¶Ã¼)       // Á¦ºù ·ÎÁ÷ »óÅÂ ÀúÀå
+
+? ICE_ADJUST_T ±¸Á¶Ã¼
+typedef struct {
+    F32 f32Gain;
+    U8  u8Cycle;
+    F32 f32Target;
+    F32 f32Ratio;
+    U16 u16NextIceMakeTime;
+    U16 u16ThisTimeIceMakeTime;
+    I16 i16IceMakeAvgFlow;
+    I16 i16IceMakeFlowHistory[3];
+} ICE_ADJUST_T;
+
+? Á¦¾î Èå¸§µµ
+DrainFlow ÃøÁ¤
+      ¡é
+ÃÖ±Ù 3È¸ Æò±Õ °è»ê (Rolling Avg)
+      ¡é
+Zone ÆÇ´Ü (1~5)
+      ¡é
+Gain °áÁ¤
+      ¡é
+Target / Avg ºñ·Ê°è»ê (Ratio Control)
+      ¡é
+Next Ice Making Time °áÁ¤
+      ¡é
+Á¦ÇÑ°ª Àû¿ë (min/max, ¥Älimit)
+
+? ÀåÁ¡
+ÀûÀÀÇü Á¦¾î: È¯°æ ¿Âµµ, ¿­±³È¯ È¿À², ¼¾¼­ ÆíÂ÷ º¯È­¿¡µµ ÀÚµ¿ ÀûÀÀ
+¾ÈÁ¤Àû ¼ö·Å: overshoot ¾ïÁ¦ & ºü¸¥ ¼ö·Å ¾çÂÊ È®º¸
+¼¾¼­ ¿ÀÂ÷¿¡ °­ÇÔ: 3-Cycle Æò±Õ + ÃÖ¼Ò°ª Å¬·¥ÇÎ
+À¯Áöº¸¼ö °£Æí: Gain º¯°æ¸¸À¸·Î Æ©´× °¡´É
+
+? ÇâÈÄ °³¼± ¹æÇâ (TODO)
+¿Âµµ/ºÎÇÏ ±â¹ÝÀÇ µ¿Àû Target Á¶Á¤
+¼¾¼­ ³ëÀÌÁî Á¦°Å¿ë IIR ÇÊÅÍ Ãß°¡
+Á¦ºù ½Ã°£?¼öÀ² ¸ÊÇÎ ±â¹ÝÀÇ Model-based Control Àû¿ë
+Web Dashboard(Log viewer) °³¹ß
+
+? Maintainer
+Developer: (Park Chanheum)
+Embedded Firmware / BLDC / ³Ã°¢½Ã½ºÅÛ Á¦¾î ·ÎÁ÷ ¼³°è
+

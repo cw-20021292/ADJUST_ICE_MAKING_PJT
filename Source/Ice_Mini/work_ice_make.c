@@ -169,28 +169,6 @@ void ProcessIceMaking(void)
 
 static void SetTheoryRatio(I16 Avg)
 {
-    // Avg < Target → ratio_theory > 1 → (ratio_theory - 1) > 0 → ratio > 1 → 시간 증가
-    // Avg > Target → ratio_theory < 1 → (ratio_theory - 1) < 0 → ratio < 1 → 시간 감소
-
-    // F32 mf32_target = (F32)GetCCToHz(ICE_V_TARGET);     /* 70ml 핑거 7개 */
-    // F32 mf32_ratio_theory = (F32)(mf32_target / Avg);
-    // F32 mf32_eff_ratio = (SetValidGain() * GetGain());
-    // F32 mf32_final_ratio = 0;
-
-    // // 10ml 미만은 의미 없는 값으로 보고
-    // if(Avg == 0)
-    // {
-    //     mf32_ratio_theory = 1.0F;
-    // }
-    // else if (Avg < GetCCToHz(10))
-    // {
-    //     Avg = GetCCToHz(10);
-    // }
-    // else {  }
-
-    // mf32_final_ratio = (1.0F + (mf32_eff_ratio * (F32)(mf32_ratio_theory - 1.0F)));
-    // SetTarget(mf32_target);
-    // SetRatio(mf32_final_ratio);
     F32 mf32_min_avg = 0;
     F32 mf32_avg = 0;
     F32 mf32_ratio_theory = 0;

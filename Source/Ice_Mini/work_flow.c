@@ -82,8 +82,6 @@ U16 GetCCToHz(U16 u16CC)
 // 배수유량이 입수유량의 +5%보다 크면 OK
 // SET : 케이스 사용 가능
 // CLEAR : 케이스 사용 불가
-
-
 F32 SetValidGain(void)
 {
     F32 mf32_isvalid = INVALID;
