@@ -454,9 +454,13 @@ void ice_make_operation(void)
             else
             {
 
-                    gu16_Ice_Tray_Fill_Hz = C_ICE_TRAY_FILL_200CC;
+                gu16_Ice_Tray_Fill_Hz = C_ICE_TRAY_FILL_200CC;
 
-                SetDrainBeforeFlowHz(gu16_Ice_Tray_Fill_Hz);
+                // [2025-12-15] CH.PARK 유량센서가 달라서 그러거나
+                // 펌프 뒷단이라서 그럴수도 있지만 일단 보정값 적용 (+480CC)
+                SetDrainBeforeFlowHz((C_ICE_TRAY_FILL_200CC - 450));        // 입수용량 : 530 (보정값 적용)
+
+                // 버려지는 물의 Hz값은 0부터 시작
                 SetDrainAfterFlowHz(0);
 
                 gu8IceStep = STATE_20_WATER_IN_ICE_TRAY;
@@ -590,8 +594,8 @@ void ice_make_operation(void)
 
             if(gu16IceMakeTime == 0)
             {
-                /*gu16IceHeaterTime = calc_ice_heater_time();*/
-                down_tray_motor();      // ??????? ?? ???
+                // [2025-12-15] [기술과제] CH.PARK 기존 : 제빙완료되면 즉시 트레이를 내림
+                // down_tray_motor();
 
                 gu8IceStep = STATE_32_DRAIN_EMPTY;
                 gu8_ice_take_off_tray_delay = CLEAR;
@@ -616,6 +620,8 @@ void ice_make_operation(void)
             // 드레인탱크가 비워지면 다음 단계로 이동
             if(u8DrainWaterLevel == Bit0_Drain_Water_Empty)
             {
+                // [2025-12-15] [기술과제] CH.PARK 변경 : 드레인탱크가 일단 비워지면 트레이를 내림
+                down_tray_motor();
                 gu8IceStep = STATE_40_ICE_TRAY_MOVE_DOWN;
             }
             else
@@ -629,7 +635,7 @@ void ice_make_operation(void)
 			if(F_TrayMotorDOWN != SET
             && gu8IceTrayLEV == ICE_TRAY_POSITION_ICE_THROW)
             {
-				F_TrayMotorDOWN = 0;
+				// F_TrayMotorDOWN = 0;
                 gu8IceStep = STATE_41_DRAIN_FLOW_CALCUATE;
             }
             else {}
