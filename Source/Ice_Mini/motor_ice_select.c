@@ -559,7 +559,7 @@ void IceStuckProcess(void)
  *
  * @return U8
  */
-void IceStuckProcess(void)
+void CheckIceDoorReedStatus(void)
 {
     /* 2025-10-28 CH.PARK 리드스위치 사용안하는 모델(기존모델)일 시 */
     if(GetModel() != MODEL_REED_USE)
