@@ -195,13 +195,13 @@ static void SetTheoryRatio(I16 Avg)
     }
 
     // 3) 이론 ratio 계산 (목표 / 평균)
-    mf32_ratio_theory = mf32_target / mf32_avg;
+    mf32_ratio_theory = (mf32_target / mf32_avg);
 
     // 4) 유효 Gain
     mf32_eff_ratio = SetValidGain() * GetGain();   // SetValidGain → GetValidGain 추천
 
     // 5) 최종 ratio
-    mf32_final_ratio = 1.0F + mf32_eff_ratio * (mf32_ratio_theory - 1.0F);
+    mf32_final_ratio = 1.0F + (mf32_eff_ratio * (mf32_ratio_theory - 1.0F));
 
     SetTarget(mf32_target);
     SetRatio(mf32_final_ratio);

@@ -75,7 +75,7 @@ I16 GetDrainFlow(void)
 // CC단위를 Hz단위로 변환
 U16 GetCCToHz(U16 u16CC)
 {
-    F32 OneCC = C_CUP_MY_PURE;
+    F32 OneCC = C_ICE_MAKING;
     return (U16)(u16CC * OneCC);
 }
 
