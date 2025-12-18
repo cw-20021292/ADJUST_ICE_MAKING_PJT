@@ -106,7 +106,7 @@ void ProcessIceMaking(void)
             sum += IceAdjust.i16IceMakeFlowHistory[1];
             sum += IceAdjust.i16IceMakeFlowHistory[2];
 
-            IceAdjust.i16IceMakeAvgFlow = (U16)(sum / 3U);
+            IceAdjust.i16IceMakeAvgFlow = (sum / 3U);
         }
     }
 
@@ -161,12 +161,13 @@ void ProcessIceMaking(void)
     {
         SetNextIceMakeTime((GetThisTimeIceMakeTime() - mu16DeltaTimeLimit));
     }
-    else
-    {
-        SetNextIceMakeTime(GetNextIceMakeTime());
-    }
 }
 
+/**
+ * @brief Set the Theory Ratio object
+ *
+ * @param Avg : 제빙에 사용된 물량 (입수된 물의 양 [고정값] - 제빙완료되고 버려진 물의 양)
+ */
 static void SetTheoryRatio(I16 Avg)
 {
     F32 mf32_min_avg = 0;
@@ -195,7 +196,7 @@ static void SetTheoryRatio(I16 Avg)
     }
 
     // 3) 이론 ratio 계산 (목표 / 평균)
-    // 현재로써는 Target은 126Hz
+    // [2025.12.18] 기준으로 Target은 94Hz
     mf32_ratio_theory = (mf32_target / mf32_avg);
 
     // 4) 유효 Gain (유량의 오차를 보고 30%만 보정할지 100%만 보정할지 판단)

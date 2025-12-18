@@ -1510,7 +1510,7 @@ typedef enum
 #define C_CUP_MY_COLD_120ML                   4.2831F    // ï¿½ï¿½ V2
 #define C_CUP_MY_PURE                         3.625F    // ï¿½ï¿½
 #define C_CUP_MY_HOT                          3.291F    // ï¿½ï¿½
-#define C_ICE_MAKING                          1.5F    // Á¦ºù À¯·®
+#define C_ICE_MAKING                          1.8F    // Á¦ºù À¯·®
 
 #define CUP_LEVEL__MAX CUP_LEVEL_CONTINUE
 /******************************************************************************/

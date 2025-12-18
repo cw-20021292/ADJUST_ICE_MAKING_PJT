@@ -4,10 +4,10 @@
 #include "Macrodriver.h"
 
 #define            ICE_FINGER_NUM       7
-#define            ICE_IDEAL_GRAM       8.0F
+#define            ICE_IDEAL_GRAM       9.0F
 #define            ICE_V_TARGET         (U16)(ICE_FINGER_NUM * ICE_IDEAL_GRAM)    // 70ml
 
-#define            ICE_MAKE_TIME_MIN        200
+#define            ICE_MAKE_TIME_MIN        2000
 #define            ICE_MAKE_TIME_MAX        21000
 
 

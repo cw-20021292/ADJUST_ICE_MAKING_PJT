@@ -458,7 +458,7 @@ void ice_make_operation(void)
 
                 // [2025-12-15] CH.PARK 유량센서가 달라서 그러거나
                 // 펌프 뒷단이라서 그럴수도 있지만 일단 보정값 적용 (+480CC)
-                SetDrainBeforeFlowHz((C_ICE_TRAY_FILL_200CC - 450));        // 입수용량 : 530 (보정값 적용)
+                SetDrainBeforeFlowHz((C_ICE_TRAY_FILL_200CC - 400));        // 입수용량 : 530 (보정값 적용)
 
                 // 버려지는 물의 Hz값은 0부터 시작
                 SetDrainAfterFlowHz(0);
@@ -537,36 +537,39 @@ void ice_make_operation(void)
                     else
                     {
                         // [2025-12-18] CH.PARK 본격적인 테스트 시작 (제빙테이블 최소값부터 시작해서 얼음크기 추정이 제대로 되는지 확인 시작)
-                        gu16IceMakeTime = 280;
+                        // 테스트케이스 1) 시작 제빙시간 280초 (4분 40초) -> 제빙테이블의 최소값
+                        // gu16IceMakeTime = 280;
+
+                        // 테스트케이스 2) 시작 제빙시간 800초 (13분 20초) -> 제빙테이블 중간값 이상값
+                        gu16IceMakeTime = 800;
+
+                        // 테스트케이스 3) 시작 제빙시간 200초 (3분 20초) -> 제빙테이블 최대값
+                        // gu16IceMakeTime = 200;
+
                         // gu16IceMakeTime = (U16)calc_ice_make_time( gu8_Amb_Front_Temperature_One_Degree, gu8_Room_Temperature_One_Degree);
                     }
 
-                    /*..hui [19-7-5???? 2:08:13] 100ms ???? ???? ????..*/
+                    /* 100ms니까 10배 곱해줌 */
                     gu16IceMakeTime = (U16)(gu16IceMakeTime  * 10);
-
                     IceTableDebug.ice_make_time = gu16IceMakeTime;
-                    /*..hui [25-3-27???? 1:34:22] ???? ???????????..*/
+
+                    /* 얼음대소 중 [소]크기 설정이면 기존 [대]크기에서 90%만 적용 */
                     if( bit_ice_size == ICE_SIZE_SMALL )
                     {
                         gu16IceMakeTime = (U16)((F32)gu16IceMakeTime * 0.9f);   // ?????? 80% -> 90%
                     }
                     else{}
 
-                    // 보정된 시간이 있을 경우 보정된 시간 적용
+                    // 보정된 시간이 있을 경우 보정된 시간 덮어써서 적용
                     if(GetNextIceMakeTime() > 0)
                     {
                         gu16IceMakeTime = GetNextIceMakeTime();
                     }
-                    else
-                    {
 
-                    }
-
+                    // 이번 제빙시간 반영
                     SetThisTimeIceMakeTime(gu16IceMakeTime);
 
                     gu16_cody_ice_make_time  = gu16IceMakeTime;
-
-                    /*..hui [24-2-14???? 4:28:53] UV ?????ð? ????..*/
                     gu16_uv_ice_make_time = gu16IceMakeTime;
 
                     mu8_comp_rps = get_ice_mode_comp_rps();
@@ -618,7 +621,8 @@ void ice_make_operation(void)
 
             break;
 
-        case STATE_32_DRAIN_EMPTY:
+        case STATE_32_DRAIN_EMPTY:      // 이번 기술과제에서 추가된 제빙 Step 32 : 드레인탱크 비우기
+            // 순수 제빙완료 후 남은 물을 측정하기 위해 트레이 내리기 전에 드레인탱크 비우기
             // 드레인탱크가 비워지면 다음 단계로 이동
             if(u8DrainWaterLevel == Bit0_Drain_Water_Empty)
             {
@@ -643,7 +647,7 @@ void ice_make_operation(void)
             else {}
             break;
 
-        /* [2025-11-19] 드레인 제빙수 물량 계산 */
+        /* [2025-11-19] 이번 기술과제에서 추가된 제빙 Step 41 : 드레인된 제빙완료 후 남은 물량 계산을 위한 드레인 */
         case STATE_41_DRAIN_FLOW_CALCUATE:
             // 드레인되는 물량 확인
             if(u8DrainWaterLevel == Bit0_Drain_Water_Empty)
@@ -652,7 +656,7 @@ void ice_make_operation(void)
             }
             break;
 
-        case STATE_42_NEXT_ICE_AMOUNT_CAL:
+        case STATE_42_NEXT_ICE_AMOUNT_CAL:  /* 이번 기술과제에서 추가된 제빙 Step 42 : 다음 제빙시간 계산 */
             /* 다음 물량 계산 (보정) */
             SetDrainPrevFlowHz(GetDrainCurFlowHz());
             SetDrainCurFlowHz(GetDrainFlow());
@@ -717,7 +721,7 @@ void ice_make_operation(void)
             else{}
 
             break;
-        //-------------------------------------------------// SB ??? ??????
+        //-------------------------------------------------//
         case STATE_50_ICE_FULL_IR_CHECK :
 
             if(F_IR != SET)
