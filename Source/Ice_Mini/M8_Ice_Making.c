@@ -11,13 +11,11 @@
 #include    "Port_Define.h"
 #include    "M8_Ice_making.h"
 #include    "Temp_Table.h"
-#include    "Ice_Make_Time_Table.h"
 #include    "flow_sensor.h"
 #include    "work_ice_make.h"
 #include    "work_flow.h"
 void Ice_Make_Process(void);
 void normal_mode_ice_init_operation(void);
-U16 calc_ice_make_time(U8 mu8AmbTemp, U8 mu8RoomTemp);
 //U16 calc_ice_heater_time(void);
 U8 Ice_Tray_Sensing(void);
 void ice_make_operation(void);
@@ -749,36 +747,6 @@ void ice_make_operation(void)
             break;
       }
 
-}
-
-/***********************************************************************************************************************
-* Function Name: System_ini
-* Description  :
-***********************************************************************************************************************/
-U16 calc_ice_make_time(U8 mu8AmbTemp, U8 mu8RoomTemp)
-{
-    U8 mu8_amb_temp = 0;
-    U8 mu8_room_temp = 0;
-
-    if(mu8AmbTemp >= 45)
-    {
-        mu8_amb_temp = 45;
-    }
-    else
-    {
-        mu8_amb_temp = mu8AmbTemp;
-    }
-
-    if(mu8RoomTemp >= 45)
-    {
-        mu8_room_temp = 45;
-    }
-    else
-    {
-        mu8_room_temp = mu8RoomTemp;
-    }
-
-    return Temp_MakeTime[ mu8_room_temp ][ mu8_amb_temp ];
 }
 
 /***********************************************************************************************************************
