@@ -536,7 +536,9 @@ void ice_make_operation(void)
                     }
                     else
                     {
-                        gu16IceMakeTime = (U16)calc_ice_make_time( gu8_Amb_Front_Temperature_One_Degree, gu8_Room_Temperature_One_Degree);
+                        // [2025-12-18] CH.PARK 본격적인 테스트 시작 (제빙테이블 최소값부터 시작해서 얼음크기 추정이 제대로 되는지 확인 시작)
+                        gu16IceMakeTime = 280;
+                        // gu16IceMakeTime = (U16)calc_ice_make_time( gu8_Amb_Front_Temperature_One_Degree, gu8_Room_Temperature_One_Degree);
                     }
 
                     /*..hui [19-7-5???? 2:08:13] 100ms ???? ???? ????..*/

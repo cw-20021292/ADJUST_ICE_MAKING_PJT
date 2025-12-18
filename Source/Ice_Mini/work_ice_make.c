@@ -195,9 +195,10 @@ static void SetTheoryRatio(I16 Avg)
     }
 
     // 3) 이론 ratio 계산 (목표 / 평균)
+    // 현재로써는 Target은 126Hz
     mf32_ratio_theory = (mf32_target / mf32_avg);
 
-    // 4) 유효 Gain
+    // 4) 유효 Gain (유량의 오차를 보고 30%만 보정할지 100%만 보정할지 판단)
     mf32_eff_ratio = SetValidGain() * GetGain();   // SetValidGain → GetValidGain 추천
 
     // 5) 최종 ratio

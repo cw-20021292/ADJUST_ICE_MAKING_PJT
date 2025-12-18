@@ -4935,7 +4935,7 @@ Lib
       <HexadecimalFileFormat-DefaultValue>IntelExtended</HexadecimalFileFormat-DefaultValue>
       <SplittingOfHexadecimalFile-DefaultValue>False</SplittingOfHexadecimalFile-DefaultValue>
       <IsLockedByUser>False</IsLockedByUser>
-      <TimeTagModified--0>-8584360863626751894</TimeTagModified--0>
+      <TimeTagModified--0>-8584355877043864455</TimeTagModified--0>
       <ErrorListFile-0>False</ErrorListFile-0>
       <FillingOfFreeMemorySpace-0>True</FillingOfFreeMemorySpace-0>
       <HexadecimalFile-0>True</HexadecimalFile-0>
@@ -4945,7 +4945,7 @@ Lib
       <HexadecimalFileOutputFolder-0>..\Hex Output</HexadecimalFileOutputFolder-0>
       <PostObjectConvertCommands-0 />
       <FillingStartAddress-0 />
-      <HexadecimalFileName-0>MAIN_CHPI_7420N_2KG_MAX_V9.9.9.9_CS_251212.hex</HexadecimalFileName-0>
+      <HexadecimalFileName-0>MAIN_CHPI_7420N_2KG_MAX_V9.9.9.9_CS_251218.hex</HexadecimalFileName-0>
       <OtherAdditionalOptions-0 />
       <FillingSize-0 />
       <HexadecimalFileFormat-0>IntelExtended</HexadecimalFileFormat-0>
@@ -11469,7 +11469,7 @@ Lib
         &lt;cg_security7 Name="cg_security7" Value="00" /&gt;
         &lt;cg_security5 Name="cg_security5" Value="00" /&gt;
         &lt;cg_crc_area Name="cg_crc_area" Value="00" /&gt;
-        &lt;ocdstart Name="ocdstart" Value="3FF00" /&gt;
+        &lt;rrm Name="rrm" Value="3FF00" /&gt;
         &lt;cg_security3 Name="cg_security3" Value="00" /&gt;
         &lt;cg_security0 Name="cg_security0" Value="00" /&gt;
         &lt;cg_security1 Name="cg_security1" Value="00" /&gt;
@@ -11479,13 +11479,13 @@ Lib
         &lt;cg_option Name="cg_option" Value="84" /&gt;
         &lt;cg_security8 Name="cg_security8" Value="00" /&gt;
         &lt;cg_security6 Name="cg_security6" Value="00" /&gt;
-        &lt;cg_security4 Name="cg_security4" Value="00" /&gt;
+        &lt;ocdstart Name="ocdstart" Value="3FF00" /&gt;
         &lt;cg_onchip Name="cg_onchip" Value="" /&gt;
         &lt;cg_security2 Name="cg_security2" Value="00" /&gt;
         &lt;cg_iawctl_value Name="cg_iawctl_value" Value="00" /&gt;
         &lt;lvi_option Name="lvi_option" Value="7F" /&gt;
         &lt;wdt_option Name="wdt_option" Value="FF" /&gt;
-        &lt;rrm Name="rrm" Value="3FF00" /&gt;
+        &lt;cg_security4 Name="cg_security4" Value="00" /&gt;
       &lt;/GlobleUserTag&gt;
     &lt;/TAG&gt;
   &lt;/DIR&gt;
