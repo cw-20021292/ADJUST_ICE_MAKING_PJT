@@ -32,6 +32,86 @@ U16 get_preheat_time(void);
 void get_average_tray_temp(void);
 
 
+extern special_func cody_water_line;
+
+extern bit F_ErrTrayMotor_DualInital;
+extern U8 gu8_Room_Water_Level;
+extern U16 gu16_AD_Result_Cold;
+
+extern bit F_Cold_Enable;
+extern U16 gu16_AD_Result_Room;
+extern U16 gu16_AD_Result_Eva_First;
+extern U16 gu16_AD_Result_Amb;
+extern bit F_SoftError;
+
+extern bit F_CristalIce;
+
+extern bit F_Safety_Routine;
+extern U8 gu8HeaterOffDelay;
+
+extern bit F_IceOut;
+
+extern bit F_FW_Version_Display_Mode;
+
+extern U16 gu16IceOutOff;
+
+extern bit F_Ice_Tray_Down_Move_Reset;
+extern U8 gu8_over_ice_melt_proc;
+extern bit F_Safety_Routine;
+
+extern bit bit_first_ice_full;
+extern U16 gu16CompOffDelay;
+extern bit F_IceInit;
+extern U16 gu16_Amb_Front_Temperature;
+extern U16 gu16_Room_Temperature;
+extern bit F_WaterOut;
+extern U8 gu8_GasSwitch_Status;
+extern bit F_Comp_Output;
+extern U8 gu8_Amb_Temperature_One_Degree;
+extern U8 gu8_Room_Temperature_One_Degree;
+extern U8 gu8_Amb_Front_Temperature_One_Degree;
+extern U8 gu8IceTrayLEV;
+extern bit F_IR;
+extern bit F_Low_IR;
+extern bit bit_start_preheat;
+
+extern U32 gu32_wifi_ice_make_time;
+extern U32 gu32_wifi_hot_gas_time;
+extern U16 gu16_wifi_tray_in_time;
+extern U16 gu16_wifi_tray_in_flow;
+
+extern bit bit_tray_pump_output;
+extern U8 gu8_Tray_Temperature_One_Degree;
+extern U16 gu16_uv_ice_make_time;
+extern U16 gu16_tds_water_acc;
+
+extern tsSTEPMOTOR sStepMotor;
+
+//for test
+extern bit F_IceFull;                        // ??????????u
+extern bit F_IceLack;
+extern bit bit_ice_size;
+extern bit bit_tray_in_error_temporary;
+
+extern bit bit_ice_out_back_state;
+extern bit bit_ice_stuck_back_state;
+extern bit bit_ice_mix_back_state;
+extern U8 tray_error_flag_E63;
+extern U16 tray_abnormal_E63_timer;
+extern U8 tray_abnormal_E63_step;
+extern U8 abnormal_1_repeat_cnt;
+
+extern U8 tray_error_flag_E62;
+extern U16 tray_abnormal_E62_timer;
+extern U8 tray_abnormal_E62_step;
+extern U8 abnormal_2_repeat_cnt;
+
+extern U8 gu8_E62_dummy_iceheat_flag;
+extern bit bit_ice_tray_1_2_uv_start;
+extern bit bit_ice_tank_ster_start;
+extern U32 gu32_wifi_ice_heater_timer;
+
+
 bit F_IceHeater;
 bit F_Hotgas_Time;
 U8 gu8InitStep;
@@ -42,10 +122,10 @@ ICE_STEP gu8IceStep;
 bit F_IceVV;
 
 //----------------------------------------------------// ICE Heater
-U16 gu16IceHeaterTime;                                // ??? Heater ???? ?©£?
+U16 gu16IceHeaterTime;                                // ??? Heater ???? ?Ã°?
 bit F_ColdWaterInit;
 bit F_WaterInit;                      // ???? ???????
-/*bit F_HotWaterInit;*/                   // ???? ??????? - ?¨ù?
+/*bit F_HotWaterInit;*/                   // ???? ??????? - ?Â¼?
 bit F_WaterInitSet;
 bit F_ColdVV;
 
@@ -119,19 +199,14 @@ U8 gu8_ice_take_off_count = CLEAR;
 U8 gu8_ice_take_off_stop_time = CLEAR;
 U8 gu8_ice_take_off_op_time = CLEAR;
 
-// ±â¼ú°úÁ¦ 1 (Á¦ºùÅ×ÀÌºí Àû¿ë)
-// ¿Ü±â¿Âµµ [0`C ~ 45`C] ±îÁöÀÇ Á¦ºù ½Ã°£ Å×ÀÌºí
-// Á¦ºùÀ» ½ÃÀÛÇÏ±â Á÷ÀüÀÇ ¿Ü±â¿Âµµ, ÀÔ¼ö¿Âµµ¿¡ µû¶ó Á¦ºù ½Ã°£À» °áÁ¤ÇÏ±â À§ÇØ »ç¿ë
-// Á¦ºù Á÷ÀüÀÇ ½ÃÁ¡¿¡ Á¦Ç°¿¡¼­ PC·Î ÇöÀç ¿Ü±â¿Âµµ¿Í ÀÔ¼ö¿Âµµ, Á¦ºù StepÀ» º¸³»ÁÖ¸é ÇØ´ç ¿Ü±â¿Âµµ, ÀÔ¼ö¿Âµµ, Á¦ºù Step¿¡ µû¸¥ Á¦ºù ½Ã°£À» º¸³¿
-// Index´Â Á¦ºùÅ×ÀÌºí¿¡¼­ ¿Ü±â¿Âµµ¸¦ ÀÇ¹Ì
-typedef struct
-{
-    U8  Used;
-    U16 MakeTime[46];
-} Freezing_Table_T;
-Freezing_Table_T FreezingTable;
+// ê¸°ìˆ ê³¼ì œ 1 (ì œë¹™í…Œì´ë¸” ì ìš©)
+// ì™¸ê¸°ì˜¨ë„ [0`C ~ 45`C] ê¹Œì§€ì˜ ì œë¹™ ì‹œê°„ í…Œì´ë¸”
+// ì œë¹™ì„ ì‹œì‘í•˜ê¸° ì§ì „ì˜ ì™¸ê¸°ì˜¨ë„, ì…ìˆ˜ì˜¨ë„ì— ë”°ë¼ ì œë¹™ ì‹œê°„ì„ ê²°ì •í•˜ê¸° ìœ„í•´ ì‚¬ìš©
+// ì œë¹™ ì§ì „ì˜ ì‹œì ì— ì œí’ˆì—ì„œ PCë¡œ í˜„ì¬ ì™¸ê¸°ì˜¨ë„ì™€ ì…ìˆ˜ì˜¨ë„, ì œë¹™ Stepì„ ë³´ë‚´ì£¼ë©´ í•´ë‹¹ ì™¸ê¸°ì˜¨ë„, ì…ìˆ˜ì˜¨ë„, ì œë¹™ Stepì— ë”°ë¥¸ ì œë¹™ ì‹œê°„ì„ ë³´ëƒ„
+// IndexëŠ” ì œë¹™í…Œì´ë¸”ì—ì„œ ì™¸ê¸°ì˜¨ë„ë¥¼ ì˜ë¯¸
 
-// Á¦ºù ½Ã°£ Å×ÀÌºí µ¥ÀÌÅÍ µğ¹ö±ëÀ» À§ÇÑ ±¸Á¶Ã¼
+
+// ì œë¹™ ì‹œê°„ í…Œì´ë¸” ë°ì´í„° ë””ë²„ê¹…ì„ ìœ„í•œ êµ¬ì¡°ì²´
 typedef struct
 {
     U8 amb_temp;
@@ -139,78 +214,9 @@ typedef struct
     U16 ice_make_time;
 } IceTableDebug_T;
 IceTableDebug_T IceTableDebug;
-
-
-/***********************************************************************************************************************
-* Function Name: FreezingTable_Init
-* Description  : Á¦ºù ½Ã°£ Å×ÀÌºí ÃÊ±âÈ­
-***********************************************************************************************************************/
-void FreezingTable_Init(void)
-{
-    U8 i;
-    SetUsedFreezingTable(CLEAR);
-
-    for(i = 0; i < 46; i++)
-    {
-        FreezingTable.MakeTime[i] = 0;
-    }
-}
-
-/***********************************************************************************************************************
-* Function Name: SetFreezingTable
-* Description  : Á¦ºù ½Ã°£ Å×ÀÌºí¿¡ Á¦ºù ½Ã°£À» ¼³Á¤
-* Input        : DataBuffer : Á¦ºù ½Ã°£ µ¥ÀÌÅÍ ¹öÆÛ (92¹ÙÀÌÆ®: 46°³ÀÇ U16 °ª)
-* Output       : Á¦ºù ½Ã°£ µ¥ÀÌÅÍ ¹öÆÛ
-* Return       : Á¦ºù ½Ã°£ µ¥ÀÌÅÍ ¹öÆÛ
-***********************************************************************************************************************/
-void SetFreezingTable(U8 *DataBuffer)
-{
-    U8 i;
-    U8 dataIndex = 0;
-
-    // DATAFIELDÀÇ µ¥ÀÌÅÍ¸¦ 2BYTE¾¿ ¹Ş¾Æ¼­ FreezingTable.MakeTime[0]~[45]¿¡ ÀúÀå
-    // »óÀ§1BYTE, ÇÏÀ§1BYTE¸¦ Á¶ÇÕÇÏ¿© U16 °ª »ı¼º
-    for(i = 0; i < 46; i++)
-    {
-        FreezingTable.MakeTime[i] = (U16)((U16)DataBuffer[dataIndex] << 8) | DataBuffer[dataIndex + 1];
-        dataIndex += 2;
-    }
-}
-
-/***********************************************************************************************************************
-* Function Name: GetUsedFreezingTable
-* Description  : Á¦ºù ½Ã°£ Å×ÀÌºí »ç¿ë ¿©ºÎ¸¦ °¡Á®¿È
-***********************************************************************************************************************/
-U8 GetUsedFreezingTable(void)
-{
-    return FreezingTable.Used;
-}
-
-/***********************************************************************************************************************
-* Function Name: SetUsedFreezingTable
-* Description  : Á¦ºù ½Ã°£ Å×ÀÌºí »ç¿ë ¿©ºÎ¸¦ ¼³Á¤
-* Input        : Used : »ç¿ë ¿©ºÎ
-***********************************************************************************************************************/
-void SetUsedFreezingTable(U8 Used)
-{
-    FreezingTable.Used = Used;
-}
-
-/*****************************************************************************
-* Function Name: GetFreezingTime
-* Description  : Á¦ºù ½Ã°£ Å×ÀÌºí¿¡¼­ Á¦ºù ½Ã°£À» °¡Á®¿È
-* Input        : RoomInTemp : ÀÔ¼ö¿Âµµ
-* Output       : Á¦ºù ½Ã°£
-* Return       : Á¦ºù ½Ã°£
-******************************************************************************/
-U16 GetFreezingTime(U8 AmbTemp)
-{
-    return FreezingTable.MakeTime[AmbTemp];
-}
-
 /***********************************************************************************************************************
 * Function Name: GetIceStep
-* Description  : Á¦ºù StepÀ» °¡Á®¿È
+* Description  : ì œë¹™ Stepì„ ê°€ì ¸ì˜´
 ***********************************************************************************************************************/
 U8 GetIceStep(void)
 {
@@ -232,8 +238,8 @@ void Ice_Make_Process(void)
     else{}
 
     /*..hui [17-12-19???? 7:07:33] ??????? ???? ?? ???? ???? ???....*/
-    /*..hui [17-12-19???? 7:07:54] ????? ??? ???????OFF????¡Æ?? ????????....*/
-    /* ???¥ë??????? ?? ???? ???? ?? ???? ??? 250721 CH.PARK */
+    /*..hui [17-12-19???? 7:07:54] ????? ??? ???????OFF????Â°?? ????????....*/
+    /* ???Î»??????? ?? ???? ???? ?? ???? ??? 250721 CH.PARK */
     if( Bit2_Ice_Operation_Disable_State == SET
     || F_Safety_Routine == SET
     || F_ErrTrayMotor_DualInital == SET
@@ -293,14 +299,14 @@ void ice_make_operation(void)
             || (F_Comp_Output == SET)
             )
             {
-                /*..hui [19-10-23???? 12:47:20] ???? ????????? ????? ?©ª??? ?????..*/
-                /*..hui [19-10-23???? 12:47:34] ??????? ?????? ?¬Ù??? ?????? ?????..*/
+                /*..hui [19-10-23???? 12:47:20] ???? ????????? ????? ?Ã¸??? ?????..*/
+                /*..hui [19-10-23???? 12:47:34] ??????? ?????? ?Ğ·??? ?????? ?????..*/
                 /*..hui [19-10-23???? 12:47:46] ???????? ?????? ??G??..*/
                 if( F_IceOut == CLEAR && bit_tray_in_error_temporary == CLEAR )
                 {
                     /*if( bit_start_preheat == SET )*/
 
-                    /* ??? ??? 25?? ????? ???¢¯??? ?????????? ?©£??? 30?? ????? ????*/
+                    /* ??? ??? 25?? ????? ???Â¿??? ?????????? ?Ã°??? 30?? ????? ????*/
                     if( bit_start_preheat == SET && gu8_Amb_Temperature_One_Degree < PREHEAT_AMB_TEMP )
                     {
                         gu8IceStep = STATE_5_PREHEAT_HOTGAS_MOVE;
@@ -318,7 +324,7 @@ void ice_make_operation(void)
 
         case STATE_5_PREHEAT_HOTGAS_MOVE :
 
-            /*..hui [23-4-7???? 5:10:11] ?©ª????????????? ???..*/
+            /*..hui [23-4-7???? 5:10:11] ?Ã¸????????????? ???..*/
             GasSwitchHotGas();
             gu8IceStep = STATE_6_CALC_PREHEAT_TIME;
 
@@ -328,7 +334,7 @@ void ice_make_operation(void)
 
             if( gu8_GasSwitch_Status == GAS_SWITCH_HOTGAS )
             {
-                /*..hui [23-4-7???? 5:10:03] ?©ª????????????? ??? ??? ??, COMP ????, 60HZ..*/
+                /*..hui [23-4-7???? 5:10:03] ?Ã¸????????????? ??? ??? ??, COMP ????, 60HZ..*/
                 mu8_comp_rps = get_preheat_mode_comp_rps();
                 set_comp_rps( mu8_comp_rps );
 
@@ -390,7 +396,7 @@ void ice_make_operation(void)
 
                 /*..hui [23-4-7???? 5:52:57] ???? ???? ?????????.*/
                 /*..hui [23-8-14???? 1:56:47] ???? ????? ????? ????????.. ..*/
-                /*..hui [23-8-14???? 1:57:10] ???????????? ????? ?? ?? ???????? COMP ???????¡¤? ??????? ????????.*/
+                /*..hui [23-8-14???? 1:57:10] ???????????? ????? ?? ?? ???????? COMP ???????Â·? ??????? ????????.*/
                 if( F_Comp_Output == SET )
                 {
                     gu8IceStep = STATE_12_CONT_ICE_SWITCH_MOVE;
@@ -422,7 +428,7 @@ void ice_make_operation(void)
 
         case STATE_13_CONT_RPS_SETTING :
 
-            /*..hui [19-7-24???? 4:35:37] ?©ª??????????? ??? ??..*/
+            /*..hui [19-7-24???? 4:35:37] ?Ã¸??????????? ??? ??..*/
             if(gu8_GasSwitch_Status == GAS_SWITCH_ICE)
             {
                 mu8_comp_rps = get_ice_mode_comp_rps();
@@ -440,10 +446,10 @@ void ice_make_operation(void)
         //----------------------------------------------// ????????? ??????VV ON
         case STATE_14_CHECK_ICE_TRAY_HZ :
 
-            /*..hui [19-7-23???? 2:08:21] ???????? ?????????ë¡ ???? ????????(???????? ???)..*/
-            /*..hui [19-7-23???? 2:08:26] ?¨ù? ?????????????? ??? ????..*/
+            /*..hui [19-7-23???? 2:08:21] ???????? ?????????æ¿¡ ???? ????????(???????? ???)..*/
+            /*..hui [19-7-23???? 2:08:26] ?Â¼? ?????????????? ??? ????..*/
             /*if(u8WaterOutState == HOT_WATER_SELECT && F_WaterOut == SET)*/
-            /*..hui [19-8-28???? 9:54:48] ?¨ù? ??????? ?? ????????? ????? ??? ????.*/
+            /*..hui [19-8-28???? 9:54:48] ?Â¼? ??????? ?? ????????? ????? ??? ????.*/
             #if 1
             if(F_WaterOut == SET)
             {
@@ -454,11 +460,11 @@ void ice_make_operation(void)
 
                 gu16_Ice_Tray_Fill_Hz = C_ICE_TRAY_FILL_200CC;
 
-                // [2025-12-15] CH.PARK À¯·®¼¾¼­°¡ ´Ş¶ó¼­ ±×·¯°Å³ª
-                // ÆßÇÁ µŞ´ÜÀÌ¶ó¼­ ±×·²¼öµµ ÀÖÁö¸¸ ÀÏ´Ü º¸Á¤°ª Àû¿ë (+480CC)
-                SetDrainBeforeFlowHz((C_ICE_TRAY_FILL_200CC - 400));        // ÀÔ¼ö¿ë·® : 530 (º¸Á¤°ª Àû¿ë)
+                // [2025-12-15] CH.PARK ìœ ëŸ‰ì„¼ì„œê°€ ë‹¬ë¼ì„œ ê·¸ëŸ¬ê±°ë‚˜
+                // íŒí”„ ë’·ë‹¨ì´ë¼ì„œ ê·¸ëŸ´ìˆ˜ë„ ìˆì§€ë§Œ ì¼ë‹¨ ë³´ì •ê°’ ì ìš© (+480CC)
+                SetDrainBeforeFlowHz((C_ICE_TRAY_FILL_200CC - 400));        // ì…ìˆ˜ìš©ëŸ‰ : 530 (ë³´ì •ê°’ ì ìš©)
 
-                // ¹ö·ÁÁö´Â ¹°ÀÇ Hz°ªÀº 0ºÎÅÍ ½ÃÀÛ
+                // ë²„ë ¤ì§€ëŠ” ë¬¼ì˜ Hzê°’ì€ 0ë¶€í„° ì‹œì‘
                 SetDrainAfterFlowHz(0);
 
                 gu8IceStep = STATE_20_WATER_IN_ICE_TRAY;
@@ -481,7 +487,7 @@ void ice_make_operation(void)
             else
             {
                 gu16_wifi_tray_in_time++;
-                /* ????? ??????¥å? ????? ????? ?????? ??????                ????????? ?????? ??? ?? ????? ??? ??? 250423 CH.PARK */
+                /* ????? ??????Îµ? ????? ????? ?????? ??????                ????????? ?????? ??? ?? ????? ??? ??? 250423 CH.PARK */
                 if( bit_tray_in_error_temporary == SET )
                 {
                     down_tray_motor();      // ????? ????? ????
@@ -511,7 +517,7 @@ void ice_make_operation(void)
 
         case STATE_22_WAIT_ICE_MAKING_TIME:
             u8IceStepTime++;
-            if(u8IceStepTime >= 100)    // 10ÃÊ ´ë±â ÈÄ ½ÃÀÛ
+            if(u8IceStepTime >= 100)    // 10ì´ˆ ëŒ€ê¸° í›„ ì‹œì‘
             {
                 gu8IceStep = STATE_30_CALC_ICE_MAKING_TIME;
             }
@@ -520,7 +526,7 @@ void ice_make_operation(void)
         //-----------------------------------------------// ???? ????
         case STATE_30_CALC_ICE_MAKING_TIME :
             u8IceStepTime = 0;
-            /*..hui [19-7-24???? 4:35:37] ?©ª??????????? ??? ??..*/
+            /*..hui [19-7-24???? 4:35:37] ?Ã¸??????????? ??? ??..*/
             if(gu8_GasSwitch_Status == GAS_SWITCH_ICE)
             {
                 if(gu16CompOffDelay == 0 ||  F_Comp_Output == SET)
@@ -534,37 +540,37 @@ void ice_make_operation(void)
                     }
                     else
                     {
-                        // [2025-12-18] CH.PARK º»°İÀûÀÎ Å×½ºÆ® ½ÃÀÛ (Á¦ºùÅ×ÀÌºí ÃÖ¼Ò°ªºÎÅÍ ½ÃÀÛÇØ¼­ ¾óÀ½Å©±â ÃßÁ¤ÀÌ Á¦´ë·Î µÇ´ÂÁö È®ÀÎ ½ÃÀÛ)
-                        // Å×½ºÆ®ÄÉÀÌ½º 1) ½ÃÀÛ Á¦ºù½Ã°£ 280ÃÊ (4ºĞ 40ÃÊ) -> Á¦ºùÅ×ÀÌºíÀÇ ÃÖ¼Ò°ª
+                        // [2025-12-18] CH.PARK ë³¸ê²©ì ì¸ í…ŒìŠ¤íŠ¸ ì‹œì‘ (ì œë¹™í…Œì´ë¸” ìµœì†Œê°’ë¶€í„° ì‹œì‘í•´ì„œ ì–¼ìŒí¬ê¸° ì¶”ì •ì´ ì œëŒ€ë¡œ ë˜ëŠ”ì§€ í™•ì¸ ì‹œì‘)
+                        // í…ŒìŠ¤íŠ¸ì¼€ì´ìŠ¤ 1) ì‹œì‘ ì œë¹™ì‹œê°„ 280ì´ˆ (4ë¶„ 40ì´ˆ) -> ì œë¹™í…Œì´ë¸”ì˜ ìµœì†Œê°’
                         // gu16IceMakeTime = 280;
 
-                        // Å×½ºÆ®ÄÉÀÌ½º 2) ½ÃÀÛ Á¦ºù½Ã°£ 800ÃÊ (13ºĞ 20ÃÊ) -> Á¦ºùÅ×ÀÌºí Áß°£°ª ÀÌ»ó°ª
+                        // í…ŒìŠ¤íŠ¸ì¼€ì´ìŠ¤ 2) ì‹œì‘ ì œë¹™ì‹œê°„ 800ì´ˆ (13ë¶„ 20ì´ˆ) -> ì œë¹™í…Œì´ë¸” ì¤‘ê°„ê°’ ì´ìƒê°’
                         gu16IceMakeTime = 800;
 
-                        // Å×½ºÆ®ÄÉÀÌ½º 3) ½ÃÀÛ Á¦ºù½Ã°£ 200ÃÊ (3ºĞ 20ÃÊ) -> Á¦ºùÅ×ÀÌºí ÃÖ´ë°ª
+                        // í…ŒìŠ¤íŠ¸ì¼€ì´ìŠ¤ 3) ì‹œì‘ ì œë¹™ì‹œê°„ 200ì´ˆ (3ë¶„ 20ì´ˆ) -> ì œë¹™í…Œì´ë¸” ìµœëŒ€ê°’
                         // gu16IceMakeTime = 200;
 
                         // gu16IceMakeTime = (U16)calc_ice_make_time( gu8_Amb_Front_Temperature_One_Degree, gu8_Room_Temperature_One_Degree);
                     }
 
-                    /* 100ms´Ï±î 10¹è °öÇØÁÜ */
+                    /* 100msë‹ˆê¹Œ 10ë°° ê³±í•´ì¤Œ */
                     gu16IceMakeTime = (U16)(gu16IceMakeTime  * 10);
                     IceTableDebug.ice_make_time = gu16IceMakeTime;
 
-                    /* ¾óÀ½´ë¼Ò Áß [¼Ò]Å©±â ¼³Á¤ÀÌ¸é ±âÁ¸ [´ë]Å©±â¿¡¼­ 90%¸¸ Àû¿ë */
+                    /* ì–¼ìŒëŒ€ì†Œ ì¤‘ [ì†Œ]í¬ê¸° ì„¤ì •ì´ë©´ ê¸°ì¡´ [ëŒ€]í¬ê¸°ì—ì„œ 90%ë§Œ ì ìš© */
                     if( bit_ice_size == ICE_SIZE_SMALL )
                     {
                         gu16IceMakeTime = (U16)((F32)gu16IceMakeTime * 0.9f);   // ?????? 80% -> 90%
                     }
                     else{}
 
-                    // º¸Á¤µÈ ½Ã°£ÀÌ ÀÖÀ» °æ¿ì º¸Á¤µÈ ½Ã°£ µ¤¾î½á¼­ Àû¿ë
+                    // ë³´ì •ëœ ì‹œê°„ì´ ìˆì„ ê²½ìš° ë³´ì •ëœ ì‹œê°„ ë®ì–´ì¨ì„œ ì ìš©
                     if(GetNextIceMakeTime() > 0)
                     {
                         gu16IceMakeTime = GetNextIceMakeTime();
                     }
 
-                    // ÀÌ¹ø Á¦ºù½Ã°£ ¹İ¿µ
+                    // ì´ë²ˆ ì œë¹™ì‹œê°„ ë°˜ì˜
                     SetThisTimeIceMakeTime(gu16IceMakeTime);
 
                     gu16_cody_ice_make_time  = gu16IceMakeTime;
@@ -597,7 +603,7 @@ void ice_make_operation(void)
 
             if(gu16IceMakeTime == 0)
             {
-                // [2025-12-15] [±â¼ú°úÁ¦] CH.PARK ±âÁ¸ : Á¦ºù¿Ï·áµÇ¸é Áï½Ã Æ®·¹ÀÌ¸¦ ³»¸²
+                // [2025-12-15] [ê¸°ìˆ ê³¼ì œ] CH.PARK ê¸°ì¡´ : ì œë¹™ì™„ë£Œë˜ë©´ ì¦‰ì‹œ íŠ¸ë ˆì´ë¥¼ ë‚´ë¦¼
                 // down_tray_motor();
 
                 gu8IceStep = STATE_32_DRAIN_EMPTY;
@@ -607,7 +613,7 @@ void ice_make_operation(void)
             }
             else
             {
-                /* ???????¥å? ?????? ????? ???? ?? ???? */
+                /* ???????Îµ? ?????? ????? ???? ?? ???? */
                 recovery_ice_tray();
 
                 if( gu16IceMakeTime <= HOT_GAS_NOISE_REDUCE_TIME )
@@ -619,18 +625,18 @@ void ice_make_operation(void)
 
             break;
 
-        case STATE_32_DRAIN_EMPTY:      // ÀÌ¹ø ±â¼ú°úÁ¦¿¡¼­ Ãß°¡µÈ Á¦ºù Step 32 : µå·¹ÀÎÅÊÅ© ºñ¿ì±â
-            // ¼ø¼ö Á¦ºù¿Ï·á ÈÄ ³²Àº ¹°À» ÃøÁ¤ÇÏ±â À§ÇØ Æ®·¹ÀÌ ³»¸®±â Àü¿¡ µå·¹ÀÎÅÊÅ© ºñ¿ì±â
-            // µå·¹ÀÎÅÊÅ©°¡ ºñ¿öÁö¸é ´ÙÀ½ ´Ü°è·Î ÀÌµ¿
+        case STATE_32_DRAIN_EMPTY:      // ì´ë²ˆ ê¸°ìˆ ê³¼ì œì—ì„œ ì¶”ê°€ëœ ì œë¹™ Step 32 : ë“œë ˆì¸íƒ±í¬ ë¹„ìš°ê¸°
+            // ìˆœìˆ˜ ì œë¹™ì™„ë£Œ í›„ ë‚¨ì€ ë¬¼ì„ ì¸¡ì •í•˜ê¸° ìœ„í•´ íŠ¸ë ˆì´ ë‚´ë¦¬ê¸° ì „ì— ë“œë ˆì¸íƒ±í¬ ë¹„ìš°ê¸°
+            // ë“œë ˆì¸íƒ±í¬ê°€ ë¹„ì›Œì§€ë©´ ë‹¤ìŒ ë‹¨ê³„ë¡œ ì´ë™
             if(u8DrainWaterLevel == Bit0_Drain_Water_Empty)
             {
-                // [2025-12-15] [±â¼ú°úÁ¦] CH.PARK º¯°æ : µå·¹ÀÎÅÊÅ©°¡ ÀÏ´Ü ºñ¿öÁö¸é Æ®·¹ÀÌ¸¦ ³»¸²
+                // [2025-12-15] [ê¸°ìˆ ê³¼ì œ] CH.PARK ë³€ê²½ : ë“œë ˆì¸íƒ±í¬ê°€ ì¼ë‹¨ ë¹„ì›Œì§€ë©´ íŠ¸ë ˆì´ë¥¼ ë‚´ë¦¼
                 down_tray_motor();
                 gu8IceStep = STATE_40_ICE_TRAY_MOVE_DOWN;
             }
             else
             {
-                // µå·¹ÀÎÅÊÅ©°¡ ºñ¾îÀÖÁö ¾ÊÀ¸¸é µå·¹ÀÎ¿Ï·á µÉ ¶§±îÁö ´ë±â
+                // ë“œë ˆì¸íƒ±í¬ê°€ ë¹„ì–´ìˆì§€ ì•Šìœ¼ë©´ ë“œë ˆì¸ì™„ë£Œ ë  ë•Œê¹Œì§€ ëŒ€ê¸°
             }
             break;
 
@@ -645,17 +651,17 @@ void ice_make_operation(void)
             else {}
             break;
 
-        /* [2025-11-19] ÀÌ¹ø ±â¼ú°úÁ¦¿¡¼­ Ãß°¡µÈ Á¦ºù Step 41 : µå·¹ÀÎµÈ Á¦ºù¿Ï·á ÈÄ ³²Àº ¹°·® °è»êÀ» À§ÇÑ µå·¹ÀÎ */
+        /* [2025-11-19] ì´ë²ˆ ê¸°ìˆ ê³¼ì œì—ì„œ ì¶”ê°€ëœ ì œë¹™ Step 41 : ë“œë ˆì¸ëœ ì œë¹™ì™„ë£Œ í›„ ë‚¨ì€ ë¬¼ëŸ‰ ê³„ì‚°ì„ ìœ„í•œ ë“œë ˆì¸ */
         case STATE_41_DRAIN_FLOW_CALCUATE:
-            // µå·¹ÀÎµÇ´Â ¹°·® È®ÀÎ
+            // ë“œë ˆì¸ë˜ëŠ” ë¬¼ëŸ‰ í™•ì¸
             if(u8DrainWaterLevel == Bit0_Drain_Water_Empty)
             {
                 gu8IceStep = STATE_42_NEXT_ICE_AMOUNT_CAL;
             }
             break;
 
-        case STATE_42_NEXT_ICE_AMOUNT_CAL:  /* ÀÌ¹ø ±â¼ú°úÁ¦¿¡¼­ Ãß°¡µÈ Á¦ºù Step 42 : ´ÙÀ½ Á¦ºù½Ã°£ °è»ê */
-            /* ´ÙÀ½ ¹°·® °è»ê (º¸Á¤) */
+        case STATE_42_NEXT_ICE_AMOUNT_CAL:  /* ì´ë²ˆ ê¸°ìˆ ê³¼ì œì—ì„œ ì¶”ê°€ëœ ì œë¹™ Step 42 : ë‹¤ìŒ ì œë¹™ì‹œê°„ ê³„ì‚° */
+            /* ë‹¤ìŒ ë¬¼ëŸ‰ ê³„ì‚° (ë³´ì •) */
             SetDrainPrevFlowHz(GetDrainCurFlowHz());
             SetDrainCurFlowHz(GetDrainFlow());
             ProcessIceMaking();
@@ -712,7 +718,7 @@ void ice_make_operation(void)
             if( gu8_ice_mix_timer >= ICE_FEDDER_MIX_MAX_TIME )
             {
                 gu8_ice_mix_timer = 0;
-                F_IR = SET;              // ??????u???????? ?¡JAU
+                F_IR = SET;              // ??????u???????? ?ì¢¯AU
                 F_Low_IR = SET;
                 gu8IceStep = STATE_50_ICE_FULL_IR_CHECK;
             }
@@ -782,7 +788,7 @@ U8 hot_gas_operation(void)
 void recovery_ice_tray(void)
 {
     /*..hui [18-3-22???? 9:39:58] ?????? ?????? ?????? ??????????? ?????? ???? ??????????..*/
-    /*..hui [18-3-22???? 9:40:16] ??????????? ?????? 10??? ????? ??? ?¡À????..*/
+    /*..hui [18-3-22???? 9:40:16] ??????????? ?????? 10??? ????? ??? ?Ã·????..*/
     if(gu8IceTrayLEV != ICE_TRAY_POSITION_ICE_MAKING)
     {
         /*..hui [18-3-22???? 10:00:09] ????? ??????? ????? ???????..*/

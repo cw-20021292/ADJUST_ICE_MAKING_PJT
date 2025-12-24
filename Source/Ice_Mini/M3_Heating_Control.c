@@ -52,7 +52,7 @@ U8 gu8_flow_control_timer;
 U16 u16Heater_Power_Save;
 
 //function Mainheating_flow_control
-U8 u8Target_Hz_Hot;     //ï¿½ï¿½Ç¥ ï¿½ï¿½ï¿½ï¿½
+U8 u8Target_Hz_Hot;     //å ì™ì˜™í‘œ å ì™ì˜™å ì™ì˜™
 U8 gu8_adjust_pulse_test;
 
 //function set_target_temperature
@@ -84,7 +84,7 @@ S8 gs8_adjust_heater_power;
 U8 gu8_adjust_heater_timer;
 
 //function calc_heater_out
-U16 u16TargetHeaterPower;       // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+U16 u16TargetHeaterPower;       // å ì™ì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™
 
 //function update_max_flow
 U8 gu8_max_flow_update_timer;
@@ -161,7 +161,7 @@ TYPE_WORD          U16HotTemplSelectW;
 //init flow valve()
 bit bit_init_flow_valve;
 
-// ¡Ú2025-06-11 Phil after PM
+// â˜…2025-06-11 Phil after PM
 extern TYPE_WORD          U16HotInFeed9ValveONB;
 #define            u16HotInFeed9ValveONs                        U16HotInFeed9ValveONB.word
 #define            u8HotInFeed9ValveONs_L                       U16HotInFeed9ValveONB.byte[0]
@@ -169,7 +169,7 @@ extern TYPE_WORD          U16HotInFeed9ValveONB;
 #define            Bit0_HIF9_Water_Filling_State                U16HotInFeed9ValveONB.Bit.b0
 #define            Bit1_HIF9_Hot_Out_State                      U16HotInFeed9ValveONB.Bit.b1
 #define            Bit2_HIF9_Ice_Tray_Ster_State                U16HotInFeed9ValveONB.Bit.b2
-// ¡Ú2025-06-11 Phil after PM
+// â˜…2025-06-11 Phil after PM
 
 
 /***********************************************************************************************************************
@@ -198,7 +198,7 @@ void flow_valve_control(void)
 {
     init_flow_valve();
     control_flow_valve();
-    /*..hui [25-4-10¿ÀÈÄ 1:45:11] Æ®·¹ÀÌ »ì±ÕÇÒ¶§´Â µû·Î Á¦¾î..*/
+    /*..hui [25-4-10ì˜¤í›„ 1:45:11] íŠ¸ë ˆì´ ì‚´ê· í• ë•ŒëŠ” ë”°ë¡œ ì œì–´..*/
     control_tray_ster_flow_valve();
 
     ControlFlow();
@@ -218,7 +218,7 @@ void init_flow_valve(void)
             if( gu8_Water_Out_Step >= STATE_31_WATER_EXTRACT_STATE )
             /*if( gu8_Water_Out_Step >= STATE_20_HOT_PRE_HEATING_STATE )*/
             {
-            	/*sean [25-05-08] ÃÊ±âÈ­ ¾È½ÃÅ°°í º¸±âÀ§ÇØ¼­ Ã³À½¸¸ ÃÊ±âÈ­ ÇÏµµ·Ï º¯°æ*/
+            	/*sean [25-05-08] ì´ˆê¸°í™” ì•ˆì‹œí‚¤ê³  ë³´ê¸°ìœ„í•´ì„œ ì²˜ìŒë§Œ ì´ˆê¸°í™” í•˜ë„ë¡ ë³€ê²½*/
                 //bit_init_flow_valve = SET;
             }
             else{}
@@ -227,7 +227,7 @@ void init_flow_valve(void)
     }
     else if( bit_ice_tank_ster_start == SET && gu8_ice_ster_mode >= STER_MODE_HOT_PREHEAT )
     {
-        /*..hui [25-4-10¿ÀÈÄ 1:50:37] Æ®·¹ÀÌ ¼¼Ã´ ³¡³ª°í ÃÊ±âÈ­..*/
+        /*..hui [25-4-10ì˜¤í›„ 1:50:37] íŠ¸ë ˆì´ ì„¸ì²™ ëë‚˜ê³  ì´ˆê¸°í™”..*/
         bit_init_flow_valve = SET;
     }
     else
@@ -254,18 +254,18 @@ void control_flow_valve(void)
         && u8WaterOutState == HOT_WATER_SELECT
         /*&& F_First_Hot_Effluent == CLEAR*/ )
     {
-//// ¡Ú2025-06-11 Phil after PM
-        if(( gu8_Water_Out_Step == STATE_20_HOT_PRE_HEATING_STATE 
-			&& Bit1_HIF9_Hot_Out_State == F_WaterOut	)									// ¿¹¿­Áß¿¡µµ ¿Â¼ö ÀÔ¼ö¹ëºê°¡ °³¹æµÇ¸é À¯·® Á¶Àı
-            && gu8_Preheat_Step >= STATE_2_PREHEAT_DRAIN_STATE)         //2025-07-14 cbr ÃÖÃÊ Ãâ¼ö À¯·® increase °úÇÑ Á¶°Ç °³¼±
+//// â˜…2025-06-11 Phil after PM
+        if(( gu8_Water_Out_Step == STATE_20_HOT_PRE_HEATING_STATE
+			&& Bit1_HIF9_Hot_Out_State == F_WaterOut	)									// ì˜ˆì—´ì¤‘ì—ë„ ì˜¨ìˆ˜ ì…ìˆ˜ë°¸ë¸Œê°€ ê°œë°©ë˜ë©´ ìœ ëŸ‰ ì¡°ì ˆ
+            && gu8_Preheat_Step >= STATE_2_PREHEAT_DRAIN_STATE)         //2025-07-14 cbr ìµœì´ˆ ì¶œìˆ˜ ìœ ëŸ‰ increase ê³¼í•œ ì¡°ê±´ ê°œì„ 
         {
 			preheating_variable_flow_control();
         }
-//// ¡Ú2025-06-11 Phil after PM
+//// â˜…2025-06-11 Phil after PM
 
         //if( gu8_Water_Out_Step == STATE_20_HOT_PRE_HEATING_STATE )
-        //if( gu8_Water_Out_Step >= STATE_20_HOT_PRE_HEATING_STATE 
-        if( gu8_Water_Out_Step >= STATE_21_HOT_PRE_HEATING_BUFFER_DRAIN_STATE       // ¡Ú 2025-06-11 Phil 
+        //if( gu8_Water_Out_Step >= STATE_20_HOT_PRE_HEATING_STATE
+        if( gu8_Water_Out_Step >= STATE_21_HOT_PRE_HEATING_BUFFER_DRAIN_STATE       // â˜… 2025-06-11 Phil
 			&& gu8_Water_Out_Step < STATE_30_EXTRACT_VALVE_ON_STATE)
         {
             //preheating_flow_control();
@@ -278,12 +278,12 @@ void control_flow_valve(void)
         }
         else{}
     }
-    // ¡Ú2025-06-20 phil    //2025-07-11 cbr
+    // â˜…2025-06-20 phil    //2025-07-11 cbr
     else if(gu8_flushing_mode == FLUSHING_FILL_HOT_TANK_STATE && gu8_Hot_Filling_Step == 6)
     {
-			preheating_variable_flow_control();    
+			preheating_variable_flow_control();
     }
-    // ¡Ú2025-06-20 phil
+    // â˜…2025-06-20 phil
     else
     {
         bit_first_adjust = CLEAR;
@@ -310,13 +310,13 @@ void preheating_flow_control(void)
 		gu8_dbg_flow_skip = CLEAR;
 	}
 
-    /*..hui [21-8-31¿ÀÈÄ 4:48:33] 20psi == 47..*/
-    /*..hui [21-9-1¿ÀÈÄ 4:04:28] 40psi == 73..*/
-    /*..hui [21-9-1¿ÀÈÄ 4:17:39] 60psi == 90..*/
+    /*..hui [21-8-31ì˜¤í›„ 4:48:33] 20psi == 47..*/
+    /*..hui [21-9-1ì˜¤í›„ 4:04:28] 40psi == 73..*/
+    /*..hui [21-9-1ì˜¤í›„ 4:17:39] 60psi == 90..*/
     //if(0)
     if(u16Heater_Power_Save <= HEATER_POWER_LOW)
     {
-        if( gu8_drain_max_flow <= 11 ) //gu8_drain_max_flow ¼ö¾Ğ¼¼ÆÃ½Ã ÇÊ¿ä.
+        if( gu8_drain_max_flow <= 11 ) //gu8_drain_max_flow ìˆ˜ì••ì„¸íŒ…ì‹œ í•„ìš”.
         {
             gu16_preheat_adjust_val = 250;
         }
@@ -329,20 +329,20 @@ void preheating_flow_control(void)
             else if( gu8_Hot_In_Temperature_One_Degree >= 15 )
             {
                 // mu16_adjust = 350;
-                // [25-02-21 08:24:07] yspark, Á¶Á¤°ª º¯°æ
+                // [25-02-21 08:24:07] yspark, ì¡°ì •ê°’ ë³€ê²½
                 //gu16_preheat_adjust_val = 550;
-                // [25-04-15] sean, Á¶Á¤°ª º¯°æ
+                // [25-04-15] sean, ì¡°ì •ê°’ ë³€ê²½
                 gu16_preheat_adjust_val = 1210;
             }
             else if( gu8_Hot_In_Temperature_One_Degree >= 10 )
             {
                 // mu16_adjust = 350;
-                // [25-03-27 ] sean, 10µµ Ãß°¡ Á¶Á¤°ª º¯°æ
+                // [25-03-27 ] sean, 10ë„ ì¶”ê°€ ì¡°ì •ê°’ ë³€ê²½
                 gu16_preheat_adjust_val = 1410;
             }
             else
             {
-                // [25-03-27 ] sean, 10µµ Ãß°¡ Á¶Á¤°ª º¯°æ
+                // [25-03-27 ] sean, 10ë„ ì¶”ê°€ ì¡°ì •ê°’ ë³€ê²½
                 gu16_preheat_adjust_val = 1510;
             }
         }
@@ -354,15 +354,15 @@ void preheating_flow_control(void)
             }
             else if( gu8_Hot_In_Temperature_One_Degree >= 15 )
             {
-                // [25-02-21 08:24:07] yspark, Á¶Á¤°ª º¯°æ
+                // [25-02-21 08:24:07] yspark, ì¡°ì •ê°’ ë³€ê²½
                 // mu16_adjust = 550;
-                // [25-03-27 ] sean, 10µµ Ãß°¡ Á¶Á¤°ª º¯°æ
+                // [25-03-27 ] sean, 10ë„ ì¶”ê°€ ì¡°ì •ê°’ ë³€ê²½
                 gu16_preheat_adjust_val = 1370;
             }
             else if( gu8_Hot_In_Temperature_One_Degree >= 10 )
             {
                 // mu16_adjust = 350;
-                // [25-03-27 ] sean, 10µµ Ãß°¡ Á¶Á¤°ª º¯°æ
+                // [25-03-27 ] sean, 10ë„ ì¶”ê°€ ì¡°ì •ê°’ ë³€ê²½
                 gu16_preheat_adjust_val = 1470;
             }
             else
@@ -379,21 +379,21 @@ void preheating_flow_control(void)
             else if( gu8_Hot_In_Temperature_One_Degree >= 15 )
             {
                 // mu16_adjust = 750;
-                // [25-02-21 08:25:10] yspark, Á¶Á¤°ª º¯°æ
+                // [25-02-21 08:25:10] yspark, ì¡°ì •ê°’ ë³€ê²½
                 gu16_preheat_adjust_val = 1380;
-                // [25-03-27 ] sean, 10µµ Ãß°¡ Á¶Á¤°ª º¯°æ
+                // [25-03-27 ] sean, 10ë„ ì¶”ê°€ ì¡°ì •ê°’ ë³€ê²½
             }
             else if( gu8_Hot_In_Temperature_One_Degree >= 10 )
             {
                 // mu16_adjust = 350;
-                // [25-03-27 ] sean, 10µµ Ãß°¡ Á¶Á¤°ª º¯°æ
+                // [25-03-27 ] sean, 10ë„ ì¶”ê°€ ì¡°ì •ê°’ ë³€ê²½
                 gu16_preheat_adjust_val = 1530;
-                // [25-03-27 ] sean, 10µµ Ãß°¡ Á¶Á¤°ª º¯°æ
+                // [25-03-27 ] sean, 10ë„ ì¶”ê°€ ì¡°ì •ê°’ ë³€ê²½
             }
             else
             {
                 gu16_preheat_adjust_val = 1580;
-                // [25-03-27 ] sean, 10µµ Ãß°¡ Á¶Á¤°ª º¯°æ
+                // [25-03-27 ] sean, 10ë„ ì¶”ê°€ ì¡°ì •ê°’ ë³€ê²½
             }
         }
     }
@@ -410,16 +410,16 @@ void preheating_flow_control(void)
             {
                 //mu16_adjust = 70;
   			    // mu16_adjust = 650;
-                // [25-02-21 08:25:48] yspark, Á¶Á¤°ª º¯°æ
+                // [25-02-21 08:25:48] yspark, ì¡°ì •ê°’ ë³€ê²½
   			    //gu16_preheat_adjust_val = 800;
-                // [25-04-10 08:25:48] sean, Á¶Á¤°ª º¯°æ
+                // [25-04-10 08:25:48] sean, ì¡°ì •ê°’ ë³€ê²½
   			    //gu16_preheat_adjust_val = 1120;
   			    gu16_preheat_adjust_val = 920;
             }
             else if( gu8_Hot_In_Temperature_One_Degree >= 10 )
             {
                 // mu16_adjust = 350;
-                // [25-03-27 ] sean, 10µµ Ãß°¡ Á¶Á¤°ª º¯°æ
+                // [25-03-27 ] sean, 10ë„ ì¶”ê°€ ì¡°ì •ê°’ ë³€ê²½
                 //gu16_preheat_adjust_val = 1220;
                 gu16_preheat_adjust_val = 1120;
             }
@@ -438,15 +438,15 @@ void preheating_flow_control(void)
             else if( gu8_Hot_In_Temperature_One_Degree >= 15 )
             {
                 // mu16_adjust = 250;
-                // [25-02-21 08:26:10] yspark, Á¶Á¤°ª º¯°æ
+                // [25-02-21 08:26:10] yspark, ì¡°ì •ê°’ ë³€ê²½
   			    //gu16_preheat_adjust_val = 800;
-                // [25-04-10 08:25:48] sean, Á¶Á¤°ª º¯°æ
+                // [25-04-10 08:25:48] sean, ì¡°ì •ê°’ ë³€ê²½
   			    gu16_preheat_adjust_val = 830;
             }
             else if( gu8_Hot_In_Temperature_One_Degree >= 10 )
             {
                 // mu16_adjust = 250;
-                // [25-02-21 08:26:10] yspark, Á¶Á¤°ª º¯°æ
+                // [25-02-21 08:26:10] yspark, ì¡°ì •ê°’ ë³€ê²½
                 gu16_preheat_adjust_val = 930;
             }
             else
@@ -464,16 +464,16 @@ void preheating_flow_control(void)
             else if( gu8_Hot_In_Temperature_One_Degree >= 15 )
             {
                 // mu16_adjust = 350;
-                // [25-02-21 08:26:34] yspark, Á¶Á¤°ª º¯°æ
+                // [25-02-21 08:26:34] yspark, ì¡°ì •ê°’ ë³€ê²½
   			    //gu16_preheat_adjust_val = 800;
-                // [25-04-10 08:25:48] sean, Á¶Á¤°ª º¯°æ
+                // [25-04-10 08:25:48] sean, ì¡°ì •ê°’ ë³€ê²½
   			    gu16_preheat_adjust_val = 840;
             }
             else if( gu8_Hot_In_Temperature_One_Degree >= 10 )
             {
                 // mu16_adjust = 250;
-                // [25-02-21 08:26:10] yspark, Á¶Á¤°ª º¯°æ
-                // [25-04-10 08:25:48] sean, Á¶Á¤°ª º¯°æ
+                // [25-02-21 08:26:10] yspark, ì¡°ì •ê°’ ë³€ê²½
+                // [25-04-10 08:25:48] sean, ì¡°ì •ê°’ ë³€ê²½
                 gu16_preheat_adjust_val = 940;
             }
             else
@@ -496,9 +496,9 @@ void preheating_flow_control(void)
             {
                 //mu16_adjust = 70;
   			    // mu16_adjust = 650;
-                // [25-02-21 08:25:48] yspark, Á¶Á¤°ª º¯°æ
+                // [25-02-21 08:25:48] yspark, ì¡°ì •ê°’ ë³€ê²½
   			    //gu16_preheat_adjust_val = 800;
-                // [25-04-10 08:25:48] sean, Á¶Á¤°ª º¯°æ
+                // [25-04-10 08:25:48] sean, ì¡°ì •ê°’ ë³€ê²½
   			    //gu16_preheat_adjust_val = 1120;
   			    //gu16_preheat_adjust_val = 220;
   			    gu16_preheat_adjust_val = 620;
@@ -506,7 +506,7 @@ void preheating_flow_control(void)
             else if( gu8_Hot_In_Temperature_One_Degree >= 10 )
             {
                 // mu16_adjust = 350;
-                // [25-03-27 ] sean, 10µµ Ãß°¡ Á¶Á¤°ª º¯°æ
+                // [25-03-27 ] sean, 10ë„ ì¶”ê°€ ì¡°ì •ê°’ ë³€ê²½
                 //gu16_preheat_adjust_val = 1220;
                 //gu16_preheat_adjust_val = 320;
   			    gu16_preheat_adjust_val = 650;
@@ -528,16 +528,16 @@ void preheating_flow_control(void)
             else if( gu8_Hot_In_Temperature_One_Degree >= 15 )
             {
                 // mu16_adjust = 250;
-                // [25-02-21 08:26:10] yspark, Á¶Á¤°ª º¯°æ
+                // [25-02-21 08:26:10] yspark, ì¡°ì •ê°’ ë³€ê²½
   			    //gu16_preheat_adjust_val = 800;
-                // [25-04-10 08:25:48] sean, Á¶Á¤°ª º¯°æ
+                // [25-04-10 08:25:48] sean, ì¡°ì •ê°’ ë³€ê²½
   			    //gu16_preheat_adjust_val = 430;
   			    gu16_preheat_adjust_val = 630;
             }
             else if( gu8_Hot_In_Temperature_One_Degree >= 10 )
             {
                 // mu16_adjust = 250;
-                // [25-02-21 08:26:10] yspark, Á¶Á¤°ª º¯°æ
+                // [25-02-21 08:26:10] yspark, ì¡°ì •ê°’ ë³€ê²½
                 //gu16_preheat_adjust_val = 530;
   			    gu16_preheat_adjust_val = 680;
             }
@@ -558,16 +558,16 @@ void preheating_flow_control(void)
             else if( gu8_Hot_In_Temperature_One_Degree >= 15 )
             {
                 // mu16_adjust = 350;
-                // [25-02-21 08:26:34] yspark, Á¶Á¤°ª º¯°æ
+                // [25-02-21 08:26:34] yspark, ì¡°ì •ê°’ ë³€ê²½
   			    //gu16_preheat_adjust_val = 800;
-                // [25-04-10 08:25:48] sean, Á¶Á¤°ª º¯°æ
+                // [25-04-10 08:25:48] sean, ì¡°ì •ê°’ ë³€ê²½
   			    gu16_preheat_adjust_val = 540;
             }
             else if( gu8_Hot_In_Temperature_One_Degree >= 10 )
             {
                 // mu16_adjust = 250;
-                // [25-02-21 08:26:10] yspark, Á¶Á¤°ª º¯°æ
-                // [25-04-10 08:25:48] sean, Á¶Á¤°ª º¯°æ
+                // [25-02-21 08:26:10] yspark, ì¡°ì •ê°’ ë³€ê²½
+                // [25-04-10 08:25:48] sean, ì¡°ì •ê°’ ë³€ê²½
                 gu16_preheat_adjust_val = 640;
             }
             else
@@ -576,7 +576,7 @@ void preheating_flow_control(void)
             }
         }
     }
-	
+
     run_decrease_flow( gu16_preheat_adjust_val );
 
     bit_first_adjust = SET;
@@ -591,9 +591,9 @@ void preheating_variable_flow_control(void)
 
     if(u16Heater_Power_Save <= HEATER_POWER_HIGH)
     {
-    	/*..sean [25-05-12] 90/95µµ ÇØ´ç Á¦¾î µ¿ÀÏÇÏ°Ô Àû¿ë..*/
+    	/*..sean [25-05-12] 90/95ë„ í•´ë‹¹ ì œì–´ ë™ì¼í•˜ê²Œ ì ìš©..*/
         if( (gu8_hot_setting_temperature == HOT_SET_TEMP____100oC)
-				|| ( gu8_hot_setting_temperature == HOT_SET_TEMP____95oC ) 
+				|| ( gu8_hot_setting_temperature == HOT_SET_TEMP____95oC )
 				|| ( gu8_hot_setting_temperature == HOT_SET_TEMP____90oC )  )
         {
             //gu8_MainHeat_Flow_target = u8Target_Hz_Hot;
@@ -603,25 +603,25 @@ void preheating_variable_flow_control(void)
 				|| ( gu8_hot_setting_temperature == HOT_SET_TEMP____80oC ) )
         {
             //gu8_MainHeat_Flow_target = u8Target_Hz_Hot;
-// ¡Ú2025-06-02 Phil 
-            //gu8_PreHeat_Flow_target = u8Target_Hz_Hot - 1;// ¡Ú2025-06-02 Phil 
+// â˜…2025-06-02 Phil
+            //gu8_PreHeat_Flow_target = u8Target_Hz_Hot - 1;// â˜…2025-06-02 Phil
 
             if(u16Heater_Power_Save <= HEATER_POWER_LOW)
             {
                 if (F_firstEffluent_hotWater)
-                {  // µÑÂ° ÀÜ
-                    gu8_PreHeat_Flow_target = u8Target_Hz_Hot - 1;              
+                {  // ë‘˜ì§¸ ì”
+                    gu8_PreHeat_Flow_target = u8Target_Hz_Hot - 1;
                 }
                 else
-                { // Ã¹Â° ÀÜ
-                    gu8_PreHeat_Flow_target = u8Target_Hz_Hot - 3;                
+                { // ì²«ì§¸ ì”
+                    gu8_PreHeat_Flow_target = u8Target_Hz_Hot - 3;
                 }
             }
             else
             {
-            	gu8_PreHeat_Flow_target = u8Target_Hz_Hot - 1;            
+            	gu8_PreHeat_Flow_target = u8Target_Hz_Hot - 1;
             }
-// ¡Ú2025-06-02 Phil 
+// â˜…2025-06-02 Phil
         }
         else if( (gu8_hot_setting_temperature == HOT_SET_TEMP____75oC)
 				|| ( gu8_hot_setting_temperature == HOT_SET_TEMP____70oC )
@@ -639,7 +639,7 @@ void preheating_variable_flow_control(void)
     {
 #if 1
 		if( (gu8_hot_setting_temperature == HOT_SET_TEMP____100oC)
-				|| ( gu8_hot_setting_temperature == HOT_SET_TEMP____95oC ) 
+				|| ( gu8_hot_setting_temperature == HOT_SET_TEMP____95oC )
 				|| ( gu8_hot_setting_temperature == HOT_SET_TEMP____90oC )  )
         {
             gu8_PreHeat_Flow_target = u8Target_Hz_Hot - 2;
@@ -651,7 +651,7 @@ void preheating_variable_flow_control(void)
 #endif
 		//gu8_MainHeat_Flow_target = u8Target_Hz_Hot;
     }
-    // [25-05-27 14:54:03] À¯·® protection Ãß°¡
+    // [25-05-27 14:54:03] ìœ ëŸ‰ protection ì¶”ê°€
     if(u8Target_Hz_Hot <= C_033_LPM)
     {
         u8Target_Hz_Hot = C_033_LPM;
@@ -663,7 +663,7 @@ void preheating_variable_flow_control(void)
     else{}
 
 
-    /*..hui [21-8-31ï¿½ï¿½ï¿½ï¿½ 4:48:33] 20psi == 47..*/
+    /*..hui [21-8-31å ì™ì˜™å ì™ì˜™ 4:48:33] 20psi == 47..*/
     if( gu8_hot_filling_max_hz <= 60 )
     {
         if( u8Target_Hz_Hot >= C_05_LPM )
@@ -763,7 +763,7 @@ void preheating_variable_flow_control(void)
             mu16_adjust = 5;
         }
     }
-    //2025-07-14 cbr_test   Ã¹ ÃßÃâ ½Ã À¯·®0ÀÏ¶§ ÆŞ½º 100 µé¾î°¡¼­ °úÇÏ°Ô increaseµÊ.
+    //2025-07-14 cbr_test   ì²« ì¶”ì¶œ ì‹œ ìœ ëŸ‰0ì¼ë•Œ í„ìŠ¤ 100 ë“¤ì–´ê°€ì„œ ê³¼í•˜ê²Œ increaseë¨.
     if((!F_firstEffluent_hotWater && gu8_Flow_1sec < 18)
         && (F_WaterOut == SET && u8WaterOutState == HOT_WATER_SELECT))
     {
@@ -837,7 +837,7 @@ void preheating_variable_flow_control(void)
     	}
 		else {}
     }
-    else if( (gu8_Flow_1sec < gu8_PreHeat_Flow_target - 1) && (gu8_Flow_1sec >= 10))    //2025-07-17 cbr decrease ÈÄ 16¿¡¼­ ¸ØÃß´Â Çö»ó
+    else if( (gu8_Flow_1sec < gu8_PreHeat_Flow_target - 1) && (gu8_Flow_1sec >= 10))    //2025-07-17 cbr decrease í›„ 16ì—ì„œ ë©ˆì¶”ëŠ” í˜„ìƒ
     {
         run_increase_flow( mu16_adjust );
     }
@@ -856,7 +856,7 @@ void mainheating_flow_control(void)
         if (u16Heater_Power_Save < HEATER_POWER_LOW)
         {
             if( (gu8_hot_setting_temperature == HOT_SET_TEMP____100oC)
-                    || ( gu8_hot_setting_temperature == HOT_SET_TEMP____95oC ) 
+                    || ( gu8_hot_setting_temperature == HOT_SET_TEMP____95oC )
                     || ( gu8_hot_setting_temperature == HOT_SET_TEMP____90oC )  )
             {
                 //gu8_MainHeat_Flow_target = u8Target_Hz_Hot;
@@ -879,11 +879,11 @@ void mainheating_flow_control(void)
             {
                 gu8_MainHeat_Flow_target = u8Target_Hz_Hot;
             }
-        } 
+        }
         else
         {
             if( (gu8_hot_setting_temperature == HOT_SET_TEMP____100oC)
-                    || ( gu8_hot_setting_temperature == HOT_SET_TEMP____95oC ) 
+                    || ( gu8_hot_setting_temperature == HOT_SET_TEMP____95oC )
                     || ( gu8_hot_setting_temperature == HOT_SET_TEMP____90oC )  )
             {
                 //cbr
@@ -894,7 +894,7 @@ void mainheating_flow_control(void)
                 }else
                 {
                     gu8_MainHeat_Flow_target = u8Target_Hz_Hot - 2;
-                } 
+                }
             }
             else if( (gu8_hot_setting_temperature == HOT_SET_TEMP____85oC )
                 || ( gu8_hot_setting_temperature == HOT_SET_TEMP____80oC ) )
@@ -919,7 +919,7 @@ void mainheating_flow_control(void)
     {
 #if 1
 		if( (gu8_hot_setting_temperature == HOT_SET_TEMP____100oC)
-				|| ( gu8_hot_setting_temperature == HOT_SET_TEMP____95oC ) 
+				|| ( gu8_hot_setting_temperature == HOT_SET_TEMP____95oC )
 				|| ( gu8_hot_setting_temperature == HOT_SET_TEMP____90oC )  )
         {
             gu8_MainHeat_Flow_target = u8Target_Hz_Hot - 2;
@@ -933,7 +933,7 @@ void mainheating_flow_control(void)
     }
 
 
-    /*..hui [21-8-31ï¿½ï¿½ï¿½ï¿½ 4:48:33] 20psi == 47..*/
+    /*..hui [21-8-31å ì™ì˜™å ì™ì˜™ 4:48:33] 20psi == 47..*/
     if( gu8_hot_filling_max_hz <= 60 )
     {
         if( u8Target_Hz_Hot >= C_05_LPM )
@@ -1118,7 +1118,7 @@ void mainheating_flow_control(void)
     	}
 		else {}
     }
-    else if( (gu8_Flow_1sec < gu8_MainHeat_Flow_target - 1 ) && (gu8_Flow_1sec >= 10))  //2025-07-17 cbr decrease ÈÄ 16¿¡¼­ ¸ØÃß´Â Çö»ó
+    else if( (gu8_Flow_1sec < gu8_MainHeat_Flow_target - 1 ) && (gu8_Flow_1sec >= 10))  //2025-07-17 cbr decrease í›„ 16ì—ì„œ ë©ˆì¶”ëŠ” í˜„ìƒ
     {
         run_increase_flow( mu16_adjust );
     }
@@ -1151,15 +1151,15 @@ void Water_Heater_Control(void)
 void set_target_temperature(void)
 {
     if (gu8_Hot_In_Temperature_One_Degree <= 15)
-    {  // 15µµ
+    {  // 15ë„
         SetTargetTempUnder_15();
     }
     else if (gu8_Hot_In_Temperature_One_Degree <= 25)
-    {  // »ó½Ã
+    {  // ìƒì‹œ
         SetTargetTempUnder_25();
     }
     else
-    {  // 25µµ ÀÌ»ó
+    {  // 25ë„ ì´ìƒ
         SetTargetTempExtra();
     }
 
@@ -1174,11 +1174,11 @@ void set_target_temperature(void)
     else
     {
         //gu8_min_power = 45;
-        /*.. sean [25-5-8] ÃÖ¼Ò È÷ÅÍ Ãâ·ÂÀ» 45¿¡¼­ 60À¸·Î º¯°æ..*/
+        /*.. sean [25-5-8] ìµœì†Œ íˆí„° ì¶œë ¥ì„ 45ì—ì„œ 60ìœ¼ë¡œ ë³€ê²½..*/
         gu8_min_power = 60;
     }
 }
-// [25-02-20 13:27:42] yspark, Å×½ºÆ® º¯¼ö »ı¼º
+// [25-02-20 13:27:42] yspark, í…ŒìŠ¤íŠ¸ ë³€ìˆ˜ ìƒì„±
 U16 Testgu16PowerMaxValue = 0;
 
 void Cal_HeaterWatt(void)
@@ -1188,7 +1188,7 @@ void Cal_HeaterWatt(void)
     U32 c = 0;
 
     #if 0
-    /*..hui [21-2-19ï¿½ï¿½ï¿½ï¿½ 3:05:51] AIS3.0 - ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 2720W..*/
+    /*..hui [21-2-19å ì™ì˜™å ì™ì˜™ 3:05:51] AIS3.0 - å ì™ì˜™å ì™ì˜™å ì™ì˜™å ì™ì˜™ 2720W..*/
     if(gu16_AD_Result_Heater_Current_Feed >= 100)
     {
         a = (U32)gu16_AD_Result_Heater_Current_Feed;
@@ -1221,14 +1221,14 @@ void Cal_HeaterWatt(void)
     // }
     // else{}
 
-    // [25-02-20 14:06:19] yspark ½ÇÇè °ª
+    // [25-02-20 14:06:19] yspark ì‹¤í—˜ ê°’
     a = (U32)gu16_AD_Result_Heater_Current_Feed;
     b = (U32)((6937 * a) / 1000);
     c = (U32) (b - 685 + 50);
 
     u16Heater_Power = (U16)c;
 
-    // [25-02-20 13:28:05] yspark, ÃÖ´ë Àü·Â°ª ÀúÀå
+    // [25-02-20 13:28:05] yspark, ìµœëŒ€ ì „ë ¥ê°’ ì €ì¥
     if (u16Heater_Power >= Testgu16PowerMaxValue)
     {
         Testgu16PowerMaxValue = u16Heater_Power;
@@ -1240,11 +1240,11 @@ void Cal_HeaterWatt(void)
     }
     else
     {
-        /*..hui [20-4-22ï¿½ï¿½ï¿½ï¿½ 4:22:00] ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½î³¯ï¿½Ü¿ï¿½ ï¿½Ö¼Ò·ï¿½ ï¿½ï¿½ï¿½ï¿½..*/
+        /*..hui [20-4-22å ì™ì˜™å ì™ì˜™ 4:22:00] å ì™ì˜™å ì™ì˜™ å ì™ì˜™å ì˜ë‚ å ìŒ¤ìš¸ì˜™ å ìŒì†Œë¤„ì˜™ å ì™ì˜™å ì™ì˜™..*/
         u16Heater_Power_Save = C_Heater_Min_Power;
     }
 
-    /*..hui [19-1-24ï¿½ï¿½ï¿½ï¿½ 1:42:36] ADï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ÈµÉ°ï¿½ï¿?Default ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½..*/
+    /*..hui [19-1-24å ì™ì˜™å ì™ì˜™ 1:42:36] ADå ì™ì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™å ì™ì˜™å ì™ì˜™ å ì™ì˜™å ì‹«ë ê³¤ì˜™å ?Default å ì™ì˜™ å ì™ì˜™å ì™ì˜™..*/
     if(u16Heater_Power_Save <= C_Heater_Min_Power)
     {
         u16Heater_Power_Save = C_Heater_Min_Power;
@@ -1314,8 +1314,8 @@ void normal_heater_watt_check(void)
 ***********************************************************************************************************************/
 /*------------------------------------------------------------------------------
                             Cal_HotFlowHz()
-//ï¿½Â¼ï¿½ ï¿½ï¿½ï¿½â¿¡ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï¼ï¿½ï¿½ï¿??
-//ï¿½ï¿½Ç¥: 0.29LPM -> 290ml/min
+//å ìŠ¹ì‡½ì˜™ å ì™ì˜™å ì©ì— å ì™ì˜™å ì™ì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™ç©¶å ì™ì˜™å ??
+//å ì™ì˜™í‘œ: 0.29LPM -> 290ml/min
 --------------------------------------------------------------------------------*/
 U16 gu16_effluent_hot;      //2025-07-31 cbr
 void Cal_HotFlowHz(void)
@@ -1348,14 +1348,14 @@ void Cal_HotFlowHz(void)
     }
     else{}
 #if 0
-    // [25-02-20 14:35:26] yspark, Ç® Ãâ·ÂÀÏ ¶§¸¸ °è»ê
+    // [25-02-20 14:35:26] yspark, í’€ ì¶œë ¥ì¼ ë•Œë§Œ ê³„ì‚°
     if ((pHEATER_HOT_H_RELAY == SET && pHEATER_HOT_TRIAC_L == SET && gu8TriacLevelMax == STEP_TRIAC) == 0)
     {
         return;
     }
 #endif
-// [25-05-23 16:01:05] yspark, ¼öÁ¤
-// Target À¯·®À» ÅëÀÏÈ­ ÇÏ±â À§ÇØ¼­ ¼öÁ¤
+// [25-05-23 16:01:05] yspark, ìˆ˜ì •
+// Target ìœ ëŸ‰ì„ í†µì¼í™” í•˜ê¸° ìœ„í•´ì„œ ìˆ˜ì •
     // if( gu8_Water_Out_Step == STATE_20_HOT_PRE_HEATING_STATE )
     // {
     //     mu8_target = gu8_Hot_Preheat_Temp;
@@ -1378,14 +1378,14 @@ void Cal_HotFlowHz(void)
 
     Target_Flow_Q = (U16)d;
 
-    // ï¿½Ö¼ï¿½ ï¿½ï¿½ï¿½ï¿½Ä¡
+    // å ìŒì‡½ì˜™ å ì™ì˜™å ì™ì˜™ì¹˜
     if(Target_Flow_Q <= C_Flow_Min_Q)
     {
-        Target_Flow_Q = C_Flow_Min_Q;  //ï¿½Ö¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 260ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Õ´Ï´ï¿½.
+        Target_Flow_Q = C_Flow_Min_Q;  //å ìŒì‡½ì˜™ å ì™ì˜™å ì™ì˜™å ì™ì˜™ 260å ì™ì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™å ìŒŒë‹ˆëŒì˜™.
     }
     else{}
 
-    /*..hui [19-12-11ï¿½ï¿½ï¿½ï¿½ 3:20:02] 1.0lpmï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½.. ï¿½ï¿½ï¿½ï¿½ï¿½Ã·ï¿½ ï¿½ï¿½ï¿½ï¿½..*/
+    /*..hui [19-12-11å ì™ì˜™å ì™ì˜™ 3:20:02] 1.0lpmå ì™ì˜™å ì™ì˜™ å ìŒëŒì˜™ å ì™ì˜™å ì™ì˜™.. å ì™ì˜™å ì™ì˜™å ì‹œë¤„ì˜™ å ì™ì˜™å ì™ì˜™..*/
     if(Target_Flow_Q >= 1044)
     {
         Target_Flow_Q = 1044;
@@ -1432,7 +1432,7 @@ void Cal_HotFlowHz(void)
 	    }
 	    else{}
 	}
-	else 
+	else
 	{
 	    if(u8Target_Hz_Hot <= C_03_LPM)
 	    {
@@ -1445,19 +1445,19 @@ void Cal_HotFlowHz(void)
 	    else{}
 	}
 
-    /*..hui [19-2-13ï¿½ï¿½ï¿½ï¿½ 10:11:07] ï¿½Ó½ï¿½ ï¿½×½ï¿½Æ®ï¿½ï¿½..*/
-    /*..hui [20-4-8ï¿½ï¿½ï¿½ï¿½ 11:39:11] ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï‹ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿??ï¿½ß°ï¿½..*/
+    /*..hui [19-2-13å ì™ì˜™å ì™ì˜™ 10:11:07] å ìŒˆì™ì˜™ å ìŒ“ì™ì˜™íŠ¸å ì™ì˜™..*/
+    /*..hui [20-4-8å ì™ì˜™å ì™ì˜™ 11:39:11] å ì™ì˜™å ì™ì˜™å ì™ì˜™å ì‹¹ë—°ì˜™ å ì™ì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™ å ì™ì˜™å ??å ìŒ©ê³¤ì˜™..*/
     if(u16Heater_Power_Save <= HEATER_POWER_LOW)
     {
-        // [25-05-26 17:21:13] yspark, À¯·®ÀÌ ³Ê¹« ÀÛ¾Æ ¼öÁ¤
+        // [25-05-26 17:21:13] yspark, ìœ ëŸ‰ì´ ë„ˆë¬´ ì‘ì•„ ìˆ˜ì •
         u8Target_Hz_Hot = u8Target_Hz_Hot - 0;
 
-        //2025-07-15 cbr    ÀúÀü¾Ğ 20µµ °íÀ¯·® 85µµ Ã¹ÀÜ ¹Ì´Ş
+        //2025-07-15 cbr    ì €ì „ì•• 20ë„ ê³ ìœ ëŸ‰ 85ë„ ì²«ì” ë¯¸ë‹¬
         if( (gu8_hot_setting_temperature == HOT_SET_TEMP____85oC )
             || ( gu8_hot_setting_temperature == HOT_SET_TEMP____80oC ) )
         {
             if(gu8_Hot_In_Temperature_One_Degree <= 25)
-            { 
+            {
                 u8Target_Hz_Hot = u8Target_Hz_Hot - 2;
             }
             else{}
@@ -1474,11 +1474,11 @@ void Cal_HotFlowHz(void)
             else{}
         }
         else if(( (gu8_hot_setting_temperature == HOT_SET_TEMP____100oC)
-				|| ( gu8_hot_setting_temperature == HOT_SET_TEMP____95oC ) 
+				|| ( gu8_hot_setting_temperature == HOT_SET_TEMP____95oC )
 				|| ( gu8_hot_setting_temperature == HOT_SET_TEMP____90oC )  )
                 && ( gu8_Hot_In_Temperature_One_Degree <= 15 ))
         {
-            u8Target_Hz_Hot = u8Target_Hz_Hot + 2;      //2025-07-22 cbr 100µµ ¹°²÷±è
+            u8Target_Hz_Hot = u8Target_Hz_Hot + 2;      //2025-07-22 cbr 100ë„ ë¬¼ëŠê¹€
         }
         else{}        //2025-07-15 cbr
     }
@@ -1493,8 +1493,8 @@ void Cal_HotFlowHz(void)
 				|| ( gu8_hot_setting_temperature == HOT_SET_TEMP____65oC )
 				|| ( gu8_hot_setting_temperature == HOT_SET_TEMP____60oC ) )
                 {
-                    /*..hui [21-2-26ï¿½ï¿½ï¿½ï¿½ 4:16:47] ï¿½Ê±ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ã°ï¿½ï¿½ï¿½ ï¿½Û°ï¿½ 70ï¿½ï¿½ï¿½Î°ï¿½ï¿?ï¿½ï¿½ï¿½Ç´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ä¿ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Èµï¿½..*/
-                    /*..hui [21-2-26ï¿½ï¿½ï¿½ï¿½ 4:17:12] ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ò¼ï¿½ï¿½Öµï¿½ï¿½ï¿½ AIS35ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½..*/
+                    /*..hui [21-2-26å ì™ì˜™å ì™ì˜™ 4:16:47] å ì‹­ê¹ì˜™ å ì™ì˜™å ì™ì˜™å ì‹œê³¤ì˜™å ì™ì˜™ å ìŒœê³¤ì˜™ 70å ì™ì˜™å ì‹¸ê³¤ì˜™å ?å ì™ì˜™å ì‹¤ëŒì˜™ å ì™ì˜™å ì™ì˜™å ì™ì˜™ ì»¤å ì™ì˜™ å ì™ì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™å ì™ì˜™ å ì‹«ë“¸ì˜™..*/
+                    /*..hui [21-2-26å ì™ì˜™å ì™ì˜™ 4:17:12] å ì™ì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™å ìŒ€ì‡½ì˜™å ìŒë“¸ì˜™å ì™ì˜™ AIS35å ì™ì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™å ì™ì˜™ å ìŒëŒì˜™ å ì™ì˜™å ì™ì˜™å ì™ì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™..*/
                     if( u8Target_Hz_Hot >= C_05_LPM )
                     {
                         u8Target_Hz_Hot = C_05_LPM;
@@ -1507,13 +1507,13 @@ void Cal_HotFlowHz(void)
                     u8Target_Hz_Hot = u8Target_Hz_Hot - 1;
                 }
                 else if( (gu8_hot_setting_temperature == HOT_SET_TEMP____100oC)
-				|| ( gu8_hot_setting_temperature == HOT_SET_TEMP____95oC ) 
+				|| ( gu8_hot_setting_temperature == HOT_SET_TEMP____95oC )
 				|| ( gu8_hot_setting_temperature == HOT_SET_TEMP____90oC ) )
                 // && (u16Heater_Power_Save > HEATER_POWER_LOW) )              //2025-07-28 cbr
                 {
                     //u8Target_Hz_Hot = u8Target_Hz_Hot - 1;
                     // u8Target_Hz_Hot = u8Target_Hz_Hot - 4;
-                    u8Target_Hz_Hot = u8Target_Hz_Hot - 0;      //2025-07-22 cbr Á¤°İ 10µµ ²÷±è
+                    u8Target_Hz_Hot = u8Target_Hz_Hot - 0;      //2025-07-22 cbr ì •ê²© 10ë„ ëŠê¹€
                 }
                 else
                 {
@@ -1526,11 +1526,11 @@ void Cal_HotFlowHz(void)
             {
                 //u8Target_Hz_Hot = u8Target_Hz_Hot - 1;
                 // u8Target_Hz_Hot = u8Target_Hz_Hot + 2;
-// ¡Ú2025-06-02 Phil
+// â˜…2025-06-02 Phil
                 //u8Target_Hz_Hot = u8Target_Hz_Hot+1;
 
                 if( (gu8_hot_setting_temperature == HOT_SET_TEMP____100oC)
-							|| ( gu8_hot_setting_temperature == HOT_SET_TEMP____95oC ) 
+							|| ( gu8_hot_setting_temperature == HOT_SET_TEMP____95oC )
 							|| ( gu8_hot_setting_temperature == HOT_SET_TEMP____90oC )  )
                 {
                     //u8Target_Hz_Hot = u8Target_Hz_Hot - 1;
@@ -1541,14 +1541,14 @@ void Cal_HotFlowHz(void)
                     || ( gu8_hot_setting_temperature == HOT_SET_TEMP____65oC )
                     || ( gu8_hot_setting_temperature == HOT_SET_TEMP____60oC )
                     )
-                {       //2025-07-16 cbr    Á¤°İ 20µµ(30µµ?È®ÀÎÇÊ¿ä) Á¶°Ç 70µµ ¹Ì´Ş(Å¸°Ù 40hz ÃøÁ¤µÊ. 28hz·Î Á¦ÇÑ)
+                {       //2025-07-16 cbr    ì •ê²© 20ë„(30ë„?í™•ì¸í•„ìš”) ì¡°ê±´ 70ë„ ë¯¸ë‹¬(íƒ€ê²Ÿ 40hz ì¸¡ì •ë¨. 28hzë¡œ ì œí•œ)
                     if( u8Target_Hz_Hot >= C_05_LPM )
                     {
                         u8Target_Hz_Hot = C_05_LPM;
                     }
                     else{}
                 }
-                //2025-07-29 cbr 80µµ Á¤°İ 20µµ °íÀ¯·® ¹Ì´Ş : À¯·® Á¶Àı ÇÊ¿ä
+                //2025-07-29 cbr 80ë„ ì •ê²© 20ë„ ê³ ìœ ëŸ‰ ë¯¸ë‹¬ : ìœ ëŸ‰ ì¡°ì ˆ í•„ìš”
                 else if((gu8_hot_setting_temperature == HOT_SET_TEMP____80oC)
                     && (gu8_hot_filling_max_hz > u8Target_Hz_Hot)
                     && (gu8_Hot_In_Temperature_One_Degree <= 25))
@@ -1557,15 +1557,15 @@ void Cal_HotFlowHz(void)
                 }
                 else
                 {
-                		u8Target_Hz_Hot = u8Target_Hz_Hot+1;                
+                		u8Target_Hz_Hot = u8Target_Hz_Hot+1;
                 }
-// ¡Ú2025-06-02 Phil
+// â˜…2025-06-02 Phil
             }
         }
         else// if(u16Heater_Power_Save > HEATER_POWER_HIGH)
     	{
             if( (gu8_hot_setting_temperature == HOT_SET_TEMP____100oC)
-				|| ( gu8_hot_setting_temperature == HOT_SET_TEMP____95oC ) 
+				|| ( gu8_hot_setting_temperature == HOT_SET_TEMP____95oC )
 				|| ( gu8_hot_setting_temperature == HOT_SET_TEMP____90oC )  )
             {
                 //u8Target_Hz_Hot = u8Target_Hz_Hot - 1;
@@ -1573,15 +1573,15 @@ void Cal_HotFlowHz(void)
                 // u8Target_Hz_Hot = u8Target_Hz_Hot;
                 if(gu8_Hot_In_Temperature_One_Degree <= 15)
                 {
-                    u8Target_Hz_Hot = u8Target_Hz_Hot;          //2025-07-18 cbr    10µµ °íÀü¾Ğ ¹°²÷±è(À¯·® ÀûÀ½)
+                    u8Target_Hz_Hot = u8Target_Hz_Hot;          //2025-07-18 cbr    10ë„ ê³ ì „ì•• ë¬¼ëŠê¹€(ìœ ëŸ‰ ì ìŒ)
                 }
                 else if(gu8_Hot_In_Temperature_One_Degree <= 25)
                 {
-                    u8Target_Hz_Hot = u8Target_Hz_Hot - 4;      //2025-07-15 cbr   °íÀü¾Ğ 20µµ 30~33hz ÃøÁ¤, °úÇÔ.
+                    u8Target_Hz_Hot = u8Target_Hz_Hot - 4;      //2025-07-15 cbr   ê³ ì „ì•• 20ë„ 30~33hz ì¸¡ì •, ê³¼í•¨.
                 }
                 else
                 {
-                    u8Target_Hz_Hot = u8Target_Hz_Hot - 2;      //2025-07-23 cbr °íÀü¾Ğ 30µµ ¹°²÷±è
+                    u8Target_Hz_Hot = u8Target_Hz_Hot - 2;      //2025-07-23 cbr ê³ ì „ì•• 30ë„ ë¬¼ëŠê¹€
                 }
             }
             else if( (gu8_hot_setting_temperature == HOT_SET_TEMP____85oC )
@@ -1612,15 +1612,15 @@ void Cal_HotFlowHz(void)
             {
                 if( gs8_flow_inc < 0 )
                 {
-                    if( gu8_Hot_In_Temperature_One_Degree <= 15 
+                    if( gu8_Hot_In_Temperature_One_Degree <= 15
 						&&( (gu8_hot_setting_temperature == HOT_SET_TEMP____100oC)
-						|| ( gu8_hot_setting_temperature == HOT_SET_TEMP____95oC ) 
+						|| ( gu8_hot_setting_temperature == HOT_SET_TEMP____95oC )
 						|| ( gu8_hot_setting_temperature == HOT_SET_TEMP____90oC )  )
 					)
                     {
                         mu8_flow_inc_time = 2;
                     }
-                    else if( gu8_Hot_In_Temperature_One_Degree <= 15 
+                    else if( gu8_Hot_In_Temperature_One_Degree <= 15
 						&& ( (gu8_hot_setting_temperature == HOT_SET_TEMP____85oC )
 							|| ( gu8_hot_setting_temperature == HOT_SET_TEMP____80oC ) )
 					)
@@ -1639,15 +1639,15 @@ void Cal_HotFlowHz(void)
             }
             else
             {
-                if( gu8_Hot_In_Temperature_One_Degree <= 15 
+                if( gu8_Hot_In_Temperature_One_Degree <= 15
 					&& ( (gu8_hot_setting_temperature == HOT_SET_TEMP____100oC)
-						|| ( gu8_hot_setting_temperature == HOT_SET_TEMP____95oC ) 
+						|| ( gu8_hot_setting_temperature == HOT_SET_TEMP____95oC )
 						|| ( gu8_hot_setting_temperature == HOT_SET_TEMP____90oC ) )
 					)
                 {
                     mu8_flow_inc_time = 1;
                 }
-                else if( gu8_Hot_In_Temperature_One_Degree <= 15 
+                else if( gu8_Hot_In_Temperature_One_Degree <= 15
 						&& ( (gu8_hot_setting_temperature == HOT_SET_TEMP____85oC )
 							|| ( gu8_hot_setting_temperature == HOT_SET_TEMP____80oC ) )
 						)
@@ -1754,7 +1754,7 @@ void Cal_HotFlowHz(void)
 
                 if( u16Heater_Power_Save <= HEATER_POWER_HIGH
                     && ( (gu8_hot_setting_temperature == HOT_SET_TEMP____100oC)
-						|| ( gu8_hot_setting_temperature == HOT_SET_TEMP____95oC ) 
+						|| ( gu8_hot_setting_temperature == HOT_SET_TEMP____95oC )
 						|| ( gu8_hot_setting_temperature == HOT_SET_TEMP____90oC )  )
 				)
                 {
@@ -1795,7 +1795,7 @@ void Cal_HotFlowHz(void)
     }
     else{}
 
-		/* sean [25-5-08] Heater ¿Âµµ°¡ ³ô¾ÆÁ³À»¶§¿¡´Â À¯·®Á¶ÀıÇÏ´Â ºÎºĞ Skip	*/
+		/* sean [25-5-08] Heater ì˜¨ë„ê°€ ë†’ì•„ì¡Œì„ë•Œì—ëŠ” ìœ ëŸ‰ì¡°ì ˆí•˜ëŠ” ë¶€ë¶„ Skip	*/
 #if 0
         if( gu8_Hot_Out_Temperature_One_Degree >= HOT_TRIAC_OFF_TEMP
             || gu8_Hot_Heater_Temperature_One_Degree >= HOT_TRIAC_OFF_TEMP )
@@ -1815,8 +1815,8 @@ void Cal_HotFlowHz(void)
     else{}
 #endif
 #if 0
-    /*..hui [21-3-18ï¿½ï¿½ï¿½ï¿½ 5:50:45] Ä¿ï¿½ï¿½ ï¿½Ô¼ï¿½ 15ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ã¹ï¿½ï¿½ï¿½Ï¶ï¿½ ï¿½Ê¹İ¿ï¿½ ï¿½Âµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½..*/
-    /*..hui [21-3-18ï¿½ï¿½ï¿½ï¿½ 5:50:57] ï¿½ï¿½ï¿½Í°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ä¾ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Âµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½..*/
+    /*..hui [21-3-18å ì™ì˜™å ì™ì˜™ 5:50:45] ì»¤å ì™ì˜™ å ìŒ‰ì‡½ì˜™ 15å ì™ì˜™ å ì™ì˜™å ì™ì˜™ ì²«å ì™ì˜™å ì‹¹ë°ì˜™ å ì‹­ë°˜ìš¸ì˜™ å ìŠ¹ë“¸ì˜™ å ì™ì˜™å ì™ì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™..*/
+    /*..hui [21-3-18å ì™ì˜™å ì™ì˜™ 5:50:57] å ì™ì˜™å ì‹¶ê³¤ì˜™ å ì™ì˜™å ì™ì˜™ å ì‹ì–µì˜™å ì™ì˜™å ì™ì˜™ å ìŠ¹ë“¸ì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™ å ì™ì˜™ å ì™ì˜™å ì™ì˜™..*/
     if( u16Heater_Power_Save <= HEATER_POWER_HIGH
         && gu8_hot_setting_temperature == HOT_SET_TEMP_3__COFFEE__85_oC
         /*&& gu8_Hot_In_Temperature_One_Degree <= 15*/
@@ -1882,21 +1882,21 @@ void heating_control(void)
         mu8_target = gu8_Hot_Target_Temp;
     }
     else if(gu8_Water_Out_Step == STATE_20_HOT_PRE_HEATING_STATE
-        && gu8_Preheat_Step >= STATE_3_PREHEAT_CHECK_TIME)   
+        && gu8_Preheat_Step >= STATE_3_PREHEAT_CHECK_TIME)
     {
         mu8_target = gu8_Hot_Preheat_Temp;
     }
     else
     {
-    	//step Ãß°¡·Î NG·Î ºüÁü 
+    	//step ì¶”ê°€ë¡œ NGë¡œ ë¹ ì§
         //return;
     }
 
 /////////////////////////////////////////////////////////////////////////////////
     calc_heater_out( mu8_target );
 
-    /*..hui [19-10-2¿ÀÈÄ 7:27:34] ¿¹¿­½Ã¿¡µµ È÷ÅÍ Ãâ·ÂÀº ÃßÃâ ¿Âµµ ±âÁØÀ¸·Î °è»ê..*/
-    /*..hui [19-10-2¿ÀÈÄ 7:27:51] 15µµ ¹Ì¸¸ÀÏ°æ¿ì 20% Ãß°¡..*/
+    /*..hui [19-10-2ì˜¤í›„ 7:27:34] ì˜ˆì—´ì‹œì—ë„ íˆí„° ì¶œë ¥ì€ ì¶”ì¶œ ì˜¨ë„ ê¸°ì¤€ìœ¼ë¡œ ê³„ì‚°..*/
+    /*..hui [19-10-2ì˜¤í›„ 7:27:51] 15ë„ ë¯¸ë§Œì¼ê²½ìš° 20% ì¶”ê°€..*/
     if(Bit0_Pre_Heating_State == SET)
     {
         pre_heating_control( mu8_target );
@@ -1925,8 +1925,8 @@ void heating_control(void)
         }
         else{}
 
-        /*..hui [21-3-18¿ÀÀü 10:53:04] Ä¿ÇÇ ¼³Á¤ÀÏ¶§ ÀÔ¼ö 17µµ ¹Ì¸¸ÀÏ°æ¿ì ÃßÃâÈÄ¿¡µµ 80µµ ¹Ì¸¸ÀÌ¸é Ç® °¡µ¿..*/
-        /*..hui [21-3-18¿ÀÀü 10:53:32] ÀÌ°Ô ¾øÀ¸¸é ¿¹¿­½Ã°£ÀÌ Àû¾î¼­ ¿Âµµ°¡ ¾È¿Ã¶ó°¬´Âµ¥µµ °è»ê»ó È÷ÅÍ Àü·ÂÀ» ³»¸±¼öÀÖÀ½..*/
+        /*..hui [21-3-18ì˜¤ì „ 10:53:04] ì»¤í”¼ ì„¤ì •ì¼ë•Œ ì…ìˆ˜ 17ë„ ë¯¸ë§Œì¼ê²½ìš° ì¶”ì¶œí›„ì—ë„ 80ë„ ë¯¸ë§Œì´ë©´ í’€ ê°€ë™..*/
+        /*..hui [21-3-18ì˜¤ì „ 10:53:32] ì´ê²Œ ì—†ìœ¼ë©´ ì˜ˆì—´ì‹œê°„ì´ ì ì–´ì„œ ì˜¨ë„ê°€ ì•ˆì˜¬ë¼ê°”ëŠ”ë°ë„ ê³„ì‚°ìƒ íˆí„° ì „ë ¥ì„ ë‚´ë¦´ìˆ˜ìˆìŒ..*/
         if( gu8_hot_setting_temperature == HOT_SET_TEMP_3__COFFEE__85_oC
             && gu8_Hot_In_Temperature_One_Degree <= 27
             && u16Heater_Power_Save <= HEATER_POWER_HIGH
@@ -1940,15 +1940,15 @@ void heating_control(void)
         }
         else{}
 #endif
-        // [25-02-20 15:18:19] yspark Æ©´×
-        // [25-05-23 17:05:57] ysaprk 2Â÷ Æ©´×
+        // [25-02-20 15:18:19] yspark íŠœë‹
+        // [25-05-23 17:05:57] ysaprk 2ì°¨ íŠœë‹
         //cbr
         if( gu8_Hot_Out_Temperature_One_Degree >= 99
             || gu8_Hot_Heater_Temperature_One_Degree >= 99 )
         {
             if(u8Delta_Power_Level > gu8_min_power)
             {
-				//À¯·® º¯È­¿¡ µû¶ó Delta power°ª Á¶Àı 
+				//ìœ ëŸ‰ ë³€í™”ì— ë”°ë¼ Delta powerê°’ ì¡°ì ˆ
                 if(gu8_MainHeat_Flow_target > 27)
                 {
                     u8Delta_Power_Level = u8Delta_Power_Level - 20;
@@ -2008,18 +2008,18 @@ void heating_control(void)
             if(u8Delta_Power_Level > gu8_min_power)
             {
                 u8Delta_Power_Level = u8Delta_Power_Level - 10;
-//                // ¡Ú2025-06-02 Phil  
+//                // â˜…2025-06-02 Phil
 //                  if( (gu8_hot_setting_temperature == HOT_SET_TEMP____55oC)
 //			          || ( gu8_hot_setting_temperature == HOT_SET_TEMP____50oC )
 //			          || ( gu8_hot_setting_temperature == HOT_SET_TEMP____45oC ) )
 //                {
-//                		u8Delta_Power_Level = u8Delta_Power_Level - 0;                
+//                		u8Delta_Power_Level = u8Delta_Power_Level - 0;
 //                }
 //                else
 //                {
 //                		u8Delta_Power_Level = u8Delta_Power_Level - 10;
 //                }
-//                // ¡Ú2025-06-02 Phil  
+//                // â˜…2025-06-02 Phil
             }
             else{}
         }
@@ -2028,18 +2028,18 @@ void heating_control(void)
             if(u8Delta_Power_Level > gu8_min_power)
             {
                 //u8Delta_Power_Level = u8Delta_Power_Level - 10;
-                // ¡Ú2025-06-02 Phil  
+                // â˜…2025-06-02 Phil
                   if( (gu8_hot_setting_temperature == HOT_SET_TEMP____55oC)
 			          || ( gu8_hot_setting_temperature == HOT_SET_TEMP____50oC )
 			          || ( gu8_hot_setting_temperature == HOT_SET_TEMP____45oC ) )
                 {
-                		u8Delta_Power_Level = 100;               
+                		u8Delta_Power_Level = 100;
                 }
                 else
                 {
                 		u8Delta_Power_Level = u8Delta_Power_Level - 0;
                 }
-                // ¡Ú2025-06-02 Phil  
+                // â˜…2025-06-02 Phil
             }
             else{}
         }
@@ -2058,8 +2058,8 @@ void heating_control(void)
         else{}
 #endif
         /*if( gu8_Flow_1sec <= C_025_LPM )*/    //kdh
-        //if( gu8_Flow_1sec <= C_03_LPM ) 
-        //sean [25-05-13] À¯·®°ªÀÌ ºÎÁ·ÇÏ¿© 0.25LPMÀ¸·Î ¼¼ÆÃ
+        //if( gu8_Flow_1sec <= C_03_LPM )
+        //sean [25-05-13] ìœ ëŸ‰ê°’ì´ ë¶€ì¡±í•˜ì—¬ 0.25LPMìœ¼ë¡œ ì„¸íŒ…
         if( gu8_Flow_1sec <= C_025_LPM )
         {
             gu8_low_flow_timer++;
@@ -2104,9 +2104,9 @@ void heating_control(void)
 ***********************************************************************************************************************/
 void pre_heating_control( U8 mu8_target )
 {
-    /*..sean [25-05-12] 90/95µµ ÇØ´ç Á¦¾î µ¿ÀÏÇÏ°Ô Àû¿ë..*/
+    /*..sean [25-05-12] 90/95ë„ í•´ë‹¹ ì œì–´ ë™ì¼í•˜ê²Œ ì ìš©..*/
     if ( (gu8_hot_setting_temperature == HOT_SET_TEMP____100oC)
-		|| ( gu8_hot_setting_temperature == HOT_SET_TEMP____95oC ) 
+		|| ( gu8_hot_setting_temperature == HOT_SET_TEMP____95oC )
 		|| ( gu8_hot_setting_temperature == HOT_SET_TEMP____90oC )
         || (gu8_hot_setting_temperature == HOT_SET_TEMP____85oC )
         || ( gu8_hot_setting_temperature == HOT_SET_TEMP____80oC ))
@@ -2229,7 +2229,7 @@ void main_heating_control( U8 mu8_target )
                 }
             }
         }
-		//85µµ ±×´ë·Î ¿©¼­ ¼öÁ¤ÇØ¾ßÇÔ *--*
+		//85ë„ ê·¸ëŒ€ë¡œ ì—¬ì„œ ìˆ˜ì •í•´ì•¼í•¨ *--*
         else //if( gu8_hot_setting_temperature == HOT_SET_TEMP_4__MAX__100_oC )
         {
             if( gs8_adjust_heater_power > 0 )
@@ -2358,7 +2358,7 @@ void main_heating_control( U8 mu8_target )
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////////////////////////
-    // [25-02-20 16:37:27] yspark, È÷ÅÍ Á¶Á¤ °ª º¯°æ
+    // [25-02-20 16:37:27] yspark, íˆí„° ì¡°ì • ê°’ ë³€ê²½
 #if 0
     if( u8Delta_Power_Level >= gu8_min_power )
     {
@@ -2380,15 +2380,15 @@ void main_heating_control( U8 mu8_target )
 ***********************************************************************************************************************/
 /*------------------------------------------------------------------------------
 Triac_Decent_Cal()
-: ÇöÀç Á¶°Ç¿¡ ¸Â´Â ÀûÁ¤ Àü·Â Á¦¾î ´Ü°è °è»ê
+: í˜„ì¬ ì¡°ê±´ì— ë§ëŠ” ì ì • ì „ë ¥ ì œì–´ ë‹¨ê³„ ê³„ì‚°
 
-ÇöÀç À¯·®¿¡ ¾Ë¸ÂÀº È÷ÅÍ Àü·Â °è»ê - °è»êµÈ Àü·Â¸¸Å­¸¸ °¡¿­ÇÏ¿© °ú¿­À» ¹æÁöÇÏ°íÀÚ ÇÔ
+í˜„ì¬ ìœ ëŸ‰ì— ì•Œë§ì€ íˆí„° ì „ë ¥ ê³„ì‚° - ê³„ì‚°ëœ ì „ë ¥ë§Œí¼ë§Œ ê°€ì—´í•˜ì—¬ ê³¼ì—´ì„ ë°©ì§€í•˜ê³ ì í•¨
 --------------------------------------------------------------------------------*/
-//20170614 ¸ñÇ¥ À¯·®°ú ÇöÀç ½ÇÁ¦ À¯·®À» ºñ±³ÇØ¼­ ÃÖ´ë Æ®¶óÀÌ¾Ç Á¦¾î ´Ü°è¸¦ »óÇÑ Á¦ÇÑµÒ(·¹º§È®Á¤)
+//20170614 ëª©í‘œ ìœ ëŸ‰ê³¼ í˜„ì¬ ì‹¤ì œ ìœ ëŸ‰ì„ ë¹„êµí•´ì„œ ìµœëŒ€ íŠ¸ë¼ì´ì•… ì œì–´ ë‹¨ê³„ë¥¼ ìƒí•œ ì œí•œë‘ (ë ˆë²¨í™•ì •)
 
-// ¸ñÇ¥Àü·Â = ÃøÁ¤À¯·® *60 * (¸ñÇ¥¿Âµµ-ÀÔ¼ö¿Âµµ)*1000 /(È÷ÅÍÈ¿À²*860)
-//2. ¸ñÇ¥Àü·Â=ÃøÁ¤À¯·®*60(¸ñÇ¥¿Âµµ-ÀÔ¼ö¿Âµµ)/È÷ÅÍÈ¿À²/860*1000
-//ÃøÁ¤À¯·®ÀºLPM//È÷ÅÍÈ¿À²*860=817
+// ëª©í‘œì „ë ¥ = ì¸¡ì •ìœ ëŸ‰ *60 * (ëª©í‘œì˜¨ë„-ì…ìˆ˜ì˜¨ë„)*1000 /(íˆí„°íš¨ìœ¨*860)
+//2. ëª©í‘œì „ë ¥=ì¸¡ì •ìœ ëŸ‰*60(ëª©í‘œì˜¨ë„-ì…ìˆ˜ì˜¨ë„)/íˆí„°íš¨ìœ¨/860*1000
+//ì¸¡ì •ìœ ëŸ‰ì€LPM//íˆí„°íš¨ìœ¨*860=817
 void calc_heater_out( U8 mu8_target )
 {
     U32 mu32_conv_flow = 0;
@@ -2413,7 +2413,7 @@ void calc_heater_out( U8 mu8_target )
     }
     else{}
 
-    // [25-02-21 14:23:07] yspark, 43µµ¿¡¼­´Â Àü·Â º¯È¯ È®ÀÎ ÀÌ¿Ü ¿Âµµ´Â Ç®·Î È÷ÆÃ
+    // [25-02-21 14:23:07] yspark, 43ë„ì—ì„œëŠ” ì „ë ¥ ë³€í™˜ í™•ì¸ ì´ì™¸ ì˜¨ë„ëŠ” í’€ë¡œ íˆíŒ…
     if ( (gu8_hot_setting_temperature == HOT_SET_TEMP____55oC)
 			|| ( gu8_hot_setting_temperature == HOT_SET_TEMP____50oC )
 			|| ( gu8_hot_setting_temperature == HOT_SET_TEMP____45oC ) )
@@ -2422,7 +2422,7 @@ void calc_heater_out( U8 mu8_target )
     }
     else
     {
-        u16TargetHeaterPower = (U16)u16Heater_Power_Save;                                      //ï¿½Ê¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        u16TargetHeaterPower = (U16)u16Heater_Power_Save;                                      //å ì‹­ìš¸ì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™
     }
 
     if(u16TargetHeaterPower >= C_Heater_Max_Power)
@@ -2431,11 +2431,11 @@ void calc_heater_out( U8 mu8_target )
     }
     else{}
 
-    /*..hui [19-1-21ï¿½ï¿½ï¿½ï¿½ 3:54:11] 50 ï¿½Ü°ï¿½ï¿??ï¿½ï¿½ï¿½ï¿½..*/
+    /*..hui [19-1-21å ì™ì˜™å ì™ì˜™ 3:54:11] 50 å ìŒ¤ê³¤ì˜™å ??å ì™ì˜™å ì™ì˜™..*/
     u8Heater_1stepWatt = (U8)((u16Heater_Power_Save / 2) / STEP_TRIAC);
 
-    /*..hui [19-1-18ï¿½ï¿½ï¿½ï¿½ 4:41:29] ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ç¥ ï¿½ï¿½ï¿½Âºï¿½ï¿½ï¿½ Å¬ ï¿½ï¿½ï¿??.*/
-    /*..hui [19-1-18ï¿½ï¿½ï¿½ï¿½ 5:25:53] ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½Âºï¿½ï¿½ï¿??ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿??ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿??.*/
+    /*..hui [19-1-18å ì™ì˜™å ì™ì˜™ 4:41:29] å ì™ì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™å ì™ì˜™ å ì™ì˜™í‘œ å ì™ì˜™å ìŠ¹ë¸ì˜™å ì™ì˜™ í´ å ì™ì˜™å ??.*/
+    /*..hui [19-1-18å ì™ì˜™å ì™ì˜™ 5:25:53] å ì™ì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™ å ìŒëŒì˜™ å ì™ì˜™ì¨˜å ì™ì˜™å ??å ì™ì˜™å ì™ì˜™ íƒ€å ì™ì˜™ å ì™ì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™å ??å ì™ì˜™å ì™ì˜™ å ì™ì˜™å ??.*/
     if(u16TargetHeaterPower < u16Heater_Power_Save)
     {
         u8Delta_Power_Level = (U8)((F32)((F32)u16TargetHeaterPower / (F32)u16Heater_Power_Save) * (F32)100);
@@ -2455,7 +2455,7 @@ void calc_heater_out( U8 mu8_target )
     }
     else
     {
-        /*..hui [19-1-18ï¿½ï¿½ï¿½ï¿½ 5:24:21] ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿??Å¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Â°ï¿½ï¿½ï¿½ï¿½ï¿??ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿??ï¿½Ö´ï¿½ ï¿½ï¿½ï¿??.*/
+        /*..hui [19-1-18å ì™ì˜™å ì™ì˜™ 5:24:21] å ì™ì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™ å ìŒëŒì˜™ å ì™ì˜™å ì™ì˜™å ??íƒ€å ì™ì˜™ å ì™ì˜™å ì™ì˜™ å ì™ì˜™ì§¸å ì™ì˜™å ì™ì˜™å ??å ì™ì˜™å ì™ì˜™å ì™ì˜™å ??å ìŒëŒì˜™ å ì™ì˜™å ??.*/
         u8Delta_Power_Level = 100;
     }
 
@@ -2520,7 +2520,7 @@ void sort_hot_temp(void)
 	selected_hot_temp[1] = 0;
 	selected_hot_temp[2] = 0;
 	selected_hot_temp[3] = 0;
-	
+
 	if(i == 0)
 	{
 		if(Bit11_Temp_Select__100oC == SET)
@@ -2533,46 +2533,46 @@ void sort_hot_temp(void)
 		}
 		else if(Bit9_Temp_Select__90oC == SET)
 		{
-			selected_hot_temp[0] = HOT_SET_TEMP____90oC; 
+			selected_hot_temp[0] = HOT_SET_TEMP____90oC;
 		}
 		else if(Bit8_Temp_Select__85oC == SET)
 		{
-			selected_hot_temp[0] = HOT_SET_TEMP____85oC; 
+			selected_hot_temp[0] = HOT_SET_TEMP____85oC;
 		}
 		else if(Bit7_Temp_Select__80oC == SET)
 		{
-			selected_hot_temp[0] = HOT_SET_TEMP____80oC; 
+			selected_hot_temp[0] = HOT_SET_TEMP____80oC;
 		}
 		else if(Bit6_Temp_Select__75oC == SET)
 		{
-			selected_hot_temp[0] = HOT_SET_TEMP____75oC; 
+			selected_hot_temp[0] = HOT_SET_TEMP____75oC;
 		}
 		else if(Bit5_Temp_Select__70oC == SET)
 		{
-			selected_hot_temp[0] = HOT_SET_TEMP____70oC; 
+			selected_hot_temp[0] = HOT_SET_TEMP____70oC;
 		}
 		else if(Bit4_Temp_Select__65oC == SET)
 		{
-			selected_hot_temp[0] = HOT_SET_TEMP____65oC; 
+			selected_hot_temp[0] = HOT_SET_TEMP____65oC;
 		}
 		else if(Bit3_Temp_Select__60oC == SET)
 		{
-			selected_hot_temp[0] = HOT_SET_TEMP____60oC; 
+			selected_hot_temp[0] = HOT_SET_TEMP____60oC;
 		}
 		else if(Bit2_Temp_Select__55oC == SET)
 		{
-			selected_hot_temp[0] = HOT_SET_TEMP____55oC; 
+			selected_hot_temp[0] = HOT_SET_TEMP____55oC;
 		}
 		else if(Bit1_Temp_Select__50oC == SET)
 		{
-			selected_hot_temp[0] = HOT_SET_TEMP____50oC; 
+			selected_hot_temp[0] = HOT_SET_TEMP____50oC;
 		}
 		else if(Bit0_Temp_Select__45oC == SET)
 		{
-			selected_hot_temp[0] = HOT_SET_TEMP____45oC; 
+			selected_hot_temp[0] = HOT_SET_TEMP____45oC;
 		}
 	}
-	
+
 	for( i = 1; i < 4; i++ )
 	{
 		if(Bit11_Temp_Select__100oC == SET && (selected_hot_temp[i-1] > HOT_SET_TEMP____100oC))
@@ -2585,43 +2585,43 @@ void sort_hot_temp(void)
 		}
 		else if(Bit9_Temp_Select__90oC == SET && (selected_hot_temp[i-1] > HOT_SET_TEMP____90oC))
 		{
-			selected_hot_temp[i] = HOT_SET_TEMP____90oC; 
+			selected_hot_temp[i] = HOT_SET_TEMP____90oC;
 		}
 		else if(Bit8_Temp_Select__85oC == SET && (selected_hot_temp[i-1] > HOT_SET_TEMP____85oC))
 		{
-			selected_hot_temp[i] = HOT_SET_TEMP____85oC; 
+			selected_hot_temp[i] = HOT_SET_TEMP____85oC;
 		}
 		else if(Bit7_Temp_Select__80oC == SET && (selected_hot_temp[i-1] > HOT_SET_TEMP____80oC))
 		{
-			selected_hot_temp[i] = HOT_SET_TEMP____80oC; 
+			selected_hot_temp[i] = HOT_SET_TEMP____80oC;
 		}
 		else if(Bit6_Temp_Select__75oC == SET && (selected_hot_temp[i-1] > HOT_SET_TEMP____75oC))
 		{
-			selected_hot_temp[i] = HOT_SET_TEMP____75oC; 
+			selected_hot_temp[i] = HOT_SET_TEMP____75oC;
 		}
 		else if(Bit5_Temp_Select__70oC == SET && (selected_hot_temp[i-1] > HOT_SET_TEMP____70oC))
 		{
-			selected_hot_temp[i] = HOT_SET_TEMP____70oC; 
+			selected_hot_temp[i] = HOT_SET_TEMP____70oC;
 		}
 		else if(Bit4_Temp_Select__65oC == SET && (selected_hot_temp[i-1] > HOT_SET_TEMP____65oC))
 		{
-			selected_hot_temp[i] = HOT_SET_TEMP____65oC; 
+			selected_hot_temp[i] = HOT_SET_TEMP____65oC;
 		}
 		else if(Bit3_Temp_Select__60oC == SET && (selected_hot_temp[i-1] > HOT_SET_TEMP____60oC))
 		{
-			selected_hot_temp[i] = HOT_SET_TEMP____60oC; 
+			selected_hot_temp[i] = HOT_SET_TEMP____60oC;
 		}
 		else if(Bit2_Temp_Select__55oC == SET && (selected_hot_temp[i-1] > HOT_SET_TEMP____55oC))
 		{
-			selected_hot_temp[i] = HOT_SET_TEMP____55oC; 
+			selected_hot_temp[i] = HOT_SET_TEMP____55oC;
 		}
 		else if(Bit1_Temp_Select__50oC == SET && (selected_hot_temp[i-1] > HOT_SET_TEMP____50oC))
 		{
-			selected_hot_temp[i] = HOT_SET_TEMP____50oC; 
+			selected_hot_temp[i] = HOT_SET_TEMP____50oC;
 		}
 		else if(Bit0_Temp_Select__45oC == SET && (selected_hot_temp[i-1] > HOT_SET_TEMP____45oC))
 		{
-			selected_hot_temp[i] = HOT_SET_TEMP____45oC; 
+			selected_hot_temp[i] = HOT_SET_TEMP____45oC;
 		}
 	}
 
@@ -2632,48 +2632,48 @@ void sort_hot_temp(void)
 }
 
 void SetTargetTempUnder_15(void)
-{        
+{
     switch( gu8_hot_setting_temperature )
     {
 
         case HOT_SET_TEMP____45oC:
 
-// ¡Ú2025-06-11 Phil after PM
+// â˜…2025-06-11 Phil after PM
 	        if(bit_Hot_InLowTemp_SetHighTemp == 1)
-	        {  // °í¿Â ¡æÀú¿Â
-	            gu8_Hot_Preheat_Temp = 45; 
-	            gu8_Hot_Target_Temp = 40; 
+	        {  // ê³ ì˜¨ â†’ì €ì˜¨
+	            gu8_Hot_Preheat_Temp = 45;
+	            gu8_Hot_Target_Temp = 40;
 	        }
 	        //if(u16Heater_Power_Save <= HEATER_POWER_LOW)
 	        else if(u16Heater_Power_Save <= HEATER_POWER_LOW)
-// ¡Ú2025-06-11 Phil after PM
-            {  // ÀúÀü·Â
+// â˜…2025-06-11 Phil after PM
+            {  // ì €ì „ë ¥
                 //gu8_Hot_Preheat_Temp = 50;
                 //gu8_Hot_Target_Temp = 45;
-                gu8_Hot_Preheat_Temp = 50;		// ¡Ú2025-06-02 Phil 
-                gu8_Hot_Target_Temp = 48;			// ¡Ú2025-06-02 Phil
+                gu8_Hot_Preheat_Temp = 50;		// â˜…2025-06-02 Phil
+                gu8_Hot_Target_Temp = 48;			// â˜…2025-06-02 Phil
             }
             else if (u16Heater_Power_Save >= HEATER_POWER_HIGH)
-            {  // °íÀü·Â
+            {  // ê³ ì „ë ¥
                 gu8_Hot_Preheat_Temp = 45;
                 gu8_Hot_Target_Temp = 40;
             }
             else
-            {  // »ó½Ã
+            {  // ìƒì‹œ
 //                gu8_Hot_Preheat_Temp = 50;
 //                gu8_Hot_Target_Temp = 45;
-                // gu8_Hot_Preheat_Temp = 50;		// ¡Ú2025-06-02 Phil 
-                gu8_Hot_Preheat_Temp = 43;      //2025-07-18 cbr    overflow ¼öÁ¤ ÈÄ
-                // gu8_Hot_Target_Temp = 50;			// ¡Ú2025-06-02 Phil 
+                // gu8_Hot_Preheat_Temp = 50;		// â˜…2025-06-02 Phil
+                gu8_Hot_Preheat_Temp = 43;      //2025-07-18 cbr    overflow ìˆ˜ì • í›„
+                // gu8_Hot_Target_Temp = 50;			// â˜…2025-06-02 Phil
                 gu8_Hot_Target_Temp = 45;       //2025-07-17 cbr
             }
 
             break;
-            
+
         case HOT_SET_TEMP____50oC:
 
             if(u16Heater_Power_Save <= HEATER_POWER_LOW)
-            {  // ÀúÀü·Â
+            {  // ì €ì „ë ¥
                 // gu8_Hot_Preheat_Temp = 60;
                 // gu8_Hot_Target_Temp = 60;
                 //2025-07-30 cbr
@@ -2681,7 +2681,7 @@ void SetTargetTempUnder_15(void)
                 gu8_Hot_Target_Temp = 55;
             }
             else if (u16Heater_Power_Save >= HEATER_POWER_HIGH)
-            {  // °íÀü·Â
+            {  // ê³ ì „ë ¥
                 // gu8_Hot_Preheat_Temp = 55;
                 // gu8_Hot_Target_Temp = 45;
                 //2025-07-30 cbr
@@ -2689,7 +2689,7 @@ void SetTargetTempUnder_15(void)
                 gu8_Hot_Target_Temp = 47;
             }
             else
-            {  // »ó½Ã
+            {  // ìƒì‹œ
                 // gu8_Hot_Preheat_Temp = 55;
                 // gu8_Hot_Target_Temp = 55;
                 gu8_Hot_Preheat_Temp = 50;      //2025-07-28 cbr
@@ -2697,11 +2697,11 @@ void SetTargetTempUnder_15(void)
             }
 
             break;
-            
+
         case HOT_SET_TEMP____55oC:
 
             if(u16Heater_Power_Save <= HEATER_POWER_LOW)
-            {  // ÀúÀü·Â
+            {  // ì €ì „ë ¥
                 // gu8_Hot_Preheat_Temp = 62;
                 // gu8_Hot_Target_Temp = 62;
                 //2025-07-30 cbr
@@ -2709,7 +2709,7 @@ void SetTargetTempUnder_15(void)
                 gu8_Hot_Target_Temp = 58;
             }
             else if (u16Heater_Power_Save >= HEATER_POWER_HIGH)
-            {  // °íÀü·Â
+            {  // ê³ ì „ë ¥
                 // gu8_Hot_Preheat_Temp = 60;
                 // gu8_Hot_Target_Temp = 55;
                 //2025-07-30 cbr
@@ -2717,7 +2717,7 @@ void SetTargetTempUnder_15(void)
                 gu8_Hot_Target_Temp = 53;
             }
             else
-            {  // »ó½Ã
+            {  // ìƒì‹œ
                 // gu8_Hot_Preheat_Temp = 60;
                 // gu8_Hot_Target_Temp = 60;
                 gu8_Hot_Preheat_Temp = 53;      //2025-07-28 cbr
@@ -2729,12 +2729,12 @@ void SetTargetTempUnder_15(void)
         case HOT_SET_TEMP____60oC:
 
             if(u16Heater_Power_Save <= HEATER_POWER_LOW)
-            {  // ÀúÀü·Â
+            {  // ì €ì „ë ¥
                 gu8_Hot_Preheat_Temp = 75;
                 gu8_Hot_Target_Temp = 65;
             }
             else if (u16Heater_Power_Save >= HEATER_POWER_HIGH)
-            {  // °íÀü·Â
+            {  // ê³ ì „ë ¥
                 // gu8_Hot_Preheat_Temp = 75;
                 // gu8_Hot_Target_Temp = 60;
                 //2025-07-30 cbr
@@ -2742,7 +2742,7 @@ void SetTargetTempUnder_15(void)
                 gu8_Hot_Target_Temp = 60;
             }
             else
-            {  // »ó½Ã
+            {  // ìƒì‹œ
                 // gu8_Hot_Preheat_Temp = 75;
                 // gu8_Hot_Target_Temp = 65;
                 gu8_Hot_Preheat_Temp = 70;      //2025-07-28 cbr
@@ -2754,34 +2754,34 @@ void SetTargetTempUnder_15(void)
         case HOT_SET_TEMP____65oC:
 
             if(u16Heater_Power_Save <= HEATER_POWER_LOW)
-            {  // ÀúÀü·Â
+            {  // ì €ì „ë ¥
                 if (F_firstEffluent_hotWater)
-                {  // µÑÂ° ÀÜ
+                {  // ë‘˜ì§¸ ì”
                     gu8_Hot_Preheat_Temp = 85;
                     gu8_Hot_Target_Temp = 73;
                 }
                 else
-                {  // Ã¹ÀÜ
+                {  // ì²«ì”
                     gu8_Hot_Preheat_Temp = 90;
                     gu8_Hot_Target_Temp = 85;
                 }
             }
             else if (u16Heater_Power_Save >= HEATER_POWER_HIGH)
-            {  // °íÀü·Â
+            {  // ê³ ì „ë ¥
                 gu8_Hot_Preheat_Temp = 85;
                 gu8_Hot_Target_Temp = 65;
             }
             else
-            {  // »ó½Ã
+            {  // ìƒì‹œ
                 // gu8_Hot_Preheat_Temp = 85;
                 // gu8_Hot_Target_Temp = 73;
                 if (F_firstEffluent_hotWater)
-                {  // µÑÂ° ÀÜ
+                {  // ë‘˜ì§¸ ì”
                     gu8_Hot_Preheat_Temp = 80;
                     gu8_Hot_Target_Temp = 65;
                 }
                 else
-                {  // Ã¹ÀÜ
+                {  // ì²«ì”
                     gu8_Hot_Preheat_Temp = 85;
                     gu8_Hot_Target_Temp = 75;
                 }
@@ -2791,32 +2791,32 @@ void SetTargetTempUnder_15(void)
         case HOT_SET_TEMP____70oC:
 
             if(u16Heater_Power_Save <= HEATER_POWER_LOW)
-            {  // ÀúÀü·Â
+            {  // ì €ì „ë ¥
                 if (F_firstEffluent_hotWater)
-                {  // µÑÂ° ÀÜ
+                {  // ë‘˜ì§¸ ì”
                     gu8_Hot_Preheat_Temp = 90;
                     gu8_Hot_Target_Temp = 78;
                 }
                 else
-                {  // Ã¹ÀÜ
+                {  // ì²«ì”
                     gu8_Hot_Preheat_Temp = 95;    //2025-07-11 cbr
-                    // gu8_Hot_Target_Temp = 85;//82; // ¡Ú2025-06-02 Phil
+                    // gu8_Hot_Target_Temp = 85;//82; // â˜…2025-06-02 Phil
                     gu8_Hot_Target_Temp = 88;   //2025-07-22 cbr
                 }
             }
             else if (u16Heater_Power_Save >= HEATER_POWER_HIGH)
-            {  // °íÀü·Â
-// ¡Ú2025-06-02 Phil 
+            {  // ê³ ì „ë ¥
+// â˜…2025-06-02 Phil
 //                gu8_Hot_Preheat_Temp = 90;
 //                gu8_Hot_Target_Temp = 73;
                 if (F_firstEffluent_hotWater)
-                {  // µÑÂ° ÀÜ
+                {  // ë‘˜ì§¸ ì”
                     gu8_Hot_Preheat_Temp = 90;
                     //gu8_Hot_Target_Temp = 68;
                     gu8_Hot_Target_Temp = 70;
                 }
                 else
-                {  // Ã¹ÀÜ
+                {  // ì²«ì”
                     gu8_Hot_Preheat_Temp = 90;
                     //gu8_Hot_Target_Temp = 73;
                     gu8_Hot_Target_Temp = 82;      //2025-07-11 cbr
@@ -2824,44 +2824,44 @@ void SetTargetTempUnder_15(void)
 
             }
             else
-            {  // »ó½Ã
+            {  // ìƒì‹œ
 //                gu8_Hot_Preheat_Temp = 90;
 //                gu8_Hot_Target_Temp = 85;
 
                 if (F_firstEffluent_hotWater)
-                {  // µÑÂ° ÀÜ
+                {  // ë‘˜ì§¸ ì”
                     gu8_Hot_Preheat_Temp = 85;
                     //gu8_Hot_Target_Temp = 85;
-                    gu8_Hot_Target_Temp = 70;// ¡Ú2025-06-08 Phil
+                    gu8_Hot_Target_Temp = 70;// â˜…2025-06-08 Phil
                 }
                 else
-                {  // Ã¹ÀÜ
+                {  // ì²«ì”
                     gu8_Hot_Preheat_Temp = 90;
-                    gu8_Hot_Target_Temp = 83;// ¡Ú2025-06-08 Phil
+                    gu8_Hot_Target_Temp = 83;// â˜…2025-06-08 Phil
                 }
             }
-// ¡Ú2025-06-02 Phil 
+// â˜…2025-06-02 Phil
             break;
-            
+
         case HOT_SET_TEMP____75oC:
 
             if(u16Heater_Power_Save <= HEATER_POWER_LOW)
-            {  // ÀúÀü·Â
+            {  // ì €ì „ë ¥
                 if (F_firstEffluent_hotWater)
-                {  // µÑÂ° ÀÜ
+                {  // ë‘˜ì§¸ ì”
                     gu8_Hot_Preheat_Temp = 95;
                     gu8_Hot_Target_Temp = 90;
                 }
                 else
-                {  // Ã¹ÀÜ
+                {  // ì²«ì”
                     gu8_Hot_Preheat_Temp = 98;
                     gu8_Hot_Target_Temp = 100;
                 }
             }
             else if (u16Heater_Power_Save >= HEATER_POWER_HIGH)
-            {  // °íÀü·Â
+            {  // ê³ ì „ë ¥
                 if (F_firstEffluent_hotWater)
-                {  // µÑÂ° ÀÜ
+                {  // ë‘˜ì§¸ ì”
                     // gu8_Hot_Preheat_Temp = 98;
                     // gu8_Hot_Target_Temp = 85;
                     //2025-07-30 cbr
@@ -2869,7 +2869,7 @@ void SetTargetTempUnder_15(void)
                     gu8_Hot_Target_Temp = 75;
                 }
                 else
-                {  // Ã¹ÀÜ
+                {  // ì²«ì”
                     // gu8_Hot_Preheat_Temp = 98;
                     // gu8_Hot_Target_Temp = 95;
                     //2025-07-30 cbr
@@ -2878,42 +2878,42 @@ void SetTargetTempUnder_15(void)
                 }
             }
             else
-            {  // »ó½Ã
+            {  // ìƒì‹œ
                 if (F_firstEffluent_hotWater)
-                {  // µÑÂ° ÀÜ
+                {  // ë‘˜ì§¸ ì”
                     // gu8_Hot_Preheat_Temp = 98;
                     // gu8_Hot_Target_Temp = 88;
                     gu8_Hot_Preheat_Temp = 85;      //2025-07-28 cbr
                     gu8_Hot_Target_Temp = 78;       //2025-07-28 cbr
                 }
                 else
-                {  // Ã¹ÀÜ
+                {  // ì²«ì”
                     gu8_Hot_Preheat_Temp = 95;
                     gu8_Hot_Target_Temp = 95;
                 }
             }
 
             break;
-            
+
         case HOT_SET_TEMP____80oC:
 
             if(u16Heater_Power_Save <= HEATER_POWER_LOW)
-            {  // ÀúÀü·Â
+            {  // ì €ì „ë ¥
                 if (F_firstEffluent_hotWater)
-                {  // µÑÂ° ÀÜ
+                {  // ë‘˜ì§¸ ì”
                     gu8_Hot_Preheat_Temp = 98;
                     gu8_Hot_Target_Temp = 90;
                 }
                 else
-                {  // Ã¹ÀÜ
+                {  // ì²«ì”
                     gu8_Hot_Preheat_Temp = 98;
                     gu8_Hot_Target_Temp = 100;
                 }
             }
             else if (u16Heater_Power_Save >= HEATER_POWER_HIGH)
-            {  // °íÀü·Â
+            {  // ê³ ì „ë ¥
                 if (F_firstEffluent_hotWater)
-                {  // µÑÂ° ÀÜ
+                {  // ë‘˜ì§¸ ì”
                     // gu8_Hot_Preheat_Temp = 98;
                     // gu8_Hot_Target_Temp = 88;
                     //2025-07-30 cbr
@@ -2921,7 +2921,7 @@ void SetTargetTempUnder_15(void)
                     gu8_Hot_Target_Temp = 80;
                 }
                 else
-                {  // Ã¹ÀÜ
+                {  // ì²«ì”
                     // gu8_Hot_Preheat_Temp = 98;
                     // gu8_Hot_Target_Temp = 95;
                     //2025-07-30 cbr
@@ -2930,17 +2930,17 @@ void SetTargetTempUnder_15(void)
                 }
             }
             else
-            {  // »ó½Ã
+            {  // ìƒì‹œ
                 // gu8_Hot_Preheat_Temp = 98;
                 // gu8_Hot_Target_Temp = 95;
                 //2025-07-28 cbr
                 if (F_firstEffluent_hotWater)
-                {  // µÑÂ° ÀÜ
+                {  // ë‘˜ì§¸ ì”
                     gu8_Hot_Preheat_Temp = 95;
                     gu8_Hot_Target_Temp = 85;
                 }
                 else
-                {  // Ã¹ÀÜ
+                {  // ì²«ì”
                     gu8_Hot_Preheat_Temp = 95;
                     gu8_Hot_Target_Temp = 90;
                 }
@@ -2948,36 +2948,36 @@ void SetTargetTempUnder_15(void)
             break;
 
         case HOT_SET_TEMP____85oC:
-            // [25-02-21 13:25:54] yspark, 85µµ 100µµ¿Í µ¿ÀÏÇÏ°Ô ¿Âµµ ¼³Á¤
+            // [25-02-21 13:25:54] yspark, 85ë„ 100ë„ì™€ ë™ì¼í•˜ê²Œ ì˜¨ë„ ì„¤ì •
             if(u16Heater_Power_Save <= HEATER_POWER_LOW)
-            {  // ÀúÀü·Â
+            {  // ì €ì „ë ¥
                 //gu8_Hot_Preheat_Temp = 98;
                 // gu8_Hot_Target_Temp = 100;
                 //2025-07-22 cbr
                 if (F_firstEffluent_hotWater)
-                {  // µÑÂ° ÀÜ
+                {  // ë‘˜ì§¸ ì”
                     gu8_Hot_Preheat_Temp = 98;
                     gu8_Hot_Target_Temp = 95;
                 }
                 else
-                {  // Ã¹ÀÜ
+                {  // ì²«ì”
                     gu8_Hot_Preheat_Temp = 100;
                     gu8_Hot_Target_Temp = 100;
                 }
             }
             else if (u16Heater_Power_Save >= HEATER_POWER_HIGH)
-            {  // °íÀü·Â
+            {  // ê³ ì „ë ¥
                 // gu8_Hot_Preheat_Temp = 98;
                 gu8_Hot_Preheat_Temp = 95;      //2025-07-18 cbr
                 //gu8_Hot_Target_Temp = 100;
-                // gu8_Hot_Target_Temp = 96;		// ¡Ú2025-06-02 Phil
+                // gu8_Hot_Target_Temp = 96;		// â˜…2025-06-02 Phil
                 gu8_Hot_Target_Temp = 90;       //2025-07-18 cbr
             }
             else
-            {  // »ó½Ã
+            {  // ìƒì‹œ
                 gu8_Hot_Preheat_Temp = 98;
                 //gu8_Hot_Target_Temp = 100;
-                // gu8_Hot_Target_Temp = 97;		// ¡Ú2025-06-02 Phil
+                // gu8_Hot_Target_Temp = 97;		// â˜…2025-06-02 Phil
                 gu8_Hot_Target_Temp = 90;       //2025-07-18 cbr
             }
 
@@ -2985,19 +2985,19 @@ void SetTargetTempUnder_15(void)
 
         case HOT_SET_TEMP____90oC:
             if(u16Heater_Power_Save <= HEATER_POWER_LOW)
-            {  // ÀúÀü·Â
+            {  // ì €ì „ë ¥
                 gu8_Hot_Preheat_Temp = 98;
                 gu8_Hot_Target_Temp = 100;
             }
             else if (u16Heater_Power_Save >= HEATER_POWER_HIGH)
-            {  // °íÀü·Â
+            {  // ê³ ì „ë ¥
                 // gu8_Hot_Preheat_Temp = 98;
                 // gu8_Hot_Target_Temp = 100;
                 gu8_Hot_Preheat_Temp = 88;      //2025-07-18 cbr
                 gu8_Hot_Target_Temp = 96;       //2025-07-18 cbr
             }
             else
-            {  // »ó½Ã
+            {  // ìƒì‹œ
                 gu8_Hot_Preheat_Temp = 95;      //2025-07-22 cbr
                 gu8_Hot_Target_Temp = 98;       //2025-07-22 cbr
             }
@@ -3005,19 +3005,19 @@ void SetTargetTempUnder_15(void)
 
         case HOT_SET_TEMP____95oC:
             if(u16Heater_Power_Save <= HEATER_POWER_LOW)
-            {  // ÀúÀü·Â
+            {  // ì €ì „ë ¥
                 gu8_Hot_Preheat_Temp = 98;
                 gu8_Hot_Target_Temp = 100;
             }
             else if (u16Heater_Power_Save >= HEATER_POWER_HIGH)
-            {  // °íÀü·Â
+            {  // ê³ ì „ë ¥
                 // gu8_Hot_Preheat_Temp = 98;
                 // gu8_Hot_Target_Temp = 100;
                 gu8_Hot_Preheat_Temp = 88;      //2025-07-18 cbr
                 gu8_Hot_Target_Temp = 96;       //2025-07-18 cbr
             }
             else
-            {  // »ó½Ã
+            {  // ìƒì‹œ
                 gu8_Hot_Preheat_Temp = 95;      //2025-07-22 cbr
                 gu8_Hot_Target_Temp = 98;       //2025-07-22 cbr
             }
@@ -3025,19 +3025,19 @@ void SetTargetTempUnder_15(void)
 
         case HOT_SET_TEMP____100oC:
             if(u16Heater_Power_Save <= HEATER_POWER_LOW)
-            {  // ÀúÀü·Â
+            {  // ì €ì „ë ¥
                 gu8_Hot_Preheat_Temp = 98;
                 gu8_Hot_Target_Temp = 100;
             }
             else if (u16Heater_Power_Save >= HEATER_POWER_HIGH)
-            {  // °íÀü·Â
+            {  // ê³ ì „ë ¥
                 // gu8_Hot_Preheat_Temp = 98;
                 // gu8_Hot_Target_Temp = 100;
                 gu8_Hot_Preheat_Temp = 88;      //2025-07-18 cbr
                 gu8_Hot_Target_Temp = 96;       //2025-07-18 cbr
             }
             else
-            {  // »ó½Ã
+            {  // ìƒì‹œ
                 // gu8_Hot_Preheat_Temp = 98;
                 // gu8_Hot_Target_Temp = 100;
                 gu8_Hot_Preheat_Temp = 95;      //2025-07-22 cbr
@@ -3060,41 +3060,41 @@ void SetTargetTempExtra(void)
     {
         case HOT_SET_TEMP____45oC:
 
-// ¡Ú2025-06-11 Phil after PM
+// â˜…2025-06-11 Phil after PM
         if(bit_Hot_InLowTemp_SetHighTemp == 1)
-        {  // °í¿Â ¡æÀú¿Â
-            gu8_Hot_Preheat_Temp = 40; 
-            gu8_Hot_Target_Temp = 40; 
+        {  // ê³ ì˜¨ â†’ì €ì˜¨
+            gu8_Hot_Preheat_Temp = 40;
+            gu8_Hot_Target_Temp = 40;
         }
         //if(u16Heater_Power_Save <= HEATER_POWER_LOW)
         else if(u16Heater_Power_Save <= HEATER_POWER_LOW)
-// ¡Ú2025-06-11 Phil after PM
-        {  // ÀúÀü·Â
+// â˜…2025-06-11 Phil after PM
+        {  // ì €ì „ë ¥
 //            gu8_Hot_Preheat_Temp = 52;
 //            gu8_Hot_Target_Temp = 52;
-            // gu8_Hot_Preheat_Temp = 45;//52; //2025-06-05 18:57:56 cbr        // ¡Ú2025-06-02 Phil   
-            // gu8_Hot_Target_Temp = 43;//49;  //2025-06-05 18:58:05 cbr        // ¡Ú2025-06-02 Phil 
+            // gu8_Hot_Preheat_Temp = 45;//52; //2025-06-05 18:57:56 cbr        // â˜…2025-06-02 Phil
+            // gu8_Hot_Target_Temp = 43;//49;  //2025-06-05 18:58:05 cbr        // â˜…2025-06-02 Phil
             //2025-07-24 cbr
             if (F_firstEffluent_hotWater)
-            {  // µÑÂ° ÀÜ
+            {  // ë‘˜ì§¸ ì”
                 gu8_Hot_Preheat_Temp = 40;
                 gu8_Hot_Target_Temp = 43;
             }
             else
-            {  // Ã¹ÀÜ
+            {  // ì²«ì”
                 gu8_Hot_Preheat_Temp = 38;
                 gu8_Hot_Target_Temp = 38;
             }
         }
         else if (u16Heater_Power_Save >= HEATER_POWER_HIGH)
-        {  // °íÀü·Â
+        {  // ê³ ì „ë ¥
             //gu8_Hot_Preheat_Temp = 52;
             //gu8_Hot_Target_Temp = 52;
-            gu8_Hot_Preheat_Temp = 40;  //47;   //2025-06-05 19:36:20 cbr       // ¡Ú2025-06-02 Phil   
-            gu8_Hot_Target_Temp = 40;   //43;   //2025-06-05 19:40:02 cbr       // ¡Ú2025-06-02 Phil 
+            gu8_Hot_Preheat_Temp = 40;  //47;   //2025-06-05 19:36:20 cbr       // â˜…2025-06-02 Phil
+            gu8_Hot_Target_Temp = 40;   //43;   //2025-06-05 19:40:02 cbr       // â˜…2025-06-02 Phil
         }
         else
-        {  // »ó½Ã
+        {  // ìƒì‹œ
             //gu8_Hot_Preheat_Temp = 52;
             //gu8_Hot_Target_Temp = 52;
             // gu8_Hot_Preheat_Temp = 43; //2025-06-05 19:45:02    cbr
@@ -3104,11 +3104,11 @@ void SetTargetTempExtra(void)
         }
 
         break;
-        
+
     case HOT_SET_TEMP____50oC:
 
         if(u16Heater_Power_Save <= HEATER_POWER_LOW)
-        {  // ÀúÀü·Â
+        {  // ì €ì „ë ¥
             // gu8_Hot_Preheat_Temp = 60;
             // gu8_Hot_Target_Temp = 55;
             //2025-07-30 cbr
@@ -3116,7 +3116,7 @@ void SetTargetTempExtra(void)
             gu8_Hot_Target_Temp = 55;
         }
         else if (u16Heater_Power_Save >= HEATER_POWER_HIGH)
-        {  // °íÀü·Â
+        {  // ê³ ì „ë ¥
             // gu8_Hot_Preheat_Temp = 60;
             // gu8_Hot_Target_Temp = 55;
             //2025-07-30 cbr
@@ -3124,7 +3124,7 @@ void SetTargetTempExtra(void)
             gu8_Hot_Target_Temp = 48;
         }
         else
-        {  // »ó½Ã
+        {  // ìƒì‹œ
             // gu8_Hot_Preheat_Temp = 60;
             // gu8_Hot_Target_Temp = 55;
             gu8_Hot_Preheat_Temp = 45;      //2025-07-25 cbr
@@ -3132,11 +3132,11 @@ void SetTargetTempExtra(void)
         }
 
         break;
-        
+
     case HOT_SET_TEMP____55oC:
 
         if(u16Heater_Power_Save <= HEATER_POWER_LOW)
-        {  // ÀúÀü·Â
+        {  // ì €ì „ë ¥
             // gu8_Hot_Preheat_Temp = 60;
             // gu8_Hot_Target_Temp = 53;
             //2025-07-30 cbr
@@ -3144,7 +3144,7 @@ void SetTargetTempExtra(void)
             gu8_Hot_Target_Temp = 55;
         }
         else if (u16Heater_Power_Save >= HEATER_POWER_HIGH)
-        {  // °íÀü·Â
+        {  // ê³ ì „ë ¥
             // gu8_Hot_Preheat_Temp = 65;
             // gu8_Hot_Target_Temp = 60;
             //2025-07-30 cbr
@@ -3152,7 +3152,7 @@ void SetTargetTempExtra(void)
             gu8_Hot_Target_Temp = 53;
         }
         else
-        {  // »ó½Ã
+        {  // ìƒì‹œ
             gu8_Hot_Preheat_Temp = 60;
             gu8_Hot_Target_Temp = 53;
         }
@@ -3162,12 +3162,12 @@ void SetTargetTempExtra(void)
     case HOT_SET_TEMP____60oC:
 
         if(u16Heater_Power_Save <= HEATER_POWER_LOW)
-        {  // ÀúÀü·Â
+        {  // ì €ì „ë ¥
             gu8_Hot_Preheat_Temp = 65;
             gu8_Hot_Target_Temp = 63;
         }
         else if (u16Heater_Power_Save >= HEATER_POWER_HIGH)
-        {  // °íÀü·Â
+        {  // ê³ ì „ë ¥
             // gu8_Hot_Preheat_Temp = 75;
             // gu8_Hot_Target_Temp = 70;
             //2025-07-30 cbr
@@ -3175,7 +3175,7 @@ void SetTargetTempExtra(void)
             gu8_Hot_Target_Temp = 58;
         }
         else
-        {  // »ó½Ã
+        {  // ìƒì‹œ
             // gu8_Hot_Preheat_Temp = 65;
             // gu8_Hot_Target_Temp = 63;
             gu8_Hot_Preheat_Temp = 60;      //2025-07-25 cbr
@@ -3187,12 +3187,12 @@ void SetTargetTempExtra(void)
     case HOT_SET_TEMP____65oC:
 
         if(u16Heater_Power_Save <= HEATER_POWER_LOW)
-        {  // ÀúÀü·Â
+        {  // ì €ì „ë ¥
             gu8_Hot_Preheat_Temp = 75;
             gu8_Hot_Target_Temp = 70;
         }
         else if (u16Heater_Power_Save >= HEATER_POWER_HIGH)
-        {  // °íÀü·Â
+        {  // ê³ ì „ë ¥
             // gu8_Hot_Preheat_Temp = 80;
             // gu8_Hot_Target_Temp = 78;
             //2025-07-30 cbr
@@ -3200,7 +3200,7 @@ void SetTargetTempExtra(void)
             gu8_Hot_Target_Temp = 63;
         }
         else
-        {  // »ó½Ã
+        {  // ìƒì‹œ
             // gu8_Hot_Preheat_Temp = 75;
             // gu8_Hot_Target_Temp = 70;
             gu8_Hot_Preheat_Temp = 65;      //2025-07-25 cbr
@@ -3211,27 +3211,27 @@ void SetTargetTempExtra(void)
     case HOT_SET_TEMP____70oC:
 
         if(u16Heater_Power_Save <= HEATER_POWER_LOW)
-        {  // ÀúÀü·Â
+        {  // ì €ì „ë ¥
             gu8_Hot_Preheat_Temp = 65;  //80;       //2025-06-05 19:00:31 cbr
             gu8_Hot_Target_Temp = 70;   //78;       //2025-06-05 19:00:27 cbr
         }
         else if (u16Heater_Power_Save >= HEATER_POWER_HIGH)
-        {  // °íÀü·Â
+        {  // ê³ ì „ë ¥
             gu8_Hot_Preheat_Temp = 60;  //75;   //2025-06-05 19:34:27 cbr
             gu8_Hot_Target_Temp = 63;   //72;   //2025-06-05 19:34:31 cbr
         }
         else
-        {  // »ó½Ã
+        {  // ìƒì‹œ
             gu8_Hot_Preheat_Temp = 60; //80; //2025-06-05 17:55:39 //cbr
             gu8_Hot_Target_Temp = 68; //78;  //2025-06-05 13:50:38 //cbr
         }
 
         break;
-        
+
     case HOT_SET_TEMP____75oC:
 
         if(u16Heater_Power_Save <= HEATER_POWER_LOW)
-        {  // ÀúÀü·Â
+        {  // ì €ì „ë ¥
             // gu8_Hot_Preheat_Temp = 90;
             // gu8_Hot_Target_Temp = 85;
             //2025-07-30 cbr
@@ -3239,7 +3239,7 @@ void SetTargetTempExtra(void)
             gu8_Hot_Target_Temp = 75;
         }
         else if (u16Heater_Power_Save >= HEATER_POWER_HIGH)
-        {  // °íÀü·Â
+        {  // ê³ ì „ë ¥
             // gu8_Hot_Preheat_Temp = 85;
             // gu8_Hot_Target_Temp = 80;
             //2025-07-30 cbr
@@ -3247,7 +3247,7 @@ void SetTargetTempExtra(void)
             gu8_Hot_Target_Temp = 72;
         }
         else
-        {  // »ó½Ã
+        {  // ìƒì‹œ
             // gu8_Hot_Preheat_Temp = 90;
             // gu8_Hot_Target_Temp = 85;
             gu8_Hot_Preheat_Temp = 70;      //2025-07-25 cbr
@@ -3255,11 +3255,11 @@ void SetTargetTempExtra(void)
         }
 
         break;
-        
+
     case HOT_SET_TEMP____80oC:
 
         if(u16Heater_Power_Save <= HEATER_POWER_LOW)
-        {  // ÀúÀü·Â
+        {  // ì €ì „ë ¥
             // gu8_Hot_Preheat_Temp = 90;
             // gu8_Hot_Target_Temp = 93;
             //2025-07-30 cbr
@@ -3267,7 +3267,7 @@ void SetTargetTempExtra(void)
             gu8_Hot_Target_Temp = 85;
         }
         else if (u16Heater_Power_Save >= HEATER_POWER_HIGH)
-        {  // °íÀü·Â
+        {  // ê³ ì „ë ¥
             // gu8_Hot_Preheat_Temp = 88;
             // gu8_Hot_Target_Temp = 87;
             //2025-07-30 cbr
@@ -3275,7 +3275,7 @@ void SetTargetTempExtra(void)
             gu8_Hot_Target_Temp = 80;
         }
         else
-        {  // »ó½Ã
+        {  // ìƒì‹œ
             // gu8_Hot_Preheat_Temp = 90;
             // gu8_Hot_Target_Temp = 93;
             gu8_Hot_Preheat_Temp = 80;      //2025-07-25 cbr
@@ -3284,27 +3284,27 @@ void SetTargetTempExtra(void)
         break;
 
     case HOT_SET_TEMP____85oC:
-        // [25-02-21 13:25:54] yspark, 85µµ 100µµ¿Í µ¿ÀÏÇÏ°Ô ¿Âµµ ¼³Á¤
+        // [25-02-21 13:25:54] yspark, 85ë„ 100ë„ì™€ ë™ì¼í•˜ê²Œ ì˜¨ë„ ì„¤ì •
         if(u16Heater_Power_Save <= HEATER_POWER_LOW)
-        {  // ÀúÀü·Â
+        {  // ì €ì „ë ¥
             //gu8_Hot_Preheat_Temp = 98;
-		    gu8_Hot_Preheat_Temp = 85;	//100;		//2025-06-05 21:07:44 cbr	// ¡Ú2025-06-02 Phil
+		    gu8_Hot_Preheat_Temp = 85;	//100;		//2025-06-05 21:07:44 cbr	// â˜…2025-06-02 Phil
             // gu8_Hot_Target_Temp = 100;
             gu8_Hot_Target_Temp = 95;  //2025-07-24 cbr
-            
+
         }
         else if (u16Heater_Power_Save >= HEATER_POWER_HIGH)
-        {  // °íÀü·Â
-            gu8_Hot_Preheat_Temp = 78;      //96;//98;    //2025-06-05 21:07:09 cbr //½ºÆÀ ¹ß»ı
+        {  // ê³ ì „ë ¥
+            gu8_Hot_Preheat_Temp = 78;      //96;//98;    //2025-06-05 21:07:09 cbr //ìŠ¤íŒ€ ë°œìƒ
             //gu8_Hot_Target_Temp = 100;
-            // gu8_Hot_Target_Temp = 96;		// ¡Ú2025-06-02 Phil
+            // gu8_Hot_Target_Temp = 96;		// â˜…2025-06-02 Phil
             gu8_Hot_Target_Temp = 92;       //2025-07-23 cbr
         }
         else
-        {  // »ó½Ã
+        {  // ìƒì‹œ
             gu8_Hot_Preheat_Temp = 82;  //96; //98;    //2025-06-05 21:07:50    cbr
             //gu8_Hot_Target_Temp = 100;
-            // gu8_Hot_Target_Temp = 95;  //97;	//cbr	// ¡Ú2025-06-02 Phil
+            // gu8_Hot_Target_Temp = 95;  //97;	//cbr	// â˜…2025-06-02 Phil
             gu8_Hot_Target_Temp = 90;       //2025-07-23 cbr
         }
 
@@ -3312,17 +3312,17 @@ void SetTargetTempExtra(void)
 
     case HOT_SET_TEMP____90oC:
         if(u16Heater_Power_Save <= HEATER_POWER_LOW)
-        {  // ÀúÀü·Â
+        {  // ì €ì „ë ¥
             gu8_Hot_Preheat_Temp = 88;//98;     //2025-06-05 21:01:54   cbr
             gu8_Hot_Target_Temp = 100;
         }
         else if (u16Heater_Power_Save >= HEATER_POWER_HIGH)
-        {  // °íÀü·Â
+        {  // ê³ ì „ë ¥
             gu8_Hot_Preheat_Temp = 82;  //98;   //2025-06-05 20:47:16   cbr
             gu8_Hot_Target_Temp = 100;
         }
         else
-        {  // »ó½Ã
+        {  // ìƒì‹œ
             gu8_Hot_Preheat_Temp = 85;  //98;      //2025-06-05 21:02:00    cbr
             gu8_Hot_Target_Temp = 100;
         }
@@ -3330,17 +3330,17 @@ void SetTargetTempExtra(void)
 
     case HOT_SET_TEMP____95oC:
         if(u16Heater_Power_Save <= HEATER_POWER_LOW)
-        {  // ÀúÀü·Â
+        {  // ì €ì „ë ¥
             gu8_Hot_Preheat_Temp = 88;//98;     //2025-06-05 21:01:54   cbr
             gu8_Hot_Target_Temp = 100;
         }
         else if (u16Heater_Power_Save >= HEATER_POWER_HIGH)
-        {  // °íÀü·Â
+        {  // ê³ ì „ë ¥
             gu8_Hot_Preheat_Temp = 82;  //98;   //2025-06-05 20:47:16   cbr
             gu8_Hot_Target_Temp = 100;
         }
         else
-        {  // »ó½Ã
+        {  // ìƒì‹œ
             gu8_Hot_Preheat_Temp = 85;  //98;      //2025-06-05 21:02:00    cbr
             gu8_Hot_Target_Temp = 100;
         }
@@ -3348,17 +3348,17 @@ void SetTargetTempExtra(void)
 
     case HOT_SET_TEMP____100oC:
         if(u16Heater_Power_Save <= HEATER_POWER_LOW)
-        {  // ÀúÀü·Â
+        {  // ì €ì „ë ¥
             gu8_Hot_Preheat_Temp = 88;//98;     //2025-06-05 21:01:54   cbr
             gu8_Hot_Target_Temp = 100;
         }
         else if (u16Heater_Power_Save >= HEATER_POWER_HIGH)
-        {  // °íÀü·Â
+        {  // ê³ ì „ë ¥
             gu8_Hot_Preheat_Temp = 82;  //98;   //2025-06-05 20:47:16   cbr
             gu8_Hot_Target_Temp = 100;
         }
         else
-        {  // »ó½Ã
+        {  // ìƒì‹œ
             gu8_Hot_Preheat_Temp = 85;  //98;      //2025-06-05 21:02:00    cbr
             gu8_Hot_Target_Temp = 100;
         }
@@ -3379,40 +3379,40 @@ void SetTargetTempUnder_25(void)
     {
         case HOT_SET_TEMP____45oC:
 
-// ¡Ú2025-06-11 Phil after PM
+// â˜…2025-06-11 Phil after PM
         if(bit_Hot_InLowTemp_SetHighTemp == 1)
-        {  // °í¿Â ¡æÀú¿Â
-            gu8_Hot_Preheat_Temp = 45; 
-            gu8_Hot_Target_Temp = 37; 
+        {  // ê³ ì˜¨ â†’ì €ì˜¨
+            gu8_Hot_Preheat_Temp = 45;
+            gu8_Hot_Target_Temp = 37;
         }
         //if(u16Heater_Power_Save <= HEATER_POWER_LOW)
         else if(u16Heater_Power_Save <= HEATER_POWER_LOW)
-// ¡Ú2025-06-11 Phil after PM
-        {  // ÀúÀü·Â
-            // gu8_Hot_Preheat_Temp = 50;// ¡Ú2025-06-09 Phil   
-            gu8_Hot_Preheat_Temp = 40;      //2025-07-15 cbr   
-            gu8_Hot_Target_Temp = 46;// ¡Ú2025-06-09 Phil 
+// â˜…2025-06-11 Phil after PM
+        {  // ì €ì „ë ¥
+            // gu8_Hot_Preheat_Temp = 50;// â˜…2025-06-09 Phil
+            gu8_Hot_Preheat_Temp = 40;      //2025-07-15 cbr
+            gu8_Hot_Target_Temp = 46;// â˜…2025-06-09 Phil
         }
         else if (u16Heater_Power_Save >= HEATER_POWER_HIGH)
-        {  // °íÀü·Â
-            // gu8_Hot_Preheat_Temp = 40;// ¡Ú2025-06-02 Phil   
-            // gu8_Hot_Target_Temp = 39;// ¡Ú2025-06-02 Phil 
+        {  // ê³ ì „ë ¥
+            // gu8_Hot_Preheat_Temp = 40;// â˜…2025-06-02 Phil
+            // gu8_Hot_Target_Temp = 39;// â˜…2025-06-02 Phil
             gu8_Hot_Preheat_Temp = 36;      //2025-07-16 cbr
-            gu8_Hot_Target_Temp = 40;       //2025-07-16 cbr 
+            gu8_Hot_Target_Temp = 40;       //2025-07-16 cbr
         }
         else
-        {  // »ó½Ã
-            // gu8_Hot_Preheat_Temp = 43;// ¡Ú2025-06-02 Phil   
-            gu8_Hot_Preheat_Temp = 36;      //2025-07-16 cbr   
-            gu8_Hot_Target_Temp = 43;// ¡Ú2025-06-02 Phil 
+        {  // ìƒì‹œ
+            // gu8_Hot_Preheat_Temp = 43;// â˜…2025-06-02 Phil
+            gu8_Hot_Preheat_Temp = 36;      //2025-07-16 cbr
+            gu8_Hot_Target_Temp = 43;// â˜…2025-06-02 Phil
         }
 
         break;
-        
+
     case HOT_SET_TEMP____50oC:
 
         if(u16Heater_Power_Save <= HEATER_POWER_LOW)
-        {  // ÀúÀü·Â
+        {  // ì €ì „ë ¥
             // gu8_Hot_Preheat_Temp = 45; //2025-06-04 cbr
             // gu8_Hot_Target_Temp = 45;
             //2025-07-30 cbr
@@ -3420,7 +3420,7 @@ void SetTargetTempUnder_25(void)
             gu8_Hot_Target_Temp = 53;
         }
         else if (u16Heater_Power_Save >= HEATER_POWER_HIGH)
-        {  // °íÀü·Â
+        {  // ê³ ì „ë ¥
             // gu8_Hot_Preheat_Temp = 60;
             // gu8_Hot_Target_Temp = 55;
             //2025-07-30 cbr
@@ -3428,7 +3428,7 @@ void SetTargetTempUnder_25(void)
             gu8_Hot_Target_Temp = 48;
         }
         else
-        {  // »ó½Ã
+        {  // ìƒì‹œ
             // gu8_Hot_Preheat_Temp = 60;
             // gu8_Hot_Target_Temp = 55;
             gu8_Hot_Preheat_Temp = 50;      //2025-07-29 cbr
@@ -3436,19 +3436,19 @@ void SetTargetTempUnder_25(void)
         }
 
         break;
-        
+
     case HOT_SET_TEMP____55oC:
 
         if(u16Heater_Power_Save <= HEATER_POWER_LOW)
-        {  // ÀúÀü·Â
+        {  // ì €ì „ë ¥
             // gu8_Hot_Preheat_Temp = 56;  //60; //cbr
             // gu8_Hot_Target_Temp = 53;
-            //2025-07-30 cbr   
+            //2025-07-30 cbr
             gu8_Hot_Preheat_Temp = 60;
             gu8_Hot_Target_Temp = 60;
         }
         else if (u16Heater_Power_Save >= HEATER_POWER_HIGH)
-        {  // °íÀü·Â
+        {  // ê³ ì „ë ¥
             // gu8_Hot_Preheat_Temp = 65;
             // gu8_Hot_Target_Temp = 60;
             //2025-07-30 cbr
@@ -3456,7 +3456,7 @@ void SetTargetTempUnder_25(void)
             gu8_Hot_Target_Temp = 55;
         }
         else
-        {  // »ó½Ã
+        {  // ìƒì‹œ
             // gu8_Hot_Preheat_Temp = 56;  //62; //cbr
             // gu8_Hot_Target_Temp = 53;
             gu8_Hot_Preheat_Temp = 60;      //2025-07-29 cbr
@@ -3468,7 +3468,7 @@ void SetTargetTempUnder_25(void)
     case HOT_SET_TEMP____60oC:
 
         if(u16Heater_Power_Save <= HEATER_POWER_LOW)
-        {  // ÀúÀü·Â
+        {  // ì €ì „ë ¥
             // gu8_Hot_Preheat_Temp = 65;
             // gu8_Hot_Target_Temp = 63;
             //2025-07-30 cbr
@@ -3476,7 +3476,7 @@ void SetTargetTempUnder_25(void)
             gu8_Hot_Target_Temp = 63;
         }
         else if (u16Heater_Power_Save >= HEATER_POWER_HIGH)
-        {  // °íÀü·Â
+        {  // ê³ ì „ë ¥
             // gu8_Hot_Preheat_Temp = 75;
             // gu8_Hot_Target_Temp = 70;
             //2025-07-30 cbr
@@ -3484,7 +3484,7 @@ void SetTargetTempUnder_25(void)
             gu8_Hot_Target_Temp = 56;
         }
         else
-        {  // »ó½Ã
+        {  // ìƒì‹œ
             // gu8_Hot_Preheat_Temp = 67;
             // gu8_Hot_Target_Temp = 60;
             gu8_Hot_Preheat_Temp = 55;      //2025-07-29 cbr
@@ -3496,7 +3496,7 @@ void SetTargetTempUnder_25(void)
     case HOT_SET_TEMP____65oC:
 
         if(u16Heater_Power_Save <= HEATER_POWER_LOW)
-        {  // ÀúÀü·Â
+        {  // ì €ì „ë ¥
             // gu8_Hot_Preheat_Temp = 75;
             // gu8_Hot_Target_Temp = 72;  //70;//2025-06-04 16:33:01 cbr
             //2025-07-30 cbr
@@ -3504,7 +3504,7 @@ void SetTargetTempUnder_25(void)
             gu8_Hot_Target_Temp = 68;
         }
         else if (u16Heater_Power_Save >= HEATER_POWER_HIGH)
-        {  // °íÀü·Â
+        {  // ê³ ì „ë ¥
             // gu8_Hot_Preheat_Temp = 80;
             // gu8_Hot_Target_Temp = 78;
             //2025-07-30 cbr
@@ -3512,7 +3512,7 @@ void SetTargetTempUnder_25(void)
             gu8_Hot_Target_Temp = 62;
         }
         else
-        {  // »ó½Ã
+        {  // ìƒì‹œ
             // gu8_Hot_Preheat_Temp = 75;
             // gu8_Hot_Target_Temp = 67;
             gu8_Hot_Preheat_Temp = 65;      //2025-07-29 cbr
@@ -3523,73 +3523,73 @@ void SetTargetTempUnder_25(void)
     case HOT_SET_TEMP____70oC:
 
         if(u16Heater_Power_Save <= HEATER_POWER_LOW)
-        {  // ÀúÀü·Â
+        {  // ì €ì „ë ¥
             // gu8_Hot_Preheat_Temp = 80;
             // //gu8_Hot_Target_Temp = 75;
-            // //gu8_Hot_Target_Temp = 79;// ¡Ú2025-06-02 Phil
-            // gu8_Hot_Target_Temp = 73;// ¡Ú2025-06-02 Phil
+            // //gu8_Hot_Target_Temp = 79;// â˜…2025-06-02 Phil
+            // gu8_Hot_Target_Temp = 73;// â˜…2025-06-02 Phil
             //2025-07-16 cbr
             if (F_firstEffluent_hotWater)
-            {  // µÑÂ° ÀÜ
+            {  // ë‘˜ì§¸ ì”
                 gu8_Hot_Preheat_Temp = 80;
                 gu8_Hot_Target_Temp = 75;
             }
             else
-            {  // Ã¹ÀÜ
+            {  // ì²«ì”
                 gu8_Hot_Preheat_Temp = 80;
                 gu8_Hot_Target_Temp = 80;
             }
             //2025-07-16 cbr
         }
         else if (u16Heater_Power_Save >= HEATER_POWER_HIGH)
-        {  // °íÀü·Â
+        {  // ê³ ì „ë ¥
 //            //gu8_Hot_Preheat_Temp = 72;
 //            //gu8_Hot_Target_Temp = 68;
-//            gu8_Hot_Preheat_Temp = 70;		// ¡Ú2025-06-02 Phil
-//            gu8_Hot_Target_Temp = 70;			// ¡Ú2025-06-02 Phil
-// ¡Ú2025-06-09 Phil
+//            gu8_Hot_Preheat_Temp = 70;		// â˜…2025-06-02 Phil
+//            gu8_Hot_Target_Temp = 70;			// â˜…2025-06-02 Phil
+// â˜…2025-06-09 Phil
             if (F_firstEffluent_hotWater)
-            {  // µÑÂ° ÀÜ
+            {  // ë‘˜ì§¸ ì”
                 // gu8_Hot_Preheat_Temp = 70;
                 // gu8_Hot_Target_Temp = 70;
                 gu8_Hot_Preheat_Temp = 68;      //2025-07-22 cbr
                 gu8_Hot_Target_Temp = 68;       //2025-07-22 cbr
             }
             else
-            {  // Ã¹ÀÜ
+            {  // ì²«ì”
                 gu8_Hot_Preheat_Temp = 70;
-                gu8_Hot_Target_Temp = 70;   //75;   //2025-07-30 cbr 45µµ ÈÄ Áï½Ã ÃßÃâ ½Ã Ã¹ÀÜ ³ôÀ½
+                gu8_Hot_Target_Temp = 70;   //75;   //2025-07-30 cbr 45ë„ í›„ ì¦‰ì‹œ ì¶”ì¶œ ì‹œ ì²«ì” ë†’ìŒ
             }
-// ¡Ú2025-06-09 Phil
+// â˜…2025-06-09 Phil
         }
         else
-        {  // »ó½Ã
+        {  // ìƒì‹œ
 //            //gu8_Hot_Preheat_Temp = 80;
 //            //gu8_Hot_Target_Temp = 78;
-//            gu8_Hot_Preheat_Temp = 70;		// ¡Ú2025-06-02 Phil
-//            //gu8_Hot_Target_Temp = 70;			// ¡Ú2025-06-02 Phil
-//            //gu8_Hot_Target_Temp = 73;			// ¡Ú2025-06-02 Phil
-//            gu8_Hot_Target_Temp = 75;			// ¡Ú2025-06-09 Phil
-// ¡Ú2025-06-09 Phil
+//            gu8_Hot_Preheat_Temp = 70;		// â˜…2025-06-02 Phil
+//            //gu8_Hot_Target_Temp = 70;			// â˜…2025-06-02 Phil
+//            //gu8_Hot_Target_Temp = 73;			// â˜…2025-06-02 Phil
+//            gu8_Hot_Target_Temp = 75;			// â˜…2025-06-09 Phil
+// â˜…2025-06-09 Phil
             if (F_firstEffluent_hotWater)
-            {  // µÑÂ° ÀÜ
+            {  // ë‘˜ì§¸ ì”
                 gu8_Hot_Preheat_Temp = 70;
                 gu8_Hot_Target_Temp = 70;
             }
             else
-            {  // Ã¹ÀÜ
+            {  // ì²«ì”
                 gu8_Hot_Preheat_Temp = 70;
-                gu8_Hot_Target_Temp = 73;   //75;   //2025-07-30 cbr 45µµ ÈÄ Áï½Ã ÃßÃâ ½Ã Ã¹ÀÜ ³ôÀ½
+                gu8_Hot_Target_Temp = 73;   //75;   //2025-07-30 cbr 45ë„ í›„ ì¦‰ì‹œ ì¶”ì¶œ ì‹œ ì²«ì” ë†’ìŒ
             }
-// ¡Ú2025-06-09 Phil
+// â˜…2025-06-09 Phil
         }
 
         break;
-        
+
     case HOT_SET_TEMP____75oC:
 
         if(u16Heater_Power_Save <= HEATER_POWER_LOW)
-        {  // ÀúÀü·Â
+        {  // ì €ì „ë ¥
             // gu8_Hot_Preheat_Temp = 90;
             // gu8_Hot_Target_Temp = 85;
             //2025-07-30 cbr
@@ -3597,12 +3597,12 @@ void SetTargetTempUnder_25(void)
             gu8_Hot_Target_Temp = 80;
         }
         else if (u16Heater_Power_Save >= HEATER_POWER_HIGH)
-        {  // °íÀü·Â
+        {  // ê³ ì „ë ¥
             gu8_Hot_Preheat_Temp = 82;
             gu8_Hot_Target_Temp = 75;
         }
         else
-        {  // »ó½Ã
+        {  // ìƒì‹œ
             // gu8_Hot_Preheat_Temp = 90;
             // gu8_Hot_Target_Temp = 85;
             gu8_Hot_Preheat_Temp = 85;      //2025-07-29 cbr
@@ -3610,11 +3610,11 @@ void SetTargetTempUnder_25(void)
         }
 
         break;
-        
+
     case HOT_SET_TEMP____80oC:
 
         if(u16Heater_Power_Save <= HEATER_POWER_LOW)
-        {  // ÀúÀü·Â
+        {  // ì €ì „ë ¥
             // gu8_Hot_Preheat_Temp = 90;
             // gu8_Hot_Target_Temp = 90;
             //2025-07-30 cbr
@@ -3622,7 +3622,7 @@ void SetTargetTempUnder_25(void)
             gu8_Hot_Target_Temp = 85;
         }
         else if (u16Heater_Power_Save >= HEATER_POWER_HIGH)
-        {  // °íÀü·Â
+        {  // ê³ ì „ë ¥
             // gu8_Hot_Preheat_Temp = 88;
             // gu8_Hot_Target_Temp = 84;
             //2025-07-30 cbr
@@ -3630,7 +3630,7 @@ void SetTargetTempUnder_25(void)
             gu8_Hot_Target_Temp = 78;
         }
         else
-        {  // »ó½Ã
+        {  // ìƒì‹œ
             // gu8_Hot_Preheat_Temp = 90;
             // gu8_Hot_Target_Temp = 90;
             gu8_Hot_Preheat_Temp = 85;      //2025-07-29 cbr
@@ -3639,91 +3639,91 @@ void SetTargetTempUnder_25(void)
         break;
 
     case HOT_SET_TEMP____85oC:
-        // [25-02-21 13:25:54] yspark, 85µµ 100µµ¿Í µ¿ÀÏÇÏ°Ô ¿Âµµ ¼³Á¤
+        // [25-02-21 13:25:54] yspark, 85ë„ 100ë„ì™€ ë™ì¼í•˜ê²Œ ì˜¨ë„ ì„¤ì •
         if(u16Heater_Power_Save <= HEATER_POWER_LOW)
-        {  // ÀúÀü·Â
+        {  // ì €ì „ë ¥
             //gu8_Hot_Preheat_Temp = 98;
-            // gu8_Hot_Preheat_Temp = 100;			// ¡Ú2025-06-02 Phil
+            // gu8_Hot_Preheat_Temp = 100;			// â˜…2025-06-02 Phil
             // gu8_Hot_Target_Temp = 98;//100;     //2025-07-15 cbr
             if (F_firstEffluent_hotWater)
-            {  // µÑÂ° ÀÜ
+            {  // ë‘˜ì§¸ ì”
                 gu8_Hot_Preheat_Temp = 100;
                 gu8_Hot_Target_Temp = 95;
             }
             else
-            {  // Ã¹ÀÜ
+            {  // ì²«ì”
                 gu8_Hot_Preheat_Temp = 100;
                 gu8_Hot_Target_Temp = 100;
             }
         }
         else if (u16Heater_Power_Save >= HEATER_POWER_HIGH)
-        {  // °íÀü·Â
+        {  // ê³ ì „ë ¥
             gu8_Hot_Preheat_Temp = 91;//98;     //2025-07-15 cbr
             //gu8_Hot_Target_Temp = 100;
             gu8_Hot_Target_Temp = 93;//96;		//2025-07-15 cbr
         }
         else
-        {  // »ó½Ã
+        {  // ìƒì‹œ
             gu8_Hot_Preheat_Temp = 98;
             //gu8_Hot_Target_Temp = 100;
-            gu8_Hot_Target_Temp = 97;		// ¡Ú2025-06-02 Phil
+            gu8_Hot_Target_Temp = 97;		// â˜…2025-06-02 Phil
         }
 
         break;
 
     case HOT_SET_TEMP____90oC:
         if(u16Heater_Power_Save <= HEATER_POWER_LOW)
-        {  // ÀúÀü·Â
+        {  // ì €ì „ë ¥
             gu8_Hot_Preheat_Temp = 98;
             gu8_Hot_Target_Temp = 100;
         }
         else if (u16Heater_Power_Save >= HEATER_POWER_HIGH)
-        {  // °íÀü·Â
+        {  // ê³ ì „ë ¥
             gu8_Hot_Preheat_Temp = 85;          //2025-07-14 cbr
             gu8_Hot_Target_Temp = 97;//100;     //2025-07-14 cbr
         }
         else
-        {  // »ó½Ã
-            gu8_Hot_Preheat_Temp = 85;// ¡Ú2025-06-02 Phil
+        {  // ìƒì‹œ
+            gu8_Hot_Preheat_Temp = 85;// â˜…2025-06-02 Phil
             gu8_Hot_Target_Temp = 98;//100;     //2025-07-14 cbr
         }
         break;
 
     case HOT_SET_TEMP____95oC:
         if(u16Heater_Power_Save <= HEATER_POWER_LOW)
-        {  // ÀúÀü·Â
+        {  // ì €ì „ë ¥
             gu8_Hot_Preheat_Temp = 98;
             gu8_Hot_Target_Temp = 100;
         }
         else if (u16Heater_Power_Save >= HEATER_POWER_HIGH)
-        {  // °íÀü·Â
+        {  // ê³ ì „ë ¥
             gu8_Hot_Preheat_Temp = 85;          //2025-07-14 cbr
             gu8_Hot_Target_Temp = 97;//100;     //2025-07-14 cbr
         }
         else
-        {  // »ó½Ã
-            gu8_Hot_Preheat_Temp = 85;// ¡Ú2025-06-02 Phil
+        {  // ìƒì‹œ
+            gu8_Hot_Preheat_Temp = 85;// â˜…2025-06-02 Phil
             gu8_Hot_Target_Temp = 98;//100;     //2025-07-14 cbr
         }
         break;
 
     case HOT_SET_TEMP____100oC:
         if(u16Heater_Power_Save <= HEATER_POWER_LOW)
-        {  // ÀúÀü·Â
+        {  // ì €ì „ë ¥
             gu8_Hot_Preheat_Temp = 98;
             gu8_Hot_Target_Temp = 100;
         }
         else if (u16Heater_Power_Save >= HEATER_POWER_HIGH)
-        {  // °íÀü·Â
+        {  // ê³ ì „ë ¥
             //gu8_Hot_Preheat_Temp = 98;
-            // gu8_Hot_Preheat_Temp = 80;// ¡Ú2025-06-02 Phil
+            // gu8_Hot_Preheat_Temp = 80;// â˜…2025-06-02 Phil
             gu8_Hot_Preheat_Temp = 85;          //2025-07-14 cbr
             gu8_Hot_Target_Temp = 97;//100;     //2025-07-14 cbr
         }
         else
-        {  // »ó½Ã
+        {  // ìƒì‹œ
             //gu8_Hot_Preheat_Temp = 98;
-            gu8_Hot_Preheat_Temp = 85;// ¡Ú2025-06-02 Phil
+            gu8_Hot_Preheat_Temp = 85;// â˜…2025-06-02 Phil
             gu8_Hot_Target_Temp = 98;//100;     //2025-07-14 cbr
         }
         break;

@@ -11,7 +11,7 @@
 #pragma interrupt INTSR0 HAL_Uart0_interrupt_receive
 #endif
 
-// interrupt ¼±¾ğ À§Ä¡°¡ ÀÌ°÷ÀÌ¾î¾ß ÇÏ±â ¶§¹®¿¡ interrupt ¼±¾ğÀº ¸ğµâÈ­ ºÒ°¡´É
+// interrupt ì„ ì–¸ ìœ„ì¹˜ê°€ ì´ê³³ì´ì–´ì•¼ í•˜ê¸° ë•Œë¬¸ì— interrupt ì„ ì–¸ì€ ëª¨ë“ˆí™” ë¶ˆê°€ëŠ¥
 #if 1
 #pragma interrupt INTST3 HAL_Uart3_interrupt_send
 #pragma interrupt INTSR3 HAL_Uart3_interrupt_receive

@@ -78,13 +78,13 @@ static void Comm_Rcv_Packet_Handler(void)
             case COMM_STATE_RECEIVING :
                 CommInfo.comm_rx_buffer[CommInfo.comm_rx_index++] = data;
 
-                // LENGTH ÇÊµå¸¦ ÀĞÀº ÈÄ ¿¹»ó ÆĞÅ¶ ±æÀÌ °è»ê
+                // LENGTH í•„ë“œë¥¼ ì½ì€ í›„ ì˜ˆìƒ íŒ¨í‚· ê¸¸ì´ ê³„ì‚°
                 if(CommInfo.comm_rx_index == (PROTOCOL_IDX_LENGTH + 1))
                 {
-                    // ÀüÃ¼ ÆĞÅ¶ ±æÀÌ = 4(Çì´õ) + LENGTH(µ¥ÀÌÅÍ) + 3(CRC+ETX)
+                    // ì „ì²´ íŒ¨í‚· ê¸¸ì´ = 4(í—¤ë”) + LENGTH(ë°ì´í„°) + 3(CRC+ETX)
                     SetRxPacketLength(((PROTOCOL_IDX_LENGTH + 1) + CommInfo.comm_rx_buffer[PROTOCOL_IDX_LENGTH] + 3));
                     
-                    // ÆĞÅ¶ ±æÀÌ À¯È¿¼º »çÀü °Ë»ç
+                    // íŒ¨í‚· ê¸¸ì´ ìœ íš¨ì„± ì‚¬ì „ ê²€ì‚¬
                     if((GetRxPacketLength() < COMM_PROTOCOL_PACKET_BASIC_LENGTH) 
                     || (GetRxPacketLength() > UART3_RX_BUFFER_SIZE)
                     )
@@ -96,12 +96,12 @@ static void Comm_Rcv_Packet_Handler(void)
                     }
                 }
  
-                // ¿¹»ó ±æÀÌ¸¸Å­ ¼ö½Å ¿Ï·á ½Ã °ËÁõ
+                // ì˜ˆìƒ ê¸¸ì´ë§Œí¼ ìˆ˜ì‹  ì™„ë£Œ ì‹œ ê²€ì¦
                 if((CommInfo.comm_rx_index >= PROTOCOL_IDX_LENGTH + 1) 
                 && (CommInfo.comm_rx_index >= GetRxPacketLength())
                 )
                 {
-                    // °è»êµÈ À§Ä¡¿¡ ETX°¡ ÀÖ´ÂÁö È®ÀÎ
+                    // ê³„ì‚°ëœ ìœ„ì¹˜ì— ETXê°€ ìˆëŠ”ì§€ í™•ì¸
                     if(CommInfo.comm_rx_buffer[GetRxPacketLength() - 1] == COMM_PROTOCOL_ETX)
                     {
 #ifdef USE_COMM_CLI
@@ -128,13 +128,13 @@ static void Comm_Rcv_Packet_Handler(void)
                     }
                     else
                     {
-                        // ETX°¡ ¿¹»ó À§Ä¡¿¡ ¾øÀ½ - Àß¸øµÈ ÆĞÅ¶
+                        // ETXê°€ ì˜ˆìƒ ìœ„ì¹˜ì— ì—†ìŒ - ì˜ëª»ëœ íŒ¨í‚·
                         SetCommState(COMM_STATE_IDLE);
                         SetCommRxIndex(0);
                         SetRxPacketLength(0);
                     }
                 }
-                // ¹öÆÛ ¿À¹öÇÃ·Î¿ì ¹æÁö
+                // ë²„í¼ ì˜¤ë²„í”Œë¡œìš° ë°©ì§€
                 else if(CommInfo.comm_rx_index > UART3_RX_BUFFER_SIZE)
                 {
                     SetCommState(COMM_STATE_IDLE);
@@ -156,9 +156,9 @@ static void Comm_Rcv_Packet_Handler(void)
 
 /*********************************************************************************/
 /**
- * @brief ÆĞÅ¶ Ã³¸®
- * @details ¼ö½Å ÆĞÅ¶ Ã³¸® ¹× ¼Û½Å ÆĞÅ¶ Ã³¸®
- * @note @TODO : while¹®¿¡ Àû¿ë
+ * @brief íŒ¨í‚· ì²˜ë¦¬
+ * @details ìˆ˜ì‹  íŒ¨í‚· ì²˜ë¦¬ ë° ì†¡ì‹  íŒ¨í‚· ì²˜ë¦¬
+ * @note @TODO : whileë¬¸ì— ì ìš©
  */
 void Comm_Packet_Handler(void)
 {

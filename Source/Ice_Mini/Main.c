@@ -30,9 +30,7 @@ extern void Main_PBA_Test_Mode_Start();
 void main(void)
 {
     System_ini();
-    //eeprom_initial();
-    // diplay_test_start();
-    //Main_PBA_Test_Mode_Start();
+    Uart_Init();
 
     while(1)
     {
@@ -52,7 +50,7 @@ void main(void)
             else if(u8FactoryTestMode == DISPLAY_TEST_MODE)
             {
                 Front_Communication();
-                /* ��������Ʈ, ��������Ʈ �˻� �ٽ� ���� 250718 CH.PARK */
+                /* 메인프론트, 서브프론트 검사 다시 구분 250718 CH.PARK */
                 #ifdef _DISPLAY_FCT_SUB_LINE_
                 Display_test_step_Handler();
                 #else
@@ -62,8 +60,6 @@ void main(void)
             }
             else /*if(u8FactoryTestMode == UART_TEST_MODE)*/
             {
-                /*..hui [23-3-15���� 2:16:43] 2���?. ����Ʈ �˻� ������ �˻���..*/
-                /*..hui [24-4-26���� 5:26:41] 1��忡��?������ ǥ�� �߰�..*/
                 if( gu8_uart_test_mode == INCLUDE_FRNOT_UART_TEST
                 || gu8_uart_test_mode == NOT_INCLUDE_FRONT_UART_TEST )
                 {
@@ -157,7 +153,7 @@ void check_adc(void)
     {
         F_ADC_Check = CLEAR;
         AD_Conversion();
-        /*..hui [23-9-19���� 11:27:38] �ܱ� ���� 1�� �߰��� ���� ���� ���� �� ����..*/
+        /*..hui [23-9-19占쏙옙占쏙옙 11:27:38] 占쌤깍옙 占쏙옙占쏙옙 1占쏙옙 占쌩곤옙占쏙옙 占쏙옙占쏙옙 占쏙옙占쏙옙 占쏙옙占쏙옙 占쏙옙 占쏙옙占쏙옙..*/
         get_final_small_amb_temp();
     }
     else{}

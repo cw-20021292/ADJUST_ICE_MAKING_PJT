@@ -65,19 +65,12 @@ extern TYPE_LONG       U32ControlErrorsD;
 #define         Bit27_Ice_Tank_3_UV_Error__E75                	U32ControlErrorsD.Bit.b27   //E79
 #define         Bit28_Ice_Tray_1_2_UV_Error__E76                	U32ControlErrorsD.Bit.b28   //E76
 
-
-
-
-
-
-
 extern TYPE_BYTE          U8DrainWaterLevelB;
 #define            u8DrainWaterLevel                       U8DrainWaterLevelB.byte
 #define            Bit0_Drain_Water_Empty                U8DrainWaterLevelB.Bit.b0
 #define            Bit1_Drain_Water_Low                 U8DrainWaterLevelB.Bit.b1
 #define            Bit2_Drain_Water_High                U8DrainWaterLevelB.Bit.b2
 #define            Bit3_Drain_Water_Error                U8DrainWaterLevelB.Bit.b3
-
 
 extern TYPE_BYTE          U8WaterOutStateB;
 #define            u8WaterOutState                           U8WaterOutStateB.byte
@@ -114,86 +107,5 @@ extern TYPE_WORD          U16CompOffW;
 #define            Bit3_Ice_Making_Err_State               U16CompOffW.Bit.b3
 #define            Bit4_Self_Test_COMP_Off_State           U16CompOffW.Bit.b4
 
-extern bit F_ErrTrayMotor_DualInital;
-extern U8 gu8_Room_Water_Level;
-//extern bit F_HardError;
-extern U16 gu16_AD_Result_Cold;
-//extern bit F_Overflow;
-extern bit F_Cold_Enable;
-extern U16 gu16_AD_Result_Room;
-extern U16 gu16_AD_Result_Eva_First;
-extern U16 gu16_AD_Result_Amb;
-extern bit F_SoftError;
-//extern bit F_SelectBar;
-//extern bit F_NoSelectBar;
-extern bit F_CristalIce;
-//extern bit F_IceOn;
-extern bit F_Safety_Routine;
-extern U8 gu8HeaterOffDelay;
-//extern bit F_ErrRoomLowLEV;
-extern bit F_IceOut;
-//extern bit F_LeakageError;
-extern bit F_FW_Version_Display_Mode;
-//extern U16 gu16IceVVTime1;
-//extern U8 gu8ColdWaterLEV;
-extern U16 gu16IceOutOff;
-//extern U16 gu16IceStopTime;
-extern bit F_Ice_Tray_Down_Move_Reset;
-extern U8 gu8_over_ice_melt_proc;
-extern bit F_Safety_Routine;
-//extern bit F_Fast_Ice_Make;
-extern bit bit_first_ice_full;
-extern U16 gu16CompOffDelay;
-extern bit F_IceInit;
-extern U16 gu16_Amb_Front_Temperature;
-extern U16 gu16_Room_Temperature;
-extern bit F_WaterOut;
-extern U8 gu8_GasSwitch_Status;
-extern bit F_Comp_Output;
-extern U8 gu8_Amb_Temperature_One_Degree;
-extern U8 gu8_Room_Temperature_One_Degree;
-extern U8 gu8_Amb_Front_Temperature_One_Degree;
-extern U8 gu8IceTrayLEV;
-extern bit F_IR;
-extern bit F_Low_IR;
-extern bit bit_start_preheat;
-
-extern U32 gu32_wifi_ice_make_time;
-extern U32 gu32_wifi_hot_gas_time;
-extern U16 gu16_wifi_tray_in_time;
-extern U16 gu16_wifi_tray_in_flow;
-
-extern bit bit_tray_pump_output;
-extern U8 gu8_Tray_Temperature_One_Degree;
-extern U16 gu16_uv_ice_make_time;
-extern U16 gu16_tds_water_acc;
-
-extern tsSTEPMOTOR sStepMotor;
-
-//for test
-extern bit F_IceFull;                        // �ˡ��ˡ�����u
-extern bit F_IceLack;
-extern bit bit_ice_size;
-extern bit bit_tray_in_error_temporary;
-
-extern bit bit_ice_out_back_state;
-extern bit bit_ice_stuck_back_state;
-extern bit bit_ice_mix_back_state;
-extern U8 tray_error_flag_E63;
-extern U16 tray_abnormal_E63_timer;
-extern U8 tray_abnormal_E63_step;
-extern U8 abnormal_1_repeat_cnt;
-
-extern U8 tray_error_flag_E62;
-extern U16 tray_abnormal_E62_timer;
-extern U8 tray_abnormal_E62_step;
-extern U8 abnormal_2_repeat_cnt;
-
-extern U8 gu8_E62_dummy_iceheat_flag;
-extern bit bit_ice_tray_1_2_uv_start;
-extern bit bit_ice_tank_ster_start;
-extern U32 gu32_wifi_ice_heater_timer;
-
-extern special_func cody_water_line;
 
 #endif
