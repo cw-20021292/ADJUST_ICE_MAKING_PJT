@@ -3,8 +3,9 @@
 #include "Global_Variable.h"
 #include "Port_Define.h"
 #include "work_flow.h"
+#include "Global_header.h"
 
-// ±â¼ú°úÁ¦ 2 (Á¦ºùÅ×ÀÌºí ¹ÌÀû¿ë)
+// ê¸°ìˆ ê³¼ì œ 2 (ì œë¹™í…Œì´ë¸” ë¯¸ì ìš©)
 typedef struct
 {
     F32 f32Gain;
@@ -14,7 +15,8 @@ typedef struct
     U16 u16NextIceMakeTime;
     U16 u16ThisTimeIceMakeTime;
     I16 i16IceMakeAvgFlow;
-    I16 i16IceMakeFlowHistory[3];    // ÃÖ±Ù 3È¸ Á¦ºù¹°·® ÀúÀå
+    I16 i16IceMakeFlowHistory[3];    // ìµœê·¼ 3íšŒ ì œë¹™ë¬¼ëŸ‰ ì €ì¥
+    U8 u8ErrorCount;                 // ì—ëŸ¬ ì¹´ìš´íŠ¸
 } ICE_ADJUST_T;
 ICE_ADJUST_T IceAdjust;
 
@@ -68,21 +70,26 @@ U16 GetThisTimeIceMakeTime(void)
     return IceAdjust.u16ThisTimeIceMakeTime;
 }
 
+U8 GetErrorCount(void)
+{
+    return IceAdjust.u8ErrorCount;
+}
+
 /***********************************************************************************************************************
 * Function Name: System_ini
-* Description  : Á¦ºù¼ö¿¡ »ç¿ëµÈ ¹°·® Æò±Õ °è»ê
+* Description  : ì œë¹™ìˆ˜ì— ì‚¬ìš©ëœ ë¬¼ëŸ‰ í‰ê·  ê³„ì‚°
 ***********************************************************************************************************************/
 void ProcessIceMaking(void)
 {
     U16 mu16DeltaTimeLimit = 600;
     U8 count = 0;
-    U32 sum = 0;
+    I16 sum = 0;
     U8 i = 0;
 
     if(GetDrainFlow() > 0)
     {
         sum = 0;
-        // Æò±Õ Flow °è»ê
+        // í‰ê·  Flow ê³„ì‚°
         if(IceAdjust.u8Cycle < 3)
         {
             IceAdjust.i16IceMakeFlowHistory[IceAdjust.u8Cycle] = GetDrainFlow();
@@ -101,48 +108,59 @@ void ProcessIceMaking(void)
             IceAdjust.i16IceMakeFlowHistory[1] = IceAdjust.i16IceMakeFlowHistory[2];
             IceAdjust.i16IceMakeFlowHistory[2] = GetDrainFlow();
 
-            // 3°³ Æò±Õ
+            // 3ê°œ í‰ê· 
             sum  = IceAdjust.i16IceMakeFlowHistory[0];
             sum += IceAdjust.i16IceMakeFlowHistory[1];
             sum += IceAdjust.i16IceMakeFlowHistory[2];
 
-            IceAdjust.i16IceMakeAvgFlow = (sum / 3U);
+            IceAdjust.i16IceMakeAvgFlow = (sum / 3);
         }
+
+        IceAdjust.u8ErrorCount = 0;
+    }
+    else
+    {
+        IceAdjust.u8ErrorCount++;
+        if(IceAdjust.u8ErrorCount >= 10)
+        {
+            IceAdjust.u8ErrorCount = 10;
+        }
+        else {  }
     }
 
-    // º¸Á¤ Gain ¼³Á¤
-    if(IceAdjust.i16IceMakeAvgFlow > GetCCToHz(120))              // 120ml ÀÌ»ó Á¦ºù (³²Àº ¹°·® 80ml)
+    // ë³´ì • Gain ì„¤ì •
+    if(IceAdjust.i16IceMakeAvgFlow > GetCCToHz(120))              // 120ml ì´ìƒ ì œë¹™ (ë‚¨ì€ ë¬¼ëŸ‰ 80ml)
     {
-        // zone 1 (½É°¢ °úÁ¦ºù) : °­ÇÏ°Ô ÁÙÀÌ±â
+        // zone 1 (ì‹¬ê° ê³¼ì œë¹™) : ê°•í•˜ê²Œ ì¤„ì´ê¸°
         SetGain(ZONE_1_GAIN);
     }
-    else if(IceAdjust.i16IceMakeAvgFlow > GetCCToHz(75))         // 75ml ÀÌ»ó Á¦ºù (³²Àº ¹°·® 125ml)
+    else if(IceAdjust.i16IceMakeAvgFlow > GetCCToHz(75))         // 75ml ì´ìƒ ì œë¹™ (ë‚¨ì€ ë¬¼ëŸ‰ 125ml)
     {
-        // zone 2 (»ìÂ¦ °úÁ¦ºù) : ºÎµå·´°Ô ÁÙÀÌ±â
+        // zone 2 (ì‚´ì§ ê³¼ì œë¹™) : ë¶€ë“œëŸ½ê²Œ ì¤„ì´ê¸°
         SetGain(ZONE_2_GAIN);
     }
-    else if(IceAdjust.i16IceMakeAvgFlow < GetCCToHz(35))         // 35ml ÀÌÇÏ Á¦ºù (³²Àº ¹°·® 165ml)
+    else if(IceAdjust.i16IceMakeAvgFlow < GetCCToHz(35))         // 35ml ì´í•˜ ì œë¹™ (ë‚¨ì€ ë¬¼ëŸ‰ 165ml)
     {
-        // zone 4 (½É°¢ ºÎÁ·) : °­ÇÏ°Ô ´Ã¸®±â
+        // zone 4 (ì‹¬ê° ë¶€ì¡±) : ê°•í•˜ê²Œ ëŠ˜ë¦¬ê¸°
         SetGain(ZONE_4_GAIN);
     }
-    else if(IceAdjust.i16IceMakeAvgFlow < GetCCToHz(50))         // 50ml ÀÌÇÏ Á¦ºù (³²Àº ¹°·® 150ml)
+    else if(IceAdjust.i16IceMakeAvgFlow < GetCCToHz(50))         // 50ml ì´í•˜ ì œë¹™ (ë‚¨ì€ ë¬¼ëŸ‰ 150ml)
     {
-        // zone 3 (»ìÂ¦ ºÎÁ·) : ºÎµå·´°Ô ´Ã¸®±â
+        // zone 3 (ì‚´ì§ ë¶€ì¡±) : ë¶€ë“œëŸ½ê²Œ ëŠ˜ë¦¬ê¸°
         SetGain(ZONE_3_GAIN);
     }
     else
     {
-        // OK (°ÅÀÇ ¸ÂÀ½) : »ì»ì º¸Á¤
-        // 60 ~ 70ml Á¦ºùÀÌ ¸ñÇ¥
+        // OK (ê±°ì˜ ë§ìŒ) : ì‚´ì‚´ ë³´ì •
+        // 60 ~ 70ml ì œë¹™ì´ ëª©í‘œ
         SetGain(ZONE_5_GAIN);
     }
 
-    // Æò±Õ À¯·®À» È®ÀÎÇÏ°í ÁÙÀÏÁö ¸»Áö °áÁ¤
+    // í‰ê·  ìœ ëŸ‰ì„ í™•ì¸í•˜ê³  ì¤„ì¼ì§€ ë§ì§€ ê²°ì •
     SetTheoryRatio(IceAdjust.i16IceMakeAvgFlow);
     SetNextIceMakeTime((U16)(GetThisTimeIceMakeTime() * GetRatio()));
 
-    // »óÇÑÄ¡ ÇÏÇÑÄ¡ Á¦ÇÑ
+    // ìƒí•œì¹˜ í•˜í•œì¹˜ ì œí•œ
     if(GetNextIceMakeTime() < ICE_MAKE_TIME_MIN )
     {
         SetNextIceMakeTime(ICE_MAKE_TIME_MIN);
@@ -152,7 +170,7 @@ void ProcessIceMaking(void)
         SetNextIceMakeTime(ICE_MAKE_TIME_MAX);
     }
 
-    // ³Ê¹« °ú°İÇÏ°Ô º¯ÇÏÁö ¾Ê°Ô 1È¸ º¯È­·® 1ºĞÀ¸·Î Á¦ÇÑ (¾ÈÁ¤È­)
+    // ë„ˆë¬´ ê³¼ê²©í•˜ê²Œ ë³€í•˜ì§€ ì•Šê²Œ 1íšŒ ë³€í™”ëŸ‰ 1ë¶„ìœ¼ë¡œ ì œí•œ (ì•ˆì •í™”)
     if((GetNextIceMakeTime() > mu16DeltaTimeLimit + GetThisTimeIceMakeTime()))
     {
         SetNextIceMakeTime((GetThisTimeIceMakeTime() + mu16DeltaTimeLimit));
@@ -166,7 +184,7 @@ void ProcessIceMaking(void)
 /**
  * @brief Set the Theory Ratio object
  *
- * @param Avg : Á¦ºù¿¡ »ç¿ëµÈ ¹°·® (ÀÔ¼öµÈ ¹°ÀÇ ¾ç [°íÁ¤°ª] - Á¦ºù¿Ï·áµÇ°í ¹ö·ÁÁø ¹°ÀÇ ¾ç)
+ * @param Avg : ì œë¹™ì— ì‚¬ìš©ëœ ë¬¼ëŸ‰ (ì…ìˆ˜ëœ ë¬¼ì˜ ì–‘ [ê³ ì •ê°’] - ì œë¹™ì™„ë£Œë˜ê³  ë²„ë ¤ì§„ ë¬¼ì˜ ì–‘)
  */
 static void SetTheoryRatio(I16 Avg)
 {
@@ -174,20 +192,20 @@ static void SetTheoryRatio(I16 Avg)
     F32 mf32_avg = 0;
     F32 mf32_ratio_theory = 0;
     F32 mf32_eff_ratio = 0;
-    F32 mf32_target = (F32)GetCCToHz(ICE_V_TARGET);   /* 70ml¿¡ ÇØ´çÇÏ´Â À¯·®°ª(Hz or pulse) */
+    F32 mf32_target = (F32)GetCCToHz(ICE_V_TARGET);   /* 70mlì— í•´ë‹¹í•˜ëŠ” ìœ ëŸ‰ê°’(Hz or pulse) */
     F32 mf32_final_ratio = 1.0F;
 
-    // 1) ¼¾¼­/°è»ê °ª ÀÌ»ó ¿©ºÎ Ã¼Å©
+    // 1) ì„¼ì„œ/ê³„ì‚° ê°’ ì´ìƒ ì—¬ë¶€ ì²´í¬
     if (Avg <= 0)
     {
-        // À¯È¿ÇÏÁö ¾ÊÀº °ª ¡æ º¸Á¤ÇÏÁö ¾Ê°í ÇöÀç ½Ã°£ À¯Áö (ratio = 1.0)
+        // ìœ íš¨í•˜ì§€ ì•Šì€ ê°’ â†’ ë³´ì •í•˜ì§€ ì•Šê³  í˜„ì¬ ì‹œê°„ ìœ ì§€ (ratio = 1.0)
         SetTarget(mf32_target);
         SetRatio(1.0F);
         return;
     }
 
-    // 2) ÃÖ¼Ò Æò±Õ À¯·® Å¬·¥ÇÎ (³Ê¹« ÀÛÀ¸¸é ÀÇ¹Ì ¾ø´Ù°í º¸°í)
-    mf32_min_avg = (F32)GetCCToHz(10);   // 10ml ±âÁØ (ÇÊ¿äÇÏ¸é Á¶Á¤)
+    // 2) ìµœì†Œ í‰ê·  ìœ ëŸ‰ í´ë¨í•‘ (ë„ˆë¬´ ì‘ìœ¼ë©´ ì˜ë¯¸ ì—†ë‹¤ê³  ë³´ê³ )
+    mf32_min_avg = (F32)GetCCToHz(10);   // 10ml ê¸°ì¤€ (í•„ìš”í•˜ë©´ ì¡°ì •)
     mf32_avg     = (F32)Avg;
 
     if (mf32_avg < mf32_min_avg)
@@ -195,14 +213,14 @@ static void SetTheoryRatio(I16 Avg)
         mf32_avg = mf32_min_avg;
     }
 
-    // 3) ÀÌ·Ğ ratio °è»ê (¸ñÇ¥ / Æò±Õ)
-    // [2025.12.18] ±âÁØÀ¸·Î TargetÀº 94Hz
+    // 3) ì´ë¡  ratio ê³„ì‚° (ëª©í‘œ / í‰ê· )
+    // [2025.12.18] ê¸°ì¤€ìœ¼ë¡œ Targetì€ 94Hz
     mf32_ratio_theory = (mf32_target / mf32_avg);
 
-    // 4) À¯È¿ Gain (À¯·®ÀÇ ¿ÀÂ÷¸¦ º¸°í 30%¸¸ º¸Á¤ÇÒÁö 100%¸¸ º¸Á¤ÇÒÁö ÆÇ´Ü)
-    mf32_eff_ratio = SetValidGain() * GetGain();   // SetValidGain ¡æ GetValidGain ÃßÃµ
+    // 4) ìœ íš¨ Gain (ìœ ëŸ‰ì˜ ì˜¤ì°¨ë¥¼ ë³´ê³  30%ë§Œ ë³´ì •í• ì§€ 100%ë§Œ ë³´ì •í• ì§€ íŒë‹¨)
+    mf32_eff_ratio = SetValidGain() * GetGain();   // SetValidGain â†’ GetValidGain ì¶”ì²œ
 
-    // 5) ÃÖÁ¾ ratio
+    // 5) ìµœì¢… ratio
     mf32_final_ratio = 1.0F + (mf32_eff_ratio * (mf32_ratio_theory - 1.0F));
 
     SetTarget(mf32_target);

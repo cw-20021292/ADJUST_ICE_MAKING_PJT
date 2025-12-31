@@ -7,17 +7,17 @@
 
 typedef struct _drain_flow_
 {
-    U8  u8FlowMeter;                   /* Á¦ºù¼ö À¯·®¼¾¼­ ÇÃ·¡±× */
-    I16 i16IceMakeBeforeFlowHz;       /* Á¦ºù¼ö Àü À¯·®¼¾¼­ ÃøÁ¤°ª */
-    I16 i16IceMakeAfterFlowHz;        /* Á¦ºù¼ö ÈÄ À¯·®¼¾¼­ ÃøÁ¤°ª */
-    I16 i16VIcePrevFlowHz;            /* Á¦ºù¼ö ÀÌÀü À¯·®¼¾¼­ ÃøÁ¤°ª */
-    I16 i16VIceCurFlowHz;             /* Á¦ºù¼ö ÇöÀç À¯·®¼¾¼­ ÃøÁ¤°ª */
+    U8  u8FlowMeter;                   /* ì œë¹™ìˆ˜ ìœ ëŸ‰ì„¼ì„œ í”Œë˜ê·¸ */
+    I16 i16IceMakeBeforeFlowHz;       /* ì œë¹™ìˆ˜ ì „ ìœ ëŸ‰ì„¼ì„œ ì¸¡ì •ê°’ */
+    I16 i16IceMakeAfterFlowHz;        /* ì œë¹™ìˆ˜ í›„ ìœ ëŸ‰ì„¼ì„œ ì¸¡ì •ê°’ */
+    I16 i16VIcePrevFlowHz;            /* ì œë¹™ìˆ˜ ì´ì „ ìœ ëŸ‰ì„¼ì„œ ì¸¡ì •ê°’ */
+    I16 i16VIceCurFlowHz;             /* ì œë¹™ìˆ˜ í˜„ì¬ ìœ ëŸ‰ì„¼ì„œ ì¸¡ì •ê°’ */
 } DRAIN_FLOW_T;
 DRAIN_FLOW_T DrainFlow;
 
 /***********************************************************************************************************************
 * Function Name: System_ini
-* Description  : Á¦ºù¼ö ÀÔ¼öÀ¯·® ¼³Á¤
+* Description  : ì œë¹™ìˆ˜ ì…ìˆ˜ìœ ëŸ‰ ì„¤ì •
 ***********************************************************************************************************************/
 void SetDrainBeforeFlowHz(I16 i16FlowHz)
 {
@@ -59,7 +59,7 @@ I16 GetDrainCurFlowHz(void)
     return DrainFlow.i16VIceCurFlowHz;
 }
 
-// ÃÑ Á¦ºù¿¡ »ç¿ëµÈ ¹°·® °è»ê (Hz´ÜÀ§¸¦ cc´ÜÀ§·Î º¯È¯ÇØ¾ßµÊ)
+// ì´ ì œë¹™ì— ì‚¬ìš©ëœ ë¬¼ëŸ‰ ê³„ì‚° (Hzë‹¨ìœ„ë¥¼ ccë‹¨ìœ„ë¡œ ë³€í™˜í•´ì•¼ë¨)
 I16 GetDrainFlow(void)
 {
     if((DrainFlow.i16IceMakeBeforeFlowHz - DrainFlow.i16IceMakeAfterFlowHz) > 0)
@@ -72,16 +72,16 @@ I16 GetDrainFlow(void)
     }
 }
 
-// CC´ÜÀ§¸¦ Hz´ÜÀ§·Î º¯È¯
+// CCë‹¨ìœ„ë¥¼ Hzë‹¨ìœ„ë¡œ ë³€í™˜
 U16 GetCCToHz(U16 u16CC)
 {
     F32 OneCC = C_ICE_MAKING;
     return (U16)(u16CC * OneCC);
 }
 
-// ¹è¼öÀ¯·®ÀÌ ÀÔ¼öÀ¯·®ÀÇ +5%º¸´Ù Å©¸é OK
-// SET : ÄÉÀÌ½º »ç¿ë °¡´É
-// CLEAR : ÄÉÀÌ½º »ç¿ë ºÒ°¡
+// ë°°ìˆ˜ìœ ëŸ‰ì´ ì…ìˆ˜ìœ ëŸ‰ì˜ +5%ë³´ë‹¤ í¬ë©´ OK
+// SET : ì¼€ì´ìŠ¤ ì‚¬ìš© ê°€ëŠ¥
+// CLEAR : ì¼€ì´ìŠ¤ ì‚¬ìš© ë¶ˆê°€
 F32 SetValidGain(void)
 {
     F32 mf32_isvalid = INVALID;
@@ -89,33 +89,21 @@ F32 SetValidGain(void)
     I16 i16_cur_flow = GetDrainCurFlowHz();
     I16 i16_prev_flow = GetDrainPrevFlowHz();
     F32 mf32_diff = 0.0F;
+    mf32_diff = (F32)(i16_cur_flow - i16_prev_flow);
 
-    // ÇöÀç À¯·®ÀÌ ÀÌÀü À¯·®º¸´Ù Å©¸é Â÷ÀÌ¸¦ °è»ê
-    if(i16_cur_flow > i16_prev_flow)
+    // ë°°ìˆ˜ìœ ëŸ‰ì´ ì…ìˆ˜ìœ ëŸ‰ì˜ +5%ë³´ë‹¤ í¬ë©´ NG
+    if(DrainFlow.i16IceMakeAfterFlowHz > (I16)((DrainFlow.i16IceMakeBeforeFlowHz * 1.05)))
     {
-        mf32_diff = (F32)(i16_cur_flow - i16_prev_flow);
+        mf32_isvalid = INVALID;
     }
-    else
+    // ë°°ìˆ˜ìœ ëŸ‰ì´ ì…ìˆ˜ìœ ëŸ‰ë³´ë‹¤ í°ë° +5% ì´í•˜ë©´ ì˜ì‹¬
+    else if(DrainFlow.i16IceMakeAfterFlowHz > DrainFlow.i16IceMakeBeforeFlowHz)
     {
-        mf32_diff = (F32)(i16_prev_flow - i16_cur_flow);
+        mf32_isvalid = SUSPECT;
     }
-
-    // ¹è¼öÀ¯·®ÀÌ ÀÔ¼öÀ¯·®ÀÇ +5%º¸´Ù Å©¸é NG
-    if(DrainFlow.i16IceMakeAfterFlowHz > (U16)(DrainFlow.i16IceMakeBeforeFlowHz * 1.05))
+    else    // ì •ìƒ
     {
-        return INVALID;
-    }
-    // ¹è¼öÀ¯·®ÀÌ ÀÔ¼öÀ¯·®º¸´Ù Å©°Å³ª, Â÷ÀÌ°¡ 80cc ÀÌ»óÀÌ¸é ÀÇ½É
-    else if((DrainFlow.i16IceMakeAfterFlowHz > DrainFlow.i16IceMakeBeforeFlowHz)
-    || (mf32_diff > (F32)GetCCToHz(80))         // 80cc ÀÌ»ó Â÷ÀÌ³ª¸é ÄÉÀÌ½º ÀÇ½É
-    )
-    {
-        return SUSPECT;
-    }
-    // Á¤»ó
-    else
-    {
-        return VALID;
+        mf32_isvalid = VALID;
     }
 
     return mf32_isvalid;
@@ -123,7 +111,7 @@ F32 SetValidGain(void)
 
 /***********************************************************************************************************************
 * Function Name: System_ini
-* Description  : Á¦ºù¼ö µå·¹ÀÎ À¯·®¼¾¼­ ½ÃÀÛ
+* Description  : ì œë¹™ìˆ˜ ë“œë ˆì¸ ìœ ëŸ‰ì„¼ì„œ ì‹œì‘
 ***********************************************************************************************************************/
 void DrainFlowStart(void)
 {
@@ -132,7 +120,7 @@ void DrainFlowStart(void)
 
 /***********************************************************************************************************************
 * Function Name: System_ini
-* Description  : Á¦ºù¼ö µå·¹ÀÎ À¯·®¼¾¼­ Á¾·á
+* Description  : ì œë¹™ìˆ˜ ë“œë ˆì¸ ìœ ëŸ‰ì„¼ì„œ ì¢…ë£Œ
 ***********************************************************************************************************************/
 void DrainFlowStop(void)
 {
@@ -141,7 +129,7 @@ void DrainFlowStop(void)
 
 /***********************************************************************************************************************
 * Function Name: System_ini
-* Description  : Á¦ºù¼ö µå·¹ÀÎ À¯·®¼¾¼­ ÀÔ·Â Ä«¿îÆ®
+* Description  : ì œë¹™ìˆ˜ ë“œë ˆì¸ ìœ ëŸ‰ì„¼ì„œ ì…ë ¥ ì¹´ìš´íŠ¸
 ***********************************************************************************************************************/
 void DrainFlowInputCount(void)
 {
@@ -156,7 +144,7 @@ void DrainFlowInputCount(void)
 
 /***********************************************************************************************************************
 * Function Name: System_ini
-* Description  : Á¦ºù¼ö µå·¹ÀÎ À¯·®¼¾¼­ ÀÔ·Â Ã³¸®
+* Description  : ì œë¹™ìˆ˜ ë“œë ˆì¸ ìœ ëŸ‰ì„¼ì„œ ì…ë ¥ ì²˜ë¦¬
 ***********************************************************************************************************************/
 void DrainFlowInput(void)
 {

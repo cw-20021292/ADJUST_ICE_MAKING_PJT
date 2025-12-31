@@ -3126,6 +3126,7 @@
       <RelativePath>..\Source\Module\HAL\hal_serial.c</RelativePath>
       <TreeImageGuid>941832c1-fc3b-4e1b-94e8-01ea17128b42</TreeImageGuid>
       <ParentItem>6cbf0247-d69f-4240-92db-55432e78be05</ParentItem>
+      <Property>88ac9795-d98d-4e10-8924-6ed47ee49dac</Property>
     </Instance>
     <Instance Guid="d7ec2a5b-e4d0-4053-a2b1-3e181ffe87f6">
       <Name>hal_serial.h</Name>
@@ -4080,6 +4081,9 @@
     <Instance Guid="0f43a00b-4ab3-439c-bcd5-ff93c0ec0622">
       <MemoCount>0</MemoCount>
     </Instance>
+    <Instance Guid="88ac9795-d98d-4e10-8924-6ed47ee49dac">
+      <MemoCount>0</MemoCount>
+    </Instance>
   </Class>
   <Class Guid="78a5c5cd-76cb-4bcc-a031-3020011fbc9a">
     <Instance Guid="3f2623aa-56d5-42b9-be85-f81bbb3070a8">
@@ -4545,19 +4549,19 @@
       <SourceItemType179>CSource</SourceItemType179>
       <SourceItemGuid180>eed1f513-4d7c-48e9-967c-d3b482d0dddb</SourceItemGuid180>
       <SourceItemType180>CSource</SourceItemType180>
-      <SourceItemGuid181>486ba4f7-5b80-4eb3-aa1a-ef5b8499cdac</SourceItemGuid181>
+      <SourceItemGuid181>16f54a6e-8817-4cd4-8c16-60eb5eebdf78</SourceItemGuid181>
       <SourceItemType181>CSource</SourceItemType181>
-      <SourceItemGuid182>16f54a6e-8817-4cd4-8c16-60eb5eebdf78</SourceItemGuid182>
+      <SourceItemGuid182>4ca361ec-5600-4d3c-b1e2-0e9e969c426d</SourceItemGuid182>
       <SourceItemType182>CSource</SourceItemType182>
-      <SourceItemGuid183>4ca361ec-5600-4d3c-b1e2-0e9e969c426d</SourceItemGuid183>
+      <SourceItemGuid183>6ec6023f-0e95-4167-8047-1b5c1d634682</SourceItemGuid183>
       <SourceItemType183>CSource</SourceItemType183>
-      <SourceItemGuid184>6ec6023f-0e95-4167-8047-1b5c1d634682</SourceItemGuid184>
+      <SourceItemGuid184>2eb64763-40d5-424a-a3aa-5bf3b484c15c</SourceItemGuid184>
       <SourceItemType184>CSource</SourceItemType184>
-      <SourceItemGuid185>2eb64763-40d5-424a-a3aa-5bf3b484c15c</SourceItemGuid185>
+      <SourceItemGuid185>128fab94-00ba-482f-86d3-bf4dd08050d3</SourceItemGuid185>
       <SourceItemType185>CSource</SourceItemType185>
-      <SourceItemGuid186>128fab94-00ba-482f-86d3-bf4dd08050d3</SourceItemGuid186>
+      <SourceItemGuid186>e11b9a6a-d8a2-4d3a-b35c-359b8c31ab59</SourceItemGuid186>
       <SourceItemType186>CSource</SourceItemType186>
-      <SourceItemGuid187>e11b9a6a-d8a2-4d3a-b35c-359b8c31ab59</SourceItemGuid187>
+      <SourceItemGuid187>486ba4f7-5b80-4eb3-aa1a-ef5b8499cdac</SourceItemGuid187>
       <SourceItemType187>CSource</SourceItemType187>
       <SourceItemGuid188>fa4bcc58-d8b7-4e3b-9f47-5185a9ad4f58</SourceItemGuid188>
       <SourceItemType188>CSource</SourceItemType188>
@@ -4952,7 +4956,7 @@ Lib
       <HexadecimalFileFormat-DefaultValue>IntelExtended</HexadecimalFileFormat-DefaultValue>
       <SplittingOfHexadecimalFile-DefaultValue>False</SplittingOfHexadecimalFile-DefaultValue>
       <IsLockedByUser>False</IsLockedByUser>
-      <TimeTagModified--0>-8584355877043864455</TimeTagModified--0>
+      <TimeTagModified--0>-8584344641573909535</TimeTagModified--0>
       <ErrorListFile-0>False</ErrorListFile-0>
       <FillingOfFreeMemorySpace-0>True</FillingOfFreeMemorySpace-0>
       <HexadecimalFile-0>True</HexadecimalFile-0>
@@ -4962,7 +4966,7 @@ Lib
       <HexadecimalFileOutputFolder-0>..\Hex Output</HexadecimalFileOutputFolder-0>
       <PostObjectConvertCommands-0 />
       <FillingStartAddress-0 />
-      <HexadecimalFileName-0>MAIN_CHPI_7420N_2KG_MAX_V9.9.9.9_CS_251218.hex</HexadecimalFileName-0>
+      <HexadecimalFileName-0>MAIN_CHPI_7420N_2KG_MAX_V9.9.9.9_CS_251231.hex</HexadecimalFileName-0>
       <OtherAdditionalOptions-0 />
       <FillingSize-0 />
       <HexadecimalFileFormat-0>IntelExtended</HexadecimalFileFormat-0>
@@ -7255,7 +7259,7 @@ Lib
       <SourceItem180-IsLockedByUser>False</SourceItem180-IsLockedByUser>
       <SourceItem180-BuildingTarget-0>True</SourceItem180-BuildingTarget-0>
       <SourceItem180-IndividualCompileOption-0>False</SourceItem180-IndividualCompileOption-0>
-      <TimeTagModified-SourceItem181--0>-8584350554768121992</TimeTagModified-SourceItem181--0>
+      <TimeTagModified-SourceItem181--0>-8584362661210029634</TimeTagModified-SourceItem181--0>
       <SourceItem181-IsLockedByUser>False</SourceItem181-IsLockedByUser>
       <SourceItem181-BuildingTarget-0>True</SourceItem181-BuildingTarget-0>
       <SourceItem181-IndividualCompileOption-0>False</SourceItem181-IndividualCompileOption-0>
@@ -7267,7 +7271,7 @@ Lib
       <SourceItem183-IsLockedByUser>False</SourceItem183-IsLockedByUser>
       <SourceItem183-BuildingTarget-0>True</SourceItem183-BuildingTarget-0>
       <SourceItem183-IndividualCompileOption-0>False</SourceItem183-IndividualCompileOption-0>
-      <TimeTagModified-SourceItem184--0>-8584362661210029634</TimeTagModified-SourceItem184--0>
+      <TimeTagModified-SourceItem184--0>-8584362661209939673</TimeTagModified-SourceItem184--0>
       <SourceItem184-IsLockedByUser>False</SourceItem184-IsLockedByUser>
       <SourceItem184-BuildingTarget-0>True</SourceItem184-BuildingTarget-0>
       <SourceItem184-IndividualCompileOption-0>False</SourceItem184-IndividualCompileOption-0>
@@ -7279,7 +7283,7 @@ Lib
       <SourceItem186-IsLockedByUser>False</SourceItem186-IsLockedByUser>
       <SourceItem186-BuildingTarget-0>True</SourceItem186-BuildingTarget-0>
       <SourceItem186-IndividualCompileOption-0>False</SourceItem186-IndividualCompileOption-0>
-      <TimeTagModified-SourceItem187--0>-8584362661209939673</TimeTagModified-SourceItem187--0>
+      <TimeTagModified-SourceItem187--0>-8584350554768121992</TimeTagModified-SourceItem187--0>
       <SourceItem187-IsLockedByUser>False</SourceItem187-IsLockedByUser>
       <SourceItem187-BuildingTarget-0>True</SourceItem187-BuildingTarget-0>
       <SourceItem187-IndividualCompileOption-0>False</SourceItem187-IndividualCompileOption-0>
@@ -11490,25 +11494,25 @@ Lib
     &lt;/FUNC&gt;
     &lt;TAG&gt;
       &lt;GlobleUserTag&gt;
-        &lt;cg_security4 Name="cg_security4" Value="00" /&gt;
         &lt;cg_security9 Name="cg_security9" Value="00" /&gt;
         &lt;cg_security7 Name="cg_security7" Value="00" /&gt;
         &lt;cg_security5 Name="cg_security5" Value="00" /&gt;
         &lt;cg_crc_area Name="cg_crc_area" Value="00" /&gt;
+        &lt;ocdstart Name="ocdstart" Value="3FF00" /&gt;
         &lt;cg_security3 Name="cg_security3" Value="00" /&gt;
         &lt;cg_security0 Name="cg_security0" Value="00" /&gt;
         &lt;cg_security1 Name="cg_security1" Value="00" /&gt;
+        &lt;cg_ocd_ram_size Name="cg_ocd_ram_size" Value="256" /&gt;
         &lt;clock_option Name="clock_option" Value="E8" /&gt;
-        &lt;lvi_option Name="lvi_option" Value="7F" /&gt;
         &lt;pior_value Name="pior_value" Value="00" /&gt;
         &lt;cg_option Name="cg_option" Value="84" /&gt;
         &lt;cg_security8 Name="cg_security8" Value="00" /&gt;
         &lt;cg_security6 Name="cg_security6" Value="00" /&gt;
-        &lt;ocdstart Name="ocdstart" Value="3FF00" /&gt;
+        &lt;cg_security4 Name="cg_security4" Value="00" /&gt;
         &lt;cg_onchip Name="cg_onchip" Value="" /&gt;
         &lt;cg_security2 Name="cg_security2" Value="00" /&gt;
         &lt;cg_iawctl_value Name="cg_iawctl_value" Value="00" /&gt;
-        &lt;cg_ocd_ram_size Name="cg_ocd_ram_size" Value="256" /&gt;
+        &lt;lvi_option Name="lvi_option" Value="7F" /&gt;
         &lt;wdt_option Name="wdt_option" Value="FF" /&gt;
         &lt;rrm Name="rrm" Value="3FF00" /&gt;
       &lt;/GlobleUserTag&gt;

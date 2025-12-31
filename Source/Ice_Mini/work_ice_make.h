@@ -11,11 +11,11 @@
 #define            ICE_MAKE_TIME_MAX        21000
 
 
-#define ZONE_1_GAIN (0.7F)      // ½É°¢ °úÁ¦ºù
-#define ZONE_2_GAIN (0.2F)      // »ìÂ¦ °úÁ¦ºù
-#define ZONE_3_GAIN (0.2F)      // »ìÂ¦ ºÎÁ·
-#define ZONE_4_GAIN (0.7F)      // ½É°¢ ºÎÁ·
-#define ZONE_5_GAIN (0.05F)     // °ÅÀÇ ¸ÂÀ½ (MID_ZONE)
+#define ZONE_1_GAIN (0.7F)      // ê°•í•˜ê²Œ ëŠ˜ë¦¬ê¸°
+#define ZONE_2_GAIN (0.2F)      // ë¶€ë“œëŸ½ê²Œ ëŠ˜ë¦¬ê¸°
+#define ZONE_3_GAIN (0.2F)      // ë¶€ë“œëŸ½ê²Œ ì¤„ì´ê¸°
+#define ZONE_4_GAIN (0.7F)      // ê°•í•˜ê²Œ ì¤„ì´ê¸°
+#define ZONE_5_GAIN (0.05F)     // (ì •ìƒ) ì‚´ì‚´ ë³´ì • (ëª©í‘œ: 60~70ml)
 
 
 void ProcessIceMaking(void);
@@ -30,5 +30,6 @@ U16 GetNextIceMakeTime(void);
 void SetThisTimeIceMakeTime(U16 ThisTimeIceMakeTime);
 U16 GetThisTimeIceMakeTime(void);
 static void SetTheoryRatio(I16 Avg);
+U8 GetErrorCount(void);
 
 #endif
