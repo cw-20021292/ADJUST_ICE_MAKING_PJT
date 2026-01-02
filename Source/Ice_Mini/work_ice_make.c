@@ -193,7 +193,7 @@ static void SetTheoryRatio(F32 Avg)
     F32 mf32_avg = 0;
     F32 mf32_ratio_theory = 0;
     F32 mf32_eff_ratio = 0;
-    F32 mf32_target = GetCCToHz(ICE_V_TARGET);   /* 70ml에 해당하는 유량값(Hz or pulse) */
+    F32 mf32_target = GetCCToHz(ICE_V_TARGET);   /* 63~70ml에 해당하는 유량값(Hz or pulse) */
     F32 mf32_final_ratio = 1.0F;
 
     // 1) 센서/계산 값 이상 여부 체크
@@ -223,6 +223,8 @@ static void SetTheoryRatio(F32 Avg)
 
     // 5) 최종 ratio
     mf32_final_ratio = 1.0F + (mf32_eff_ratio * (mf32_ratio_theory - 1.0F));
+    // [2026.01.02] 항상 제빙시간을 10% 정도 늘리기 (OFFSET 적용)
+    mf32_final_ratio += 0.10F;
 
     SetTarget(mf32_target);
     SetRatio(mf32_final_ratio);
