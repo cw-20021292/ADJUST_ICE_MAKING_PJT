@@ -29,7 +29,7 @@ void SetNextIceMakeTime(U16 NextIceMakeTime);
 U16 GetNextIceMakeTime(void);
 void SetThisTimeIceMakeTime(U16 ThisTimeIceMakeTime);
 U16 GetThisTimeIceMakeTime(void);
-static void SetTheoryRatio(I16 Avg);
+static void SetTheoryRatio(F32 Avg);
 U8 GetErrorCount(void);
 
 #endif

@@ -14,8 +14,8 @@ typedef struct
     F32 f32Ratio;
     U16 u16NextIceMakeTime;
     U16 u16ThisTimeIceMakeTime;
-    I16 i16IceMakeAvgFlow;
-    I16 i16IceMakeFlowHistory[3];    // 최근 3회 제빙물량 저장
+    F32 f32IceMakeAvgFlow;
+    F32 f32IceMakeFlowHistory[3];    // 최근 3회 제빙물량 저장
     U8 u8ErrorCount;                 // 에러 카운트
 } ICE_ADJUST_T;
 ICE_ADJUST_T IceAdjust;
@@ -83,7 +83,7 @@ void ProcessIceMaking(void)
 {
     U16 mu16DeltaTimeLimit = 600;
     U8 count = 0;
-    I16 sum = 0;
+    F32 sum = 0;
     U8 i = 0;
 
     if(GetDrainFlow() > 0)
@@ -92,28 +92,29 @@ void ProcessIceMaking(void)
         // 평균 Flow 계산
         if(IceAdjust.u8Cycle < 3)
         {
-            IceAdjust.i16IceMakeFlowHistory[IceAdjust.u8Cycle] = GetDrainFlow();
+            IceAdjust.f32IceMakeFlowHistory[IceAdjust.u8Cycle] = GetDrainFlow();
             IceAdjust.u8Cycle++;
 
             for(i = 0; i < IceAdjust.u8Cycle; i++)
             {
-                sum += IceAdjust.i16IceMakeFlowHistory[i];
+                sum += IceAdjust.f32IceMakeFlowHistory[i];
             }
-            IceAdjust.i16IceMakeAvgFlow = (U16)(sum / IceAdjust.u8Cycle);
+
+            IceAdjust.f32IceMakeAvgFlow = (sum / IceAdjust.u8Cycle);
         }
         else
         {
             // FIFO shift
-            IceAdjust.i16IceMakeFlowHistory[0] = IceAdjust.i16IceMakeFlowHistory[1];
-            IceAdjust.i16IceMakeFlowHistory[1] = IceAdjust.i16IceMakeFlowHistory[2];
-            IceAdjust.i16IceMakeFlowHistory[2] = GetDrainFlow();
+            IceAdjust.f32IceMakeFlowHistory[0] = IceAdjust.f32IceMakeFlowHistory[1];
+            IceAdjust.f32IceMakeFlowHistory[1] = IceAdjust.f32IceMakeFlowHistory[2];
+            IceAdjust.f32IceMakeFlowHistory[2] = GetDrainFlow();
 
             // 3개 평균
-            sum  = IceAdjust.i16IceMakeFlowHistory[0];
-            sum += IceAdjust.i16IceMakeFlowHistory[1];
-            sum += IceAdjust.i16IceMakeFlowHistory[2];
+            sum  = IceAdjust.f32IceMakeFlowHistory[0];
+            sum += IceAdjust.f32IceMakeFlowHistory[1];
+            sum += IceAdjust.f32IceMakeFlowHistory[2];
 
-            IceAdjust.i16IceMakeAvgFlow = (sum / 3);
+            IceAdjust.f32IceMakeAvgFlow = (sum / 3);
         }
 
         IceAdjust.u8ErrorCount = 0;
@@ -129,22 +130,22 @@ void ProcessIceMaking(void)
     }
 
     // 보정 Gain 설정
-    if(IceAdjust.i16IceMakeAvgFlow > GetCCToHz(120))              // 120ml 이상 제빙 (남은 물량 80ml)
+    if(IceAdjust.f32IceMakeAvgFlow > GetCCToHz(120))              // 120ml 이상 제빙 (남은 물량 80ml)
     {
         // zone 1 (심각 과제빙) : 강하게 줄이기
         SetGain(ZONE_1_GAIN);
     }
-    else if(IceAdjust.i16IceMakeAvgFlow > GetCCToHz(75))         // 75ml 이상 제빙 (남은 물량 125ml)
+    else if(IceAdjust.f32IceMakeAvgFlow > GetCCToHz(75))         // 75ml 이상 제빙 (남은 물량 125ml)
     {
         // zone 2 (살짝 과제빙) : 부드럽게 줄이기
         SetGain(ZONE_2_GAIN);
     }
-    else if(IceAdjust.i16IceMakeAvgFlow < GetCCToHz(35))         // 35ml 이하 제빙 (남은 물량 165ml)
+    else if(IceAdjust.f32IceMakeAvgFlow < GetCCToHz(35))         // 35ml 이하 제빙 (남은 물량 165ml)
     {
         // zone 4 (심각 부족) : 강하게 늘리기
         SetGain(ZONE_4_GAIN);
     }
-    else if(IceAdjust.i16IceMakeAvgFlow < GetCCToHz(50))         // 50ml 이하 제빙 (남은 물량 150ml)
+    else if(IceAdjust.f32IceMakeAvgFlow < GetCCToHz(50))         // 50ml 이하 제빙 (남은 물량 150ml)
     {
         // zone 3 (살짝 부족) : 부드럽게 늘리기
         SetGain(ZONE_3_GAIN);
@@ -157,7 +158,7 @@ void ProcessIceMaking(void)
     }
 
     // 평균 유량을 확인하고 줄일지 말지 결정
-    SetTheoryRatio(IceAdjust.i16IceMakeAvgFlow);
+    SetTheoryRatio(IceAdjust.f32IceMakeAvgFlow);
     SetNextIceMakeTime((U16)(GetThisTimeIceMakeTime() * GetRatio()));
 
     // 상한치 하한치 제한
@@ -186,13 +187,13 @@ void ProcessIceMaking(void)
  *
  * @param Avg : 제빙에 사용된 물량 (입수된 물의 양 [고정값] - 제빙완료되고 버려진 물의 양)
  */
-static void SetTheoryRatio(I16 Avg)
+static void SetTheoryRatio(F32 Avg)
 {
     F32 mf32_min_avg = 0;
     F32 mf32_avg = 0;
     F32 mf32_ratio_theory = 0;
     F32 mf32_eff_ratio = 0;
-    F32 mf32_target = (F32)GetCCToHz(ICE_V_TARGET);   /* 70ml에 해당하는 유량값(Hz or pulse) */
+    F32 mf32_target = GetCCToHz(ICE_V_TARGET);   /* 70ml에 해당하는 유량값(Hz or pulse) */
     F32 mf32_final_ratio = 1.0F;
 
     // 1) 센서/계산 값 이상 여부 체크

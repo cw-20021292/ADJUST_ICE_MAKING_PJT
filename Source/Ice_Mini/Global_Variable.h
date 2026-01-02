@@ -1512,7 +1512,8 @@ typedef enum
 #define C_CUP_MY_HOT                          3.291F    // 占쏙옙
 
 // #define C_ICE_MAKING                          1.8F    // 제빙 유량 (V1)
-#define C_ICE_MAKING                          1.26F    // 제빙 유량 (V2) - V1대비 -30%
+#define C_ICE_MAKING                          2.35    // 제빙 유량 (V2) - V1대비 +30%
+// C_ICE_MAKING이 커질수록 얼음도 커짐
 
 #define CUP_LEVEL__MAX CUP_LEVEL_CONTINUE
 /******************************************************************************/

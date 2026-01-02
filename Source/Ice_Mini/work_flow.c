@@ -8,10 +8,10 @@
 typedef struct _drain_flow_
 {
     U8  u8FlowMeter;                   /* 제빙수 유량센서 플래그 */
-    I16 i16IceMakeBeforeFlowHz;       /* 제빙수 전 유량센서 측정값 */
-    I16 i16IceMakeAfterFlowHz;        /* 제빙수 후 유량센서 측정값 */
-    I16 i16VIcePrevFlowHz;            /* 제빙수 이전 유량센서 측정값 */
-    I16 i16VIceCurFlowHz;             /* 제빙수 현재 유량센서 측정값 */
+    F32 f32IceMakeBeforeFlowHz;       /* 제빙수 전 유량센서 측정값 */
+    F32 f32IceMakeAfterFlowHz;        /* 제빙수 후 유량센서 측정값 */
+    F32 f32VIcePrevFlowHz;            /* 제빙수 이전 유량센서 측정값 */
+    F32 f32VIceCurFlowHz;             /* 제빙수 현재 유량센서 측정값 */
 } DRAIN_FLOW_T;
 DRAIN_FLOW_T DrainFlow;
 
@@ -19,52 +19,52 @@ DRAIN_FLOW_T DrainFlow;
 * Function Name: System_ini
 * Description  : 제빙수 입수유량 설정
 ***********************************************************************************************************************/
-void SetDrainBeforeFlowHz(I16 i16FlowHz)
+void SetDrainBeforeFlowHz(F32 f32FlowHz)
 {
-    DrainFlow.i16IceMakeBeforeFlowHz = i16FlowHz;
+    DrainFlow.f32IceMakeBeforeFlowHz = f32FlowHz;
 }
 
-I16 GetDrainBeforeFlowHz(void)
+F32 GetDrainBeforeFlowHz(void)
 {
-    return DrainFlow.i16IceMakeBeforeFlowHz;
+    return DrainFlow.f32IceMakeBeforeFlowHz;
 }
 
-void SetDrainAfterFlowHz(I16 i16FlowHz)
+void SetDrainAfterFlowHz(F32 f32FlowHz)
 {
-    DrainFlow.i16IceMakeAfterFlowHz = i16FlowHz;
+    DrainFlow.f32IceMakeAfterFlowHz = f32FlowHz;
 }
 
-I16 GetDrainAfterFlowHz(void)
+F32 GetDrainAfterFlowHz(void)
 {
-    return DrainFlow.i16IceMakeAfterFlowHz;
+    return DrainFlow.f32IceMakeAfterFlowHz;
 }
 
-void SetDrainPrevFlowHz(I16 i16FlowHz)
+void SetDrainPrevFlowHz(F32 f32FlowHz)
 {
-    DrainFlow.i16VIcePrevFlowHz = i16FlowHz;
+    DrainFlow.f32VIcePrevFlowHz = f32FlowHz;
 }
 
-I16 GetDrainPrevFlowHz(void)
+F32 GetDrainPrevFlowHz(void)
 {
-    return DrainFlow.i16VIcePrevFlowHz;
+    return DrainFlow.f32VIcePrevFlowHz;
 }
 
-void SetDrainCurFlowHz(I16 i16FlowHz)
+void SetDrainCurFlowHz(F32 f32FlowHz)
 {
-    DrainFlow.i16VIceCurFlowHz = i16FlowHz;
+    DrainFlow.f32VIceCurFlowHz = f32FlowHz;
 }
 
-I16 GetDrainCurFlowHz(void)
+F32 GetDrainCurFlowHz(void)
 {
-    return DrainFlow.i16VIceCurFlowHz;
+    return DrainFlow.f32VIceCurFlowHz;
 }
 
 // 총 제빙에 사용된 물량 계산 (Hz단위를 cc단위로 변환해야됨)
-I16 GetDrainFlow(void)
+F32 GetDrainFlow(void)
 {
-    if((DrainFlow.i16IceMakeBeforeFlowHz - DrainFlow.i16IceMakeAfterFlowHz) > 0)
+    if((DrainFlow.f32IceMakeBeforeFlowHz - DrainFlow.f32IceMakeAfterFlowHz) > 0)
     {
-        return (DrainFlow.i16IceMakeBeforeFlowHz - DrainFlow.i16IceMakeAfterFlowHz);
+        return (DrainFlow.f32IceMakeBeforeFlowHz - DrainFlow.f32IceMakeAfterFlowHz);
     }
     else
     {
@@ -73,10 +73,10 @@ I16 GetDrainFlow(void)
 }
 
 // CC단위를 Hz단위로 변환
-I16 GetCCToHz(U16 u16CC)
+F32 GetCCToHz(U16 u16CC)
 {
-    I16 i16OneCC = C_ICE_MAKING;
-    return (I16)(u16CC * i16OneCC);
+    F32 f32OneCC = C_ICE_MAKING;
+    return (F32)(u16CC * f32OneCC);
 }
 
 // 배수유량이 입수유량의 +5%보다 크면 OK
@@ -86,18 +86,18 @@ F32 SetValidGain(void)
 {
     F32 mf32_isvalid = INVALID;
 
-    I16 i16_cur_flow = GetDrainCurFlowHz();
-    I16 i16_prev_flow = GetDrainPrevFlowHz();
+    F32 f32_cur_flow = GetDrainCurFlowHz();
+    F32 f32_prev_flow = GetDrainPrevFlowHz();
     F32 mf32_diff = 0.0F;
-    mf32_diff = (F32)(i16_cur_flow - i16_prev_flow);
+    mf32_diff = (f32_cur_flow - f32_prev_flow);
 
     // 배수유량이 입수유량의 +5%보다 크면 NG
-    if(DrainFlow.i16IceMakeAfterFlowHz > (I16)((DrainFlow.i16IceMakeBeforeFlowHz * 1.05)))
+    if(DrainFlow.f32IceMakeAfterFlowHz > (F32)((DrainFlow.f32IceMakeBeforeFlowHz * 1.05)))
     {
         mf32_isvalid = INVALID;
     }
     // 배수유량이 입수유량보다 큰데 +5% 이하면 의심
-    else if(DrainFlow.i16IceMakeAfterFlowHz > DrainFlow.i16IceMakeBeforeFlowHz)
+    else if(DrainFlow.f32IceMakeAfterFlowHz > DrainFlow.f32IceMakeBeforeFlowHz)
     {
         mf32_isvalid = SUSPECT;
     }
@@ -152,7 +152,7 @@ void DrainFlowInput(void)
 
     if(GetIceStep() == STATE_41_DRAIN_FLOW_CALCUATE)
     {
-        DrainFlow.i16IceMakeAfterFlowHz++;
+        DrainFlow.f32IceMakeAfterFlowHz++;
     }
 
     DrainFlowStop();
