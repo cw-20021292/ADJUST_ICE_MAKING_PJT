@@ -13,7 +13,7 @@ I16 GetDrainBeforeFlowHz(void);
 void SetDrainAfterFlowHz(I16 i16FlowHz);
 I16 GetDrainAfterFlowHz(void);
 I16 GetDrainFlow(void);
-U16 GetCCToHz(U16 u16CC);
+I16 GetCCToHz(U16 u16CC);
 void SetDrainPrevFlowHz(I16 i16FlowHz);
 I16 GetDrainPrevFlowHz(void);
 void SetDrainCurFlowHz(I16 i16FlowHz);

@@ -73,10 +73,10 @@ I16 GetDrainFlow(void)
 }
 
 // CC단위를 Hz단위로 변환
-U16 GetCCToHz(U16 u16CC)
+I16 GetCCToHz(U16 u16CC)
 {
-    F32 OneCC = C_ICE_MAKING;
-    return (U16)(u16CC * OneCC);
+    I16 i16OneCC = C_ICE_MAKING;
+    return (I16)(u16CC * i16OneCC);
 }
 
 // 배수유량이 입수유량의 +5%보다 크면 OK
