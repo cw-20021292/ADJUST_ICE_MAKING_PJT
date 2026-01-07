@@ -223,8 +223,8 @@ static void SetTheoryRatio(F32 Avg)
 
     // 5) 최종 ratio
     mf32_final_ratio = 1.0F + (mf32_eff_ratio * (mf32_ratio_theory - 1.0F));
-    // [2026.01.02] V3, 항상 제빙시간을 +5%로 하향 적용 (OFFSET 적용)
-    mf32_final_ratio += 0.05F;
+    // [2026.01.07] V4, 항상 제빙시간을 +2%로 하향 적용 (OFFSET 적용)
+    mf32_final_ratio += 0.02F;
 
     SetTarget(mf32_target);
     SetRatio(mf32_final_ratio);
