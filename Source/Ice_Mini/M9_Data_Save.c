@@ -10,7 +10,7 @@
 #include    "Global_Variable.h"
 #include    "Port_Define.h"
 #include    "M9_Data_Save.h"
-
+#include    "work_flow.h"
 void Save_Eeprom_Data(void);
 void save_special_setting(void);
 void save_ice_setting(void);
@@ -168,9 +168,11 @@ U16 gu16_WaterQuantity_four_old;
 
 U8 gu8_drain_tank_ster_count_old;
 
-bit bit_ice_size_old;       /* ¾óÀ½»çÀÌÁî ´ë/¼Ò EEPROM µ¥ÀÌÅÍ Ãß°¡ 250224 CH.PARK */
+U16 u16IceMakeAdaptiveHz_old;
+
+bit bit_ice_size_old;       /* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½/ï¿½ï¿½ EEPROM ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½ 250224 CH.PARK */
 bit bit_IceBreak_old;
-/*..hui [24-12-17¿ÀÈÄ 3:33:50] ÀÓ½Ã ÄÄÆÄÀÏ ¿¡·¯ ÇØÁ¦¿ë eeprom °ü·Ã ³ªÁß¿¡ Á¤¸®..*/
+/*..hui [24-12-17ï¿½ï¿½ï¿½ï¿½ 3:33:50] ï¿½Ó½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ eeprom ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ß¿ï¿½ ï¿½ï¿½ï¿½ï¿½..*/
 U8 gu8_ct_forced_flushing_start;
 bit bit_tray_pump_output;
 U8 gu8_return_acid_step;
@@ -311,7 +313,7 @@ void save_special_setting(void)
        || bit_install_flushing_state_old != bit_install_flushing_state
        || gu8_filter_flushing_state_old != gu8_filter_flushing_state
        || bit_first_time_setting_old != bit_first_time_setting )*/
-    
+
     if((F_Cold_Enable_Old != F_Cold_Enable)
     || (F_Hot_Lock_Old != F_Hot_Lock)
     || (F_All_Lock_Old != F_All_Lock)
@@ -367,7 +369,7 @@ void save_ice_setting(void)
 {
     U8 mu8_enable = 0;
 
-    /*..hui [20-3-31¿ÀÈÄ 4:32:27] ¾óÀ½»ý¼ºÀÌ¶û ¾óÀ½¿ì¼±ÀÌ ¾óÀ½¼³Á¤ ÇÏ³ª·Î ÅëÇÕµÊ.. ²¨Áü,¾óÀ½,³Ã¼ö ¼ø....*/
+    /*..hui [20-3-31ï¿½ï¿½ï¿½ï¿½ 4:32:27] ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¶ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ì¼±ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ï³ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Õµï¿½.. ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½,ï¿½Ã¼ï¿½ ï¿½ï¿½....*/
     if((F_Ice_Lock_Old != F_Ice_Lock)
     || (F_IceOn_Old != F_IceOn)
     || (bit_fast_ice_make_old != bit_fast_ice_make)
@@ -424,8 +426,8 @@ void save_function_setting(void)
        || gu8_sleep_mode_start_hour_old != gu8_sleep_mode_start_hour
        || gu8_sleep_mode_start_minute_old != gu8_sleep_mode_start_minute
        || gu8_sleep_mode_finish_hour_old != gu8_sleep_mode_finish_hour
-       || gu8_sleep_mode_finish_minute_old != gu8_sleep_mode_finish_minute 
-       || bit_waitmode_enable_old != bit_waitmode_enable   
+       || gu8_sleep_mode_finish_minute_old != gu8_sleep_mode_finish_minute
+       || bit_waitmode_enable_old != bit_waitmode_enable
     )
     {
         mu8_enable = SET;
@@ -468,18 +470,29 @@ void save_function_setting(void)
 ***********************************************************************************************************************/
 void save_etc_setting(void)
 {
+    U8 mu8_enable = 0;
 
-    if( gu8_cup_level_default_old != gu8Cup_level_Default )
+    if(( gu8_cup_level_default_old != gu8Cup_level_Default )
+    || (u16IceMakeAdaptiveHz_old != (U16)GetFlowInitFlowHz())
+    )
     {
-        gu8_cup_level_default_old = gu8Cup_level_Default;
-
-        gu8_eeprom_wbuf[0] = (U8)gu8Cup_level_Default;
-
-        EepromPageWrite(ETC_SAVE_START_ADDR, gu8_eeprom_wbuf, 1);
+        mu8_enable = SET;
     }
     else{}
 
-    water_select_state_save();
+    if(mu8_enable == SET)
+    {
+        u16IceMakeAdaptiveHz_old = (U16)GetFlowInitFlowHz();
+        gu8_cup_level_default_old = gu8Cup_level_Default;
+
+        gu8_eeprom_wbuf[0] = (U8)gu8Cup_level_Default;
+        gu8_eeprom_wbuf[2] = (U8)(u16IceMakeAdaptiveHz_old/(U16)256);
+        gu8_eeprom_wbuf[3] = (U8)(u16IceMakeAdaptiveHz_old%(U16)256);
+
+        EepromPageWrite(ETC_SAVE_START_ADDR, gu8_eeprom_wbuf, ETC_SAVE_LENGTH);
+    }
+
+    // water_select_state_save();
 }
 
 
@@ -489,7 +502,7 @@ void save_etc_setting(void)
 ***********************************************************************************************************************/
 void water_select_state_save(void)
 {
-    /*..hui [18-1-10¿ÀÀü 11:15:29] ¿Â¼ö ¼±ÅÃ»óÅÂÀÌ°Å³ª ¼±ÅÃ ÈÄ º¹±Í ÀÌÀüÀÌ¸é ÀúÀå¾ÈÇÔ..*/
+    /*..hui [18-1-10ï¿½ï¿½ï¿½ï¿½ 11:15:29] ï¿½Â¼ï¿½ ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½Ì°Å³ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½..*/
     if(u8WaterOutState == HOT_WATER_SELECT || F_WaterOut_Change_State == SET)
     {
         return;
@@ -517,7 +530,7 @@ void save_iot_function(void)
     || gu16_WaterQuantity_one != gu16_WaterQuantity_one_old
     || gu16_WaterQuantity_two != gu16_WaterQuantity_two_old
     || gu16_WaterQuantity_four != gu16_WaterQuantity_four_old
-    || gu8_fota_start_old != gu8_fota_start 
+    || gu8_fota_start_old != gu8_fota_start
     || gu8_drain_tank_ster_count_old != gu8_drain_tank_ster_count
     )
     {
@@ -528,7 +541,7 @@ void save_iot_function(void)
     if(mu8_enable == SET)
     {
         apply_before_iot_function_setting();
-        
+
         gu8_eeprom_wbuf[0] = (U8)(gu16_WaterQuantity_half/(U16)256);
         gu8_eeprom_wbuf[1] = (U8)(gu16_WaterQuantity_half%(U16)256);
         gu8_eeprom_wbuf[2] = (U8)(gu16_WaterQuantity_one/(U16)256);
@@ -606,7 +619,7 @@ void my_setting_data_save(void)
     || my_setting[MY_INDEX_MY1].use != gu8_my1_setting_use_old
     || my_setting[MY_INDEX_MY2].temp != gu8_my2_setting_temp_old
     || my_setting[MY_INDEX_MY2].amount != gu16_my2_setting_amount_old
-    || my_setting[MY_INDEX_MY2].use != gu8_my2_setting_use_old 
+    || my_setting[MY_INDEX_MY2].use != gu8_my2_setting_use_old
     || my_setting[MY_INDEX_MY3].temp != gu8_my3_setting_temp_old
     || my_setting[MY_INDEX_MY3].amount != gu16_my3_setting_amount_old
     || my_setting[MY_INDEX_MY3].use != gu8_my3_setting_use_old
@@ -624,7 +637,7 @@ void my_setting_data_save(void)
         gu8_my1_setting_temp_old = my_setting[MY_INDEX_MY1].temp;
         gu16_my1_setting_amount_old = my_setting[MY_INDEX_MY1].amount;
         gu8_my1_setting_use_old = my_setting[MY_INDEX_MY1].use;
-        
+
         gu8_my2_setting_temp_old = my_setting[MY_INDEX_MY2].temp;
         gu16_my2_setting_amount_old = my_setting[MY_INDEX_MY2].amount;
         gu8_my2_setting_use_old = my_setting[MY_INDEX_MY2].use;
@@ -634,7 +647,7 @@ void my_setting_data_save(void)
         gu8_my3_setting_use_old = my_setting[MY_INDEX_MY3].use;
 
         my_receipe_default_old = my_receipe_default;
-        
+
         gu8_eeprom_wbuf[0] = (U8)gu8_my1_setting_temp_old;
         gu8_eeprom_wbuf[1] = (U8)(gu16_my1_setting_amount_old/(U16)256);
         gu8_eeprom_wbuf[2] = (U8)(gu16_my1_setting_amount_old%(U16)256);
@@ -680,14 +693,14 @@ void hot_temp_data_save(void)
     }
 
     if(mu8_enable == SET)
-    {        
+    {
         U16HotTemplSelect_old = U16HotTemplSelect;
         sort_hot_temp();
         selected_hot_temp_0_old = selected_hot_temp[0];
         selected_hot_temp_1_old = selected_hot_temp[1];
         selected_hot_temp_2_old = selected_hot_temp[2];
         selected_hot_temp_3_old = selected_hot_temp[3];
-       
+
         gu8_eeprom_wbuf[0] = selected_hot_temp_0_old;
         gu8_eeprom_wbuf[1] = selected_hot_temp_1_old;
         gu8_eeprom_wbuf[2] = selected_hot_temp_2_old;
@@ -886,7 +899,7 @@ void apply_before_ice_setting(void)
     bit_fast_ice_make_old = bit_fast_ice_make;
     gu8_recover_org_fast_ice_old = gu8_recover_org_fast_ice;
     gu8_return_acid_step_old = gu8_return_acid_step;
-    /* EEPROM µ¥ÀÌÅÍ Ãß°¡ÇÏ¸é ¿©±âµµ Ãß°¡ ÇØ¾ßµÊ 250228 CH.PARK */
+    /* EEPROM ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½ï¿½Ï¸ï¿½ ï¿½ï¿½ï¿½âµµ ï¿½ß°ï¿½ ï¿½Ø¾ßµï¿½ 250228 CH.PARK */
     bit_ice_size_old = bit_ice_size;
     bit_IceBreak_old = F_IceBreak;
 }
@@ -939,9 +952,9 @@ void apply_before_iot_function_setting(void)
     gu16_WaterQuantity_one_old = gu16_WaterQuantity_one;
     gu16_WaterQuantity_two_old = gu16_WaterQuantity_two;
     gu16_WaterQuantity_four_old = gu16_WaterQuantity_four;
-    
+
     gu8_fota_start_old = gu8_fota_start;
-    
+
     gu8_drain_tank_ster_count_old = gu8_drain_tank_ster_count;
 #if 0
     gu16_cup_level_select_old = u16CupLevelSelect;

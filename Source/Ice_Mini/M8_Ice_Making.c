@@ -252,6 +252,12 @@ void Ice_Make_Process(void)
     }
     else{}
 
+    // [2026-01-09] CH.PARK 초기 유량 보정값 확인이 안되면 더미탈빙도 대기
+    if(GetFlowInitFlowHz() == 0)
+    {
+        return;
+    }
+
     //=======================================================//???????? ????
     if(F_IceInit == SET)
     {
@@ -288,7 +294,7 @@ void ice_make_operation(void)
 {
     U8 mu8_return_value = 0;
     U8 mu8_comp_rps = 0;
-
+    F32 mf32IceMakeAdaptiveHz = 0;
 
     //=======================================================// ???? ??????
     switch(gu8IceStep)
@@ -460,9 +466,9 @@ void ice_make_operation(void)
 
                 gu16_Ice_Tray_Fill_Hz = C_ICE_TRAY_FILL_200CC;
 
-                // [2025-12-15] CH.PARK 유량센서가 달라서 그러거나
-                // 펌프 뒷단이라서 그럴수도 있지만 일단 보정값 적용 (+480CC)
-                SetDrainBeforeFlowHz((C_ICE_TRAY_FILL_200CC - 400));        // 입수용량 : 530 (보정값 적용)
+                // 실제 입수 Hz는 드레인탱크로 100% 빼본 유량값으로 적용
+                mf32IceMakeAdaptiveHz = (F32)(GetFlowInitFlowHz());
+                SetDrainBeforeFlowHz(mf32IceMakeAdaptiveHz);
 
                 // 버려지는 물의 Hz값은 0부터 시작
                 SetDrainAfterFlowHz(0);
@@ -540,17 +546,7 @@ void ice_make_operation(void)
                     }
                     else
                     {
-                        // [2025-12-18] CH.PARK 본격적인 테스트 시작 (제빙테이블 최소값부터 시작해서 얼음크기 추정이 제대로 되는지 확인 시작)
-                        // 테스트케이스 1) 시작 제빙시간 280초 (4분 40초) -> 제빙테이블의 최소값
-                        // gu16IceMakeTime = 280;
-
-                        // 테스트케이스 2) 시작 제빙시간 800초 (13분 20초) -> 제빙테이블 중간값 이상값
                         gu16IceMakeTime = 800;
-
-                        // 테스트케이스 3) 시작 제빙시간 200초 (3분 20초) -> 제빙테이블 최대값
-                        // gu16IceMakeTime = 200;
-
-                        // gu16IceMakeTime = (U16)calc_ice_make_time( gu8_Amb_Front_Temperature_One_Degree, gu8_Room_Temperature_One_Degree);
                     }
 
                     /* 100ms니까 10배 곱해줌 */
@@ -628,7 +624,7 @@ void ice_make_operation(void)
         case STATE_32_DRAIN_EMPTY:      // 이번 기술과제에서 추가된 제빙 Step 32 : 드레인탱크 비우기
             // 순수 제빙완료 후 남은 물을 측정하기 위해 트레이 내리기 전에 드레인탱크 비우기
             // 드레인탱크가 비워지면 다음 단계로 이동
-            if(u8DrainWaterLevel == Bit0_Drain_Water_Empty)
+            if(u8DrainWaterLevel == DRAIN_LEVEL_EMPTY)
             {
                 // [2025-12-15] [기술과제] CH.PARK 변경 : 드레인탱크가 일단 비워지면 트레이를 내림
                 down_tray_motor();
@@ -642,10 +638,10 @@ void ice_make_operation(void)
 
         //-----------------------------------------------// ??????????
         case STATE_40_ICE_TRAY_MOVE_DOWN :
-			if(F_TrayMotorDOWN != SET
-            && gu8IceTrayLEV == ICE_TRAY_POSITION_ICE_THROW)
+			if((F_TrayMotorDOWN != SET)
+            && (gu8IceTrayLEV == ICE_TRAY_POSITION_ICE_THROW)
+            )
             {
-				// F_TrayMotorDOWN = 0;
                 gu8IceStep = STATE_41_DRAIN_FLOW_CALCUATE;
             }
             else {}
@@ -654,17 +650,21 @@ void ice_make_operation(void)
         /* [2025-11-19] 이번 기술과제에서 추가된 제빙 Step 41 : 드레인된 제빙완료 후 남은 물량 계산을 위한 드레인 */
         case STATE_41_DRAIN_FLOW_CALCUATE:
             // 드레인되는 물량 확인
-            if(u8DrainWaterLevel == Bit0_Drain_Water_Empty)
+            if(u8DrainWaterLevel == DRAIN_LEVEL_EMPTY)
             {
                 gu8IceStep = STATE_42_NEXT_ICE_AMOUNT_CAL;
             }
             break;
 
         case STATE_42_NEXT_ICE_AMOUNT_CAL:  /* 이번 기술과제에서 추가된 제빙 Step 42 : 다음 제빙시간 계산 */
-            /* 다음 물량 계산 (보정) */
-            SetDrainPrevFlowHz(GetDrainCurFlowHz());
-            SetDrainCurFlowHz(GetDrainFlow());
-            ProcessIceMaking();
+            // 중간에 제빙 중지 인터럽트가 안걸렸을 때에만 반영
+            if(GetInterruption() == CLEAR)
+            {
+                /* 다음 물량 계산 (보정) */
+                SetDrainPrevFlowHz(GetDrainCurFlowHz());
+                SetDrainCurFlowHz(GetDrainFlow());
+                ProcessIceMaking();
+            }
 
             gu8IceStep = STATE_43_GAS_SWITCH_HOT_GAS;
             break;

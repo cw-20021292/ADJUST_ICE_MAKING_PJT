@@ -19,6 +19,8 @@
 
 
 void ProcessIceMaking(void);
+void SetInterruption(U8 u8Interruption);
+U8 GetInterruption(void);
 void SetGain(F32 f32Gain);
 F32 GetGain(void);
 void SetRatio(F32 f32Ratio);

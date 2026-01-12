@@ -17,8 +17,19 @@ typedef struct
     F32 f32IceMakeAvgFlow;
     F32 f32IceMakeFlowHistory[3];    // 최근 3회 제빙물량 저장
     U8 u8ErrorCount;                 // 에러 카운트
+    U8 u8Interruption;
 } ICE_ADJUST_T;
 ICE_ADJUST_T IceAdjust;
+
+void SetInterruption(U8 u8Interruption)
+{
+    IceAdjust.u8Interruption = u8Interruption;
+}
+
+U8 GetInterruption(void)
+{
+    return IceAdjust.u8Interruption;
+}
 
 void SetGain(F32 f32Gain)
 {

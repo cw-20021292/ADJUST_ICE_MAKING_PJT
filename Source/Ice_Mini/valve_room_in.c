@@ -10,6 +10,7 @@
 #include    "Global_Variable.h"
 #include    "Port_Define.h"
 #include    "valve_room_in.h"
+#include    "work_flow.h"
 
 void output_valve_room_in_feed1(void);
 
@@ -23,6 +24,7 @@ TYPE_BYTE          U8RoomInValveONB;
 #define            Bit4_Tray_In_Water_State             U8RoomInValveONB.Bit.b4
 #define			   Bit5_Cody_Water_Line_Clean_State		U8RoomInValveONB.Bit.b5  /* Cody Water Line Clean Service */
 #define            Bit6_RIV_Release_Pressure_State      U8RoomInValveONB.Bit.b6
+#define            Bit7_FlowInitDataStack               U8RoomInValveONB.Bit.b7
 
 TYPE_BYTE          U8RoomInValveOFFB;
 #define            u8RoomInValveOFF                     U8RoomInValveOFFB.byte
@@ -51,7 +53,16 @@ extern bit F_IceOut;
 ***********************************************************************************************************************/
 void output_valve_room_in_feed1(void)
 {
-    /* Á¦ºùÇÏ±â À§ÇÑ Æ®·¹ÀÌ ÀÔ¼ö ½Ã Á¤¼öÀÔ¼ö¹ëºê open */
+    if(GetFlowInitStep() == FLOW_STACK_STEP_WATER_IN)
+    {
+        Bit7_FlowInitDataStack = SET;
+    }
+    else
+    {
+        Bit7_FlowInitDataStack = CLEAR;
+    }
+
+    /* ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ô¼ï¿½ï¿½ï¿½ï¿½ open */
     if(gu8IceStep == STATE_20_WATER_IN_ICE_TRAY)
     {
         if( F_WaterOut == SET )
@@ -97,7 +108,7 @@ void output_valve_room_in_feed1(void)
     }
 
 /***********************************************************************************************/
-    /* Á¤¼ö ÃßÃâ ½Ã Á¤¼öÀÔ¼ö¹ëºê open */
+    /* ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ô¼ï¿½ï¿½ï¿½ï¿½ open */
     if( F_WaterOut == SET )
     {
         if(( u8WaterOutState == PURE_WATER_SELECT )
@@ -132,7 +143,7 @@ void output_valve_room_in_feed1(void)
             {
                 if(bit_tray_valve_output == SET)
                 {
-                    /*..hui [20-4-29¿ÀÀü 11:13:35] Æ®·¹ÀÌ ¹ëºê ÄÑÁö°í 300msÈÄ¿¡ ÆßÇÁ ÄÑÁöµµ·Ï..*/
+                    /*..hui [20-4-29ï¿½ï¿½ï¿½ï¿½ 11:13:35] Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 300msï¿½Ä¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½..*/
                     if(gu8_ice_melt_wait_timer >= 5)
                     {
                         gu8_ice_melt_wait_timer = 5;
@@ -167,56 +178,7 @@ void output_valve_room_in_feed1(void)
         Bit3_Tray_retry_state = CLEAR;
     }
 
-#if 0
-    if(tray_error_flag_E63 == SET)
-	{
-		if( tray_abnormal_E63_step == 2 || tray_abnormal_E63_step == 4 )
-		{
-			Bit3_Tray_retry_state  = SET;
-		}
-		else
-		{
-			Bit3_Tray_retry_state = CLEAR;
-		}
-	}
-	else
-	{
-		Bit3_Tray_retry_state = CLEAR;
-	}
-#endif
-
-#if 0
-		if(gu8_flushing_mode == FLUSHING_FILTER)
-		{
-			if(gu8_filter_flushing_step == 1)
-			{
-				Bit1_Flushing_Heater_In_Valve_on = SET;
-			}
-
-		}
-		else
-#endif
-
-#if 0
-    /* ÇÃ·¯½Ì - È÷ÅÍ Ã¤¿ì±â ÇÒ ¶§ Á¤¼öÀÔ¼ö¹ëºê open */
-    if(gu8_flushing_mode == FLUSHING_FILL_HOT_TANK_STATE)
-    {
-        if( gu8_Hot_Filling_Step >= 1 && gu8_Hot_Filling_Step <= 6 )
-        {
-            Bit1_Flushing_Heater_In_Valve_on = F_First_Hot_Effluent;
-        }
-        else
-        {
-            Bit1_Flushing_Heater_In_Valve_on= CLEAR;
-        }
-    }
-    else
-    {
-        Bit1_Flushing_Heater_In_Valve_on = CLEAR;
-    }
-#endif
-
-    /* ÄÚµðÀ¯·Î»ì±Õ Cody Water Line Clean Service */
+    /* ï¿½Úµï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½ Cody Water Line Clean Service */
     if(cody_water_line.gu8_start == SET)
     {
         if((cody_water_line.gu8_step == 0)
@@ -235,7 +197,7 @@ void output_valve_room_in_feed1(void)
         Bit5_Cody_Water_Line_Clean_State = CLEAR;
     }
 
-    /* ÇÊÅÍ±³Ã¼ ½Ã ¾Ð·Â»©±â */
+    /* ï¿½ï¿½ï¿½Í±ï¿½Ã¼ ï¿½ï¿½ ï¿½Ð·Â»ï¿½ï¿½ï¿½ */
     if( bit_filter_all == CLEAR )
     {
         gu8_release_pressure_timer++;

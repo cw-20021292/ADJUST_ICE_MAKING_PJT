@@ -10,6 +10,7 @@
 #include    "Global_Variable.h"
 #include    "Port_Define.h"
 #include    "valve_ice_tray.h"
+#include    "work_flow.h"
 
 void output_valve_ice_tray_feed3(void);
 
@@ -21,7 +22,7 @@ TYPE_BYTE          U8IceTrayValveONB;
 #define            Bit2_ITV_Ice_Tray_Ster_State             U8IceTrayValveONB.Bit.b2
 #define            Bit3_Tray_Clean_State                    U8IceTrayValveONB.Bit.b3
 #define            Bit4_Tray_retry_state                    U8IceTrayValveONB.Bit.b4
-
+#define            Bit5_FlowInitDataStack                   U8IceTrayValveONB.Bit.b5
 
 TYPE_BYTE          U8IceTrayValveOFFB;
 #define            u8IceTrayValveOFF                         U8IceTrayValveOFFB.byte
@@ -46,11 +47,20 @@ extern WATER_OUT_STEP gu8_Water_Out_Step;
 ***********************************************************************************************************************/
 void output_valve_ice_tray_feed3(void)
 {
+    if(GetFlowInitStep() == FLOW_STACK_STEP_WATER_IN)
+    {
+        Bit5_FlowInitDataStack = SET;
+    }
+    else
+    {
+        Bit5_FlowInitDataStack = CLEAR;
+    }
+
     /***********************************************************************************************/
     /***********************************************************************************************/
     if(gu8IceStep == STATE_20_WATER_IN_ICE_TRAY)
     {
-        /* Æ®·¹ÀÌ ÀÔ¼öÁß ¹°ÃßÃâ½Ã ÀÓ½ÃÁß´Ü */
+        /* Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ó½ï¿½ï¿½ß´ï¿½ */
         Bit0_Ice_Make_Input_State = ~F_WaterOut;
     }
     else
@@ -69,7 +79,7 @@ void output_valve_ice_tray_feed3(void)
     {
         Bit1_Over_Ice_Melt_Input_State = CLEAR;
     }
-    
+
     if( bit_ice_tank_ster_start == SET )
     {
         if( gu8_ice_ster_mode == STER_MODE_HOT_INPUT_STATE )
@@ -105,11 +115,11 @@ void output_valve_ice_tray_feed3(void)
     /***********************************************************************************************/
 
 
-    /*..hui [19-8-27¿ÀÈÄ 3:44:11] Æ®·¹ÀÌ ÀÔ¼ö Áß ¿Â¼ö ÃßÃâ ½Ã Æ®·¹ÀÌ ¹ëºê OFF..*/
-    /*..hui [19-8-27¿ÀÈÄ 3:44:17] ¿Â¼ö ÃßÃâ·Î ÀüÈ¯..*/
+    /*..hui [19-8-27ï¿½ï¿½ï¿½ï¿½ 3:44:11] Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ ï¿½ï¿½ ï¿½Â¼ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ OFF..*/
+    /*..hui [19-8-27ï¿½ï¿½ï¿½ï¿½ 3:44:17] ï¿½Â¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯..*/
 
-    /*..hui [19-8-27¿ÀÈÄ 7:24:57] ¿Â¼ö ÃßÃâ »Ó¸¸¾Æ´Ï¶ó Á¤¼ö/³Ã¼ö ÃßÃâÁß¿¡µµ Æ®·¹ÀÌ ÀÔ¼ö´Â Àá½Ã ´ë±â..*/
-    /*..hui [19-8-28¿ÀÈÄ 2:44:21] Æ®·¹ÀÌ ÀÔ¼ö ¾ÈµÉ°æ¿ì Àç½Ãµµ ´ë±â ½Ã°£µ¿¾È OFF Ãß°¡..*/
+    /*..hui [19-8-27ï¿½ï¿½ï¿½ï¿½ 7:24:57] ï¿½Â¼ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ó¸ï¿½ï¿½Æ´Ï¶ï¿½ ï¿½ï¿½ï¿½ï¿½/ï¿½Ã¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ß¿ï¿½ï¿½ï¿½ Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½..*/
+    /*..hui [19-8-28ï¿½ï¿½ï¿½ï¿½ 2:44:21] Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ ï¿½ÈµÉ°ï¿½ï¿½ ï¿½ï¿½Ãµï¿½ ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ï¿½ï¿½ï¿½ï¿½ OFF ï¿½ß°ï¿½..*/
 		#if 0
     if(gu8IceStep == STATE_20_WATER_IN_ICE_TRAY)
     {
@@ -121,7 +131,7 @@ void output_valve_ice_tray_feed3(void)
     }
 #endif
     /***********************************************************************************************/
-    /*..hui [19-12-13¿ÀÈÄ 3:09:53] ±× ¿Ü Á¶°ÇÀÏ °æ¿ì Àú¼öÀ§ ¹Ì¸¸ÀÏ¶§¸¸ ´ÝÀ½..*/
+    /*..hui [19-12-13ï¿½ï¿½ï¿½ï¿½ 3:09:53] ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¸ï¿½ï¿½Ï¶ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½..*/
 /*
 if( gu8_Room_Water_Level == ROOM_LEVEL_LOW)
     {
@@ -132,11 +142,11 @@ if( gu8_Room_Water_Level == ROOM_LEVEL_LOW)
         Bit4_Tray_Low_Level_Off_State = CLEAR;
     }
 */
-    // /* ÇØºùÁ¦¾î(Å»ºù¹æÇâ) ½Ã Æ®·¹ÀÌ¿¡ ¹°»Ñ¸®±â */
+    // /* ï¿½Øºï¿½ï¿½ï¿½ï¿½ï¿½(Å»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½) ï¿½ï¿½ Æ®ï¿½ï¿½ï¿½Ì¿ï¿½ ï¿½ï¿½ï¿½Ñ¸ï¿½ï¿½ï¿½ */
     // if(tray_error_flag_E63 == SET)
     // {
     //     if( tray_abnormal_E63_step == 2 || tray_abnormal_E63_step == 4 )
-    //     { 
+    //     {
     //         Bit4_Tray_retry_state  = ~F_WaterOut;
     //     }
     //     else

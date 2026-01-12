@@ -10,6 +10,7 @@
 #include    "Global_Variable.h"
 #include    "Port_Define.h"
 #include    "flow_sensor.h"
+#include    "work_flow.h"
 
 void flow_sensor_start(void);
 void flow_sensor_stop(void);
@@ -104,7 +105,7 @@ void INTP11_Flow_Sensor_Input(void)
     {
         if( gu8_Water_Out_Step == STATE_31_WATER_EXTRACT_STATE )
         {
-            /*..yspark [25-2-17¿ÀÈÄ 17:00:40] ¿¬¼ÓÃßÃâ ½Ã°£ Á¦¾î Ãß°¡(¸±·¹ÀÌ ¹Ýº¹ ON/OFF ¹ö±× °³¼±)..*/
+            /*..yspark [25-2-17ï¿½ï¿½ï¿½ï¿½ 17:00:40] ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ýºï¿½ ON/OFF ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)..*/
             if (u8Extract_Continue == SET)
             {
                 gu16Extracted_Hz++;
@@ -143,12 +144,12 @@ void INTP11_Flow_Sensor_Input(void)
                 if( (gu16Effluent_Hz == 0) && (u8Extract_Continue == CLEAR) )
                 {
                     F_Effluent_OK = SET;
-                    /*..yspark [25-2-17¿ÀÈÄ 17:00:40] ¿¬¼ÓÃßÃâ ½Ã°£ Á¦¾î Ãß°¡(¸±·¹ÀÌ ¹Ýº¹ ON/OFF ¹ö±× °³¼±)..*/
-					u16Efluent_Time  = 0; // ¿¬¼ÓÃßÃâ ½Ã°£ °æ°ú Àü¿¡ ¸ñÇ¥¿ë·®(3L) ÃßÃâ ½Ã ÃßÃâ Á¾·á
+                    /*..yspark [25-2-17ï¿½ï¿½ï¿½ï¿½ 17:00:40] ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ýºï¿½ ON/OFF ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)..*/
+					u16Efluent_Time  = 0; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ç¥ï¿½ë·®(3L) ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
 					gu16Extracted_Hz  = 0;
 
-                    /*..hui [18-3-14¿ÀÈÄ 3:50:40] Á¤·®ÃßÃâ Á¾·á..*/
+                    /*..hui [18-3-14ï¿½ï¿½ï¿½ï¿½ 3:50:40] ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½..*/
                     F_WaterOut_Disable_State = SET;
                 }
                 else{}
@@ -186,7 +187,7 @@ void INTP11_Flow_Sensor_Input(void)
                     /*F_Effluent_OK = SET;*/
                     F_Hot_Filling_Finish = SET;
 
-                    /*..hui [18-3-14¿ÀÈÄ 3:50:40] Á¤·®ÃßÃâ Á¾·á..*/
+                    /*..hui [18-3-14ï¿½ï¿½ï¿½ï¿½ 3:50:40] ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½..*/
                     F_WaterOut_Disable_State = SET;
                 }
                 else{}
@@ -240,7 +241,7 @@ void INTP11_Flow_Sensor_Input(void)
         else{}
     }
 
-	/*.. sean [25-01-21] tray ÀÔ¼ö À¯·®¼¾¼­ È®ÀÎ ÇÏ±â À§ÇØ Ãß°¡..*/
+	/*.. sean [25-01-21] tray ï¿½Ô¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½..*/
     if((gu8IceStep == STATE_20_WATER_IN_ICE_TRAY)
     && ( F_WaterOut == CLEAR )
     )
@@ -282,6 +283,8 @@ void INTP11_Flow_Sensor_Input(void)
         else{}
     }
     else{}
+
+    InitFlowHzDecrease();
 
     flow_sensor_stop();
 }

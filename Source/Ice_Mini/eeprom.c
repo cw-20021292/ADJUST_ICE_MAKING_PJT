@@ -10,6 +10,7 @@
 #include    "Global_Variable.h"
 #include    "Port_Define.h"
 #include    "Eeprom.h"
+#include    "work_flow.h"
 
 void EEPROM_PRIMARY(void);
 void eeprom_data_load(void);
@@ -118,7 +119,7 @@ void load_spetial_setting(void)
     EepromSeqRead(SPECIAL_SETTING_START_ADDR, gu8_eeprom_rbuf, SPECIAL_SETTING_LENGTH);
 
     //=========================================================================================//
-    /*.. �ü� ���? ����..*/
+    /*.. �ü� ���? ����..*/
     #if 1
     if(gu8_eeprom_rbuf[0] <= 1)
     {
@@ -131,7 +132,7 @@ void load_spetial_setting(void)
     }
     #endif
     //=========================================================================================//
-    /*.. �¼� ���? ����..*/
+    /*.. �¼� ���? ����..*/
     if(gu8_eeprom_rbuf[1] <= 1)
     {
         F_Hot_Lock = gu8_eeprom_rbuf[1];
@@ -142,7 +143,7 @@ void load_spetial_setting(void)
         EepromByteWrite(EEPROM_ADDR1_HOT_LOCK, (U8)F_Hot_Lock);
     }
     //=========================================================================================//
-    /*.. ��ü ���? ����..*/
+    /*.. ��ü ���? ����..*/
     if(gu8_eeprom_rbuf[2] <= 1)
     {
         F_All_Lock = gu8_eeprom_rbuf[2];
@@ -153,7 +154,7 @@ void load_spetial_setting(void)
         EepromByteWrite(EEPROM_ADDR1_ALL_LOCK, (U8)F_All_Lock);
     }
     //=========================================================================================//
-    /*.. ���Ұ� ���?..*/
+    /*.. ���Ұ� ���?..*/
     if(gu8_eeprom_rbuf[3] <= 1)
     {
         F_Mute_Enable = gu8_eeprom_rbuf[3];
@@ -297,7 +298,7 @@ void load_ice_setting(void)
     EepromSeqRead(ICE_SETTING_START_ADDR, gu8_eeprom_rbuf, ICE_SETTING_LENGTH);
 
     //=========================================================================================//
-    /*.. ���� ���?..*/
+    /*.. ���� ���?..*/
     if(gu8_eeprom_rbuf[0] <= 1)
     {
         F_Ice_Lock = gu8_eeprom_rbuf[0];
@@ -320,7 +321,7 @@ void load_ice_setting(void)
         EepromByteWrite(EEPROM_ADDR2_ICE_ON_OFF, (U8)F_IceOn);
     }
     //=========================================================================================//
-    /*..hui [18-2-21���� 8:05:32] �ü�/���� �켱���� ���� ���? �߰�..*/
+    /*..hui [18-2-21���� 8:05:32] �ü�/���� �켱���� ���� ���? �߰�..*/
     if(gu8_eeprom_rbuf[2] <= ICE_FIRST_ICE_MAKE)
     {
         bit_fast_ice_make = gu8_eeprom_rbuf[2];
@@ -331,7 +332,7 @@ void load_ice_setting(void)
         EepromByteWrite(EEPROM_ADDR2_ICE_MAKE_PRIORITY, (U8)bit_fast_ice_make);
     }
     //=========================================================================================//
-    /*..hui [24-4-11���� 7:11:04] �����켱 �������? �����°� �߰�..*/
+    /*..hui [24-4-11���� 7:11:04] �����켱 �������? �����°� �߰�..*/
     if(gu8_eeprom_rbuf[3] <= RECOVER_FAST_ICE)
     {
         gu8_recover_org_fast_ice = gu8_eeprom_rbuf[3];
@@ -397,8 +398,8 @@ void load_function_setting(void)
     }
 
     //=========================================================================================//
-    /*.. ��ȯ ���? ����..*/
-    /*..hui [20-3-26���� 8:22:15] ��ȯ���? ���� ����..*/
+    /*.. ��ȯ ���? ����..*/
+    /*..hui [20-3-26���� 8:22:15] ��ȯ���? ���� ����..*/
     /*..hui [20-3-26���� 8:22:20] Ȥ�ó� ���߿� �ʿ��Ҽ�������..*/
     if(gu8_eeprom_rbuf[1] <= 1)
     {
@@ -410,7 +411,7 @@ void load_function_setting(void)
         EepromByteWrite(EEPROM_ADDR3_CIRCULATION_DRAIN, (U8)F_Circul_Drain);
     }
     //=========================================================================================//
-    /*..hui [19-9-24���� 10:00:06] UV �ڵ� ���? ����..*/
+    /*..hui [19-9-24���� 10:00:06] UV �ڵ� ���? ����..*/
     if(gu8_eeprom_rbuf[2] <= 1)
     {
         F_Auto_UV_Control = gu8_eeprom_rbuf[2];
@@ -494,7 +495,7 @@ void load_function_setting(void)
     }
     else
     {
-        /*..hui [23-6-29���� 2:24:16] ��ħ���? ����Ʈ�� OFF..*/
+        /*..hui [23-6-29���� 2:24:16] ��ħ���? ����Ʈ�� OFF..*/
         bit_sleep_mode_enable = CLEAR;
         EepromByteWrite(EEPROM_ADDR3_SLEEP_MODE_ENABLE, (U8)bit_sleep_mode_enable);
     }
@@ -540,7 +541,7 @@ void load_function_setting(void)
     }
 
     //=========================================================================================//
-    /* �����? �������� ���� */
+    /* �����? �������� ���� */
     if(gu8_eeprom_rbuf[15] <= 1)
     {
         bit_waitmode_enable = gu8_eeprom_rbuf[15];
@@ -588,7 +589,16 @@ void load_etc_setting(void)
         EepromByteWrite(EEPROM_ADDR4_WATER_SELECT_DEFAULT, u8WaterOutState);
     }
 
-    //=========================================================================================//
+    if(gu8_eeprom_rbuf[2] != 0xFF)
+    {
+        SetFlowInitFlowHz((F32)((U16)gu8_eeprom_rbuf[2] << 8) + (F32)gu8_eeprom_rbuf[3]);
+    }
+    else
+    {
+        SetFlowInitFlowHz(0);
+        EepromByteWrite(EEPROM_ADDR4_ICE_MAKE_ADAPTIVE_HZ_H, (U8)GetFlowInitFlowHz());
+        EepromByteWrite(EEPROM_ADDR4_ICE_MAKE_ADAPTIVE_HZ_L, (U8)GetFlowInitFlowHz());
+    }
 }
 
 /***********************************************************************************************************************
@@ -753,9 +763,9 @@ void load_iot_function(void)
 
     /*if( u16CupLevelSelect < 1 || u16CupLevelSelect > 496 )*/
     /*if( u16CupLevelSelect < 1 || u16CupLevelSelect > 992 )*/
-    /*..hui [23-10-4���� 3:52:46] �ִ밪���� ����.. ���߿� ���� ���������? ���� ����..*/
+    /*..hui [23-10-4���� 3:52:46] �ִ밪���� ����.. ���߿� ���� ���������? ���� ����..*/
     /*if( u16CupLevelSelect < 1 || u16CupLevelSelect > 1023 )*/
-    /*..hui [23-11-23���� 10:20:13] ������ ����Ʈ �������� �����?..*/
+    /*..hui [23-11-23���� 10:20:13] ������ ����Ʈ �������� �����?..*/
     if( u16CupLevelSelect < 512 || u16CupLevelSelect > 1023 )
     {
         u16CupLevelSelect = CUP_LEVEL_SELECT_DEFAULT_4_8_12_20_CONTINUE;
@@ -1377,13 +1387,13 @@ void eeprom_initial(void)
 ***********************************************************************************************************************/
 void initial_spetial_setting(void)
 {
-    F_Cold_Enable = SET;    /*.. �ü� ���? ����..*/
-    F_Hot_Lock = CLEAR;         /*.. �¼� ���? ����..*/
-    F_All_Lock = CLEAR;    /*.. ��ü ���? ����..*/
-    /*..hui [24-1-5���� 9:15:43] ���Ұ� ���? �̻��?..*/
-    F_Mute_Enable = CLEAR;  /*..hui [18-1-9���� 7:16:17] ���Ұ� ���?..*/
+    F_Cold_Enable = SET;    /*.. �ü� ���? ����..*/
+    F_Hot_Lock = CLEAR;         /*.. �¼� ���? ����..*/
+    F_All_Lock = CLEAR;    /*.. ��ü ���? ����..*/
+    /*..hui [24-1-5���� 9:15:43] ���Ұ� ���? �̻��?..*/
+    F_Mute_Enable = CLEAR;  /*..hui [18-1-9���� 7:16:17] ���Ұ� ���?..*/
     /*..hui [20-1-6���� 7:56:30] �ü� �µ� ����..*/
-    /*..hui [24-1-5���� 9:15:49] �ü��µ� ���� �̻��?..*/
+    /*..hui [24-1-5���� 9:15:49] �ü��µ� ���� �̻��?..*/
     gu8_cold_setting_level = COLD_TEMP_HIGH;
     F_Hot_Enable = SET;
 
@@ -1430,7 +1440,7 @@ void initial_spetial_setting(void)
 ***********************************************************************************************************************/
 void initial_ice_setting(void)
 {
-    F_Ice_Lock = CLEAR;          /*.. ���� ���?..*/
+    F_Ice_Lock = CLEAR;          /*.. ���� ���?..*/
     F_IceOn = SET;               /*.. ���� ����..*/
     bit_fast_ice_make = COLD_FIRST_ICE_MAKE;
     gu8_recover_org_fast_ice = NEW_FAST_ICE;
@@ -1456,8 +1466,8 @@ void initial_ice_setting(void)
 void initial_function_setting(void)
 {
     F_Save = SET;                /*..�߰� ���� ����..*/
-    F_Circul_Drain = SET;        /*..��ȯ���? ����..*/
-    F_Auto_UV_Control = SET;     /*..UV �ڵ����?..*/
+    F_Circul_Drain = SET;        /*..��ȯ���? ����..*/
+    F_Auto_UV_Control = SET;     /*..UV �ڵ����?..*/
     F_Welcome_Led_OnOff = SET;   /*..���� LED ONOFF..*/
 
     /*bit_my_cup_enable = CLEAR;*/
@@ -1469,7 +1479,7 @@ void initial_function_setting(void)
     gu8_wifi_period_ster_minute = WIFI_PERIOD_STER_MINUTE_DEFAULT;
 
     /*bit_sleep_mode_enable = SET;*/
-    /*..hui [23-6-29���� 2:24:16] ��ħ���? ����Ʈ�� OFF..*/
+    /*..hui [23-6-29���� 2:24:16] ��ħ���? ����Ʈ�� OFF..*/
     bit_sleep_mode_enable = CLEAR;
     gu8_sleep_mode_start_hour = WIFI_SLEEP_MODE_START_HOUR_DEFAULT;
     gu8_sleep_mode_start_minute = WIFI_SLEEP_MODE_START_MINUTE_DEFAULT;

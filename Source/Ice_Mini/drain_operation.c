@@ -10,7 +10,7 @@
 #include    "Global_Variable.h"
 #include    "Port_Define.h"
 #include    "drain_operation.h"
-
+#include    "work_flow.h"
 
 
 
@@ -775,7 +775,7 @@ void detect_drain_pump_error(void)
     )
     {
         Bit10_Drain_IceMakeWater = SET;
-        if(u8DrainWaterLevel != Bit0_Drain_Water_Empty)
+        if(u8DrainWaterLevel != DRAIN_LEVEL_EMPTY)
         {
             Bit7_Drain_IceMakeWater = SET;
         }
@@ -1090,11 +1090,32 @@ void flushing_drain_check(void)
         }
         else
         {
-            if( u8DrainWaterLevel == DRAIN_LEVEL_EMPTY )
+            if( gu8_flushing_mode == FLUSHING_WORK_ICE_MAKE_FLOW_DATA_GET_STATE )
             {
-                Bit4_Drain_Flushing = CLEAR;
+                if((GetFlowInitStep() == FLOW_STACK_STEP_TANK_EMPTY)
+                || (GetFlowInitStep() == FLOW_STACK_STEP_TANK_DRAIN)
+                || (GetFlowInitStep() == FLOW_STACK_STEP_TRAY_WATER_CAL)
+                )
+                {
+                    if( u8DrainWaterLevel >= DRAIN_LEVEL_LOW )
+                    {
+                        Bit4_Drain_Flushing = SET;
+                    }
+                    else{}
+                }
+                else
+                {
+                    Bit4_Drain_Flushing = CLEAR;
+                }
             }
-            else{}
+            else
+            {
+                if( u8DrainWaterLevel == DRAIN_LEVEL_EMPTY )
+                {
+                    Bit4_Drain_Flushing = CLEAR;
+                }
+                else{}
+            }
         }
     }
     else

@@ -745,7 +745,7 @@ typedef enum
     FLUSHING_FILL_COLD_TANK_FINISH_STATE,
     FLUSHING_COLD_TANK,
     FLUSHING_FILL_HOT_TANK_STATE,
-    FLUSHING_TANK_STATE,
+    FLUSHING_WORK_ICE_MAKE_FLOW_DATA_GET_STATE,
     FLUSHING_SKIP,
     FLUSHING_FINISH_STATE,
 
@@ -999,6 +999,7 @@ typedef struct {
 /*..hui [24-4-11占쏙옙占쏙옙 9:18:41] 트占쏙옙占쏙옙 占쏙옙占쏙옙 占쏙옙占쏙옙. 占쏙옙 10cc 占쏙옙占쏙옙 占쌩곤옙 占쌉쇽옙占쌔억옙占쏙옙..*/
 // #define C_ICE_TRAY_FILL_200CC            1020
 // #define C_ICE_TRAY_FILL_200CC 1080 /* 트占쏙옙占쏙옙 占쌉쇽옙 占쏙옙占쏙옙 +60 250224 CH.PARK */
+// [2026-01-12] [기술과제] CH.PARK 정확한 입수용량은 약 263ml
 #define C_ICE_TRAY_FILL_200CC 980 /* 트占쏙옙占쏙옙 占쌉쇽옙 占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙占?? -10%占쏙옙 占쏙옙占쏙옙占쏙옙 950 250414 CH.PARK */
 
 #define ICE_MAKE_TIME 899 /* 占쌤깍옙 25'C, 占시쇽옙 占승듸옙 25'C 占쏙옙占쏙옙 */
@@ -1189,10 +1190,12 @@ typedef struct {
 #define EEPROM_ADDR3_WAIT_MODE_ENABLE   0x007F
 /////////////////////////////////////////////////////////////////////////////
 #define ETC_SAVE_START_ADDR 0x0080
-#define ETC_SAVE_LENGTH 2
+#define ETC_SAVE_LENGTH 4
 
 #define EEPROM_ADDR4_CUP_LEVEL 0x0080
 #define EEPROM_ADDR4_WATER_SELECT_DEFAULT 0x0081
+#define EEPROM_ADDR4_ICE_MAKE_ADAPTIVE_HZ_H 0x0082
+#define EEPROM_ADDR4_ICE_MAKE_ADAPTIVE_HZ_L 0x0083
 
 /////////////////////////////////////////////////////////////////////////////
 #define MEMENTO_START_ADDR 0x0090
