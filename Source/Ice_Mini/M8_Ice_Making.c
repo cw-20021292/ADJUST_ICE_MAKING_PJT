@@ -14,6 +14,7 @@
 #include    "flow_sensor.h"
 #include    "work_ice_make.h"
 #include    "work_flow.h"
+#include    "api_debug.h"
 void Ice_Make_Process(void);
 void normal_mode_ice_init_operation(void);
 //U16 calc_ice_heater_time(void);
@@ -593,6 +594,9 @@ void ice_make_operation(void)
 
                     gu8IceStep = STATE_31_MAIN_ICE_MAKING;
                     gu8_ice_tray_reovery_time = 0;
+
+                    // CLI 디버깅 출력
+                    dlog(SYSMOD, DATA, ("CLI - AmbTemp/IceMakingTime : %d, %04d \r\n", gu8_Amb_Front_Temperature_One_Degree, gu16IceMakeTime));
                 }
                 else{}
             }

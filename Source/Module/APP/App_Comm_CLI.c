@@ -86,7 +86,8 @@ U8 CLI_isValidPacket(U8 *buf)
 
     packet_length = (PROTOCOL_IDX_LENGTH+1) + buf[PROTOCOL_IDX_LENGTH] + 3;
 
-    if(packet_length < COMM_PROTOCOL_PACKET_BASIC_LENGTH || packet_length > UART3_RX_BUFFER_SIZE)
+    if(packet_length < COMM_PROTOCOL_PACKET_BASIC_LENGTH
+    || packet_length > UART3_RX_BUFFER_SIZE)
     {
         return FALSE;
     }
@@ -98,7 +99,8 @@ U8 CLI_isValidPacket(U8 *buf)
 
     calculated_crc = CLI_CRC_Cal(buf, (U16)(packet_length - 3));
 
-    if( buf[packet_length-3] != GET_16_HIGH_BYTE(calculated_crc) || buf[packet_length-2] != GET_16_LOW_BYTE(calculated_crc) )
+    if( buf[packet_length-3] != GET_16_HIGH_BYTE(calculated_crc)
+    || buf[packet_length-2] != GET_16_LOW_BYTE(calculated_crc) )
     {
         return FALSE;
     }

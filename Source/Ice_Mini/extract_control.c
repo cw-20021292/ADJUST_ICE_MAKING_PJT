@@ -10,6 +10,7 @@
 #include    "Global_Variable.h"
 #include    "Port_Define.h"
 #include    "extract_control.h"
+#include    "api_debug.h"
 /**********************************************************************************************************************/
 void water_extract_control(void);
 void start_effluent_water(void);
@@ -39,7 +40,7 @@ ICE_OUT_STEP gu8_Ice_Out_Step;
 U16 gu16_ice_out_timer;
 U16 gu16_temp_ice_out_timer;
 U8 gu8_Drain_water_timer;
-U8 gu8TestRemoveAirTimer = 10;      //2025-07-17 cbr ¹Ì´Ïµ¿ÀÏ»ç¾ç
+U8 gu8TestRemoveAirTimer = 10;      //2025-07-17 cbr ï¿½Ì´Ïµï¿½ï¿½Ï»ï¿½ï¿½
 /**********************************************************************************************************************/
 U16 drip_timer;
 /**********************************************************************************************************************/
@@ -60,11 +61,11 @@ extern bit bit_filter_cover;
 extern MY_INDEX my_recipe_select;
 extern bit bit_myWater_setting_start;
 /***********************************************************************************************************************/
-// [25-05-09] Ã¹ÀÜ/µÑÂ°ÀÜ ±¸ºÐ timer ºÐ·ù
+// [25-05-09] Ã¹ï¿½ï¿½/ï¿½ï¿½Â°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ timer ï¿½Ð·ï¿½
 U16 gu16_firstEffluent_hotwater_timer;
 bit F_firstEffluent_hotWater;
 /***********************************************************************************************************************/
-// [25-07-07] sean Ã¹ÀÜ/µÑÂ°ÀÜ ±¸ºÐ heating º¯¼ö Ãß°¡
+// [25-07-07] sean Ã¹ï¿½ï¿½/ï¿½ï¿½Â°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ heating ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½
 bit F_firstEffluent_hotWaterHeat;
 U16 gu16_drip_standby_timer;
 bit F_first_Drip_standby;
@@ -76,9 +77,9 @@ bit F_second_Drip_standby;
 void water_extract_control(void)
 {
 	if(F_firstEffluent_hotWater == SET)
-	{   // [25-05-27 12:57:14] yspark, Ã¹ÀÜ Ä«¿îÆ® ¼öÁ¤
+	{   // [25-05-27 12:57:14] yspark, Ã¹ï¿½ï¿½ Ä«ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½
         if(F_WaterOut == SET && u8WaterOutState == HOT_WATER_SELECT)
-        {  // ¿Â¼ö ÃßÃâ ÁßÀÎ °æ¿ì Å¸ÀÌ¸Ó ÃÊ±âÈ­
+        {  // ï¿½Â¼ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ Å¸ï¿½Ì¸ï¿½ ï¿½Ê±ï¿½È­
             gu16_firstEffluent_hotwater_timer = 0;
             //2025-07-08 cbr_test
             if((gu8Pre_hot_setting_temperature != gu8_hot_setting_temperature))
@@ -172,14 +173,14 @@ void start_effluent_water(void)
 
             if(u8IceOutState == ICE_SELECT__ICE_WATER )
             {
-                mu8_time = VALVE_ICE_WATER_OUT_TIME;  // 3ÃÊ ÈÄ ÃßÃâ ½ÃÀÛ
+                mu8_time = VALVE_ICE_WATER_OUT_TIME;  // 3ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             }
             else
             {
                 mu8_time = VALVE_CONTROL_TIME_FOR_DEBUG;
             }
 
-            /*..hui [18-8-27¿ÀÈÄ 6:35:25] ÃßÃâ´ë±â..*/
+            /*..hui [18-8-27ï¿½ï¿½ï¿½ï¿½ 6:35:25] ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½..*/
             gu8_effluent_timer++;
 
             if( gu8_effluent_timer >= mu8_time )
@@ -194,13 +195,13 @@ void start_effluent_water(void)
 
         case STATE_10_WATER_IN_FEED_ON_STATE :
 
-            /*..hui [25-1-9¿ÀÈÄ 1:43:13] ³Ã¼ö/Á¤¼ö ÀÔ¼ö ¹ëºê OPEN, ³Ã¼ö ¹°³ÑÄ§ ¹ëºê CLOSE..*/
-            /*..hui [25-1-9¿ÀÈÄ 1:46:49] ¿Â¼ö´Â ¿©±â¼­ ¿À¹öÇÃ·Î¿ì NOS ¹ëºê CLOSE ÇØ³õÀ½..*/
+            /*..hui [25-1-9ï¿½ï¿½ï¿½ï¿½ 1:43:13] ï¿½Ã¼ï¿½/ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ ï¿½ï¿½ï¿½ OPEN, ï¿½Ã¼ï¿½ ï¿½ï¿½ï¿½ï¿½Ä§ ï¿½ï¿½ï¿½ CLOSE..*/
+            /*..hui [25-1-9ï¿½ï¿½ï¿½ï¿½ 1:46:49] ï¿½Â¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½â¼­ ï¿½ï¿½ï¿½ï¿½ï¿½Ã·Î¿ï¿½ NOS ï¿½ï¿½ï¿½ CLOSE ï¿½Ø³ï¿½ï¿½ï¿½..*/
             gu8_effluent_timer++;
 
             if(gu8_effluent_timer >= VALVE_CONTROL_TIME_FOR_DEBUG)
             {
-                /* ¾óÀ½¹°Àº ¹Ýµå½Ã ¿©±â·Î */
+                /* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ýµï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ */
                 if(u8IceOutState == ICE_SELECT__ICE_WATER )
                 {
                     gu8_Water_Out_Step = STATE_11_COLD_WATER_PRESSURE_PREVENT_STATE;
@@ -230,7 +231,7 @@ void start_effluent_water(void)
 
             break;
 
-        case STATE_11_COLD_WATER_PRESSURE_PREVENT_STATE:        /* ³Ã¼öÀÏ ¶§¸¸ */
+        case STATE_11_COLD_WATER_PRESSURE_PREVENT_STATE:        /* ï¿½Ã¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ */
             gu8_effluent_timer++;
             if(gu8_effluent_timer >= VALVE_PRESSURE_PREVENT_TIME)
             {
@@ -252,7 +253,7 @@ void start_effluent_water(void)
             	mu8_finish = SET;
 			}
 
-			/*.. sean [25-01-16] ¿¹¿­ ÈÄ, ¿Â¼ö DrainÀ¸·Î ¹°¹ö¸² ÁøÇà..*/
+			/*.. sean [25-01-16] ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½, ï¿½Â¼ï¿½ Drainï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½..*/
             if(mu8_finish == SET)
             {
                 gu8_Water_Out_Step = STATE_21_HOT_PRE_HEATING_BUFFER_DRAIN_STATE;
@@ -268,9 +269,9 @@ void start_effluent_water(void)
 
             gu8_effluent_timer++;
 
-            // [25-05-27 14:40:03] yspark, Ã¹ÀÜ¸¸ ¹öÆÛÅÊÅ© ¹°Ã¤¿ò µ¿ÀÛ ¼öÇà
+            // [25-05-27 14:40:03] yspark, Ã¹ï¿½Ü¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å© ï¿½ï¿½Ã¤ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             if (F_firstEffluent_hotWater)
-            {  // µÑÂ° ÀÜ ÀÌ»ó
+            {  // ï¿½ï¿½Â° ï¿½ï¿½ ï¿½Ì»ï¿½
                 if(gu8_effluent_timer >= 0)
                 {
                     gu8_Water_Out_Step = STATE_22_HOT_PRE_HEATING_BUFFER_DRAIN_COMPLETE_STATE;
@@ -280,14 +281,14 @@ void start_effluent_water(void)
             }
             else
             {
-                // ¡Ú2025-06-11 Phil
+                // ï¿½ï¿½2025-06-11 Phil
                 if (( ( gu8_hot_setting_temperature == HOT_SET_TEMP____100oC )
                 || ( gu8_hot_setting_temperature == HOT_SET_TEMP____95oC )
                 || ( gu8_hot_setting_temperature == HOT_SET_TEMP____90oC )
                 //|| ( gu8_hot_setting_temperature == HOT_SET_TEMP____85oC ) )
-                || ( gu8_hot_setting_temperature == HOT_SET_TEMP____85oC )			// ¡Ú2025-06-11 Phil after PM
+                || ( gu8_hot_setting_temperature == HOT_SET_TEMP____85oC )			// ï¿½ï¿½2025-06-11 Phil after PM
                 || ( gu8_hot_setting_temperature == HOT_SET_TEMP____80oC )			//2025-07-28 cbr
-                || ( gu8_hot_setting_temperature == HOT_SET_TEMP____45oC ) )		// ¡Ú2025-06-11 Phil after PM
+                || ( gu8_hot_setting_temperature == HOT_SET_TEMP____45oC ) )		// ï¿½ï¿½2025-06-11 Phil after PM
                 && (bit_Hot_InLowTemp_SetHighTemp == 1))
                 {
                     if(gu8_effluent_timer >= BUFFER_DRAIN_TIME_FOR_HIGH_TEMP)
@@ -320,9 +321,9 @@ void start_effluent_water(void)
             break;
         case STATE_22_HOT_PRE_HEATING_BUFFER_DRAIN_COMPLETE_STATE :
 
-            //Ãß°¡ processÃß°¡ÇÏ±â À§ÇØ State Add
-            // [25-02-20 18:10:54] yspark, ¹ëºê Á¶Á¤
-            // ¿¹¿­ ÂÊÀ¸·Î ÀÌµ¿
+            //ï¿½ß°ï¿½ processï¿½ß°ï¿½ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ State Add
+            // [25-02-20 18:10:54] yspark, ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+            // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½
             /*
             if (gu16_moving_pulse == 0)
             {
@@ -338,8 +339,8 @@ void start_effluent_water(void)
 
         case STATE_30_EXTRACT_VALVE_ON_STATE :
 
-            /*..hui [25-1-9¿ÀÈÄ 1:45:20] ÃÖÁ¾ ÃßÃâ ¹ëºê ON..*/
-            /*..hui [25-1-9¿ÀÈÄ 1:45:28] ¿Â¼ö´Â ¿Â¼ö ÃßÃâ ¹ëºê ON..*/
+            /*..hui [25-1-9ï¿½ï¿½ï¿½ï¿½ 1:45:20] ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ON..*/
+            /*..hui [25-1-9ï¿½ï¿½ï¿½ï¿½ 1:45:28] ï¿½Â¼ï¿½ï¿½ï¿½ ï¿½Â¼ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ON..*/
             gu8_effluent_timer++;
             if(gu8_effluent_timer >= VALVE_CONTROL_TIME_FOR_DEBUG)
             {
@@ -355,12 +356,12 @@ void start_effluent_water(void)
 /******************************************************************************************/
 
         case STATE_31_WATER_EXTRACT_STATE :
-			/*.. sean [25-01-16].. 100ml¸¶´Ù ¿À¹ö ÇÃ·Î¿ì ¹ëºê 500ms ¿­¾îÁà¼­ Air ºüÁ®³ª°¡µµ·Ï ÇÔ */
-            // yspark [25-02-18 18:54:38] ¿À¹ö ÇÃ·Î¿ì ¹ëºê ½Ã°£ ´ÜÃà
-            /* ¾óÀ½ µ¿½ÃÃßÃâ ½Ã ¹®Á¦°¡ µÊ */
+			/*.. sean [25-01-16].. 100mlï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·Î¿ï¿½ ï¿½ï¿½ï¿½ 500ms ï¿½ï¿½ï¿½ï¿½ï¿½à¼­ Air ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ */
+            // yspark [25-02-18 18:54:38] ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·Î¿ï¿½ ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ ï¿½ï¿½ï¿½ï¿½
+            /* ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ */
             if( u8WaterOutState == HOT_WATER_SELECT )
             {
-                /* ¹Ì´Ï¿Í µ¿ÀÏÇÏ°Ô */
+                /* ï¿½Ì´Ï¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ */
                 if((gu16Extracted_Hz / 210) == 1)
                 {
                     gu16Extracted_Hz = 0;
@@ -376,11 +377,11 @@ void start_effluent_water(void)
             }
             else {  }
 
-            /*..hui [18-11-14¿ÀÈÄ 3:33:23] ¹° ÃßÃâ ½ÃÀÛ..*/
-            /* ÃßÃâ¿Ï·á */
+            /*..hui [18-11-14ï¿½ï¿½ï¿½ï¿½ 3:33:23] ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½..*/
+            /* ï¿½ï¿½ï¿½ï¿½Ï·ï¿½ */
             if(F_Effluent_OK == SET)
             {
-				gu8TestRemoveAirTimer = BUFFER_REMOVE_AIR_TIME;          // ¿¡¾î Á¦°Å ¸ñÀû Overflow Valve Áö¿¬½Ã°£ ÇÒ´ç
+				gu8TestRemoveAirTimer = BUFFER_REMOVE_AIR_TIME;          // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Overflow Valve ï¿½ï¿½ï¿½ï¿½ï¿½Ã°ï¿½ ï¿½Ò´ï¿½
                 F_WaterOut = CLEAR;
                 /*gu8_Water_Out_Step = STATE_40_EXTRACT_VALVE_OFF_STATE;*/
                 gu8_Water_Out_Step = STATE_33_REMOVE_AIR_STATE;
@@ -397,7 +398,7 @@ void start_effluent_water(void)
 
         case STATE_32_WATER_AIR_VENT_STATE :
 			gu8_air_vent_timer--;
-            /*..hui [18-11-14¿ÀÈÄ 3:33:23] ¹° ÃßÃâ ½ÃÀÛ..*/
+            /*..hui [18-11-14ï¿½ï¿½ï¿½ï¿½ 3:33:23] ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½..*/
             if(gu8_air_vent_timer == 0)
             {
                 gu8_Water_Out_Step = STATE_31_WATER_EXTRACT_STATE;
@@ -436,12 +437,12 @@ void start_effluent_water(void)
 ***********************************************************************************************************************/
 void stop_effluent_water(void)
 {
-	//¿Â¼ö ¹° ÃßÃâ È®ÀÎÇÏ±âÀ§ÇØ¼­ Ãß°¡
+	//ï¿½Â¼ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ï¿½Ï±ï¿½ï¿½ï¿½ï¿½Ø¼ï¿½ ï¿½ß°ï¿½
     if( ( u8WaterOutState == HOT_WATER_SELECT)
 		&& (gu8_Water_Out_Step >= STATE_30_EXTRACT_VALVE_ON_STATE )
 		&& (gu8Pre_hot_setting_temperature == gu8_hot_setting_temperature ) )
     {
-		// [25-05-09] Ã¹ÀÜ/µÑÂ°ÀÜ ±¸ºÐ ÃÊ±âÈ­
+		// [25-05-09] Ã¹ï¿½ï¿½/ï¿½ï¿½Â°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­
 		F_firstEffluent_hotWater = SET;
 		if(gu16Effluent_Hz < 10)
 		{
@@ -451,7 +452,7 @@ void stop_effluent_water(void)
     }
     else {}
 
-    bit_Hot_InLowTemp_SetHighTemp = 0;		// ¡Ú 2025-06-11 Phil  // ¿¹¿­½Ã°£ ±¸ºÐ ÃÊ±â
+    bit_Hot_InLowTemp_SetHighTemp = 0;		// ï¿½ï¿½ 2025-06-11 Phil  // ï¿½ï¿½ï¿½ï¿½ï¿½Ã°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½
 
     switch(gu8_Water_Out_Step)
     {
@@ -540,8 +541,8 @@ void start_extract_ice(void)
     switch(gu8_Ice_Out_Step)
     {
         case STATE_0_ICE_STANDBY_STATE :
-            /*..hui [25-1-10¿ÀÀü 9:56:00] ¾ÆÀÌ½º ÃÖÁ¾ µµ¾î ´Ù ¿­¸®¸é..*/
-            /* ÇÇ´õ ¿ªÈ¸Àü Á¦¾î°¡ ¿Ï·áµÇ¸é ±×¶§ºÎÅÍ Á¦´ë·Î ÃßÃâ ½ÃÀÛ [V1.0.0.2] 250818 CH.PARK */
+            /*..hui [25-1-10ï¿½ï¿½ï¿½ï¿½ 9:56:00] ï¿½ï¿½ï¿½Ì½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½..*/
+            /* ï¿½Ç´ï¿½ ï¿½ï¿½È¸ï¿½ï¿½ ï¿½ï¿½ï¿½î°¡ ï¿½Ï·ï¿½Ç¸ï¿½ ï¿½×¶ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ [V1.0.0.2] 250818 CH.PARK */
             if((F_IceOpen == SET)
             && (gu16_Ice_Door_StepMotor == STEP_ANGLE_DOOR)
             && (bit_ice_out_back_1s_state != SET)
@@ -559,8 +560,8 @@ void start_extract_ice(void)
                 }
                 else
                 {
-                    /* Á¶°¢¾óÀ½Àº ¼öÄ¡»óÀ¸·Î ¹ÝÂë ´ÝÇûÀ» ¶§ºÎÅÍ
-                    ÃßÃâ ½ÃÀÛÇÏµµ·Ï ¼öÁ¤ 250825 CH.PARK */
+                    /* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+                    ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 250825 CH.PARK */
                     if(gu16_IceSelect_StepMotor <= 150)
                     {
                         F_IceOutCCW = SET;
@@ -571,7 +572,7 @@ void start_extract_ice(void)
                     else {  }
                 }
 
-                /* 250929 CH.PARK ¿ªÈ¸Àü ´Ù ÇÏ°í µµ¾î ´Ù ¿­¸®°í 1ÃÊ ÈÄ ÃßÃâ µ¿ÀÛ ½ÃÀÛ  */
+                /* 250929 CH.PARK ï¿½ï¿½È¸ï¿½ï¿½ ï¿½ï¿½ ï¿½Ï°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 1ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½  */
                 gu8IceOutCCWInterval = FEEDER_MOTOR_DELAY_TIME;
 
                 if(u8IceOutState == ICE_SELECT__ICE_WATER)
@@ -588,14 +589,14 @@ void start_extract_ice(void)
         case STATE_10_ICE_EXTRACT_STATE :
             if( F_IceBreak == CLEAR )
             {
-                /* ÀÏ¹Ý¾óÀ½ */
+                /* ï¿½Ï¹Ý¾ï¿½ï¿½ï¿½ */
                 F_IceBreak_Motor_Out = CLEAR;
 
-                /* 2025-09-18 @CH.PARK ´Ü°èº° ¾óÀ½ ÃßÃâ ½Ã°£Àº
-                ½ÇÁ¦ ÇÇ´õ Á¤È¸Àü ½Ã°£À¸·Î ÆÇ´ÜÇÏµµ·Ï º¯°æ (ÃßÃâ½Ã°£ ¿ÀÂ÷ °³¼±) */
+                /* 2025-09-18 @CH.PARK ï¿½Ü°èº° ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ï¿½ï¿½
+                ï¿½ï¿½ï¿½ï¿½ ï¿½Ç´ï¿½ ï¿½ï¿½È¸ï¿½ï¿½ ï¿½Ã°ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ç´ï¿½ï¿½Ïµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½Ã°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½) */
                 if(gu8_ice_out_continue == SET)
                 {
-                    // (ÀÏ¹Ý¾óÀ½) 3ÃÊON/1ÃÊOFF ÀÏ ¶§ ½ÇÁ¦ µ¿ÀÛ ½Ã°£Àº 90ÃÊ
+                    // (ï¿½Ï¹Ý¾ï¿½ï¿½ï¿½) 3ï¿½ï¿½ON/1ï¿½ï¿½OFF ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ï¿½ï¿½ 90ï¿½ï¿½
                     ice_extract_timer = 900;
                 }
                 else
@@ -624,43 +625,43 @@ void start_extract_ice(void)
             }
             else
             {
-                /* Á¶°¢¾óÀ½ */
+                /* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
                 F_IceBreak_Motor_Out = SET;
 
-                /* ¾óÀ½ ¼³Á¤¿¡ µû¸¥ ÃßÃâ ½Ã°£ ºÎ¿© 250317 CH.PARK */
+                /* ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ ï¿½Î¿ï¿½ 250317 CH.PARK */
                 if(gu8_ice_amount_step == ICE_LEVEL_1_STEP)
                 {
-                    ice_extract_timer = 250;    /* 25ÃÊ */
+                    ice_extract_timer = 250;    /* 25ï¿½ï¿½ */
                 }
                 else if(gu8_ice_amount_step == ICE_LEVEL_2_STEP)
                 {
-                    ice_extract_timer = 390;        /* 39ÃÊ */
+                    ice_extract_timer = 390;        /* 39ï¿½ï¿½ */
                 }
                 else if(gu8_ice_amount_step == ICE_LEVEL_3_STEP)
                 {
-                    ice_extract_timer = 530;        /* 53ÃÊ */
+                    ice_extract_timer = 530;        /* 53ï¿½ï¿½ */
                 }
                 else if(gu8_ice_amount_step == ICE_LEVEL_4_STEP)
                 {
-                    ice_extract_timer = 760;        /* ÀÓÃ¤Èñ´Ô 4½Ã37ºÐ ¸ÞÀÏ»ó »ç¾çº¯°æ ¿äÃ»»çÇ× Àû¿ë : [76ÃÊ] 250730 CH.PARK */
+                    ice_extract_timer = 760;        /* ï¿½ï¿½Ã¤ï¿½ï¿½ï¿½ 4ï¿½ï¿½37ï¿½ï¿½ ï¿½ï¿½ï¿½Ï»ï¿½ ï¿½ï¿½çº¯ï¿½ï¿½ ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ : [76ï¿½ï¿½] 250730 CH.PARK */
                 }
                 else
                 {
                     ice_extract_timer = 250;
                 }
 
-                action_time_unit = 20;  // Á¶°¢¾óÀ½ ½Ã ÇÇ´õ µ¿ÀÛ ½Ã°£: 20 * 100ms = 2ÃÊ
-                idle_time_unit = 10;    // Á¶°¢¾óÀ½ ½Ã ÇÇ´õ Á¤Áö ½Ã°£: 10 * 100ms = 1ÃÊ
+                action_time_unit = 20;  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ç´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½: 20 * 100ms = 2ï¿½ï¿½
+                idle_time_unit = 10;    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ç´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½: 10 * 100ms = 1ï¿½ï¿½
 
-                // °è»ê½Ä Àû¿ë
-                cycle_time_unit = (action_time_unit + idle_time_unit);       // 1»çÀÌÅ¬ 3ÃÊ
-                num_cycles = (ice_extract_timer / cycle_time_unit);          // ÀüÃ¼ »çÀÌÅ¬ È½¼ö
-                remaining_time_unit = (ice_extract_timer % cycle_time_unit); // »çÀÌÅ¬´ç µ¿ÀÛ½Ã°£ ³ª¸ÓÁö
+                // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+                cycle_time_unit = (action_time_unit + idle_time_unit);       // 1ï¿½ï¿½ï¿½ï¿½Å¬ 3ï¿½ï¿½
+                num_cycles = (ice_extract_timer / cycle_time_unit);          // ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½Å¬ È½ï¿½ï¿½
+                remaining_time_unit = (ice_extract_timer % cycle_time_unit); // ï¿½ï¿½ï¿½ï¿½Å¬ï¿½ï¿½ ï¿½ï¿½ï¿½Û½Ã°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
-                /* 2025-09-18 CH.PARK ÇÇ´õ µ¿ÀÛ½Ã°£ ±âÁØ ÃÖÁ¾ Á¶°¢¾óÀ½ ÃßÃâ½Ã°£ µµÃâ (½ÇÁ¦ ÃßÃâ½Ã°£Àº 25ÃÊ ±âÁØ) */
+                /* 2025-09-18 CH.PARK ï¿½Ç´ï¿½ ï¿½ï¿½ï¿½Û½Ã°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ã°ï¿½ ï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ã°ï¿½ï¿½ï¿½ 25ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½) */
                 if(gu8_ice_out_continue == SET)
                 {
-                    // (Á¶°¢¾óÀ½) 2ÃÊON/1ÃÊOFF ÀÏ ¶§ ½ÇÁ¦ µ¿ÀÛ ½Ã°£Àº 80ÃÊ
+                    // (ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½) 2ï¿½ï¿½ON/1ï¿½ï¿½OFF ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ï¿½ï¿½ 80ï¿½ï¿½
                     ice_extract_timer = 800;
                 }
                 else
@@ -669,25 +670,28 @@ void start_extract_ice(void)
                 }
             }
 
-            /* 2025-09-18 CH.PARK ÇÇ´õ µ¿ÀÛ½Ã°£ ±âÁØ ÃÖÁ¾ Á¶°¢¾óÀ½ ÃßÃâ½Ã°£ µµÃâ (½ÇÁ¦ ÃßÃâ½Ã°£Àº 25ÃÊ ±âÁØ) */
+            /* 2025-09-18 CH.PARK ï¿½Ç´ï¿½ ï¿½ï¿½ï¿½Û½Ã°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ã°ï¿½ ï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ã°ï¿½ï¿½ï¿½ 25ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½) */
             gu16_ice_out_timer = gu16_ice_extract_timer_100ms;
 
             if( gu16_ice_out_timer >= ice_extract_timer )
             {
+                // CLI ë””ë²„ê¹… ì¶œë ¥
+                dlog(SYSMOD, INFO, ("CLI - IceExtractTime : %d \r\n", gu16_ice_out_timer));
+
                 gu8_Ice_Out_Step = STATE_50_ICEWATER_EXTRACT_FINISH_STATE;
                 gu16_ice_out_timer = 0;
             }
             else{}
             break;
 
-        /* ¾óÀ½ÅäÃâ ¿Ï·á ÈÄ 1ÃÊ °£ µô·¹ÀÌ ¹× À¯·® ¼±°è»ê */
+        /* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½ ï¿½ï¿½ 1ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ */
         case STATE_11_ICE_DELAY_1S_STATE :
             gu16_ice_out_timer++;
             if( gu16_ice_out_timer >= 10 )
             {
                 gu16_ice_out_timer = 0;
                 gu8_Ice_Out_Step = STATE_20_ICEWATER_COLD_FFED_ON_STATE;
-                /*..hui [25-1-10¿ÀÈÄ 1:42:45] ÃßÃâ ¹°·® È®ÀÎ..*/
+                /*..hui [25-1-10ï¿½ï¿½ï¿½ï¿½ 1:42:45] ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½..*/
                 cold_effluent_hz();
             }
             else{}
@@ -698,7 +702,7 @@ void start_extract_ice(void)
         case STATE_20_ICEWATER_COLD_FFED_ON_STATE :
             gu16_ice_out_timer++;
 
-            /* ¿©±â¼­ ³Ã¼ö ÃßÃâ¹ëºê ON */
+            /* ï¿½ï¿½ï¿½â¼­ ï¿½Ã¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ON */
             if( gu16_ice_out_timer >= 10 ) // VALVE_CONTROL_TIME_FOR_DEBUG
             {
                 gu16_ice_out_timer = 0;
@@ -707,12 +711,12 @@ void start_extract_ice(void)
             else{}
             break;
 
-        /* ¾óÀ½¹°À» À§ÇÑ ³Ã¼ö ÃßÃâ ½ÃÀÛ */
+        /* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã¼ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ */
         case STATE_30_ICEWATER_EXTRACT_VALVE_ON_STATE :
             gu16_ice_out_timer++;
 
-            /* ¿©±â¼­ ³Ã¼ö ÀÔ¼ö¹ëºê ON */
-            /* ±âÁ¸ mini,1kg¿Í ´Ù¸£°Ô 2kg´Â ³Ã¼öÀü¿ë ¾óÀ½¹° ÃßÃâ¹ëºê ONÀ¸·Î º¯°æ */
+            /* ï¿½ï¿½ï¿½â¼­ ï¿½Ã¼ï¿½ ï¿½Ô¼ï¿½ï¿½ï¿½ï¿½ ON */
+            /* ï¿½ï¿½ï¿½ï¿½ mini,1kgï¿½ï¿½ ï¿½Ù¸ï¿½ï¿½ï¿½ 2kgï¿½ï¿½ ï¿½Ã¼ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ONï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ */
             if( gu16_ice_out_timer >= 10 )
             {
                 gu16_ice_out_timer = 0;
@@ -726,7 +730,7 @@ void start_extract_ice(void)
 /******************************************************************************************/
 /******************************************************************************************/
         case STATE_31_ICEWATER_EXTRACT_STATE :
-            /* ÃßÃâ¿Ï·á!! */
+            /* ï¿½ï¿½ï¿½ï¿½Ï·ï¿½!! */
             if( F_Effluent_OK == SET )
             {
                 gu16_ice_out_timer = 0;
@@ -757,7 +761,7 @@ void start_extract_ice(void)
         case STATE_41_ICEWATER_COLD_FEED_OFF_STATE :
             gu16_ice_out_timer++;
 
-            /*..¿©±â¼­ ³Ã¼ö ÀÔ¼ö ¹ëºê CLOSE.. (¸ÂÀ½) */
+            /*..ï¿½ï¿½ï¿½â¼­ ï¿½Ã¼ï¿½ ï¿½Ô¼ï¿½ ï¿½ï¿½ï¿½ CLOSE.. (ï¿½ï¿½ï¿½ï¿½) */
             if( gu16_ice_out_timer >= 10 )
             {
                 gu16_ice_out_timer = 0;
@@ -768,7 +772,7 @@ void start_extract_ice(void)
             break;
 
         case STATE_50_ICEWATER_EXTRACT_FINISH_STATE :
-            /* ¿©±â¼­ ¾óÀ½¹° ³Ã¼ö ÃßÃâ ¹ëºê CLOSE */
+            /* ï¿½ï¿½ï¿½â¼­ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ã¼ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ CLOSE */
             ice_extraction_finish();
             gu8_Ice_Out_Step = 0;
             gu16_ice_out_timer = 0;
@@ -803,10 +807,10 @@ void continued_extract_control(void)
             gu16Water_Extract_Timer = 0;
             u16Efluent_Time = 0;
 
-            /*..hui [18-1-11i?¢´i?? 11:12:11] i?¡Æi¢Ói¢Ò¡±i¢Ò©« i??i¡×¢æ..*/
+            /*..hui [18-1-11i?ï¿½ï¿½i?? 11:12:11] i?ï¿½ï¿½iï¿½Óiï¿½Ò¡ï¿½iï¿½Ò©ï¿½ i??iï¿½×¢ï¿½..*/
             u8Extract_Continue = CLEAR;
 
-            /*..hui [18-3-14i?¢´i?? 3:50:40] i??e?¢¶i¢Ò¡±i¢Ò©« i¡Ë¡¦e¡Ì¨«..*/
+            /*..hui [18-3-14i?ï¿½ï¿½i?? 3:50:40] i??e?ï¿½ï¿½iï¿½Ò¡ï¿½iï¿½Ò©ï¿½ iï¿½Ë¡ï¿½eï¿½Ì¨ï¿½..*/
             F_WaterOut_Disable_State = SET;
             gu16_extract_display_hz = 0;
             play_melody_extract_complete_194();
@@ -826,7 +830,7 @@ void start_effluent_coffee_drip(void)
     U8 mu8_finish = 0;
     U8 mu8_time = 0;
 
-	// [25-06-04] MY¿öÅÍÈÄ ÃßÃâÇßÀ» ½Ã¿¡, ¸¶ÀÌ ¿öÅÍ ³ª¿Ã ¼ö ÀÖµµ·Ï ¼öÁ¤
+	// [25-06-04] MYï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ã¿ï¿½, ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Öµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	if(bit_myWater_setting_start == SET)
 	{
 		gu16_water_select_return_time = 0;
@@ -837,7 +841,7 @@ void start_effluent_coffee_drip(void)
     {
         case STATE_0_STANDBY_STATE :
 
-            /*..hui [18-8-27¿ÀÈÄ 6:35:25] ÃßÃâ´ë±â..*/
+            /*..hui [18-8-27ï¿½ï¿½ï¿½ï¿½ 6:35:25] ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½..*/
             gu8_effluent_timer++;
 
             if( gu8_effluent_timer >= VALVE_CONTROL_TIME_FOR_DEBUG )
@@ -851,8 +855,8 @@ void start_effluent_coffee_drip(void)
 
         case STATE_10_WATER_IN_FEED_ON_STATE :
 
-            /*..hui [25-1-9¿ÀÈÄ 1:43:13] ³Ã¼ö/Á¤¼ö ÀÔ¼ö ¹ëºê OPEN, ³Ã¼ö ¹°³ÑÄ§ ¹ëºê CLOSE..*/
-            /*..hui [25-1-9¿ÀÈÄ 1:46:49] ¿Â¼ö´Â ¿©±â¼­ ¿À¹öÇÃ·Î¿ì NOS ¹ëºê CLOSE ÇØ³õÀ½..*/
+            /*..hui [25-1-9ï¿½ï¿½ï¿½ï¿½ 1:43:13] ï¿½Ã¼ï¿½/ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ ï¿½ï¿½ï¿½ OPEN, ï¿½Ã¼ï¿½ ï¿½ï¿½ï¿½ï¿½Ä§ ï¿½ï¿½ï¿½ CLOSE..*/
+            /*..hui [25-1-9ï¿½ï¿½ï¿½ï¿½ 1:46:49] ï¿½Â¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½â¼­ ï¿½ï¿½ï¿½ï¿½ï¿½Ã·Î¿ï¿½ NOS ï¿½ï¿½ï¿½ CLOSE ï¿½Ø³ï¿½ï¿½ï¿½..*/
             gu8_effluent_timer++;
 
             if(gu8_effluent_timer >= VALVE_CONTROL_TIME_FOR_DEBUG)
@@ -887,7 +891,7 @@ void start_effluent_coffee_drip(void)
             	mu8_finish = SET;
 			}
 #endif
-            /*.. sean [25-01-16] ¿¹¿­ ÈÄ, ¿Â¼ö DrainÀ¸·Î ¹°¹ö¸² ÁøÇà..*/
+            /*.. sean [25-01-16] ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½, ï¿½Â¼ï¿½ Drainï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½..*/
             if(mu8_finish == SET)
             {
 				if(drip_timer < 120)
@@ -908,9 +912,9 @@ void start_effluent_coffee_drip(void)
 
             gu8_effluent_timer++;
 
-            // [25-05-27 14:40:03] yspark, Ã¹ÀÜ¸¸ ¹öÆÛÅÊÅ© ¹°Ã¤¿ò µ¿ÀÛ ¼öÇà
+            // [25-05-27 14:40:03] yspark, Ã¹ï¿½Ü¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å© ï¿½ï¿½Ã¤ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             if (F_firstEffluent_hotWater)
-            {  // µÑÂ° ÀÜ ÀÌ»ó
+            {  // ï¿½ï¿½Â° ï¿½ï¿½ ï¿½Ì»ï¿½
                 if(gu8_effluent_timer >= 0)
                 {
                     gu8_Water_Out_Step = STATE_22_HOT_PRE_HEATING_BUFFER_DRAIN_COMPLETE_STATE;
@@ -919,10 +923,10 @@ void start_effluent_coffee_drip(void)
                 else{}
             }
             else
-            {  // Ã¹ÀÜ
+            {  // Ã¹ï¿½ï¿½
             	 if(u8Target_Hz_Hot > gu8_hot_filling_max_hz) {gu8_effluent_timer = 30;}
 
-            	  // ¡Ú2025-06-11 Phil
+            	  // ï¿½ï¿½2025-06-11 Phil
             	  	if (( ( gu8_hot_setting_temperature == HOT_SET_TEMP____100oC )
 								|| ( gu8_hot_setting_temperature == HOT_SET_TEMP____95oC )
 								|| ( gu8_hot_setting_temperature == HOT_SET_TEMP____90oC )
@@ -957,8 +961,8 @@ void start_effluent_coffee_drip(void)
 
         case STATE_30_EXTRACT_VALVE_ON_STATE :
 
-            /*..hui [25-1-9¿ÀÈÄ 1:45:20] ÃÖÁ¾ ÃßÃâ ¹ëºê ON..*/
-            /*..hui [25-1-9¿ÀÈÄ 1:45:28] ¿Â¼ö´Â ¿Â¼ö ÃßÃâ ¹ëºê ON..*/
+            /*..hui [25-1-9ï¿½ï¿½ï¿½ï¿½ 1:45:20] ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ON..*/
+            /*..hui [25-1-9ï¿½ï¿½ï¿½ï¿½ 1:45:28] ï¿½Â¼ï¿½ï¿½ï¿½ ï¿½Â¼ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ON..*/
             gu8_effluent_timer++;
 
             if(gu8_effluent_timer >= VALVE_CONTROL_TIME_FOR_DEBUG)
@@ -974,7 +978,7 @@ void start_effluent_coffee_drip(void)
 /******************************************************************************************/
 /******************************************************************************************/
         case STATE_31_WATER_EXTRACT_STATE :
-            /*..hui [18-11-14¿ÀÈÄ 3:33:23] ¹° ÃßÃâ ½ÃÀÛ..*/
+            /*..hui [18-11-14ï¿½ï¿½ï¿½ï¿½ 3:33:23] ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½..*/
             if(F_Effluent_OK == SET)
             {
                 F_WaterOut = CLEAR;
@@ -995,7 +999,7 @@ void start_effluent_coffee_drip(void)
 			{
                 gu8_Water_Out_Step = STATE_50_FIRST_STANDBY_STATE;
 				F_first_Drip_standby = SET;
-				//sync ¸ÂÃß±â À§ÇØ¼­ timer ¼öÁ¤ 20%
+				//sync ï¿½ï¿½ï¿½ß±ï¿½ ï¿½ï¿½ï¿½Ø¼ï¿½ timer ï¿½ï¿½ï¿½ï¿½ 20%
 				if(drip_timer < 240)
 					drip_timer = 240;
 				else{}
@@ -1005,7 +1009,7 @@ void start_effluent_coffee_drip(void)
 			{
                 gu8_Water_Out_Step = STATE_51_SECOND_STANDBY_STATE;
 				F_second_Drip_standby = SET;
-				//sync ¸ÂÃß±â À§ÇØ¼­ timer ¼öÁ¤ 60%
+				//sync ï¿½ï¿½ï¿½ß±ï¿½ ï¿½ï¿½ï¿½Ø¼ï¿½ timer ï¿½ï¿½ï¿½ï¿½ 60%
 					if(drip_timer < 720)
 						drip_timer = 720;
 					else {}
@@ -1017,7 +1021,7 @@ void start_effluent_coffee_drip(void)
 
         case STATE_32_WATER_AIR_VENT_STATE :
             gu8_air_vent_timer--;
-            /*..hui [18-11-14¿ÀÈÄ 3:33:23] ¹° ÃßÃâ ½ÃÀÛ..*/
+            /*..hui [18-11-14ï¿½ï¿½ï¿½ï¿½ 3:33:23] ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½..*/
             if(gu8_air_vent_timer == 0)
             {
                 gu8_Water_Out_Step = STATE_31_WATER_EXTRACT_STATE;
@@ -1039,7 +1043,7 @@ void start_effluent_coffee_drip(void)
             break;
 
         case STATE_50_FIRST_STANDBY_STATE :
-            /*..hui [18-11-14¿ÀÈÄ 3:33:23] ¹° ÃßÃâ ½ÃÀÛ..*/
+            /*..hui [18-11-14ï¿½ï¿½ï¿½ï¿½ 3:33:23] ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½..*/
             if( gu16_drip_standby_timer > 0 )
             {
             	gu16_drip_standby_timer--;
@@ -1053,14 +1057,14 @@ void start_effluent_coffee_drip(void)
 
 
         case STATE_51_SECOND_STANDBY_STATE :
-            /*..hui [18-11-14¿ÀÈÄ 3:33:23] ¹° ÃßÃâ ½ÃÀÛ..*/
+            /*..hui [18-11-14ï¿½ï¿½ï¿½ï¿½ 3:33:23] ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½..*/
             if( gu16_drip_standby_timer > 0 )
             {
             	gu16_drip_standby_timer--;
 #if 0
 				if( (F_first_Drip_standby  == SET) && (F_second_Drip_standby  == SET))
 				{
-					//sync ¸ÂÃß±â À§ÇØ¼­ timer ¼öÁ¤ 90%
+					//sync ï¿½ï¿½ï¿½ß±ï¿½ ï¿½ï¿½ï¿½Ø¼ï¿½ timer ï¿½ï¿½ï¿½ï¿½ 90%
 					if(drip_timer < 1080)
 						drip_timer = 1080;
 					else {}
@@ -1071,7 +1075,7 @@ void start_effluent_coffee_drip(void)
             {
 				if( (F_first_Drip_standby  == SET) && (F_second_Drip_standby  == SET))
 				{
-					//sync ¸ÂÃß±â À§ÇØ¼­ timer ¼öÁ¤ 90%
+					//sync ï¿½ï¿½ï¿½ß±ï¿½ ï¿½ï¿½ï¿½Ø¼ï¿½ timer ï¿½ï¿½ï¿½ï¿½ 90%
 					if(drip_timer < 1080)
 						drip_timer = 1080;
 					else {}
@@ -1101,7 +1105,7 @@ void stop_effluent_dripcoffee(void)
 	}
 	else {}
 
-    /*..sean [25-06-12] ÃÊ±âÈ­ ÇØ¾ßÇÒ °æ¿ì¿¡´Â µå¸³Ä¿ÇÇµµ ¹«Á¶°Ç ÃÊ±âÈ­..*/
+    /*..sean [25-06-12] ï¿½Ê±ï¿½È­ ï¿½Ø¾ï¿½ï¿½ï¿½ ï¿½ï¿½ì¿¡ï¿½ï¿½ ï¿½å¸³Ä¿ï¿½Çµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­..*/
 	F_first_Drip_standby = CLEAR;
 	F_second_Drip_standby = CLEAR;
 	drip_timer = 0;
@@ -1138,9 +1142,9 @@ void stop_effluent_dripcoffee(void)
 					}
 					else{}
 
-                    /* sean [25-06-06] ¹öÆ°À» ÀÌ¿ëÇÑ Á¾·áµµ ¸·´Â°ÍÀ¸·Î */
+                    /* sean [25-06-06] ï¿½ï¿½Æ°ï¿½ï¿½ ï¿½Ì¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½áµµ ï¿½ï¿½ï¿½Â°ï¿½ï¿½ï¿½ï¿½ï¿½ */
                     F_WaterOut_Disable_State = SET;
-                    /*..sean [25-06-10] drip timerµµ ÃÊ±âÈ­ ..*/
+                    /*..sean [25-06-10] drip timerï¿½ï¿½ ï¿½Ê±ï¿½È­ ..*/
                     drip_timer = 0;
                     gu8_dripcoffee_percent = 0;
 					break;

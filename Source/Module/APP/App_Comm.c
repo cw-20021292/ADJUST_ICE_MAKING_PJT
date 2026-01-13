@@ -83,9 +83,9 @@ static void Comm_Rcv_Packet_Handler(void)
                 {
                     // 전체 패킷 길이 = 4(헤더) + LENGTH(데이터) + 3(CRC+ETX)
                     SetRxPacketLength(((PROTOCOL_IDX_LENGTH + 1) + CommInfo.comm_rx_buffer[PROTOCOL_IDX_LENGTH] + 3));
-                    
+
                     // 패킷 길이 유효성 사전 검사
-                    if((GetRxPacketLength() < COMM_PROTOCOL_PACKET_BASIC_LENGTH) 
+                    if((GetRxPacketLength() < COMM_PROTOCOL_PACKET_BASIC_LENGTH)
                     || (GetRxPacketLength() > UART3_RX_BUFFER_SIZE)
                     )
                     {
@@ -95,9 +95,9 @@ static void Comm_Rcv_Packet_Handler(void)
                         break;
                     }
                 }
- 
+
                 // 예상 길이만큼 수신 완료 시 검증
-                if((CommInfo.comm_rx_index >= PROTOCOL_IDX_LENGTH + 1) 
+                if((CommInfo.comm_rx_index >= PROTOCOL_IDX_LENGTH + 1)
                 && (CommInfo.comm_rx_index >= GetRxPacketLength())
                 )
                 {
@@ -111,7 +111,7 @@ static void Comm_Rcv_Packet_Handler(void)
                             SetCommRxIndex(0);
                             break;
                         }
-#endif
+#else
                         if(Protocol_isValidPacket(CommInfo.comm_rx_buffer) == TRUE)
                         {
                             CommInfo.comm_tx_index = Protocol_Make_Ack_Packet(CommInfo.comm_rx_buffer, CommInfo.comm_tx_buffer);
@@ -125,6 +125,7 @@ static void Comm_Rcv_Packet_Handler(void)
                             SetCommRxIndex(0);
                             SetRxPacketLength(0);
                         }
+#endif
                     }
                     else
                     {
@@ -142,7 +143,7 @@ static void Comm_Rcv_Packet_Handler(void)
                     SetRxPacketLength(0);
                 }
                 break;
-                
+
             case COMM_STATE_CLI :
                 CLI_Packet_Handler(data);
                 break;

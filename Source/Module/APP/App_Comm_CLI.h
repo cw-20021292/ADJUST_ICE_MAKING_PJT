@@ -10,7 +10,7 @@
 
 #include "api_uart.h"
 
-//#define USE_COMM_CLI
+#define USE_COMM_CLI
 
 #define PROMPT	"COWAY> "
 #define BUFFER_MAX_LENGTH    128
