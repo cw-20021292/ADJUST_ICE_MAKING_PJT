@@ -546,7 +546,23 @@ void ice_make_operation(void)
                     }
                     else
                     {
-                        gu16IceMakeTime = 800;
+                        // 설치 후 첫 제빙할 때 시작시간은 외기온도에 따라 일단 대충 제빙 시간 결정
+                        if(gu8_Amb_Front_Temperature_One_Degree <= 10)
+                        {
+                            gu16IceMakeTime = 647;  // 647초/60초 = 10.78분
+                        }
+                        else if(gu8_Amb_Front_Temperature_One_Degree <= 20)
+                        {
+                            gu16IceMakeTime = 700;  // 700초/60초 = 11.67분
+                        }
+                        else if(gu8_Amb_Front_Temperature_One_Degree <= 30)
+                        {
+                            gu16IceMakeTime = 800;  // 800초/60초 = 13.33분
+                        }
+                        else
+                        {
+                            gu16IceMakeTime = 860;  // 860초/60초 = 14.33분
+                        }
                     }
 
                     /* 100ms니까 10배 곱해줌 */

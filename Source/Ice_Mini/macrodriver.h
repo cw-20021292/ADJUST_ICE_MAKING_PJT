@@ -174,7 +174,7 @@ Global functions
 
 /*..hui [24-11-29오후 1:21:42] Wi-Fi 버전 변경, 공장검사 버전 변경도 ㅖ같이 확인 필요~~..*/
 #define Main_FW_Version_Main      WORK_VERSION
-#define Main_FW_Version_Sub       5
+#define Main_FW_Version_Sub       6
 
 
 
