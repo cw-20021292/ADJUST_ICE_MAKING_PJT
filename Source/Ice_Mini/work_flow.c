@@ -4,6 +4,7 @@
 #include    "Port_Define.h"
 #include    "work_flow.h"
 #include    "M8_Ice_Making.h"
+#include    "api_debug.h"
 
 #define FLOW_INIT_DATA_SIZE 10
 
@@ -155,28 +156,31 @@ F32 SetValidGain(void)
     return mf32_isvalid;
 }
 
-/***********************************************************************************************************************
-* Function Name: System_ini
-* Description  : 제빙수 드레인 유량센서 시작
-***********************************************************************************************************************/
+/**
+ * @brief 제빙수 드레인 유량센서 시작
+ *
+ * @return void
+ */
 void DrainFlowStart(void)
 {
     R_INTC10_Start();
 }
 
-/***********************************************************************************************************************
-* Function Name: System_ini
-* Description  : 제빙수 드레인 유량센서 종료
-***********************************************************************************************************************/
+/**
+ * @brief 제빙수 드레인 유량센서 종료
+ *
+ * @return void
+ */
 void DrainFlowStop(void)
 {
     R_INTC10_Stop();
 }
 
-/***********************************************************************************************************************
-* Function Name: System_ini
-* Description  : 제빙수 드레인 유량센서 입력 카운트
-***********************************************************************************************************************/
+/**
+ * @brief 제빙수 드레인 유량센서 입력 카운트 (F_Flow_Meter == SET)
+ *
+ * @return void
+ */
 void DrainFlowInputCount(void)
 {
     if(DrainFlow.u8FlowMeter == SET)
@@ -188,10 +192,11 @@ void DrainFlowInputCount(void)
     else{}
 }
 
-/***********************************************************************************************************************
-* Function Name: System_ini
-* Description  : 제빙수 드레인 유량센서 입력 처리
-***********************************************************************************************************************/
+/**
+ * @brief 제빙수 드레인 유량센서 입력 (INTPn에 적용)
+ *
+ * @return void
+ */
 void DrainFlowInput(void)
 {
     DrainFlow.u8FlowMeter = SET;
@@ -212,7 +217,49 @@ void DrainFlowInput(void)
     DrainFlowStop();
 }
 
-U8 IceMakeFlowDataStack(void)
+/**
+ * @brief 제빙수 입수량 측정을 위한 드레인동작 조건 확인
+ *
+ * @return U8
+ */
+U8 AutoIceMake_CheckFlowInitDrainCondition(void)
+{
+    U8 mu8Return = CLEAR;
+
+    if( GetFlowInitFlowHz() == 0 )
+    {
+        if((GetFlowInitStep() == FLOW_STACK_STEP_INIT)
+        || (GetFlowInitStep() == FLOW_STACK_STEP_TANK_DRAIN)
+        || (GetFlowInitStep() == FLOW_STACK_STEP_TRAY_WATER_CAL)
+        || (GetFlowInitStep() == FLOW_STACK_STEP_TANK_EMPTY)
+        )
+        {
+            mu8Return = SET;
+        }
+    }
+
+    return mu8Return;
+}
+
+/**
+ * @brief 제빙수 입수량 설정 (드레인탱크 기준)
+ *
+ * @return void
+ */
+void AutoIceMake_SetTrayInWaterAmount(void)
+{
+    SetDrainBeforeFlowHz(GetFlowInitFlowHz());
+
+    // 버려지는 물의 Hz값은 0부터 시작
+    SetDrainAfterFlowHz(0);
+}
+
+/**
+ * @brief 초기 드레인단 기준 제빙수 입수유량 측정 (더미탈빙 이후 진행필요)
+ *
+ * @return U8
+ */
+U8 AutoIceMake_IceMakeFlowDataStack(void)
 {
     int i = 0;
     F32 f32MaxFlowHz = 0;  // 최대값을 저장할 임시 변수
@@ -221,9 +268,14 @@ U8 IceMakeFlowDataStack(void)
     switch(FlowInit.u8Step)
     {
         case FLOW_STACK_STEP_INIT:
-            FlowInit.f32TempFlowHz = 0;
-            FlowInit.F32DefaultFillHz = C_ICE_TRAY_FILL_200CC;
-            FlowInit.u8Step = FLOW_STACK_STEP_TRAY_UP;
+            // 드탱 비우고 시작
+            if(u8DrainWaterLevel == DRAIN_LEVEL_EMPTY)
+            {
+                FlowInit.f32TempFlowHz = 0;
+                FlowInit.F32DefaultFillHz = C_ICE_TRAY_FILL_200CC;
+                FlowInit.u8FlowDataStackCycle++;
+                FlowInit.u8Step = FLOW_STACK_STEP_TRAY_UP;
+            }
             break;
 
         case FLOW_STACK_STEP_TRAY_UP:
@@ -276,7 +328,7 @@ U8 IceMakeFlowDataStack(void)
                 // 10회 측정 완료 후 평균 계산
                 if(FlowInit.u8FlowDataStackCycle < FLOW_INIT_DATA_SIZE)
                 {
-                    FlowInit.f32InitFlowHzData[FlowInit.u8FlowDataStackCycle++] = FlowInit.f32TempFlowHz;
+                    FlowInit.f32InitFlowHzData[FlowInit.u8FlowDataStackCycle] = FlowInit.f32TempFlowHz;
                     FlowInit.u8Step = FLOW_STACK_STEP_INIT;
                 }
                 else
@@ -297,7 +349,6 @@ U8 IceMakeFlowDataStack(void)
                     FlowInit.f32InitFlowHz += FlowInit.f32InitFlowHzData[i];
                 }
                 FlowInit.f32InitFlowHz /= FLOW_INIT_DATA_SIZE;
-                u8Return = SET;
 
                 // /* 최대값 적용 */
                 // // 첫 번째 값으로 초기화
@@ -314,9 +365,16 @@ U8 IceMakeFlowDataStack(void)
 
                 // // 최대값을 최종 결과에 할당
                 // FlowInit.f32InitFlowHz = f32MaxFlowHz;
-                // u8Return = SET;
+
+                // CLI 디버깅 출력
+                dlog(SYSMOD, INFO, ("CLI - FlowInitFlowHz : %.1f \r\n", FlowInit.f32InitFlowHz));
             }
             break;
+    }
+
+    if(GetFlowInitFlowHz() > 0)
+    {
+        u8Return = SET;
     }
 
     return u8Return;

@@ -498,14 +498,8 @@ void operation_hot_water_filling(void)
                 F_First_Hot_Effluent = CLEAR;
                 bit_hot_filling_start = CLEAR;
 
-                if(GetFlowInitFlowHz() != 0)
-                {
-                    gu8_flushing_mode = FLUSHING_FINISH_STATE;
-                }
-                else
-                {
-                    gu8_flushing_mode = FLUSHING_WORK_ICE_MAKE_FLOW_DATA_GET_STATE;
-                }
+                gu8_flushing_mode = FLUSHING_FINISH_STATE;
+
             }
             else{}
 

@@ -31,7 +31,7 @@ U8 GetInterruption(void)
     return IceAdjust.u8Interruption;
 }
 
-void SetGain(F32 f32Gain)
+static void SetGain(F32 f32Gain)
 {
     IceAdjust.f32Gain = f32Gain;
 }
@@ -41,7 +41,7 @@ F32 GetGain(void)
     return IceAdjust.f32Gain;
 }
 
-void SetRatio(F32 f32Ratio)
+static void SetRatio(F32 f32Ratio)
 {
     IceAdjust.f32Ratio = f32Ratio;
 }
@@ -51,7 +51,7 @@ F32 GetRatio(void)
     return IceAdjust.f32Ratio;
 }
 
-void SetTarget(F32 Target)
+static void SetTarget(F32 Target)
 {
     IceAdjust.f32Target = Target;
 }
@@ -61,7 +61,7 @@ F32 GetTarget(void)
     return IceAdjust.f32Target;
 }
 
-void SetNextIceMakeTime(U16 NextIceMakeTime)
+static void SetNextIceMakeTime(U16 NextIceMakeTime)
 {
     IceAdjust.u16NextIceMakeTime = NextIceMakeTime;
 }
@@ -86,16 +86,67 @@ U8 GetErrorCount(void)
     return IceAdjust.u8ErrorCount;
 }
 
+/**
+ * @brief Set the Theory Ratio object
+ *
+ * @param Avg : 제빙에 사용된 물량 (입수된 물의 양 [고정값] - 제빙완료되고 버려진 물의 양)
+ */
+ static void SetTheoryRatio(F32 Avg)
+ {
+     F32 mf32_min_avg = 0;
+     F32 mf32_avg = 0;
+     F32 mf32_ratio_theory = 0;
+     F32 mf32_eff_ratio = 0;
+     F32 mf32_target = GetCCToHz(ICE_V_TARGET);   /* 63~70ml에 해당하는 유량값(Hz or pulse) */
+     F32 mf32_final_ratio = 1.0F;
+
+     // 1) 센서/계산 값 이상 여부 체크
+     if (Avg <= 0)
+     {
+         // 유효하지 않은 값 → 보정하지 않고 현재 시간 유지 (ratio = 1.0)
+         SetTarget(mf32_target);
+         SetRatio(1.0F);
+         return;
+     }
+
+     // 2) 최소 평균 유량 클램핑 (너무 작으면 의미 없다고 보고)
+     mf32_min_avg = (F32)GetCCToHz(10);   // 10ml 기준 (필요하면 조정)
+     mf32_avg     = (F32)Avg;
+
+     if (mf32_avg < mf32_min_avg)
+     {
+         mf32_avg = mf32_min_avg;
+     }
+
+     // 3) 이론 ratio 계산 (목표 / 평균)
+     // [2025.12.18] 기준으로 Target은 94Hz
+     mf32_ratio_theory = (mf32_target / mf32_avg);
+
+     // 4) 유효 Gain (유량의 오차를 보고 30%만 보정할지 100%만 보정할지 판단)
+     mf32_eff_ratio = SetValidGain() * GetGain();   // SetValidGain → GetValidGain 추천
+
+     // 5) 최종 ratio
+     mf32_final_ratio = 1.0F + (mf32_eff_ratio * (mf32_ratio_theory - 1.0F));
+     // [2026.01.07] V4, 항상 제빙시간을 +2%로 하향 적용 (OFFSET 적용)
+     mf32_final_ratio += 0.02F;
+
+     SetTarget(mf32_target);
+     SetRatio(mf32_final_ratio);
+ }
+
 /***********************************************************************************************************************
 * Function Name: System_ini
 * Description  : 제빙수에 사용된 물량 평균 계산
 ***********************************************************************************************************************/
-void ProcessIceMaking(void)
+void AutoIceMake_ProcessIceMaking(void)
 {
     U16 mu16DeltaTimeLimit = 600;
     U8 count = 0;
     F32 sum = 0;
     U8 i = 0;
+
+    SetDrainPrevFlowHz(GetDrainCurFlowHz());
+    SetDrainCurFlowHz(GetDrainFlow());
 
     if(GetDrainFlow() > 0)
     {
@@ -194,49 +245,19 @@ void ProcessIceMaking(void)
 }
 
 /**
- * @brief Set the Theory Ratio object
+ * @brief 다음 제빙시간 결정
  *
- * @param Avg : 제빙에 사용된 물량 (입수된 물의 양 [고정값] - 제빙완료되고 버려진 물의 양)
+ * @param u16UserIceMakeTime : 사용자 제빙시간
+ * @return void
  */
-static void SetTheoryRatio(F32 Avg)
+void AutoIceMake_DecideNextIceMakeTime(U16 *u16UserIceMakeTime)
 {
-    F32 mf32_min_avg = 0;
-    F32 mf32_avg = 0;
-    F32 mf32_ratio_theory = 0;
-    F32 mf32_eff_ratio = 0;
-    F32 mf32_target = GetCCToHz(ICE_V_TARGET);   /* 63~70ml에 해당하는 유량값(Hz or pulse) */
-    F32 mf32_final_ratio = 1.0F;
-
-    // 1) 센서/계산 값 이상 여부 체크
-    if (Avg <= 0)
+    // 보정된 시간이 있을 경우 보정된 시간 덮어써서 적용
+    if(GetNextIceMakeTime() > 0)
     {
-        // 유효하지 않은 값 → 보정하지 않고 현재 시간 유지 (ratio = 1.0)
-        SetTarget(mf32_target);
-        SetRatio(1.0F);
-        return;
+        *u16UserIceMakeTime = GetNextIceMakeTime();
     }
 
-    // 2) 최소 평균 유량 클램핑 (너무 작으면 의미 없다고 보고)
-    mf32_min_avg = (F32)GetCCToHz(10);   // 10ml 기준 (필요하면 조정)
-    mf32_avg     = (F32)Avg;
-
-    if (mf32_avg < mf32_min_avg)
-    {
-        mf32_avg = mf32_min_avg;
-    }
-
-    // 3) 이론 ratio 계산 (목표 / 평균)
-    // [2025.12.18] 기준으로 Target은 94Hz
-    mf32_ratio_theory = (mf32_target / mf32_avg);
-
-    // 4) 유효 Gain (유량의 오차를 보고 30%만 보정할지 100%만 보정할지 판단)
-    mf32_eff_ratio = SetValidGain() * GetGain();   // SetValidGain → GetValidGain 추천
-
-    // 5) 최종 ratio
-    mf32_final_ratio = 1.0F + (mf32_eff_ratio * (mf32_ratio_theory - 1.0F));
-    // [2026.01.07] V4, 항상 제빙시간을 +2%로 하향 적용 (OFFSET 적용)
-    mf32_final_ratio += 0.02F;
-
-    SetTarget(mf32_target);
-    SetRatio(mf32_final_ratio);
+    // 이번 제빙시간 반영
+    SetThisTimeIceMakeTime(*u16UserIceMakeTime);
 }

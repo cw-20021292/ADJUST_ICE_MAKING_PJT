@@ -12,11 +12,6 @@
 #include    "drain_operation.h"
 #include    "work_flow.h"
 
-
-
-
-
-
 void output_drain_pump(void);
 void detect_no_water(void);
 void drain_pump_output_decision(void);
@@ -61,6 +56,7 @@ TYPE_WORD          U16DrainOperateB;
 #define            Bit8_Drain_Tray_ster                        U16DrainOperateB.Bit.b8      /* 트레이 고온살균 진행 중일 때 */
 #define            Bit9_Drain_Ice_Off_24_Hour                  U16DrainOperateB.Bit.b9      /* 얼음OFF한 이후 24시간 이후 (중수위 이상일 때) */
 #define            Bit10_Drain_IceMakeWater                    U16DrainOperateB.Bit.b10
+#define            Bit11_Drain_FlowInit_Drain                  U16DrainOperateB.Bit.b11
 
 TYPE_BYTE          U8DrainPumpONB;
 #define            u8DrainPumpON                        U8DrainPumpONB.byte
@@ -790,6 +786,22 @@ void detect_drain_pump_error(void)
         Bit7_Drain_IceMakeWater = CLEAR;
     }
 
+    if(AutoIceMake_CheckFlowInitDrainCondition() == SET)
+    {
+        if( u8DrainWaterLevel >= DRAIN_LEVEL_LOW )
+        {
+            Bit11_Drain_FlowInit_Drain = SET;
+        }
+        else
+        {
+            Bit11_Drain_FlowInit_Drain = CLEAR;
+        }
+    }
+    else
+    {
+        Bit11_Drain_FlowInit_Drain = CLEAR;
+    }
+
     /* 2KG는 펌프를 돌리는 모든 연관된 기능에 에러 체크를 진행해야 함 (수배관 특성) 250623 CH.PARK */
     if( u16DrainOperate > 0 )
     {
@@ -1090,32 +1102,6 @@ void flushing_drain_check(void)
         }
         else
         {
-            if( gu8_flushing_mode == FLUSHING_WORK_ICE_MAKE_FLOW_DATA_GET_STATE )
-            {
-                if((GetFlowInitStep() == FLOW_STACK_STEP_TANK_EMPTY)
-                || (GetFlowInitStep() == FLOW_STACK_STEP_TANK_DRAIN)
-                || (GetFlowInitStep() == FLOW_STACK_STEP_TRAY_WATER_CAL)
-                )
-                {
-                    if( u8DrainWaterLevel >= DRAIN_LEVEL_LOW )
-                    {
-                        Bit4_Drain_Flushing = SET;
-                    }
-                    else{}
-                }
-                else
-                {
-                    Bit4_Drain_Flushing = CLEAR;
-                }
-            }
-            else
-            {
-                if( u8DrainWaterLevel == DRAIN_LEVEL_EMPTY )
-                {
-                    Bit4_Drain_Flushing = CLEAR;
-                }
-                else{}
-            }
         }
     }
     else

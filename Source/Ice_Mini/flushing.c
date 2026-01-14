@@ -213,13 +213,6 @@ void flushing_main(void)
 			hot_water_filling_control();
 			break;
 
-        case FLUSHING_WORK_ICE_MAKE_FLOW_DATA_GET_STATE:
-            if(IceMakeFlowDataStack() == SET)
-            {
-                gu8_flushing_mode = FLUSHING_FINISH_STATE;
-            }
-            break;
-
         case FLUSHING_FINISH_STATE:
             /*..hui [23-6-2���� 11:08:42] �÷��� ����..*/
             flushing_finish();

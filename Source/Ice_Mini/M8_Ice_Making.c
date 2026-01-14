@@ -253,12 +253,6 @@ void Ice_Make_Process(void)
     }
     else{}
 
-    // [2026-01-09] CH.PARK 초기 유량 보정값 확인이 안되면 더미탈빙도 대기
-    if(GetFlowInitFlowHz() == 0)
-    {
-        return;
-    }
-
     //=======================================================//???????? ????
     if(F_IceInit == SET)
     {
@@ -268,6 +262,12 @@ void Ice_Make_Process(void)
     else
     {
         gu8InitStep = 0;
+    }
+
+    // [2026-01-09] CH.PARK 초기 유량 보정값 확인이 안되면 더미탈빙도 대기
+    if(AutoIceMake_IceMakeFlowDataStack() == CLEAR)
+    {
+        return;
     }
 
     //======================================================// ??????????    if(Bit1_Ice_Make_Go != SET)
@@ -421,7 +421,6 @@ void ice_make_operation(void)
                     gu8IceStep = STATE_10_ICE_TRAY_MOVE_UP;
                 }
                 else{}
-
             }
 
             break;
@@ -468,11 +467,8 @@ void ice_make_operation(void)
                 gu16_Ice_Tray_Fill_Hz = C_ICE_TRAY_FILL_200CC;
 
                 // 실제 입수 Hz는 드레인탱크로 100% 빼본 유량값으로 적용
-                mf32IceMakeAdaptiveHz = (F32)(GetFlowInitFlowHz());
-                SetDrainBeforeFlowHz(mf32IceMakeAdaptiveHz);
-
-                // 버려지는 물의 Hz값은 0부터 시작
-                SetDrainAfterFlowHz(0);
+                // User 제빙수 입수량 설정 (드레인탱크 기준)
+                AutoIceMake_SetTrayInWaterAmount();
 
                 gu8IceStep = STATE_20_WATER_IN_ICE_TRAY;
             }
@@ -577,14 +573,11 @@ void ice_make_operation(void)
                     }
                     else{}
 
-                    // 보정된 시간이 있을 경우 보정된 시간 덮어써서 적용
-                    if(GetNextIceMakeTime() > 0)
-                    {
-                        gu16IceMakeTime = GetNextIceMakeTime();
-                    }
+                    // User 제빙시간 반영
+                    AutoIceMake_DecideNextIceMakeTime(&gu16IceMakeTime);
 
-                    // 이번 제빙시간 반영
-                    SetThisTimeIceMakeTime(gu16IceMakeTime);
+                    // CLI 디버깅 출력
+                    dlog(SYSMOD, DATA, ("CLI - AmbTemp/IceMakingTime : %d, %04d \r\n", gu8_Amb_Front_Temperature_One_Degree, gu16IceMakeTime));
 
                     gu16_cody_ice_make_time  = gu16IceMakeTime;
                     gu16_uv_ice_make_time = gu16IceMakeTime;
@@ -594,9 +587,6 @@ void ice_make_operation(void)
 
                     gu8IceStep = STATE_31_MAIN_ICE_MAKING;
                     gu8_ice_tray_reovery_time = 0;
-
-                    // CLI 디버깅 출력
-                    dlog(SYSMOD, DATA, ("CLI - AmbTemp/IceMakingTime : %d, %04d \r\n", gu8_Amb_Front_Temperature_One_Degree, gu16IceMakeTime));
                 }
                 else{}
             }
@@ -629,7 +619,6 @@ void ice_make_operation(void)
             }
             else
             {
-                /* ???????ε? ?????? ????? ???? ?? ???? */
                 recovery_ice_tray();
 
                 if( gu16IceMakeTime <= HOT_GAS_NOISE_REDUCE_TIME )
@@ -673,18 +662,15 @@ void ice_make_operation(void)
             if(u8DrainWaterLevel == DRAIN_LEVEL_EMPTY)
             {
                 gu8IceStep = STATE_42_NEXT_ICE_AMOUNT_CAL;
+
+                // CLI 디버깅 출력
+                dlog(SYSMOD, DATA, ("CLI - TargetHz/CurrentHz : %.1f, %.1f \r\n", GetCCToHz(ICE_V_TARGET), GetDrainAfterFlowHz()));
             }
             break;
 
         case STATE_42_NEXT_ICE_AMOUNT_CAL:  /* 이번 기술과제에서 추가된 제빙 Step 42 : 다음 제빙시간 계산 */
-            // 중간에 제빙 중지 인터럽트가 안걸렸을 때에만 반영
-            if(GetInterruption() == CLEAR)
-            {
-                /* 다음 물량 계산 (보정) */
-                SetDrainPrevFlowHz(GetDrainCurFlowHz());
-                SetDrainCurFlowHz(GetDrainFlow());
-                ProcessIceMaking();
-            }
+            /* User, 제빙 완료 후 다음 제빙시간 계산 */
+            AutoIceMake_ProcessIceMaking();
 
             gu8IceStep = STATE_43_GAS_SWITCH_HOT_GAS;
             break;

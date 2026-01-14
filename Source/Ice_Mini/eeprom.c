@@ -1525,6 +1525,9 @@ void initial_etc_setting(void)
     gu8_eeprom_wbuf[0] = gu8Cup_level;
     gu8_eeprom_wbuf[1] = u8WaterOutState;
 
+    gu8_eeprom_wbuf[2] = 0;
+    gu8_eeprom_wbuf[3] = 0;
+
     EepromPageWrite(ETC_SAVE_START_ADDR, gu8_eeprom_wbuf, ETC_SAVE_LENGTH);
 }
 

@@ -18,7 +18,8 @@
 #define ZONE_5_GAIN (0.05F)     // (정상) 살살 보정 (목표: 60~70ml)
 
 
-void ProcessIceMaking(void);
+void AutoIceMake_ProcessIceMaking(void);
+void AutoIceMake_DecideNextIceMakeTime(U16 *u16UserIceMakeTime);
 void SetInterruption(U8 u8Interruption);
 U8 GetInterruption(void);
 void SetGain(F32 f32Gain);

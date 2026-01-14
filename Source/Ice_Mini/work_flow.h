@@ -23,6 +23,8 @@ void SetFlowInitStep(FLOW_STACK_STEP u8Step);
 FLOW_STACK_STEP GetFlowInitStep(void);
 void SetFlowInitFlowHz(F32 f32FlowHz);
 F32 GetFlowInitFlowHz(void);
+void AutoIceMake_SetTrayInWaterAmount(void);
+U8 AutoIceMake_CheckFlowInitDrainCondition(void);
 
 void SetDrainBeforeFlowHz(F32 f32FlowHz);
 F32 GetDrainBeforeFlowHz(void);
@@ -37,7 +39,7 @@ F32 GetDrainCurFlowHz(void);
 F32 SetValidGain(void);
 
 void InitFlowHzDecrease(void);
-U8 IceMakeFlowDataStack(void);
+U8 AutoIceMake_IceMakeFlowDataStack(void);
 
 // 좆
 extern void down_tray_motor(void);
