@@ -519,6 +519,7 @@ void ice_make_operation(void)
             break;
 
         case STATE_22_WAIT_ICE_MAKING_TIME:
+            // 제빙테이블이 있으면 검토용으로 업로드된 제빙테이블로 적용
             u8IceStepTime++;
             if(u8IceStepTime >= 100)    // 10초 대기 후 시작
             {
@@ -664,7 +665,7 @@ void ice_make_operation(void)
                 gu8IceStep = STATE_42_NEXT_ICE_AMOUNT_CAL;
 
                 // CLI 디버깅 출력
-                dlog(SYSMOD, DATA, ("CLI - TargetHz/CurrentHz : %.1f, %.1f \r\n", GetCCToHz(ICE_V_TARGET), GetDrainAfterFlowHz()));
+                dlog(SYSMOD, DATA, ("CLI - TargetHz/InitHz/IceMakingHz : %.1f, %.1f, %.1f \r\n", GetCCToHz(ICE_V_TARGET), GetFlowInitFlowHz(), GetDrainFlow()));
             }
             break;
 

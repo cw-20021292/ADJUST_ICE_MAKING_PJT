@@ -19,7 +19,6 @@ typedef struct _drain_flow_
 } DRAIN_FLOW_T;
 DRAIN_FLOW_T DrainFlow;
 
-
 typedef struct _flow_init_
 {
     FLOW_STACK_STEP  u8Step;                       /* 측정 스텝 */
@@ -122,8 +121,9 @@ F32 GetDrainFlow(void)
 // CC단위를 Hz단위로 변환
 F32 GetCCToHz(U16 u16CC)
 {
-    F32 f32OneCC = C_ICE_MAKING;
-    return (F32)(u16CC * f32OneCC);
+    F32 mf32TargetHz = 0;
+    mf32TargetHz = (F32)((u16CC * GetFlowInitFlowHz()) / 263);
+    return mf32TargetHz;
 }
 
 // 배수유량이 입수유량의 +5%보다 크면 OK
@@ -214,6 +214,9 @@ void DrainFlowInput(void)
         }
     }
 
+    // 펌프가 물없이 공회전해도 유량이 감지되는지 확인용 변수
+    DrainFlow.f32DebugFlowHz++;
+
     DrainFlowStop();
 }
 
@@ -264,6 +267,11 @@ U8 AutoIceMake_IceMakeFlowDataStack(void)
     int i = 0;
     F32 f32MaxFlowHz = 0;  // 최대값을 저장할 임시 변수
     U8 u8Return = CLEAR;
+
+    if(GetFlowInitFlowHz() > 0)
+    {
+        return SET;
+    }
 
     switch(FlowInit.u8Step)
     {
@@ -368,13 +376,10 @@ U8 AutoIceMake_IceMakeFlowDataStack(void)
 
                 // CLI 디버깅 출력
                 dlog(SYSMOD, INFO, ("CLI - FlowInitFlowHz : %.1f \r\n", FlowInit.f32InitFlowHz));
+
+                u8Return = SET;
             }
             break;
-    }
-
-    if(GetFlowInitFlowHz() > 0)
-    {
-        u8Return = SET;
     }
 
     return u8Return;

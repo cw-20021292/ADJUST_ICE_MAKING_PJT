@@ -60,7 +60,7 @@ void cody_service(void)
     }
     else{}
 
-    /*..hui [23-3-24¿ÀÈÄ 3:14:49] ÅÊÅ© Ä¿¹ö ¿­¸®¸é ÄÚµð Ã»¼Ò.. Á¦ºù Á¤Áö ¹× ÀÌÈÄ Á¦ºù ¾ÈÇÔ..*/
+    /*..hui [23-3-24ï¿½ï¿½ï¿½ï¿½ 3:14:49] ï¿½ï¿½Å© Ä¿ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Úµï¿½ Ã»ï¿½ï¿½.. ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½..*/
     if( F_Tank_Cover_Input == CLEAR )
     {
         if( Bit0_Cody_Service_Kit_Start == CLEAR )
@@ -105,7 +105,7 @@ void start_cody_takeoff_ice(void)
     }
     else{}
 
-    /*..hui [20-2-20¿ÀÈÄ 5:55:32] ´õ¹Ì Å»ºù ´ë±â Á¶°Ç ¹× Á¦ºù ÁßÀÏ°æ¿ì¿¡¸¸ °­Á¦ Å»ºù µ¿ÀÛ..*/
+    /*..hui [20-2-20ï¿½ï¿½ï¿½ï¿½ 5:55:32] ï¿½ï¿½ï¿½ï¿½ Å»ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï°ï¿½ì¿¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Å»ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½..*/
     /*if(F_IceInit == SET || gu8IceStep == STATE_31_MAIN_ICE_MAKING)*/
     if(F_IceInit == SET || gu8IceStep > STATE_0_STANDBY)
     {
@@ -141,7 +141,7 @@ void cody_takeoff_ice(void)
             gu8_take_off_ice_timer = 0;
             gu8_take_off_ice_step++;
 
-            /* °í¿Â»ì±Õ ½Ã¿¡´Â ¼Ò¸® ¾È³ª¿Àµµ·Ï ÇÔ (°í¿Â»ì±Õ ÇÏ¸é µÎ¹ø ¼Ò¸®³²) 250729 CH.PARK */
+            /* ï¿½ï¿½ï¿½Â»ï¿½ï¿½ ï¿½Ã¿ï¿½ï¿½ï¿½ ï¿½Ò¸ï¿½ ï¿½È³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ (ï¿½ï¿½ï¿½Â»ï¿½ï¿½ ï¿½Ï¸ï¿½ ï¿½Î¹ï¿½ ï¿½Ò¸ï¿½ï¿½ï¿½) 250729 CH.PARK */
             if(bit_ice_tank_ster_start == CLEAR)
             {
                 play_melody_setting_on_198();
@@ -181,7 +181,7 @@ void cody_takeoff_ice(void)
 
 /***********************************************************************************************************************
 * Function Name: System_ini
-* Description  : ÄÚµð À¯·Î»ì±Õ¸ðµå (¿Â¼ö+Á¤¼ö+¿ë·®) Cody Water Line Clean Service
+* Description  : ï¿½Úµï¿½ ï¿½ï¿½ï¿½Î»ï¿½Õ¸ï¿½ï¿½ (ï¿½Â¼ï¿½+ï¿½ï¿½ï¿½ï¿½+ï¿½ë·®) Cody Water Line Clean Service
 ***********************************************************************************************************************/
 void cody_water_line_clean(void)
 {
@@ -193,7 +193,7 @@ void cody_water_line_clean(void)
     }
     else {  }
 
-    /* ´©¼öÀÌ°Å³ª ´Ü¼ö¸é Áï½Ã ÁßÁö */
+    /* ï¿½ï¿½ï¿½ï¿½ï¿½Ì°Å³ï¿½ ï¿½Ü¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ */
     if((Bit3_Leakage_Sensor_Error__E01 == SET)
     || (Bit6_Main_Water_Flow_Block_Error__E09 == SET)
     )
@@ -210,7 +210,7 @@ void cody_water_line_clean(void)
     switch (cody_water_line.gu8_step)
     {
         case 0:
-            // Á¤¼ö ÀÔÃâ¼ö ¹ëºê 30ÃÊ °£ OPEN (Á¤¼ö»ì±Õ)
+            // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ 30ï¿½ï¿½ ï¿½ï¿½ OPEN (ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)
             cody_water_line.gu16_timer++;
             if(cody_water_line.gu16_timer >= 300)
             {
@@ -219,20 +219,20 @@ void cody_water_line_clean(void)
             }
             else {  }
         break;
-        
+
         case 1:
-            // ÀüÃ¼ ¹ëºê CLOSE
+            // ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ CLOSE
             cody_water_line.gu16_timer++;
-            if(cody_water_line.gu16_timer >= 10)            // 3ÃÊ ´ë±â
+            if(cody_water_line.gu16_timer >= 10)            // 3ï¿½ï¿½ ï¿½ï¿½ï¿½
             {
                 cody_water_line.gu16_timer = 0;
                 cody_water_line.gu8_step++;
             }
             else {  }
         break;
-        
+
         case 2:
-            // ³Ã¼ö ÀÔÃâ¼ö ¹ëºê 4ºÐ °£ OPEN (³Ã¼ö»ì±Õ)
+            // ï¿½Ã¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ 4ï¿½ï¿½ ï¿½ï¿½ OPEN (ï¿½Ã¼ï¿½ï¿½ï¿½ï¿½)
             cody_water_line.gu16_timer++;
             if(cody_water_line.gu16_timer >= 2400)
             {
@@ -241,20 +241,20 @@ void cody_water_line_clean(void)
             }
             else {  }
         break;
-        
+
         case 3:
-            // ÀüÃ¼ ¹ëºê CLOSE
+            // ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ CLOSE
             cody_water_line.gu16_timer++;
-            if(cody_water_line.gu16_timer >= 10)            // 3ÃÊ ´ë±â
+            if(cody_water_line.gu16_timer >= 10)            // 3ï¿½ï¿½ ï¿½ï¿½ï¿½
             {
                 cody_water_line.gu16_timer = 0;
                 cody_water_line.gu8_step++;
             }
             else {  }
         break;
-        
+
         case 4:
-            // Á¤¼ö ÀÔÃâ¼ö ¹ëºê 30ÃÊ °£ OPEN (Á¤¼ö»ì±Õ)
+            // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ 30ï¿½ï¿½ ï¿½ï¿½ OPEN (ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)
             cody_water_line.gu16_timer++;
             if(cody_water_line.gu16_timer >= 300)
             {
@@ -263,11 +263,11 @@ void cody_water_line_clean(void)
             }
             else {  }
         break;
-        
+
         case 5:
-            // ÀüÃ¼ ¹ëºê CLOSE
+            // ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ CLOSE
             cody_water_line.gu16_timer++;
-            if(cody_water_line.gu16_timer >= 10)            // 3ÃÊ ´ë±â
+            if(cody_water_line.gu16_timer >= 10)            // 3ï¿½ï¿½ ï¿½ï¿½ï¿½
             {
                 cody_water_line.gu16_timer = 0;
                 cody_water_line.gu8_step++;
@@ -281,20 +281,20 @@ void cody_water_line_clean(void)
             cody_water_line.gu8_start = CLEAR;
             cody_water_line.gu8_step = CLEAR;
             cody_water_line.gu16_timer = CLEAR;
-            
+
             Bit3_Animation_Dimming_Ambient_Select_State = CLEAR;
             Bit4_Animation_Dimming_Cold_Select_State = CLEAR;
         break;
 
         default:
-        
+
         break;
     }
 }
 
 /***********************************************************************************************************************
 * Function Name: System_ini
-* Description  : ÄÚµð À¯·Î»ì±Õ¸ðµå ÇØÁ¦ Cody Water Line Clean Service
+* Description  : ï¿½Úµï¿½ ï¿½ï¿½ï¿½Î»ï¿½Õ¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Cody Water Line Clean Service
 ***********************************************************************************************************************/
 void cody_water_clean_mode_clear(void)
 {

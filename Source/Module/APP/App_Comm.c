@@ -111,7 +111,7 @@ static void Comm_Rcv_Packet_Handler(void)
                             SetCommRxIndex(0);
                             break;
                         }
-#else
+#endif
                         if(Protocol_isValidPacket(CommInfo.comm_rx_buffer) == TRUE)
                         {
                             CommInfo.comm_tx_index = Protocol_Make_Ack_Packet(CommInfo.comm_rx_buffer, CommInfo.comm_tx_buffer);
@@ -125,7 +125,6 @@ static void Comm_Rcv_Packet_Handler(void)
                             SetCommRxIndex(0);
                             SetRxPacketLength(0);
                         }
-#endif
                     }
                     else
                     {

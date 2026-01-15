@@ -10,6 +10,7 @@
 #include    "Global_Variable.h"
 #include    "Port_Define.h"
 #include    "AC_motor_output.h"
+#include    "api_debug.h"
 
 void output_ac_motor(void);
 void check_error_micro_sw_detect_at_once(void);
@@ -34,8 +35,6 @@ void up_tray_motor(void);
 void stop_tray_motor(void);
 void check_ice_system_ok(void);
 
-////
-
 //----------------------------------------------------// Motor
 U8 gu8Reverse;
 U8 gu8TrayCWInterval;
@@ -46,7 +45,6 @@ U16 gu16DualCheckDelay;
 U8 gu8_Err_Tray_Up_Count;
 U8 gu8_Err_Tray_Down_Count;
 
-/*..hui [19-12-13¿ÀÈÄ 7:12:16] Æ®·¹ÀÌ Å»ºù ÀÌµ¿ ´©Àû ¿¡·¯ Ä«¿îÆ®..*/
 U8 gu8_err_tray_down_acc_count;
 
 
@@ -117,16 +115,16 @@ bit bit_ice_full_state;
 
 U8 gu8_ice_system_ok;
 
-/* ¾óÀ½°É¸² ÀÌ»ó °ü·Ã º¯¼ö */
+/* ï¿½ï¿½ï¿½ï¿½ï¿½É¸ï¿½ ï¿½Ì»ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ */
 bit bit_ice_stuck_back_state;
 U8 gu8_ice_stuck_reverse_timer;
 
-/* ¾óÀ½ Àúºù,¸¸ºù °¨Áö ÀÌ»ó °ü·Ã º¯¼ö */
-bit bit_ice_detection_abnormal_state;   /* Àúºù¹Ì°¨Áö, ¸¸ºù°¨Áö ½Ã */
-U8 gu8_ice_detect_abnormal_timer_100ms; /* µ¿ÀÛ Å¸ÀÌ¸Ó */
-U8 gu8_ice_detect_abnormal_op_count;    /* µ¿ÀÛ È½¼ö */
+/* ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ì»ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ */
+bit bit_ice_detection_abnormal_state;   /* ï¿½ï¿½ï¿½ï¿½ï¿½Ì°ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ */
+U8 gu8_ice_detect_abnormal_timer_100ms; /* ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½Ì¸ï¿½ */
+U8 gu8_ice_detect_abnormal_op_count;    /* ï¿½ï¿½ï¿½ï¿½ È½ï¿½ï¿½ */
 
-/* ¾óÀ½ ÃßÃâ ÈÄ ¾óÀ½ À§Ä¡ ÈÄÁø µ¿ÀÛ °ü·Ã º¯¼ö  */
+/* ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½  */
 bit bit_ice_mix_back_state;
 U8 gu8_ice_mix_reverse_timer;
 
@@ -146,15 +144,15 @@ bit bit_ice_shake_state;
 U16 gu16_ice_full_shake_timer_100ms;
 U8  gu8_ice_full_shaking_op_timer_100ms;
 
-/* Á¤·®ÃßÃâ Á÷Àü ¾ÕµÚ·Î ¼¯´Â Á¦¾î¸¦ À§ÇÑ º¯¼ö */
+/* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ÕµÚ·ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½î¸¦ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ */
 U8 gu8_ice_feeder_shake;
 U8 gu8_ice_feeder_shake_time;
 
-/* ÀÏ¹Ý¾óÀ½ ÃßÃâ °ü·Ã º¯¼ö */
-U8 gu8_normal_ice_acc_cur_count_100ms = CLEAR;      // µ¿ÀÛ ÇöÀç½Ã°£
-U8 gu8_normal_ice_acc_set_count_100ms = CLEAR;      // µ¿ÀÛ Å¸°Ù½Ã°£
-U8 gu8_normal_ice_stay_count = CLEAR;               // Áß°£ ¸ØÃã È½¼ö
-bit bit_normal_ice_out_start;                       // ÀÏ¹Ý¾óÀ½ ÃßÃâ µ¿ÀÛ ½ÃÀÛÇÃ·¡±×
+/* ï¿½Ï¹Ý¾ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ */
+U8 gu8_normal_ice_acc_cur_count_100ms = CLEAR;      // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ã°ï¿½
+U8 gu8_normal_ice_acc_set_count_100ms = CLEAR;      // ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½Ù½Ã°ï¿½
+U8 gu8_normal_ice_stay_count = CLEAR;               // ï¿½ß°ï¿½ ï¿½ï¿½ï¿½ï¿½ È½ï¿½ï¿½
+bit bit_normal_ice_out_start;                       // ï¿½Ï¹Ý¾ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ã·ï¿½ï¿½ï¿½
 
 U16 gu16_ice_extract_timer_100ms;
 
@@ -179,36 +177,36 @@ void output_ice_feeder_motor(void)
 {
     if(gu8IceOutCCWInterval > 0)
     {
-        gu8IceOutCCWInterval--;    // ÅäÃâ¸ðÅÍ ´ë±â3->2ÃÊ
+        gu8IceOutCCWInterval--;    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½3->2ï¿½ï¿½
     }
     else{}
 
     if(gu16ErrIceOut > 0)
     {
-        gu16ErrIceOut--;                // ¾óÀ½ÅäÃâ ¸ðÅÍ¿¡·¯ 120ÃÊ
+        gu16ErrIceOut--;                // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Í¿ï¿½ï¿½ï¿½ 120ï¿½ï¿½
     }
     else{}
 
-/*..hui [20-4-17¿ÀÈÄ 3:04:49] ÇÇ´õ ¿ªÈ¸Àü ³ÖÀ»¶§ ice_extraction_finish¿¡ F_IR Áö¿öÁà¾ßÇÔ..²À~~~..*/
-/*..hui [20-4-17¿ÀÈÄ 3:04:59] ¸¸ºù °¨Áö¸¦ 2ÃÊ ¿ªÈ¸Àü ¿Ï·á ÈÄ ÇÏµµ·Ï ÇÏ±â À§ÇØ..*/
-    //===========================================// ¾óÀ½ÅäÃâ ¸ðÅÍ µ¿ÀÛ
-    if(F_IceOutCCW == SET)                      // ÅäÃâÈ¸Àü(¿ªÈ¸Àü)
+/*..hui [20-4-17ï¿½ï¿½ï¿½ï¿½ 3:04:49] ï¿½Ç´ï¿½ ï¿½ï¿½È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ice_extraction_finishï¿½ï¿½ F_IR ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½..ï¿½ï¿½~~~..*/
+/*..hui [20-4-17ï¿½ï¿½ï¿½ï¿½ 3:04:59] ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 2ï¿½ï¿½ ï¿½ï¿½È¸ï¿½ï¿½ ï¿½Ï·ï¿½ ï¿½ï¿½ ï¿½Ïµï¿½ï¿½ï¿½ ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½..*/
+    //===========================================// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    if(F_IceOutCCW == SET)                      // ï¿½ï¿½ï¿½ï¿½È¸ï¿½ï¿½(ï¿½ï¿½È¸ï¿½ï¿½)
     {
         if( F_IceBreak == CLEAR )
         {
-            /*..hui [20-4-14¿ÀÈÄ 12:42:38] 3ÃÊ ÈÄ ÇÇ´õ ÃßÃâ µ¿ÀÛ..*/
+            /*..hui [20-4-14ï¿½ï¿½ï¿½ï¿½ 12:42:38] 3ï¿½ï¿½ ï¿½ï¿½ ï¿½Ç´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½..*/
             if(pMOTOR_ICE_OUT_CCW != SET && gu8IceOutCCWInterval == 0)
             {
-                gu16ErrIceOut = 1200; 						 //¿¡·¯´ë±â 120ÃÊ
+                gu16ErrIceOut = 1200; 						 //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 120ï¿½ï¿½
                 bit_normal_ice_out_start = SET;
             }
             else{}
 
-            /*..hui [20-4-14¿ÀÈÄ 12:45:16] ÃßÃâ 2ºÐ ÀÌ»ó Áö¼Ó½Ã °­Á¦ Á¤Áö..*/
+            /*..hui [20-4-14ï¿½ï¿½ï¿½ï¿½ 12:45:16] ï¿½ï¿½ï¿½ï¿½ 2ï¿½ï¿½ ï¿½Ì»ï¿½ ï¿½ï¿½ï¿½Ó½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½..*/
             if(pMOTOR_ICE_OUT_CCW == SET && gu16ErrIceOut == 0)
             {
                 pMOTOR_ICE_OUT_CCW = CLEAR;
-                /* ´©¸§ÃßÃâ ½Ã ÃßÃâ¿Ï·áµÇÁö ¾Ê´Â Çö»ó °³¼± 250808 CH.PARK */
+                /* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï·ï¿½ï¿½ï¿½ï¿½ ï¿½Ê´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 250808 CH.PARK */
                 ice_extraction_finish();
                 F_IceOutCCW = CLEAR;
                 bit_normal_ice_out_start = CLEAR;
@@ -217,7 +215,7 @@ void output_ice_feeder_motor(void)
 
             if( pMOTOR_ICE_OUT_CCW == SET )
             {
-                /* 2025-09-18 @CH.PARK ½ÇÁ¦ ÇÇ´õ°¡ Á¤È¸Àü ÇÏ´Â ½Ã°£À¸·Î ÆÇ´Ü (ÃßÃâ ¿ÀÂ÷ °³¼±) */
+                /* 2025-09-18 @CH.PARK ï¿½ï¿½ï¿½ï¿½ ï¿½Ç´ï¿½ï¿½ï¿½ ï¿½ï¿½È¸ï¿½ï¿½ ï¿½Ï´ï¿½ ï¿½Ã°ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ç´ï¿½ (ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½) */
                 gu16_ice_extract_timer_100ms++;
 
                 gu8_ice_out_operation_timer++;
@@ -236,7 +234,7 @@ void output_ice_feeder_motor(void)
             }
             else
             {
-                /*..hui [20-4-22¿ÀÀü 10:27:26] ÃßÃâ Á÷Àü¿¡ ¸¸ºùÀÏ °æ¿ì¿¡¸¸ °¨ÁöÇÏµµ·Ï..*/
+                /*..hui [20-4-22ï¿½ï¿½ï¿½ï¿½ 10:27:26] ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ì¿¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½..*/
                 if( F_IceFull == SET )
                 {
                     bit_ice_full_state = SET;
@@ -255,11 +253,11 @@ void output_ice_feeder_motor(void)
 
                 if(gu8_ice_out_continue == SET)
                 {
-                    /* [V1.0.0.2] ÀÏ¹Ý¾óÀ½ ¿¬¼Ó ÃßÃâ ½Ã 3ÃÊ ÀüÁø, 1ÃÊ ÈÞÁö ¹Ýº¹ */
+                    /* [V1.0.0.2] ï¿½Ï¹Ý¾ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ 3ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½, 1ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ýºï¿½ */
                     gu8_ice_continue_acc_count_100ms++;
                     if(pMOTOR_ICE_OUT_CCW == SET)
                     {
-                        if(gu8_ice_continue_acc_count_100ms >= 30)      /* 3ÃÊ µ¿ÀÛ */
+                        if(gu8_ice_continue_acc_count_100ms >= 30)      /* 3ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ */
                         {
                             gu8_ice_continue_acc_count_100ms = 0;
                             pMOTOR_ICE_OUT_CCW = CLEAR;
@@ -268,7 +266,7 @@ void output_ice_feeder_motor(void)
                     }
                     else
                     {
-                        if(gu8_ice_continue_acc_count_100ms >= 10)      /* 1ÃÊ Á¤Áö */
+                        if(gu8_ice_continue_acc_count_100ms >= 10)      /* 1ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ */
                         {
                             gu8_ice_continue_acc_count_100ms = 0;
                             pMOTOR_ICE_OUT_CCW = SET;
@@ -276,7 +274,7 @@ void output_ice_feeder_motor(void)
                         else {  }
                     }
                 }
-                else if(gu8_ice_amount_step == ICE_LEVEL_1_STEP)            // 1´Ü°è
+                else if(gu8_ice_amount_step == ICE_LEVEL_1_STEP)            // 1ï¿½Ü°ï¿½
                 {
                     gu8_normal_ice_stay_count = 0;
                     gu8_normal_ice_acc_set_count_100ms = ICE_OUT_1_STEP_TIME;
@@ -294,11 +292,11 @@ void output_ice_feeder_motor(void)
                     if(gu8_normal_ice_stay_count >= 1)
                     {
                         gu8_normal_ice_acc_set_count_100ms = 30;
-                        if(gu8_normal_ice_acc_cur_count_100ms <= (gu8_normal_ice_acc_set_count_100ms - 10))      // 2ÃÊ ÀüÁø
+                        if(gu8_normal_ice_acc_cur_count_100ms <= (gu8_normal_ice_acc_set_count_100ms - 10))      // 2ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
                         {
                             pMOTOR_ICE_OUT_CCW = SET;
                         }
-                        else if(gu8_normal_ice_acc_cur_count_100ms <= (gu8_normal_ice_acc_set_count_100ms + 1))  // 1ÃÊ Á¤Áö
+                        else if(gu8_normal_ice_acc_cur_count_100ms <= (gu8_normal_ice_acc_set_count_100ms + 1))  // 1ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
                         {
                             pMOTOR_ICE_OUT_CCW = CLEAR;
                         }
@@ -310,11 +308,11 @@ void output_ice_feeder_motor(void)
                     else
                     {
                         gu8_normal_ice_acc_set_count_100ms = 50;
-                        if(gu8_normal_ice_acc_cur_count_100ms <= (gu8_normal_ice_acc_set_count_100ms - 10))      // 4ÃÊ ÀüÁø
+                        if(gu8_normal_ice_acc_cur_count_100ms <= (gu8_normal_ice_acc_set_count_100ms - 10))      // 4ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
                         {
                             pMOTOR_ICE_OUT_CCW = SET;
                         }
-                        else if(gu8_normal_ice_acc_cur_count_100ms <= gu8_normal_ice_acc_set_count_100ms)        // 1ÃÊ Á¤Áö
+                        else if(gu8_normal_ice_acc_cur_count_100ms <= gu8_normal_ice_acc_set_count_100ms)        // 1ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
                         {
                             pMOTOR_ICE_OUT_CCW = CLEAR;
                         }
@@ -330,11 +328,11 @@ void output_ice_feeder_motor(void)
                     if(gu8_normal_ice_stay_count >= 1)
                     {
                         gu8_normal_ice_acc_set_count_100ms = 30;
-                        if(gu8_normal_ice_acc_cur_count_100ms <= (gu8_normal_ice_acc_set_count_100ms - 10))      // 2ÃÊ ÀüÁø
+                        if(gu8_normal_ice_acc_cur_count_100ms <= (gu8_normal_ice_acc_set_count_100ms - 10))      // 2ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
                         {
                             pMOTOR_ICE_OUT_CCW = SET;
                         }
-                        else if(gu8_normal_ice_acc_cur_count_100ms <= (gu8_normal_ice_acc_set_count_100ms))      // 1ÃÊ Á¤Áö
+                        else if(gu8_normal_ice_acc_cur_count_100ms <= (gu8_normal_ice_acc_set_count_100ms))      // 1ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
                         {
                             pMOTOR_ICE_OUT_CCW = CLEAR;
                         }
@@ -346,11 +344,11 @@ void output_ice_feeder_motor(void)
                     else
                     {
                         gu8_normal_ice_acc_set_count_100ms = 50;
-                        if(gu8_normal_ice_acc_cur_count_100ms <= (gu8_normal_ice_acc_set_count_100ms - 10))      // 4ÃÊ ÀüÁø
+                        if(gu8_normal_ice_acc_cur_count_100ms <= (gu8_normal_ice_acc_set_count_100ms - 10))      // 4ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
                         {
                             pMOTOR_ICE_OUT_CCW = SET;
                         }
-                        else if(gu8_normal_ice_acc_cur_count_100ms <= gu8_normal_ice_acc_set_count_100ms)        // 1ÃÊ Á¤Áö
+                        else if(gu8_normal_ice_acc_cur_count_100ms <= gu8_normal_ice_acc_set_count_100ms)        // 1ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
                         {
                             pMOTOR_ICE_OUT_CCW = CLEAR;
                         }
@@ -364,11 +362,11 @@ void output_ice_feeder_motor(void)
                 else if(gu8_ice_amount_step == ICE_LEVEL_4_STEP)
                 {
                     gu8_normal_ice_acc_set_count_100ms = 50;
-                    if(gu8_normal_ice_acc_cur_count_100ms <= (gu8_normal_ice_acc_set_count_100ms - 10))      // 4ÃÊ ÀüÁø
+                    if(gu8_normal_ice_acc_cur_count_100ms <= (gu8_normal_ice_acc_set_count_100ms - 10))      // 4ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
                     {
                         pMOTOR_ICE_OUT_CCW = SET;
                     }
-                    else if(gu8_normal_ice_acc_cur_count_100ms <= gu8_normal_ice_acc_set_count_100ms)        // 1ÃÊ Á¤Áö
+                    else if(gu8_normal_ice_acc_cur_count_100ms <= gu8_normal_ice_acc_set_count_100ms)        // 1ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
                     {
                         pMOTOR_ICE_OUT_CCW = CLEAR;
                     }
@@ -388,7 +386,7 @@ void output_ice_feeder_motor(void)
         {
             bit_normal_ice_out_start = SET;
 
-            /* Á¶°¢¾óÀ½µµ 6ÃÊ ÀÌ»ó ÃßÃâÇÏ¸é ÈÄÁø */
+            /* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 6ï¿½ï¿½ ï¿½Ì»ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½ ï¿½ï¿½ï¿½ï¿½ */
             gu8_ice_out_operation_timer++;
             if( gu8_ice_out_operation_timer >= 30 && gu8_ice_out_operation_timer < 60 )
             {
@@ -403,14 +401,14 @@ void output_ice_feeder_motor(void)
             }
             else{}
 
-            /* Á¶°¢¾óÀ½ ½Ã 2ÃÊ ÀüÁø, 1ÃÊ Á¤Áö ¹Ýº¹ (ÃÖ½Å) ÀÓÃ¤Èñ´Ô naverworks ¿äÃ» 250704 ch.park */
+            /* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ 2ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½, 1ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ýºï¿½ (ï¿½Ö½ï¿½) ï¿½ï¿½Ã¤ï¿½ï¿½ï¿½ naverworks ï¿½ï¿½Ã» 250704 ch.park */
             gu8_ice_break_acc_count_100ms++;
             if(pMOTOR_ICE_OUT_CCW == SET)
             {
-                /* 2025-09-18 @CH.PARK ½ÇÁ¦ ÇÇ´õ°¡ Á¤È¸Àü ÇÏ´Â ½Ã°£À¸·Î ÆÇ´Ü (ÃßÃâ ¿ÀÂ÷ °³¼±) */
+                /* 2025-09-18 @CH.PARK ï¿½ï¿½ï¿½ï¿½ ï¿½Ç´ï¿½ï¿½ï¿½ ï¿½ï¿½È¸ï¿½ï¿½ ï¿½Ï´ï¿½ ï¿½Ã°ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ç´ï¿½ (ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½) */
                 gu16_ice_extract_timer_100ms++;
 
-                if(gu8_ice_break_acc_count_100ms >= 20)     /* 2ÃÊµ¿ÀÛ */
+                if(gu8_ice_break_acc_count_100ms >= 20)     /* 2ï¿½Êµï¿½ï¿½ï¿½ */
                 {
                     gu8_ice_break_acc_count_100ms = 0;
                     pMOTOR_ICE_OUT_CCW = CLEAR;
@@ -419,7 +417,7 @@ void output_ice_feeder_motor(void)
             }
             else
             {
-                if(gu8_ice_break_acc_count_100ms >= 10)     /* 1ÃÊÁ¤Áö */
+                if(gu8_ice_break_acc_count_100ms >= 10)     /* 1ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
                 {
                     gu8_ice_break_acc_count_100ms = 0;
                     pMOTOR_ICE_OUT_CCW = SET;
@@ -428,7 +426,7 @@ void output_ice_feeder_motor(void)
             }
         }
 
-        /*..hui [20-4-14¿ÀÈÄ 1:09:53] ÃßÃâ½Ã ¿ªÈ¸Àü Á¤Áö..*/
+        /*..hui [20-4-14ï¿½ï¿½ï¿½ï¿½ 1:09:53] ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½..*/
         pMOTOR_ICE_OUT_CW = CLEAR;
         gu8_ice_out_reverse_timer = 0;
         gu8_ice_stuck_reverse_timer = 0;
@@ -441,8 +439,8 @@ void output_ice_feeder_motor(void)
         bit_normal_ice_out_start = CLEAR;
 
         #ifdef __AC_MOTOR_TEST_MODE__
-        #ifdef __SCREW_ACC_ENDURANCE__  /* ¿ªÈ¸Àü ³»±¸¼º */
-        /*..hui [20-4-22¿ÀÀü 10:27:26] ÃßÃâ Á÷Àü¿¡ ¸¸ºùÀÏ °æ¿ì¿¡¸¸ °¨ÁöÇÏµµ·Ï..*/
+        #ifdef __SCREW_ACC_ENDURANCE__  /* ï¿½ï¿½È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
+        /*..hui [20-4-22ï¿½ï¿½ï¿½ï¿½ 10:27:26] ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ì¿¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½..*/
         if( F_IceFull == SET )
         {
             bit_ice_full_state = SET;
@@ -457,14 +455,14 @@ void output_ice_feeder_motor(void)
         gu8_ice_out_operation_timer = 0;
 
         // Endurance Here!
-        /*..hui [20-4-14¿ÀÈÄ 12:38:42] ÇÇ´õ½ºÅ©·ù°¡ ÃßÃâ ¹æÇâÀ¸·Î µ¿ÀÛÀ» ÇßÀ¸¸é..*/
+        /*..hui [20-4-14ï¿½ï¿½ï¿½ï¿½ 12:38:42] ï¿½Ç´ï¿½ï¿½ï¿½Å©ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½..*/
         if(bit_ice_full_state == SET)
         {
             gu8_ice_out_endurance_timer++;
-            if(gu8_ice_out_endurance_timer >= 30)            // 3ÃÊ ÈÞÁö
+            if(gu8_ice_out_endurance_timer >= 30)            // 3ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             {
-                // LPP ³»±¸¼º»ç¾ç
-                if( gu8_ice_out_endurance_timer >= 50 )      // 2ÃÊ ¿ªÈ¸Àü
+                // LPP ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+                if( gu8_ice_out_endurance_timer >= 50 )      // 2ï¿½ï¿½ ï¿½ï¿½È¸ï¿½ï¿½
                 {
                     gu8_ice_out_endurance_timer = 0;
 
@@ -499,7 +497,7 @@ void output_ice_feeder_motor(void)
         }
         #endif
 
-        #ifdef __SCREW_AC_ENDURANCE__   /* Á¤È¸Àü ³»±¸¼º */
+        #ifdef __SCREW_AC_ENDURANCE__   /* ï¿½ï¿½È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
         gu8_ice_out_operation_timer = 0;
         gu8_ice_break_acc_count_100ms = 0;
 
@@ -516,9 +514,9 @@ void output_ice_feeder_motor(void)
         if(bit_ice_full_state == SET)
         {
             gu8_ice_out_endurance_timer++;
-            if(gu8_ice_out_endurance_timer >= 30)       // 3ÃÊ ÈÞÁö
+            if(gu8_ice_out_endurance_timer >= 30)       // 3ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             {
-                if(gu8_ice_out_endurance_timer >= 50)   // 2ÃÊ Á¤È¸Àü
+                if(gu8_ice_out_endurance_timer >= 50)   // 2ï¿½ï¿½ ï¿½ï¿½È¸ï¿½ï¿½
                 {
                     gu8_ice_out_endurance_timer = 0;
                     pMOTOR_ICE_OUT_CCW = CLEAR;
@@ -553,17 +551,17 @@ void output_ice_feeder_motor(void)
         #endif
 
         #else
-        /* ¾ç»êÇÁ·Î±×·¥ */
+        /* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î±×·ï¿½ */
         /* pMOTOR_ICE_OUT_CCW = CLEAR; */
         bit_ice_full_state = CLEAR;
         gu8_ice_out_operation_timer = 0;
         gu8_ice_break_acc_count_100ms = 0;
         gu8_ice_continue_acc_count_100ms = 0;
 
-        /*..hui [20-4-14¿ÀÈÄ 12:38:42] ÇÇ´õ½ºÅ©·ù°¡ ÃßÃâ ¹æÇâÀ¸·Î µ¿ÀÛÀ» ÇßÀ¸¸é..*/
+        /*..hui [20-4-14ï¿½ï¿½ï¿½ï¿½ 12:38:42] ï¿½Ç´ï¿½ï¿½ï¿½Å©ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½..*/
         if(bit_ice_out_back_1s_state == SET)
         {
-            /* ¸®µå½ºÀ§Ä¡ »ç¿ëÇÏ´Â ¸ðµ¨ÀÌ°í ¾óÀ½ °É¸² È®ÀÎÁßÀÌ°Å³ª µ¿ÀÛÁßÀÏ ¶§´Â ÃßÃâ ¿ªÈ¸Àüµ¿ÀÛÀº ´ë±â */
+            /* ï¿½ï¿½ï¿½å½ºï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½Ì°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½É¸ï¿½ È®ï¿½ï¿½ï¿½ï¿½ï¿½Ì°Å³ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ */
             if(model.u8model == MODEL_REED_USE)
             {
                 if((IceStuck.u8IceJamCheck == SET)
@@ -580,7 +578,7 @@ void output_ice_feeder_motor(void)
 
             gu8_ice_out_reverse_1s_timer++;
 
-            /* 3ÃÊ ÀÌ»ó ÃßÃâ¿Ï·á ½Ã 5ÃÊ ´ë±â (¸ØÃã) ÈÄ 1ÃÊ ÈÄÁø */
+            /* 3ï¿½ï¿½ ï¿½Ì»ï¿½ ï¿½ï¿½ï¿½ï¿½Ï·ï¿½ ï¿½ï¿½ 5ï¿½ï¿½ ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½) ï¿½ï¿½ 1ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ */
             if( gu8_ice_out_reverse_1s_timer < ICE_OUT_BACK_1S_DELAY_TIME )
             {
                 pMOTOR_ICE_OUT_CW = CLEAR;
@@ -593,7 +591,7 @@ void output_ice_feeder_motor(void)
             {
                 bit_ice_out_back_1s_state = CLEAR;
                 gu8_ice_out_reverse_1s_timer = 0;
-                /*..hui [20-4-22¿ÀÀü 10:35:40] ¿ªÈ¸Àü ¿Ï·á ÈÄ ¸¸ºù°¨Áö..*/
+                /*..hui [20-4-22ï¿½ï¿½ï¿½ï¿½ 10:35:40] ï¿½ï¿½È¸ï¿½ï¿½ ï¿½Ï·ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½..*/
                 F_IR = SET;
                 F_Low_IR = SET;
             }
@@ -604,7 +602,7 @@ void output_ice_feeder_motor(void)
         }
         else if( bit_ice_out_back_state == SET )
         {
-            /* ¸®µå½ºÀ§Ä¡ »ç¿ëÇÏ´Â ¸ðµ¨ÀÌ°í ¾óÀ½ °É¸² È®ÀÎÁßÀÌ°Å³ª µ¿ÀÛÁßÀÏ ¶§´Â ÃßÃâ ¿ªÈ¸Àüµ¿ÀÛÀº ´ë±â */
+            /* ï¿½ï¿½ï¿½å½ºï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½Ì°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½É¸ï¿½ È®ï¿½ï¿½ï¿½ï¿½ï¿½Ì°Å³ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ */
             if(model.u8model == MODEL_REED_USE)
             {
                 if((IceStuck.u8IceJamCheck == SET)
@@ -621,7 +619,7 @@ void output_ice_feeder_motor(void)
 
             gu8_ice_out_reverse_timer++;
 
-            /* 6ÃÊ ÀÌ»ó ÃßÃâ¿Ï·á ½Ã 5ÃÊ ´ë±â (¸ØÃã) ÈÄ 3ÃÊ ÈÄÁø */
+            /* 6ï¿½ï¿½ ï¿½Ì»ï¿½ ï¿½ï¿½ï¿½ï¿½Ï·ï¿½ ï¿½ï¿½ 5ï¿½ï¿½ ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½) ï¿½ï¿½ 3ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ */
             if( gu8_ice_out_reverse_timer < ICE_OUT_BACK_2S_DELAY_TIME )
             {
                 pMOTOR_ICE_OUT_CW = CLEAR;
@@ -634,12 +632,12 @@ void output_ice_feeder_motor(void)
             {
                 bit_ice_out_back_state = CLEAR;
                 gu8_ice_out_reverse_timer = 0;
-                /*..hui [20-4-22¿ÀÀü 10:35:40] ¿ªÈ¸Àü ¿Ï·á ÈÄ ¸¸ºù°¨Áö..*/
+                /*..hui [20-4-22ï¿½ï¿½ï¿½ï¿½ 10:35:40] ï¿½ï¿½È¸ï¿½ï¿½ ï¿½Ï·ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½..*/
                 F_IR = SET;
                 F_Low_IR = SET;
 
-                /* 2025-09-18 CH.PARK 3ÃÊ ¿ªÈ¸Àü ÀÌÈÄ ¹Ýµå½Ã 1ÃÊ ´ë±â ÈÄ Á¤È¸ÀüµÇµµ·Ï ÇÔ.
-                ¹Ù·Î È¸Àü ¹æÇâÀ» µ¹¸®¸é ¾ÈµÊ */
+                /* 2025-09-18 CH.PARK 3ï¿½ï¿½ ï¿½ï¿½È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ýµï¿½ï¿½ 1ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½È¸ï¿½ï¿½ï¿½Çµï¿½ï¿½ï¿½ ï¿½ï¿½.
+                ï¿½Ù·ï¿½ È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Èµï¿½ */
                 gu8IceOutCCWInterval = 10;
             }
 
@@ -649,29 +647,29 @@ void output_ice_feeder_motor(void)
         }
         else if(gu8_ice_feeder_shake == SET)
         {
-            /* 2025-10-13 CH.PARK Á¶°¢¾óÀ½ ÃßÃâ ½ÃÀÛ ½Ã 100% ¹Ð ¶§´Â ÀÏ½ÃÀûÀ¸·Î ¼¯Áö ¾ÊÀ½ */
+            /* 2025-10-13 CH.PARK ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ 100% ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ï½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ */
             if(F_IceSelectClose == SET)
             {
                 return;
             }
 
             gu8_ice_feeder_shake_time++;
-            if(gu8_ice_feeder_shake_time <= ICE_SHAKE_DELAY_TIME)             // 4ÃÊ ´ë±â
+            if(gu8_ice_feeder_shake_time <= ICE_SHAKE_DELAY_TIME)             // 4ï¿½ï¿½ ï¿½ï¿½ï¿½
             {
                 pMOTOR_ICE_OUT_CCW = CLEAR;
                 pMOTOR_ICE_OUT_CW = CLEAR;
             }
-            else if(gu8_ice_feeder_shake_time <= (ICE_SHAKE_DELAY_TIME + 10))        // 1ÃÊ ÀüÁø
+            else if(gu8_ice_feeder_shake_time <= (ICE_SHAKE_DELAY_TIME + 10))        // 1ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             {
                 pMOTOR_ICE_OUT_CCW = SET;
                 pMOTOR_ICE_OUT_CW = CLEAR;
             }
-            else if(gu8_ice_feeder_shake_time <= (ICE_SHAKE_DELAY_TIME + 15))        // 0.5ÃÊ ´ë±â
+            else if(gu8_ice_feeder_shake_time <= (ICE_SHAKE_DELAY_TIME + 15))        // 0.5ï¿½ï¿½ ï¿½ï¿½ï¿½
             {
                 pMOTOR_ICE_OUT_CCW = CLEAR;
                 pMOTOR_ICE_OUT_CW = CLEAR;
             }
-            else if(gu8_ice_feeder_shake_time <= (ICE_SHAKE_DELAY_TIME + 25))        // 1ÃÊ ÈÄÁø
+            else if(gu8_ice_feeder_shake_time <= (ICE_SHAKE_DELAY_TIME + 25))        // 1ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             {
                 pMOTOR_ICE_OUT_CCW = CLEAR;
                 pMOTOR_ICE_OUT_CW = SET;
@@ -688,7 +686,7 @@ void output_ice_feeder_motor(void)
 
             gu8_ice_stuck_reverse_timer++;
 
-            /*..hui [25-3-17¿ÀÈÄ 4:16:14] ¾óÀ½ °É¸² ÇØÁ¦ µ¿ÀÛ 2ÃÊ..*/
+            /*..hui [25-3-17ï¿½ï¿½ï¿½ï¿½ 4:16:14] ï¿½ï¿½ï¿½ï¿½ ï¿½É¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 2ï¿½ï¿½..*/
             if( gu8_ice_stuck_reverse_timer >= 20 )
             {
                 gu8_ice_stuck_reverse_timer = 0;
@@ -703,9 +701,9 @@ void output_ice_feeder_motor(void)
             gu8_ice_out_reverse_1s_timer = 0;
             gu8_ice_out_reverse_timer = 0;
         }
-        else if( bit_ice_mix_back_state == SET )              /* Á¦ºù¿Ï·á ÈÄ µÚ¼¯´Â Á¦¾î */
+        else if( bit_ice_mix_back_state == SET )              /* ï¿½ï¿½ï¿½ï¿½ï¿½Ï·ï¿½ ï¿½ï¿½ ï¿½Ú¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ */
         {
-            /* ¸®µå½ºÀ§Ä¡ »ç¿ëÇÏ´Â ¸ðµ¨ÀÌ°í ¾óÀ½ °É¸² È®ÀÎÁßÀÌ°Å³ª µ¿ÀÛÁßÀÏ ¶§´Â ÃßÃâ ¿ªÈ¸Àüµ¿ÀÛÀº ´ë±â */
+            /* ï¿½ï¿½ï¿½å½ºï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½Ì°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½É¸ï¿½ È®ï¿½ï¿½ï¿½ï¿½ï¿½Ì°Å³ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ */
             if(model.u8model == MODEL_REED_USE)
             {
                 if((IceStuck.u8IceJamCheck == SET)
@@ -719,20 +717,20 @@ void output_ice_feeder_motor(void)
             }
 
             gu8_ice_mix_reverse_timer++;
-            // if( gu8_ice_mix_reverse_timer <= 2 )           /* 0.2ÃÊ ÀüÁø */
-            if( gu8_ice_mix_reverse_timer <= 5 )              /* 0.5ÃÊ ÀüÁø (º¯°æ) 250828 CH.PARK */
+            // if( gu8_ice_mix_reverse_timer <= 2 )           /* 0.2ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ */
+            if( gu8_ice_mix_reverse_timer <= 5 )              /* 0.5ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½) 250828 CH.PARK */
             {
                 pMOTOR_ICE_OUT_CCW = SET;
                 pMOTOR_ICE_OUT_CW = CLEAR;
             }
-            // else if( gu8_ice_mix_reverse_timer <= 12 )      /* 1ÃÊ ´ë±â */
-            else if( gu8_ice_mix_reverse_timer <= 15 )         /* 1ÃÊ ´ë±â */
+            // else if( gu8_ice_mix_reverse_timer <= 12 )      /* 1ï¿½ï¿½ ï¿½ï¿½ï¿½ */
+            else if( gu8_ice_mix_reverse_timer <= 15 )         /* 1ï¿½ï¿½ ï¿½ï¿½ï¿½ */
             {
                 pMOTOR_ICE_OUT_CCW = CLEAR;
                 pMOTOR_ICE_OUT_CW = CLEAR;
             }
-            // else if( gu8_ice_mix_reverse_timer <= 15 )      /* 0.3ÃÊ ÈÄÁø */
-            else if( gu8_ice_mix_reverse_timer <= 20 )         /* 0.5ÃÊ ÈÄÁø (º¯°æ) 250828 CH.PARK */
+            // else if( gu8_ice_mix_reverse_timer <= 15 )      /* 0.3ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ */
+            else if( gu8_ice_mix_reverse_timer <= 20 )         /* 0.5ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½) 250828 CH.PARK */
             {
                 pMOTOR_ICE_OUT_CCW = CLEAR;
                 pMOTOR_ICE_OUT_CW = SET;
@@ -751,7 +749,7 @@ void output_ice_feeder_motor(void)
         }
         else if(bit_ice_shake_state == SET)
         {
-            /* ¸®µå½ºÀ§Ä¡ »ç¿ëÇÏ´Â ¸ðµ¨ÀÌ°í ¾óÀ½ °É¸² È®ÀÎÁßÀÌ°Å³ª µ¿ÀÛÁßÀÏ ¶§´Â ÃßÃâ ¿ªÈ¸Àüµ¿ÀÛÀº ´ë±â */
+            /* ï¿½ï¿½ï¿½å½ºï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½Ì°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½É¸ï¿½ È®ï¿½ï¿½ï¿½ï¿½ï¿½Ì°Å³ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ */
             if(model.u8model == MODEL_REED_USE)
             {
                 if((IceStuck.u8IceJamCheck == SET)
@@ -766,17 +764,17 @@ void output_ice_feeder_motor(void)
 
             gu8_ice_full_shaking_op_timer_100ms++;
 
-            if( gu8_ice_full_shaking_op_timer_100ms <= 5 )              /* 0.5ÃÊ ÀüÁø */
+            if( gu8_ice_full_shaking_op_timer_100ms <= 5 )              /* 0.5ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ */
             {
                 pMOTOR_ICE_OUT_CCW = SET;
                 pMOTOR_ICE_OUT_CW = CLEAR;
             }
-            else if( gu8_ice_full_shaking_op_timer_100ms <= 15 )         /* 1ÃÊ ´ë±â */
+            else if( gu8_ice_full_shaking_op_timer_100ms <= 15 )         /* 1ï¿½ï¿½ ï¿½ï¿½ï¿½ */
             {
                 pMOTOR_ICE_OUT_CCW = CLEAR;
                 pMOTOR_ICE_OUT_CW = CLEAR;
             }
-            else if( gu8_ice_full_shaking_op_timer_100ms <= 20 )         /* 0.5ÃÊ ÈÄÁø */
+            else if( gu8_ice_full_shaking_op_timer_100ms <= 20 )         /* 0.5ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ */
             {
                 pMOTOR_ICE_OUT_CCW = CLEAR;
                 pMOTOR_ICE_OUT_CW = SET;
@@ -828,7 +826,7 @@ void output_ice_feeder_motor(void)
 ***********************************************************************************************************************/
 void output_ice_tray_motor(void)
 {
-    /*..hui [18-2-9¿ÀÈÄ 1:09:49] CW CCW ¹æÇâ º¯°æ ½Ã 5ÃÊ ´ë±â ÈÄ ÀüÈ¯..*/
+    /*..hui [18-2-9ï¿½ï¿½ï¿½ï¿½ 1:09:49] CW CCW ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ 5ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½È¯..*/
     inverse_direction_time_check();
 
     if( Bit18_Tray_Micro_SW_Up_Move_Error__E62 == SET
@@ -842,8 +840,8 @@ void output_ice_tray_motor(void)
     else if(F_ErrTrayMotor_DualInital == SET)
     {
         check_error_micro_sw_detect_at_once();
-        /*..hui [18-2-13¿ÀÈÄ 3:16:13] move ¿¡·¯ È®ÀÎ Áß µ¿½Ã°¨Áö ¿¡·¯ Ã¼Å©·Î ÀüÈ¯½Ã ¸ðµÎ Å¬¸®¾î..*/
-        /*..hui [18-2-13¿ÀÈÄ 3:16:29] ´Ù½Ã moveÁ¶°ÇÀÌµÇ¸é Ã³À½ºÎÅÍ ½ÃÀÛÇÏµµ·Ï....*/
+        /*..hui [18-2-13ï¿½ï¿½ï¿½ï¿½ 3:16:13] move ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½Ã°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ã¼Å©ï¿½ï¿½ ï¿½ï¿½È¯ï¿½ï¿½ ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½..*/
+        /*..hui [18-2-13ï¿½ï¿½ï¿½ï¿½ 3:16:29] ï¿½Ù½ï¿½ moveï¿½ï¿½ï¿½ï¿½ï¿½ÌµÇ¸ï¿½ Ã³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½....*/
         reset_micro_sw_move_err_check_state();
     }
     else
@@ -858,8 +856,8 @@ void output_ice_tray_motor(void)
         && Bit19_Tray_Micro_SW_Down_Move_Error__E63 == CLEAR
         && Bit17_Tray_Micro_SW_Dual_Detect_Error__E61 == CLEAR )
     {
-        /*..hui [25-3-17¿ÀÈÄ 3:16:46] ¾ÆÀÌ½ºÆ®·¹ÀÌ ¸ðÅÍ Ãâ·Â..*/
-        /*..hui [25-3-17¿ÀÈÄ 3:17:56] ¿¡·¯ ¾Æ´Ò¶§¸¸ Ãâ·ÂµÇµµ·Ï..*/
+        /*..hui [25-3-17ï¿½ï¿½ï¿½ï¿½ 3:16:46] ï¿½ï¿½ï¿½Ì½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½..*/
+        /*..hui [25-3-17ï¿½ï¿½ï¿½ï¿½ 3:17:56] ï¿½ï¿½ï¿½ï¿½ ï¿½Æ´Ò¶ï¿½ï¿½ï¿½ ï¿½ï¿½ÂµÇµï¿½ï¿½ï¿½..*/
         control_ice_tray();
     }
     else{}
@@ -929,7 +927,7 @@ void inverse_direction_time_check(void)
 ***********************************************************************************************************************/
 void check_error_micro_sw_detect_at_once(void)
 {
-    /*..hui [18-2-1¿ÀÀü 10:43:34] Æ®·¹ÀÌ µ¿½Ã °¨Áö½Ã Àç½Ãµµ ..*/
+    /*..hui [18-2-1ï¿½ï¿½ï¿½ï¿½ 10:43:34] Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ãµï¿½ ..*/
     if(gu16DualCheckDelay > 0)
     {
         gu16DualCheckDelay--;
@@ -948,13 +946,13 @@ void check_error_micro_sw_detect_at_once(void)
     {
         case 0 :
 
-            /*..hui [18-2-1¿ÀÀü 11:19:07] Æ®·¹ÀÌ Á¦ºù ¹æÇâ ÀÌµ¿..*/
+            /*..hui [18-2-1ï¿½ï¿½ï¿½ï¿½ 11:19:07] Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½..*/
             /*pMOTOR_ICE_TRAY_CW = 1;*/
             /*pMOTOR_ICE_TRAY_CCW = 0;*/
             run_up_ice_tray();
 
-            /*gu16DualCheckDelay = 150;*/     // Á¦ºù 15ÃÊ ÀÌµ¿
-            gu16DualCheckDelay = 100;     // Á¦ºù 15ÃÊ ÀÌµ¿
+            /*gu16DualCheckDelay = 150;*/     // ï¿½ï¿½ï¿½ï¿½ 15ï¿½ï¿½ ï¿½Ìµï¿½
+            gu16DualCheckDelay = 100;     // ï¿½ï¿½ï¿½ï¿½ 15ï¿½ï¿½ ï¿½Ìµï¿½
             gu8DualTrayStep++;     // 1.CW
             break;
 
@@ -965,19 +963,19 @@ void check_error_micro_sw_detect_at_once(void)
                 /*pMOTOR_ICE_TRAY_CW = 0;*/
                 /*pMOTOR_ICE_TRAY_CCW = 0;*/
                 run_stop_ice_tray();
-                gu16DualCheckDelay = 20;    // 2ÃÊ Áö¿¬
-                gu8DualTrayStep++;     // 2.Á¦ºùÀ§Ä¡¿¡¼­ Á¤Áö
+                gu16DualCheckDelay = 20;    // 2ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+                gu8DualTrayStep++;     // 2.ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¡ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             }
             /*else if(gu16DualCheckDelay <= 130 && gu16DualCheckDelay >= 50)*/
             /*else if(gu16DualCheckDelay <= 130 && gu16DualCheckDelay >= 50)*/
             else if(gu16DualCheckDelay <= 90 && gu16DualCheckDelay >= 70)
             {
-                if(gu8IceLEV == 2)              // ÀÌµ¿Áß Dual Open ÇØÁ¦
+                if(gu8IceLEV == 2)              // ï¿½Ìµï¿½ï¿½ï¿½ Dual Open ï¿½ï¿½ï¿½ï¿½
                 {
                     gu8DualTrayStep = 0;
                     gu16DualCheckDelay = 0;
                     gu8DualTrayCheckCNT = 0;
-                    F_ErrTrayMotor_DualInital = 0;    // Tray ÀÎ½Ä ÀÌµ¿ÁßÀÌ¸é Tray M/S Error ÃÊ±â¹ß»ý ÇØÁ¦
+                    F_ErrTrayMotor_DualInital = 0;    // Tray ï¿½Î½ï¿½ ï¿½Ìµï¿½ï¿½ï¿½ï¿½Ì¸ï¿½ Tray M/S Error ï¿½Ê±ï¿½ß»ï¿½ ï¿½ï¿½ï¿½ï¿½
                     gu8IceStep = STATE_0_STANDBY;
                     gu8InitStep = 0;
                     F_IceInit = 1;
@@ -991,12 +989,12 @@ void check_error_micro_sw_detect_at_once(void)
 
             if(gu16DualCheckDelay == 0)
             {
-                /*..hui [18-2-1¿ÀÀü 11:19:15] Æ®·¹ÀÌ Å»ºù ¹æÇâ ÀÌµ¿..*/
+                /*..hui [18-2-1ï¿½ï¿½ï¿½ï¿½ 11:19:15] Æ®ï¿½ï¿½ï¿½ï¿½ Å»ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½..*/
                 /*pMOTOR_ICE_TRAY_CW = 0;*/
                 /*pMOTOR_ICE_TRAY_CCW = 1;*/
                 run_down_ice_tray();
-                /*gu16DualCheckDelay = 150;*/   // Å»ºù 15ÃÊ ÀÌµ¿
-                gu16DualCheckDelay = 250;   // Å»ºù 15ÃÊ ÀÌµ¿
+                /*gu16DualCheckDelay = 150;*/   // Å»ï¿½ï¿½ 15ï¿½ï¿½ ï¿½Ìµï¿½
+                gu16DualCheckDelay = 250;   // Å»ï¿½ï¿½ 15ï¿½ï¿½ ï¿½Ìµï¿½
                 gu8DualTrayStep++;          // 3.CCW
             }
             else{}
@@ -1010,18 +1008,18 @@ void check_error_micro_sw_detect_at_once(void)
                 /*pMOTOR_ICE_TRAY_CW = 0;*/
                 /*pMOTOR_ICE_TRAY_CCW = 0;*/
                 run_stop_ice_tray();
-                gu16DualCheckDelay = 3000;     // 5ºÐ Áö¿¬
-                gu8DualTrayStep++;              // 4.Å»ºùÀ§Ä¡¿¡¼­ Á¤Áö
+                gu16DualCheckDelay = 3000;     // 5ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+                gu8DualTrayStep++;              // 4.Å»ï¿½ï¿½ï¿½ï¿½Ä¡ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             }
             /*else if(gu16DualCheckDelay <= 130 && gu16DualCheckDelay >= 50)*/
             else if(gu16DualCheckDelay <= 220 && gu16DualCheckDelay >= 80)
             {
-                if(gu8IceLEV == 2)              // ÀÌµ¿Áß Dual Open ÇØÁ¦
+                if(gu8IceLEV == 2)              // ï¿½Ìµï¿½ï¿½ï¿½ Dual Open ï¿½ï¿½ï¿½ï¿½
                 {
                     gu8DualTrayStep = 0;
                     gu16DualCheckDelay = 0;
                     gu8DualTrayCheckCNT = 0;
-                    F_ErrTrayMotor_DualInital = 0;  // Tray ÀÎ½Ä ÀÌµ¿ÁßÀÌ¸é Tray M/S Error ÃÊ±â¹ß»ý ÇØÁ¦
+                    F_ErrTrayMotor_DualInital = 0;  // Tray ï¿½Î½ï¿½ ï¿½Ìµï¿½ï¿½ï¿½ï¿½Ì¸ï¿½ Tray M/S Error ï¿½Ê±ï¿½ß»ï¿½ ï¿½ï¿½ï¿½ï¿½
                     gu8IceStep = STATE_0_STANDBY;
                     gu8InitStep = 0;
                     F_IceInit = 1;
@@ -1038,7 +1036,7 @@ void check_error_micro_sw_detect_at_once(void)
                 gu8DualTrayStep = 0;
                 if(++gu8DualTrayCheckCNT >= 3)
                 {
-                    Bit17_Tray_Micro_SW_Dual_Detect_Error__E61 = SET;          // 3È¸ ½ÃµµÈÄ Error
+                    Bit17_Tray_Micro_SW_Dual_Detect_Error__E61 = SET;          // 3È¸ ï¿½Ãµï¿½ï¿½ï¿½ Error
                     F_ErrTrayMotor_DualInital = 0;
                 }
                 else{}
@@ -1063,18 +1061,12 @@ void check_error_micro_sw_detect_at_once(void)
 ***********************************************************************************************************************/
 void check_error_micro_sw_movement(void)
 {
-    //------------------------------------------------- ¾óÀ½¹ÞÀÌ È¸Àü
-    /*..hui [18-1-26¿ÀÈÄ 8:22:52] F_TrayMotorUP °¡ Á¦ºù F_TrayMotorCCW°¡ Å»ºùÀ§Ä¡.. ..*/
-    /*..hui [18-1-26¿ÀÈÄ 8:23:08] F_TrayMotorUP °¡ ½ÇÁ¦·Î´Â CCW·Î µ·´Ù..*/
     gu8_Tray_Motor_Direction = (U8)(((F_TrayMotorDOWN << 1) & 0x02) |
                                      (F_TrayMotorUP));
 
     switch(gu8_Tray_Motor_Direction)
     {
         case TRAY_MOTOR_STOP:
-
-            /*pMOTOR_ICE_TRAY_CW = CLEAR;*/
-            /*pMOTOR_ICE_TRAY_CCW = CLEAR;*/
             run_stop_ice_tray();
             gu16_Err_Tray_Motor_Up_Total_Tmr = 0;
             gu16_Err_Tray_Motor_Down_Total_Tmr = 0;
@@ -1084,36 +1076,24 @@ void check_error_micro_sw_movement(void)
             break;
 
         case TRAY_MOTOR_CW_DIRECTION:
-
-            /*..hui [18-2-6¿ÀÈÄ 1:32:40] CCW·Î µ¹°í 5ÃÊ°¡ ¾ÆÁ÷ ¾ÈÁö³­ »óÅÂ¸é ´ë±â..*/
             if(F_Tray_CCW_delay_finish == SET)
             {
-                /*..hui [18-2-2¿ÀÈÄ 3:11:59] Á¦ºù¹æÇâ ÀÌµ¿Áß ¿¡·¯ °¨Áö..*/
-                /*..hui [18-2-6¿ÀÈÄ 7:02:16] CW°¡ SETµÇ´Â ½ÃÁ¡Àº gu8IceStepÀÌ 1ÀÏ¶§¹Û¿¡ ¾øÀ½, Á¦ºù ½ÃÀÛÇÒ¶§..*/
                 check_error_tray_motor_up_operation();
             }
             else
             {
-                /*pMOTOR_ICE_TRAY_CW = CLEAR;*/
-                /*pMOTOR_ICE_TRAY_CCW = CLEAR;*/
                 run_stop_ice_tray();
             }
 
             break;
 
         case TRAY_MOTOR_CCW_DIRECTION:
-
-            /*..hui [18-2-6¿ÀÈÄ 1:32:40] CCW·Î µ¹°í 5ÃÊ°¡ ¾ÆÁ÷ ¾ÈÁö³­ »óÅÂ¸é ´ë±â..*/
-            /*..hui [18-2-6¿ÀÈÄ 8:18:30] CCW°¡ SETµÇ´Â ½ÃÁ¡Àº ´õ¹ÌÅ»ºù/Á¦ºùÅ»ºù½Ã....*/
             if(F_Tray_CW_delay_finish == SET)
             {
-                /*..hui [18-2-2¿ÀÈÄ 3:12:05] Å»ºù ¹æÇâ ÀÌµ¿Áß ¿¡·¯ °¨Áö..*/
                 check_error_tray_motor_down_retry_operation();
             }
             else
             {
-                /*pMOTOR_ICE_TRAY_CW = CLEAR;*/
-                /*pMOTOR_ICE_TRAY_CCW = CLEAR;*/
                 run_stop_ice_tray();
             }
 
@@ -1129,17 +1109,16 @@ void check_error_micro_sw_movement(void)
             break;
     }
 
-    ice_make_system_up_move_reset();        // Á¦ºù¹æÇâ ÇØºùÁ¦¾î
-    ice_make_system_down_move_reset();      // Å»ºù¹æÇâ ÇØºùÁ¦¾î
+    ice_make_system_up_move_reset();        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Øºï¿½ï¿½ï¿½ï¿½ï¿½
+    ice_make_system_down_move_reset();      // Å»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Øºï¿½ï¿½ï¿½ï¿½ï¿½
 
-    /*..hui [18-2-9¿ÀÈÄ 1:55:07] SWÀûÀ¸·Î µ¿½Ã¿¡ SETµÉ °æ¿ì ´ëºñ¿ë..*/
     if(F_TrayMotorUP == SET && F_TrayMotorDOWN == SET)
     {
         Bit18_Tray_Micro_SW_Up_Move_Error__E62 = SET;
     }
     else{}
 
-    /*..hui [19-12-13¿ÀÈÄ 7:25:08] Æ®·¹ÀÌ ³»¸° ÈÄ Á¤»óÀûÀ¸·Î Å»ºù ¸ðµå±îÁö ÁøÀÔ ½Ã ´©Àû Ä«¿îÆ® ÃÊ±âÈ­..*/
+    /*..hui [19-12-13ï¿½ï¿½ï¿½ï¿½ 7:25:08] Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å»ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ä«ï¿½ï¿½Æ® ï¿½Ê±ï¿½È­..*/
     if( gu8IceStep >= STATE_45_ICE_TAKE_OFF )
     {
         gu8_err_tray_down_acc_count = 0;
@@ -1153,12 +1132,12 @@ void check_error_micro_sw_movement(void)
 ***********************************************************************************************************************/
 void check_error_tray_motor_up_operation(void)
 {
-    /*..hui [18-2-6¿ÀÈÄ 5:25:47] Å»ºù¿¡¼­ Á¦ºù ¹æÇâÀ¸·Î ÀÌµ¿ ¹× ¿¡·¯°¨Áö..*/
+    /*..hui [18-2-6ï¿½ï¿½ï¿½ï¿½ 5:25:47] Å»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½..*/
     switch( gu8IceTrayLEV )
     {
         case ICE_TRAY_POSITION_ICE_MAKING:
 
-            /*..hui [18-2-6¿ÀÈÄ 2:14:43] Á¦ºù ¹æÇâÀ¸·Î °¨Áö½Ã Á¤Áö..*/
+            /*..hui [18-2-6ï¿½ï¿½ï¿½ï¿½ 2:14:43] ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½..*/
             /*pMOTOR_ICE_TRAY_CW = CLEAR;*/
             run_stop_ice_tray();
 
@@ -1243,7 +1222,7 @@ void check_error_tray_motor_up_operation(void)
 
                     if( gu8_Err_Tray_Up_Count <= TRAY_UP_ICE_STUCK_COUNT )
                     {
-                        /*..hui [25-3-17¿ÀÈÄ 4:18:38] Ã¹ 2È¸¸¸ ¾óÀ½°É¸² ¿ªÈ¸Àü Á¦¾î Ãß°¡..*/
+                        /*..hui [25-3-17ï¿½ï¿½ï¿½ï¿½ 4:18:38] Ã¹ 2È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½É¸ï¿½ ï¿½ï¿½È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½..*/
                         bit_ice_stuck_back_state = SET;
                     }
                     else{}
@@ -1254,8 +1233,8 @@ void check_error_tray_motor_up_operation(void)
 
         case ICE_TRAY_POSITION_ERROR:
 
-            /*..hui [18-2-6¿ÀÈÄ 4:49:15] Æ®·¹ÀÌ µ¿½Ã °¨Áö½Ã Áï½Ã Á¤Áö..*/
-            /*..hui [18-2-6¿ÀÈÄ 4:51:07] ÀÌÂÊÀ¸·Î µé¾î¿ÃÀÏÀº ¾øÀ½ À­ºÎºÐ µ¿½Ã°¨Áö ¿¡·¯ ºÎºÐ¿¡¼­ Ã³¸®..*/
+            /*..hui [18-2-6ï¿½ï¿½ï¿½ï¿½ 4:49:15] Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½..*/
+            /*..hui [18-2-6ï¿½ï¿½ï¿½ï¿½ 4:51:07] ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Îºï¿½ ï¿½ï¿½ï¿½Ã°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ÎºÐ¿ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½..*/
             /*pMOTOR_ICE_TRAY_CW = CLEAR;*/
             run_stop_ice_tray();
             F_TrayMotorUP = CLEAR;
@@ -1305,7 +1284,6 @@ void check_error_tray_motor_up_operation(void)
 
                 if( gu8_Err_Tray_Up_Count <= TRAY_UP_ICE_STUCK_COUNT )
                 {
-                    /*..hui [25-3-17¿ÀÈÄ 4:18:38] Ã¹ 2È¸¸¸ ¾óÀ½°É¸² ¿ªÈ¸Àü Á¦¾î Ãß°¡..*/
                     bit_ice_stuck_back_state = SET;
                 }
                 else{}
@@ -1322,13 +1300,13 @@ void check_error_tray_motor_up_operation(void)
 ***********************************************************************************************************************/
 void check_error_tray_motor_down_retry_operation(void)
 {
-    /*..hui [18-2-6¿ÀÈÄ 8:26:55] Á¦ºù¿¡¼­ Å»ºùÀ¸·Î ÀÌµ¿ ¹× ¿¡·¯°¨Áö....*/
+    /*..hui [18-2-6ï¿½ï¿½ï¿½ï¿½ 8:26:55] ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½....*/
     switch(gu8IceTrayLEV)
     {
         case ICE_TRAY_POSITION_ICE_MAKING:
 
             #if 0
-            /*..hui [18-2-6¿ÀÈÄ 8:27:13] 5ÃÊ ÀÌ»ó Á¦ºù À¯Áö½Ã Àç ½Ãµµ ±â´É ¼öÇà..*/
+            /*..hui [18-2-6ï¿½ï¿½ï¿½ï¿½ 8:27:13] 5ï¿½ï¿½ ï¿½Ì»ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ãµï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½..*/
             gu16_Tray_down_moving_retry_timer++;
 
             if(gu16_Tray_down_moving_retry_timer <= 50)
@@ -1370,7 +1348,7 @@ void check_error_tray_motor_down_retry_operation(void)
             }
             #endif
 
-            /*..hui [18-2-6¿ÀÈÄ 8:27:13] 5ÃÊ ÀÌ»ó Á¦ºù À¯Áö½Ã Àç ½Ãµµ ±â´É ¼öÇà..*/
+            /*..hui [18-2-6ï¿½ï¿½ï¿½ï¿½ 8:27:13] 5ï¿½ï¿½ ï¿½Ì»ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ãµï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½..*/
             gu16_Tray_down_moving_retry_timer++;
 
             if(gu16_Tray_down_moving_retry_timer <= 250)
@@ -1422,7 +1400,7 @@ void check_error_tray_motor_down_retry_operation(void)
 
         case ICE_TRAY_POSITION_ICE_THROW:
 
-            /*..hui [18-2-6¿ÀÈÄ 2:14:43] Á¦ºù ¹æÇâÀ¸·Î °¨Áö½Ã Á¤Áö..*/
+            /*..hui [18-2-6ï¿½ï¿½ï¿½ï¿½ 2:14:43] ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½..*/
             /*pMOTOR_ICE_TRAY_CCW = CLEAR;*/
             run_stop_ice_tray();
             F_TrayMotorDOWN = CLEAR;
@@ -1434,8 +1412,8 @@ void check_error_tray_motor_down_retry_operation(void)
 
         case ICE_TRAY_POSITION_ERROR:
 
-            /*..hui [18-2-6¿ÀÈÄ 4:49:15] Æ®·¹ÀÌ µ¿½Ã °¨Áö½Ã Áï½Ã Á¤Áö..*/
-            /*..hui [18-2-6¿ÀÈÄ 4:51:07] ÀÌÂÊÀ¸·Î µé¾î¿ÃÀÏÀº ¾øÀ½ À­ºÎºÐ µ¿½Ã°¨Áö ¿¡·¯ ºÎºÐ¿¡¼­ Ã³¸®..*/
+            /*..hui [18-2-6ï¿½ï¿½ï¿½ï¿½ 4:49:15] Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½..*/
+            /*..hui [18-2-6ï¿½ï¿½ï¿½ï¿½ 4:51:07] ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Îºï¿½ ï¿½ï¿½ï¿½Ã°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ÎºÐ¿ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½..*/
             /*pMOTOR_ICE_TRAY_CCW = CLEAR;*/
             run_stop_ice_tray();
             F_TrayMotorDOWN = CLEAR;
@@ -1497,27 +1475,23 @@ void ice_make_system_up_move_reset(void)
 
     if( gu8_Err_Tray_Up_Count <= TRAY_UP_ICE_STUCK_COUNT )
     {
-        /*..hui [25-3-17¿ÀÈÄ 3:59:26] Ã¹ 5È¸´Â 1ºÐÀ¸·Î..*/
-        mu16_delay_time = TRAY_UP_ICE_STUCK_DELAY_TIME;     // 1ºÐ ´ë±â
+        /*..hui [25-3-17ï¿½ï¿½ï¿½ï¿½ 3:59:26] Ã¹ 5È¸ï¿½ï¿½ 1ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½..*/
+        mu16_delay_time = TRAY_UP_ICE_STUCK_DELAY_TIME;     // 1ï¿½ï¿½ ï¿½ï¿½ï¿½
     }
     else
     {
-        mu16_delay_time = TRAY_UP_RESET_DELAY_TIME;         // 90ºÐ
+        mu16_delay_time = TRAY_UP_RESET_DELAY_TIME;         // 90ï¿½ï¿½
     }
 
     if(F_Ice_Tray_Up_Move_Reset == SET)
     {
         gu16_Ice_Tray_Up_Reset_Delay_Tmr++;
-
-        /*if(gu16_Ice_Tray_Up_Reset_Delay_Tmr >= TRAY_UP_RESET_DELAY_TIME)*/
         if(gu16_Ice_Tray_Up_Reset_Delay_Tmr >= mu16_delay_time)
         {
             if( gu8_Err_Tray_Up_Count <= 2 )
             {
                 ice_stuck_reset();
                 F_Ice_Tray_Up_Move_Reset = CLEAR;
-                /*..hui [25-3-17¿ÀÈÄ 4:20:05] Æ®·¹ÀÌ ³»¸®°í ´Ù½Ã ½ÃÀÛ..*/
-                /*run_down_ice_tray();*/
                 down_tray_motor();
             }
             else
@@ -1528,7 +1502,6 @@ void ice_make_system_up_move_reset(void)
         }
         else
         {
-            /*..hui [18-2-13¿ÀÈÄ 3:24:13] 10ºÐ ´ë±âÁß¿¡ Á¤»ó º¹±Í½Ã ÇÏ´ø°Å ÁßÁö....*/
             if(gu8IceTrayLEV == ICE_TRAY_POSITION_ICE_MAKING)
             {
                 ice_system_reset();
@@ -1589,7 +1562,7 @@ void over_ice_making_check(void)
 ***********************************************************************************************************************/
 void over_ice_making_melt_proc(void)
 {
-    /*..hui [18-2-6¿ÀÈÄ 9:42:36] °úÁ¦ºùµÈ°Å ³ìÀÌ´ÂÁß¿¡ ¾ðÁ¦µç Æ®·¹ÀÌ Á¤»ó º¹±ÍµÇ¸é ÇÏ´ø°Å ÁßÁö..*/
+    /*..hui [18-2-6ï¿½ï¿½ï¿½ï¿½ 9:42:36] ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È°ï¿½ ï¿½ï¿½ï¿½Ì´ï¿½ï¿½ß¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ÍµÇ¸ï¿½ ï¿½Ï´ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½..*/
     if(gu8IceTrayLEV == ICE_TRAY_POSITION_ICE_THROW)
     {
         ice_system_reset();
@@ -1609,11 +1582,11 @@ void over_ice_making_melt_proc(void)
 
         case 1:
 
-            /*..hui [18-2-6¿ÀÈÄ 9:16:17] ¸ÕÀú 10ÃÊµ¿¾È ³Ã¼ö ±Þ¼ö¹ëºê ONÇÑ´Ù..*/
+            /*..hui [18-2-6ï¿½ï¿½ï¿½ï¿½ 9:16:17] ï¿½ï¿½ï¿½ï¿½ 10ï¿½Êµï¿½ï¿½ï¿½ ï¿½Ã¼ï¿½ ï¿½Þ¼ï¿½ï¿½ï¿½ï¿½ ONï¿½Ñ´ï¿½..*/
             gu16_over_ice_melt_timer++;
 
             /*if(gu16_over_ice_melt_timer >= 100)*/
-            /*..hui [23-9-22¿ÀÀü 11:26:29] 15ÃÊ·Î ´Ã¸².. ¾ÆÀÌÄÜ¾ÆÀÌ½º »ç¾ç..*/
+            /*..hui [23-9-22ï¿½ï¿½ï¿½ï¿½ 11:26:29] 15ï¿½Ê·ï¿½ ï¿½Ã¸ï¿½.. ï¿½ï¿½ï¿½ï¿½ï¿½Ü¾ï¿½ï¿½Ì½ï¿½ ï¿½ï¿½ï¿½..*/
             if(gu16_over_ice_melt_timer >= 150)
             {
                 F_IceVV = CLEAR;
@@ -1631,14 +1604,14 @@ void over_ice_making_melt_proc(void)
 
         case 2:
 
-            /*..hui [18-2-6¿ÀÈÄ 9:21:25] ³Ã¼ö ÀÔ¼öÇÏ°í 20ÃÊµ¿¾È Å»ºùÈ÷ÅÍ¸¦ °¡µ¿ÇÑ´ç..*/
+            /*..hui [18-2-6ï¿½ï¿½ï¿½ï¿½ 9:21:25] ï¿½Ã¼ï¿½ ï¿½Ô¼ï¿½ï¿½Ï°ï¿½ 20ï¿½Êµï¿½ï¿½ï¿½ Å»ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½..*/
             gu16_over_ice_melt_timer++;
 
-            /*..hui [20-4-21¿ÀÈÄ 7:15:57] ¾ÈÀüÀ» À§ÇØ 10ÃÊ·Î º¯°æ..*/
-            /*..hui [20-4-21¿ÀÈÄ 7:22:24] AIS30Àº Å»ºù½Ã ÃÊ±â OFF ºÎÅÍ ½ÃÀÛÇÏ¹Ç·Î ´Ù½Ã 15ÃÊ·Î....*/
+            /*..hui [20-4-21ï¿½ï¿½ï¿½ï¿½ 7:15:57] ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 10ï¿½Ê·ï¿½ ï¿½ï¿½ï¿½ï¿½..*/
+            /*..hui [20-4-21ï¿½ï¿½ï¿½ï¿½ 7:22:24] AIS30ï¿½ï¿½ Å»ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½ OFF ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¹Ç·ï¿½ ï¿½Ù½ï¿½ 15ï¿½Ê·ï¿½....*/
             /*if(gu16_over_ice_melt_timer >= 150)*/
             /*if(gu16_over_ice_melt_timer >= 6000)*/
-            /*..hui [23-9-22¿ÀÀü 11:26:49] Å»ºùÈ÷ÅÍ µ¿ÀÛ »èÁ¦.. 20ºÐµ¿¾È ´ë±â..*/
+            /*..hui [23-9-22ï¿½ï¿½ï¿½ï¿½ 11:26:49] Å»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.. 20ï¿½Ðµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½..*/
             if(gu16_over_ice_melt_timer >= 12000)
             {
                 F_Over_Ice_Heater_State = CLEAR;
@@ -1664,7 +1637,7 @@ void over_ice_making_melt_proc(void)
 
         case 4:
 
-            /*..hui [18-2-6¿ÀÈÄ 9:23:11] 5ÃÊµ¿¾È ³Ã¼ö ±Þ¼ö¹ëºê ON..*/
+            /*..hui [18-2-6ï¿½ï¿½ï¿½ï¿½ 9:23:11] 5ï¿½Êµï¿½ï¿½ï¿½ ï¿½Ã¼ï¿½ ï¿½Þ¼ï¿½ï¿½ï¿½ï¿½ ON..*/
             gu16_over_ice_melt_timer++;
 
             if(gu16_over_ice_melt_timer >= 50)
@@ -1684,19 +1657,19 @@ void over_ice_making_melt_proc(void)
 
         case 5:
 
-            /*..hui [18-2-6¿ÀÈÄ 9:23:58] 10ºÐµ¿¾È ´ë±â..*/
+            /*..hui [18-2-6ï¿½ï¿½ï¿½ï¿½ 9:23:58] 10ï¿½Ðµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½..*/
             gu16_over_ice_melt_timer++;
 
             if(gu16_over_ice_melt_timer >= 6000)
             {
-                /*..hui [18-2-6¿ÀÈÄ 9:25:47] 10ºÐµ¿¾È ´ë±âÈÄ¿¡ ´Ù½Ã ±Þ¼ö¹ëºê 5ÃÊ ONÇÑ´Ù..*/
+                /*..hui [18-2-6ï¿½ï¿½ï¿½ï¿½ 9:25:47] 10ï¿½Ðµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ä¿ï¿½ ï¿½Ù½ï¿½ ï¿½Þ¼ï¿½ï¿½ï¿½ï¿½ 5ï¿½ï¿½ ONï¿½Ñ´ï¿½..*/
                 gu16_over_ice_melt_timer = 0;
                 gu8_over_ice_melt_proc = 3;
 
-                /*..hui [18-2-6¿ÀÈÄ 9:29:04] ÃÑ 9¹ø ´ë·« 90ºÐµ¿¾È ¼öÇà..*/
+                /*..hui [18-2-6ï¿½ï¿½ï¿½ï¿½ 9:29:04] ï¿½ï¿½ 9ï¿½ï¿½ ï¿½ë·« 90ï¿½Ðµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½..*/
                 gu8_over_ice_melt_operation_count++;
 
-                /*..hui [18-2-6¿ÀÈÄ 9:30:30] 90ºÐ µ¿¾È ¼öÇà ÈÄ CCW µ¿ÀÛ ÇÑ¹ø ´õ ¼öÇà..*/
+                /*..hui [18-2-6ï¿½ï¿½ï¿½ï¿½ 9:30:30] 90ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ CCW ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ¹ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½..*/
                 if(gu8_over_ice_melt_operation_count >= 10)
                 {
                     ice_system_reset();
@@ -1742,11 +1715,11 @@ void ice_system_reset(void)
     F_IceHeater = CLEAR;
     F_IceVV = CLEAR;
 
-    /*..hui [18-3-22¿ÀÀü 10:04:37] CCW ¹æÇâ ÀÌµ¿Áß¿¡µµ ¾óÀ½ÀÌ ÀÖÀ»¼öÀÖÀ½.. ´õ¹ÌÅ»ºù ÁøÇà..»ý°¢ÀÌ Âª¾Ò´Ù....*/
+    /*..hui [18-3-22ï¿½ï¿½ï¿½ï¿½ 10:04:37] CCW ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ï¿½ß¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.. ï¿½ï¿½ï¿½ï¿½Å»ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½..ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Âªï¿½Ò´ï¿½....*/
     F_IceInit = SET;
 
 #if 0
-    /*..hui [18-2-9¿ÀÈÄ 2:34:20] CCW ¹æÇâÀ¸·Î ÀÌµ¿ Àç½ÃµµÁß¿¡´Â ±»ÀÌ ´õ¹ÌÅ»ºù ÇÒ ÇÊ¿ä ¾øÀ½..*/
+    /*..hui [18-2-9ï¿½ï¿½ï¿½ï¿½ 2:34:20] CCW ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ ï¿½ï¿½Ãµï¿½ï¿½ß¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Å»ï¿½ï¿½ ï¿½ï¿½ ï¿½Ê¿ï¿½ ï¿½ï¿½ï¿½ï¿½..*/
     if(F_Ice_Tray_Up_Move_Reset == SET)
     {
         F_IceInit = CLEAR;
@@ -1779,8 +1752,9 @@ void ice_stuck_reset(void)
 void ice_system_stop(void)
 {
     F_Safety_Routine = SET;
-    //F_IceMakeGo = CLEAR;
-    //F_IceInit = CLEAR;
+
+    dlog(SYSMOD, FATAL, ("CLI - IceStuck Occured (UP) !!! - %d\r\n", F_Ice_Tray_Up_Move_Reset));
+    dlog(SYSMOD, FATAL, ("CLI - IceStuck Occured (DOWN) !!! - %d\r\n", F_Ice_Tray_Down_Move_Reset));
 }
 
 /***********************************************************************************************************************

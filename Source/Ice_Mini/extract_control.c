@@ -557,6 +557,10 @@ void start_extract_ice(void)
                     gu16_ice_out_timer = 0;
                     gu16_ice_extract_timer_100ms = 0;
                     gu8_Ice_Out_Step = STATE_10_ICE_EXTRACT_STATE;
+
+                    // CLI 디버깅 출력
+                    dlog(SYSMOD, INFO, ("CLI - IceExtractStart \r\n"));
+
                 }
                 else
                 {
@@ -672,12 +676,8 @@ void start_extract_ice(void)
 
             /* 2025-09-18 CH.PARK �Ǵ� ���۽ð� ���� ���� �������� ����ð� ���� (���� ����ð��� 25�� ����) */
             gu16_ice_out_timer = gu16_ice_extract_timer_100ms;
-
             if( gu16_ice_out_timer >= ice_extract_timer )
             {
-                // CLI 디버깅 출력
-                dlog(SYSMOD, INFO, ("CLI - IceExtractTime : %d \r\n", gu16_ice_out_timer));
-
                 gu8_Ice_Out_Step = STATE_50_ICEWATER_EXTRACT_FINISH_STATE;
                 gu16_ice_out_timer = 0;
             }

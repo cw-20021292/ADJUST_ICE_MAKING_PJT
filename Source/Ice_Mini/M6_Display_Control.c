@@ -10,7 +10,7 @@
 #include    "Global_Variable.h"
 #include    "Port_Define.h"
 #include    "M6_Display_Control.h"
-
+#include    "api_debug.h"
 
 
 void Display_Control(void);
@@ -109,7 +109,7 @@ TYPE_BYTE          U8FrontLeftLEDB;
 #define            Bit6_Front_Left_Led_Clock_Colon_Icon        U8FrontLeftLEDB.Bit.b6
 #define            Bit7_Front_Left_Led_Celcius_oC_Icon         U8FrontLeftLEDB.Bit.b7
 
-/* LED Á¦¾î BIT Ãß°¡ 250210 @CH.PARK */
+/* LED ï¿½ï¿½ï¿½ï¿½ BIT ï¿½ß°ï¿½ 250210 @CH.PARK */
 TYPE_BYTE          U8FrontTextLEDB;
 #define            gu8_front_left_led_2                         U8FrontTextLEDB.byte
 #define            Bit0_Front_Left_Led_Eff_Faucet_Text          U8FrontTextLEDB.Bit.b0
@@ -137,14 +137,14 @@ TYPE_BYTE          U8FrontTempSettingLEDB;
 #define            Bit1_Front_Led_Temp_Setting_Bar_1_2         U8FrontTempSettingLEDB.Bit.b1
 #define            Bit2_Front_Led_Temp_Setting_Bar_1_3         U8FrontTempSettingLEDB.Bit.b2
 #define            Bit3_Front_Led_Temp_Setting_Bar_1_4         U8FrontTempSettingLEDB.Bit.b3
-#define            Bit4_Front_Led_Temp_Setting_Bar_1_5         U8FrontTempSettingLEDB.Bit.b4        // [ÁÂÃø BAR 5 ¾ÆÀÌÄÜ]
+#define            Bit4_Front_Led_Temp_Setting_Bar_1_5         U8FrontTempSettingLEDB.Bit.b4        // [ï¿½ï¿½ï¿½ï¿½ BAR 5 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½]
 
 TYPE_BYTE          U8FrontAmountSettingLEDB;
 #define            gu8_front_amount_setting_bar_led            U8FrontAmountSettingLEDB.byte
 #define            Bit0_Front_Led_Amount_Setting_Bar_2_1       U8FrontAmountSettingLEDB.Bit.b0
 #define            Bit1_Front_Led_Amount_Setting_Bar_2_2       U8FrontAmountSettingLEDB.Bit.b1
 #define            Bit2_Front_Led_Amount_Setting_Bar_2_3       U8FrontAmountSettingLEDB.Bit.b2
-#define            Bit3_Front_Led_Amount_Setting_Bar_2_4       U8FrontAmountSettingLEDB.Bit.b3        // [ÁÂÃø BAR 4 ¾ÆÀÌÄÜ]
+#define            Bit3_Front_Led_Amount_Setting_Bar_2_4       U8FrontAmountSettingLEDB.Bit.b3        // [ï¿½ï¿½ï¿½ï¿½ BAR 4 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½]
 #define            Bit4_Front_Led_Amount_Setting_Bar_Continue  U8FrontAmountSettingLEDB.Bit.b4
 
 TYPE_BYTE          U8FrontCenterRecipeLEDB;
@@ -167,7 +167,7 @@ TYPE_BYTE          U8FrontSelectLEDB;
 #define            Bit3_Front_Led_Ambient_Select               U8FrontSelectLEDB.Bit.b3
 #define            Bit4_Front_Led_Cold_Select                  U8FrontSelectLEDB.Bit.b4
 #define            Bit5_Front_Led_Amount_Select                U8FrontSelectLEDB.Bit.b5
-#define            Bit6_Front_Led_My_Select                    U8FrontSelectLEDB.Bit.b6     // [MY] ÅÍÄ¡ ¼±ÅÃ ¾ÆÀÌÄÜ
+#define            Bit6_Front_Led_My_Select                    U8FrontSelectLEDB.Bit.b6     // [MY] ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
 TYPE_BYTE          U8FrontSettingLEDB;
 #define            gu8_front_setting_led                       U8FrontSettingLEDB.byte
@@ -177,19 +177,19 @@ TYPE_BYTE          U8FrontSettingLEDB;
 #define            Bit3_Front_Led_Ice_First                    U8FrontSettingLEDB.Bit.b3
 #define            Bit4_Front_Led_Cold_Temp                    U8FrontSettingLEDB.Bit.b4
 #define            Bit5_Front_Led_Sleep_Mode_Text              U8FrontSettingLEDB.Bit.b5
-#define            Bit6_Front_Led_Cold_Off                     U8FrontSettingLEDB.Bit.b6    // [³Ã¼öOFF] ÅÍÄ¡ ¼±ÅÃ ¾ÆÀÌÄÜ
+#define            Bit6_Front_Led_Cold_Off                     U8FrontSettingLEDB.Bit.b6    // [ï¿½Ã¼ï¿½OFF] ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
 
-/* LED Á¦¾î BIT Ãß°¡ 250210 @CH.PARK */
+/* LED ï¿½ï¿½ï¿½ï¿½ BIT ï¿½ß°ï¿½ 250210 @CH.PARK */
 TYPE_BYTE          U8FrontSettingLEDB_2;
 #define            gu8_front_setting_led_2                     U8FrontSettingLEDB_2.byte
 #define            Bit0_Front_Led_Ice_Lock                     U8FrontSettingLEDB_2.Bit.b0
 #define            Bit1_Front_Led_All_Lock                     U8FrontSettingLEDB_2.Bit.b1
-#define            Bit2_Front_Led_Icon_Led_Ice_Locker          U8FrontSettingLEDB_2.Bit.b2      // [¾óÀ½ ÀÚ¹°¼è ¾ÆÀÌÄÜ]
-#define            Bit3_Front_Led_Icon_Led_Hot_Locker          U8FrontSettingLEDB_2.Bit.b3      // [¿Â¼ö ÀÚ¹°¼è ¾ÆÀÌÄÜ]
-#define            Bit4_Front_Led_Icon_Fast_Ice                U8FrontSettingLEDB_2.Bit.b4      // LPP Ãß°¡ : ºü¸¥Á¦ºù ¼³Á¤ ¾ÆÀÌÄÜ
-#define            Bit5_Front_Led_Icon_Comp_Blue               U8FrontSettingLEDB_2.Bit.b5      // LPP Ãß°¡ : COMP ºí·ç LED
-#define            Bit6_Front_Led_Icon_Comp_White              U8FrontSettingLEDB_2.Bit.b6      // COMP È­ÀÌÆ® LED
+#define            Bit2_Front_Led_Icon_Led_Ice_Locker          U8FrontSettingLEDB_2.Bit.b2      // [ï¿½ï¿½ï¿½ï¿½ ï¿½Ú¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½]
+#define            Bit3_Front_Led_Icon_Led_Hot_Locker          U8FrontSettingLEDB_2.Bit.b3      // [ï¿½Â¼ï¿½ ï¿½Ú¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½]
+#define            Bit4_Front_Led_Icon_Fast_Ice                U8FrontSettingLEDB_2.Bit.b4      // LPP ï¿½ß°ï¿½ : ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+#define            Bit5_Front_Led_Icon_Comp_Blue               U8FrontSettingLEDB_2.Bit.b5      // LPP ï¿½ß°ï¿½ : COMP ï¿½ï¿½ï¿½ï¿½ LED
+#define            Bit6_Front_Led_Icon_Comp_White              U8FrontSettingLEDB_2.Bit.b6      // COMP È­ï¿½ï¿½Æ® LED
 
 TYPE_BYTE          U8FrontUnderTextLEDB;
 #define            gu8_front_under_text_led                    U8FrontUnderTextLEDB.byte
@@ -204,11 +204,11 @@ TYPE_BYTE          U8FrontUnderTextLEDB;
 
 TYPE_BYTE          U8FrontUnderIconLEDB;
 #define            gu8_front_under_icon_led                         U8FrontUnderIconLEDB.byte
-#define            Bit1_Front_Under_Ice_Inner_Blue_Extract          U8FrontUnderIconLEDB.Bit.b0     // ¾óÀ½ÃßÃâºÎ ¾ÈÂÊ ºí·ç LED
-#define            Bit1_Front_Under_Ice_Inner_White_Extract         U8FrontUnderIconLEDB.Bit.b1     // ¾óÀ½ÃßÃâºÎ ¾ÈÂÊ È­ÀÌÆ® LED
-#define            Bit2_Front_Under_Ice_Outer_Blue_Extract          U8FrontUnderIconLEDB.Bit.b2     // ¾óÀ½ÃßÃâºÎ ¹Ù±ùÂÊ ºí·ç LED
-#define            Bit3_Front_Under_Ice_Outer_White_Extract         U8FrontUnderIconLEDB.Bit.b3     // ¾óÀ½ÃßÃâºÎ ¹Ù±ùÂÊ È­ÀÌÆ® LED
-#define            Bit4_Front_Under_Water_White_Extract             U8FrontUnderIconLEDB.Bit.b4     // ³Ã¿ÂÁ¤ÃßÃâºÎ È­ÀÌÆ® LED
+#define            Bit1_Front_Under_Ice_Inner_Blue_Extract          U8FrontUnderIconLEDB.Bit.b0     // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ LED
+#define            Bit1_Front_Under_Ice_Inner_White_Extract         U8FrontUnderIconLEDB.Bit.b1     // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ È­ï¿½ï¿½Æ® LED
+#define            Bit2_Front_Under_Ice_Outer_Blue_Extract          U8FrontUnderIconLEDB.Bit.b2     // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ LED
+#define            Bit3_Front_Under_Ice_Outer_White_Extract         U8FrontUnderIconLEDB.Bit.b3     // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù±ï¿½ï¿½ï¿½ È­ï¿½ï¿½Æ® LED
+#define            Bit4_Front_Under_Water_White_Extract             U8FrontUnderIconLEDB.Bit.b4     // ï¿½Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È­ï¿½ï¿½Æ® LED
 #define            Bit5_Front_Under_Led_Welcome                     U8FrontUnderIconLEDB.Bit.b5     // WELCOME 1 LED
 #define            Bit6_Front_Under_Led_Welcome_2                   U8FrontUnderIconLEDB.Bit.b6     // WELCOME 2 LED CH.PARK ADDED 250204
 
@@ -549,7 +549,7 @@ TYPE_BYTE          U8AnimationDimmingSevenB;
 #define            Bit6_Animation_Dimming_Ice_Piece_State                     U8AnimationDimmingSevenB.Bit.b6
 #define            Bit7_Animation_Dimming_Ice_Extract_Inner_State             U8AnimationDimmingSevenB.Bit.b7
 
-/* LPP Ãß°¡ */
+/* LPP ï¿½ß°ï¿½ */
 TYPE_BYTE          U8AnimationDimmingEightB;
 #define            gu8_animation_dimming_eight                                U8AnimationDimmingEightB.byte
 #define            Bit0_Animation_Dimming_Ice_Inner_Blue_state                U8AnimationDimmingEightB.Bit.b0
@@ -685,13 +685,13 @@ void led_control_mode_decesion(void)
     && ((F_IceOut == SET) || (F_WaterOut == SET))
     )
     {
-        gu8_Led_Display_Step = LED_Display__ICE_WATER_EXTRACT;          // ¾óÀ½¹° ÃßÃâ Ç¥½Ã
+        gu8_Led_Display_Step = LED_Display__ICE_WATER_EXTRACT;          // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ç¥ï¿½ï¿½
     }
     else if((bit_myWater_setting_start == SET)
     && (F_WaterOut == SET)
     )
     {
-        gu8_Led_Display_Step = LED_Display__MY_WATER_EXTRACT;           // MY¿öÅÍ ÃßÃâ Ç¥½Ã
+        gu8_Led_Display_Step = LED_Display__MY_WATER_EXTRACT;           // MYï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ç¥ï¿½ï¿½
     }
     else if((F_WaterOut == SET) && (Extract_Stack.U8_iceSelect == CLEAR))
     {
@@ -752,15 +752,18 @@ void display_version( void )
                 }
 
                 /*if(gu8_version_display_count > 6)*/
-                /*..hui [23-3-22¿ÀÈÄ 12:50:58] °Ë»ç½Ã ³Ê¹« ´À¸².. 2¹ø Á¡¸ê·Î º¯°æ..*/
+                /*..hui [23-3-22ï¿½ï¿½ï¿½ï¿½ 12:50:58] ï¿½Ë»ï¿½ï¿½ ï¿½Ê¹ï¿½ ï¿½ï¿½ï¿½ï¿½.. 2ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½..*/
                 if(gu8_version_display_count > 4)
                 {
-                    /*..hui [21-11-4¿ÀÀü 9:13:03] ÀÏ¹Ý¸ðµå¿¡¼­´Â ¹öÀü Ç¥½ÃÇÏÁö ¾Êµµ·Ï..*/
+                    /*..hui [21-11-4ï¿½ï¿½ï¿½ï¿½ 9:13:03] ï¿½Ï¹Ý¸ï¿½å¿¡ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ç¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Êµï¿½ï¿½ï¿½..*/
                     if( u8FactoryTestMode == NONE_TEST_MODE )
                     {
                         gu8_led_version_step = PROC_END;
                         gu8_version_display_count = 0;
                         gu8_version_display_Timer = 0;
+
+                                        // CLI ë””ë²„ê¹… ì¶œë ¥
+                        dlog(SYSMOD, INFO, ("CLI - IceMakingTable delete program is operational \r\n"));
                     }
                     else
                     {
@@ -807,7 +810,7 @@ void display_version( void )
 
         case PROC_END:
 
-            /*..hui [17-4-4¿ÀÈÄ 2:20:26] ¸¶Áö¸·À¸·Î 500ms OFFÇÏ°í Á¾·á..*/
+            /*..hui [17-4-4ï¿½ï¿½ï¿½ï¿½ 2:20:26] ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 500ms OFFï¿½Ï°ï¿½ ï¿½ï¿½ï¿½ï¿½..*/
             off_all_control_led();
 
             gu8_version_display_Timer++;
@@ -906,7 +909,7 @@ void on_all_control_led( void )
     gu8_front_under_text_led = 0xff;
     gu8_front_under_icon_led = 0xff;
 
-    /* LED Ãß°¡ 250210 @CH.PARK */
+    /* LED ï¿½ß°ï¿½ 250210 @CH.PARK */
     gu8_front_left_led_2 = 0xFF;
     gu8_front_setting_led_2 = 0xFF;
 
@@ -923,13 +926,13 @@ void all_duty_test_percent(void)
     set_duty_percent( DIMMING__PERCENT_SEG_LEFT_HUNDRED, left_normal_state_percent );
     set_duty_percent( DIMMING__PERCENT_SEG_LEFT_TEN, left_normal_state_percent );
     set_duty_percent( DIMMING__PERCENT_SEG_LEFT_ONE, left_normal_state_percent );
-    
+
     set_duty_percent( DIMMING__PERCENT_SEG_RIGHT_HUNDRED, right_normal_state_percent );
     set_duty_percent( DIMMING__PERCENT_SEG_RIGHT_TEN, right_normal_state_percent );
     set_duty_percent( DIMMING__PERCENT_SEG_RIGHT_ONE, right_normal_state_percent );
 ////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////
-    /*..hui [24-2-22¿ÀÈÄ 5:26:02] ±â´ÉºÎ..*/////////////////////////////////
+    /*..hui [24-2-22ï¿½ï¿½ï¿½ï¿½ 5:26:02] ï¿½ï¿½Éºï¿½..*/////////////////////////////////
     set_duty_percent( DIMMING__PERCENT_ICE_SELECT, funtion_led_percent );
     set_duty_percent( DIMMING__PERCENT_ICE_WATER_SELECT, funtion_led_percent );
     set_duty_percent( DIMMING__PERCENT_HOT_SELECT, funtion_led_percent );
@@ -937,10 +940,10 @@ void all_duty_test_percent(void)
     set_duty_percent( DIMMING__PERCENT_COLD_SELECT, funtion_led_percent );
     set_duty_percent( DIMMING__PERCENT_AMOUNT_SELECT, funtion_led_percent );
     set_duty_percent( DIMMING__PERCENT_MY_SELECT, funtion_led_percent );
-    
+
 ////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////
-    /*..hui [24-2-22¿ÀÈÄ 5:26:07] ¼³Á¤ºÎ..*/
+    /*..hui [24-2-22ï¿½ï¿½ï¿½ï¿½ 5:26:07] ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½..*/
     set_duty_percent( DIMMING__PERCENT_SETTING_ICE_SIZE, setting_led_percent );
     set_duty_percent( DIMMING__PERCENT_SETTING_ICE_OFF, setting_led_percent );
 
@@ -953,7 +956,7 @@ void all_duty_test_percent(void)
     set_duty_percent( DIMMING__PERCENT_SETTING_ALL_LOCK, setting_led_percent );
     set_duty_percent( DIMMING__PERCENT_SETTING_HOT_LOCK, setting_led_percent );
     set_duty_percent( DIMMING__PERCENT_COLD_OFF, setting_led_percent );
-    
+
     set_duty_percent( DIMMING__PERCENT_ICE_LARGE_TEXT, setting_led_percent );    /////
     set_duty_percent( DIMMING__PERCENT_ICE_CENTER_BAR, setting_led_percent );    /////
     set_duty_percent( DIMMING__PERCENT_ICE_SMALL_TEXT, setting_led_percent );    /////
@@ -973,7 +976,7 @@ void all_duty_test_percent(void)
 
 ////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////
-    /*..hui [24-2-22¿ÀÈÄ 5:32:07] »ó´Ü¾ÆÀÌÄÜºÎ..*/
+    /*..hui [24-2-22ï¿½ï¿½ï¿½ï¿½ 5:32:07] ï¿½ï¿½Ü¾ï¿½ï¿½ï¿½ï¿½Üºï¿½..*/
     set_duty_percent( DIMMING__PERCENT_ICE_FULL_TEXT, top_small_led_percent );
     set_duty_percent( DIMMING__PERCENT_ICE_SHORTAGE_TEXT, top_small_led_percent );
     set_duty_percent( DIMMING__PERCENT_SLEEP_ICON, top_small_led_percent );    /////
@@ -1001,10 +1004,10 @@ void all_duty_test_percent(void)
     set_duty_percent( DIMMING__PERCENT_RIGHT_SEG_DOT, colon_dot_led_percent );
     set_duty_percent( DIMMING__PERCENT_CLOCK_COLON_ICON, colon_dot_led_percent );
 
-    /* LED 100% Ãâ·Â Ãß°¡ 250211 CH.PARK */
+    /* LED 100% ï¿½ï¿½ï¿½ ï¿½ß°ï¿½ 250211 CH.PARK */
     set_duty_percent( DIMMING__PERCENT_TEMP_BAR_1_5, bar_led_percent );
     set_duty_percent( DIMMING__PERCENT_AMOUNT_BAR_2_4, bar_led_percent );
-    
+
     set_duty_percent( DIMMING__PERCENT_TEMP_BAR_1_1, bar_led_percent );
     set_duty_percent( DIMMING__PERCENT_TEMP_BAR_1_2, bar_led_percent );
 
@@ -1027,13 +1030,13 @@ void all_duty_test_percent(void)
 
 ////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////
-    /*..hui [24-2-22¿ÀÈÄ 5:29:05] Áß°£ ÅØ½ºÆ® ¾ÆÀÌÄÜºÎ..*/
+    /*..hui [24-2-22ï¿½ï¿½ï¿½ï¿½ 5:29:05] ï¿½ß°ï¿½ ï¿½Ø½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½Üºï¿½..*/
     set_duty_percent( DIMMING__PERCENT_WELCOME_LED, welcome_right_led_percent );
     set_duty_percent( DIMMING__PERCENT_WELCOME_LED_2, welcome_left_led_percent );
 
 ////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////
-    /*..hui [24-2-22¿ÀÈÄ 5:26:40] ÃßÃâ..*/
+    /*..hui [24-2-22ï¿½ï¿½ï¿½ï¿½ 5:26:40] ï¿½ï¿½ï¿½ï¿½..*/
     set_duty_percent( DIMMING__PERCENT_WATER_EXTRACT, water_extract_led_percent );
     set_duty_percent( DIMMING__PERCENT_ICE_EXTRACT, ice_extract_outer_led_percent );
     set_duty_percent( DIMMING__PERCENT_ICE_EXTRACT_INNER, ice_extract_inner_led_percent );
@@ -1065,7 +1068,7 @@ void off_all_control_led( void )
     gu8_front_under_text_led = 0;
     gu8_front_under_icon_led = 0;
 
-    /* 2KG LED Ãß°¡ 250211 CH.PARK */
+    /* 2KG LED ï¿½ß°ï¿½ 250211 CH.PARK */
     gu8_front_left_led_2 = CLEAR;
     gu8_front_setting_led_2 = CLEAR;
 
@@ -1126,7 +1129,7 @@ void    display_memento(void)
             else
             {
                 memento_display_step_conv(MEMENTO_DISPLAY_ERROR_2);
-            }    
+            }
         break;
 
         case MEMENTO_DISPLAY_ERROR_2:
