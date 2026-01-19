@@ -1,14 +1,14 @@
 /**
  * File : api_queue.h
- * 
+ *
  * Application Programming Interface
- * 
+ *
 */
 
 #ifndef __API_QUEUE_H__
 #define __API_QUEUE_H__
 
-#include "macrodriver.h"
+#include "hal_serial.h"
 
 typedef struct {
     volatile U8 *buffer;

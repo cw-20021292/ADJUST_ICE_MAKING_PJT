@@ -15,6 +15,7 @@
 #include    "work_ice_make.h"
 #include    "work_flow.h"
 #include    "api_debug.h"
+#include    "Packet_Match.h"
 void Ice_Make_Process(void);
 void normal_mode_ice_init_operation(void);
 //U16 calc_ice_heater_time(void);
@@ -463,8 +464,15 @@ void ice_make_operation(void)
             }
             else
             {
-
-                gu16_Ice_Tray_Fill_Hz = C_ICE_TRAY_FILL_200CC;
+                if(GetB2TrayIn_Hz() > 0)
+                {
+                    gu16_Ice_Tray_Fill_Hz = GetB2TrayIn_Hz();
+                }
+                else
+                {
+                    gu16_Ice_Tray_Fill_Hz = C_ICE_TRAY_FILL_200CC;
+                }
+                // gu16_Ice_Tray_Fill_Hz = C_ICE_TRAY_FILL_200CC;
 
                 // 실제 입수 Hz는 드레인탱크로 100% 빼본 유량값으로 적용
                 // User 제빙수 입수량 설정 (드레인탱크 기준)
@@ -577,9 +585,11 @@ void ice_make_operation(void)
                     // User 제빙시간 반영
                     AutoIceMake_DecideNextIceMakeTime(&gu16IceMakeTime);
 
-                    // CLI 디버깅 출력
-                    dlog(SYSMOD, DATA, ("CLI - AmbTemp/IceMakingTime : %d, %04d \r\n", gu8_Amb_Front_Temperature_One_Degree, gu16IceMakeTime));
-
+                    if(GetUsedFreezingTable() == CLEAR)
+                    {
+                        // CLI 디버깅 출력
+                        dlog(SYSMOD, DATA, ("CLI - AmbTemp/IceMakingTime : %d, %04d \r\n", gu8_Amb_Front_Temperature_One_Degree, gu16IceMakeTime));
+                    }
                     gu16_cody_ice_make_time  = gu16IceMakeTime;
                     gu16_uv_ice_make_time = gu16IceMakeTime;
 
@@ -663,9 +673,11 @@ void ice_make_operation(void)
             if(u8DrainWaterLevel == DRAIN_LEVEL_EMPTY)
             {
                 gu8IceStep = STATE_42_NEXT_ICE_AMOUNT_CAL;
-
-                // CLI 디버깅 출력
-                dlog(SYSMOD, DATA, ("CLI - TargetHz/InitHz/IceMakingHz : %.1f, %.1f, %.1f \r\n", GetCCToHz(ICE_V_TARGET), GetFlowInitFlowHz(), GetDrainFlow()));
+                if(GetUsedFreezingTable() == CLEAR)
+                {
+                    // CLI 디버깅 출력
+                    dlog(SYSMOD, DATA, ("CLI - TargetHz/InitHz/IceMakingHz : %.1f, %.1f, %.1f \r\n", GetCCToHz(ICE_V_TARGET), GetFlowInitFlowHz(), GetDrainFlow()));
+                }
             }
             break;
 
@@ -866,6 +878,11 @@ U8 get_ice_mode_comp_rps(void)
     {
         /*..hui [23-4-7???? 11:16:14] 30?? ???..*/
         mu8_return = BLDC_COMP_65Hz;
+    }
+
+    if(GetB2IceMakeTargetRPS() > 0)
+    {
+        mu8_return = GetB2IceMakeTargetRPS();
     }
 
 

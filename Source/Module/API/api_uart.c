@@ -21,6 +21,18 @@ static void Uart0RecvCallbackFunc(U8 rx_data);
 static void Uart0SendCallbackFunc(void);
 #endif /* USE_UART0_MODULE */
 
+#ifdef USE_UART2_MODULE
+static uint8_t uart2_rx_buffer_array[UART2_RX_BUFFER_SIZE];
+static uint8_t uart2_tx_buffer_array[UART2_TX_BUFFER_SIZE];
+CircularQueue uart2_rx_queue = {0};
+CircularQueue uart2_tx_queue = {0};
+
+static volatile U8 uart2_tx_complete = TRUE;
+
+static void Uart2RecvCallbackFunc(U8 rx_data);
+static void Uart2SendCallbackFunc(void);
+#endif /* USE_UART2_MODULE */
+
 #ifdef USE_UART3_MODULE
 static uint8_t uart3_rx_buffer_array[UART3_RX_BUFFER_SIZE];
 static uint8_t uart3_tx_buffer_array[UART3_TX_BUFFER_SIZE];
@@ -41,6 +53,13 @@ void Uart_Init(void)
     uart0_tx_complete = TRUE;
     HAL_Uart_Init(UART_CHANNEL_0, Uart0RecvCallbackFunc, Uart0SendCallbackFunc);
 #endif /* USE_UART0_MODULE */
+
+#ifdef USE_UART2_MODULE
+    Queue_Init(&uart2_rx_queue, uart2_rx_buffer_array, sizeof(uart2_rx_buffer_array));
+    Queue_Init(&uart2_tx_queue, uart2_tx_buffer_array, sizeof(uart2_tx_buffer_array));
+    uart2_tx_complete = TRUE;
+    HAL_Uart_Init(UART_CHANNEL_2, Uart2RecvCallbackFunc, Uart2SendCallbackFunc);
+#endif /* USE_UART2_MODULE */
 
 #ifdef USE_UART3_MODULE
     Queue_Init(&uart3_rx_queue, uart3_rx_buffer_array, sizeof(uart3_rx_buffer_array));

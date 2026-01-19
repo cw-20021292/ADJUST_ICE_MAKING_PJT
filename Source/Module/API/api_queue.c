@@ -1,7 +1,7 @@
 /**
  * File : api_queue.c
- * 
- * 
+ *
+ *
  *
 */
 
@@ -45,7 +45,7 @@ U8 Queue_IsFull(const CircularQueue* queue)
 
 U8 Queue_Enqueue(CircularQueue* queue, uint8_t data)
 {
-    if (Queue_IsFull(queue) == TRUE) 
+    if (Queue_IsFull(queue) == TRUE)
     {
         return FALSE;
     }

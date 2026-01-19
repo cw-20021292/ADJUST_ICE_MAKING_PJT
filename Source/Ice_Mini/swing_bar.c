@@ -10,11 +10,11 @@
 #include    "Global_Variable.h"
 #include    "Port_Define.h"
 #include    "swing_bar.h"
-
+#include    "Packet_Match.h"
 void output_swing_bar(void);
 
 
-//===================================== Åõ¸í¾óÀ½
+//===================================== ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 bit F_CristalIce;
 bit F_Cristal;
 U8 gu8_cristal_timer;
@@ -34,7 +34,7 @@ void output_swing_bar(void)
         gu8_cristal_timer--;
     }
     else{}
-		
+
     if(Bit2_Ice_Operation_Disable_State == SET
     || F_ErrTrayMotor_DualInital == SET
     || F_Safety_Routine == SET)
@@ -49,7 +49,7 @@ void output_swing_bar(void)
     if(F_CristalIce != SET)
     {
         gu8_cristal_timer = 0;
-        pSWING_BAR = 0;                              // ½ºÀ®¹ÙÁ¤Áö
+        pSWING_BAR = 0;                              // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         return;
     }
     else{}
@@ -58,7 +58,7 @@ void output_swing_bar(void)
     if( gu8IceStep >= STATE_11_WAIT_ROOM_WATER_FULL && gu8IceStep < STATE_31_MAIN_ICE_MAKING )
     {
         gu8_cristal_timer = 0;
-        pSWING_BAR = 1;                              // ½ºÀ®¹ÙÁ¤Áö
+        pSWING_BAR = 1;                              // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         return;
     }
     else{}
@@ -67,23 +67,40 @@ void output_swing_bar(void)
     if(gu16IceMakeTime <= 5)
     {
         gu8_cristal_timer = 0;
-        pSWING_BAR = 0;                              // ½ºÀ®¹ÙÁ¤Áö
+        pSWING_BAR = 0;                              // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         return;
     }
     else{}
 
-    if(gu8_cristal_timer == 0 && gu8IceStep == STATE_31_MAIN_ICE_MAKING)          // Á¦ºù±¸°£ ½ºÀ®¹Ù µ¿ÀÛ
+    if(gu8_cristal_timer == 0 && gu8IceStep == STATE_31_MAIN_ICE_MAKING)          // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     {
         F_Cristal = !F_Cristal;
 
         if(F_Cristal == SET)
         {
-            gu8_cristal_timer = CRISTAL_ON;
+            // gu8_cristal_timer = CRISTAL_ON;
+            if(GetB2SwingbarOn() > 0)
+            {
+                gu8_cristal_timer = GetB2SwingbarOn();
+            }
+            else
+            {
+                gu8_cristal_timer = CRISTAL_ON;
+            }
+
             pSWING_BAR = 1;
         }
         else
         {
-            gu8_cristal_timer = CRISTAL_OFF;
+            // gu8_cristal_timer = CRISTAL_OFF;
+            if(GetB2SwingbarOff() > 0)
+            {
+                gu8_cristal_timer = GetB2SwingbarOff();
+            }
+            else
+            {
+                gu8_cristal_timer = CRISTAL_OFF;
+            }
             pSWING_BAR = 0;
         }
     }

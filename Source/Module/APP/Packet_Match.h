@@ -3,6 +3,9 @@
 
 #include "api_uart.h"
 
+#define HIGH_BYTE(val)       (U8)(((val)&0xFF00) >> 8)
+#define LOW_BYTE(val)        (U8)((val)&0x00FF)
+
 /* 공통 시스템 프로토콜 (응답) */
 typedef enum
 {
@@ -197,16 +200,18 @@ typedef struct
 
 typedef struct
 {
-    U8 u8ColdTargetRPS;    // 냉각 목표 RPS
-    U8 u8ColdOnTemp;       // 냉각 ON 온도
-    U8 u8ColdOffTemp;      // 냉각 OFF 온도
-    U16 u16ColdDelayTime;   // 냉각 추가기동 시간
+    U8 u8ColdTargetRPS;     // 냉각 목표 RPS
+    U8 u8ColdOnTemp;        // 냉각 ON 온도
+    U8 u8ColdOffTemp;       // 냉각 OFF 온도
+    U8 ColdDelayTime_H;     // 냉각 추가기동 시간 [HIGH]
+    U8 ColdDelayTime_L;     // 냉각 추가기동 시간 [LOW]
 } B1_COLD_TABLE_DATA_FIELD;
 
 typedef struct
 {
     U8 u8IceMakeTargetRPS;  // 제빙 목표 RPS
-    U16 u16TrayIn_Hz;       // 입수용량(Hz)
+    U8 TrayInHz_H;           // 입수용량 [HIGH]
+    U8 TrayInHz_L;           // 입수용량 [LOW]
     U8 u8SwingbarOn;        // 스윙바 ON 시간
     U8 u8SwingbarOff;       // 스윙바 OFF 시간
 } B2_ICE_MAKE_TABLE_DATA_FIELD;
